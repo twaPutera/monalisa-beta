@@ -1,0 +1,128 @@
+body {
+    background-image: url('/assets/images/background-login.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100vh;
+    padding: 0%;
+    margin: 0%;
+}
+
+.wrapper {
+    position: relative;
+    background-color: rgb(33, 29, 131, 0.63);
+    width: 100%;
+    min-height: 100vh;
+    padding: 0%;
+    margin: 0%;
+}
+
+.logo {
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30%;
+}
+
+.card-login {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15%;
+    margin-bottom: 15%;
+    background-color: rgb(1, 147, 222, 0.48);
+    border-radius: 30px;
+    width: 80% !important;
+    min-height: 200px;
+}
+
+.card-header-login {
+    padding: 20px 30px;
+    border-bottom: 1px solid #FFF;
+}
+
+.card-title-login {
+    color: #FFF;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.card-body-login {
+    padding: 20px 30px;
+}
+
+#form-login > .form-group {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+#form-login > .form-group > label {
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-inline {
+    display: inline;
+    padding-top: 10px;
+}
+
+.form-icon {
+    background-color: #CCCCCC;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #CCCCCC;
+    border: none;
+    border-radius: .25rem;
+}
+
+.link-forget-pass {
+    display: block;
+    margin-top: 10px;
+    color: #FFF;
+    text-decoration: underline;
+    font-size: 18;
+}
+
+.btn-submit {
+    border: none;
+    background-color: #CF8443;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    color: #FFF;
+    border-radius: 50px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+.footer {
+    position: absolute;
+    background-color: rgb(19, 19, 19, 0.3);
+    border-radius: 50px;
+    bottom: 40px;
+}
+
+.footer > p {
+    color: #FFF;
+    padding: 10px 25px;
+    margin-bottom: 0;
+    text-align: center;
+}
