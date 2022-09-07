@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/test', function () {
-    return view('test');
+
+
+Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {
+    Route::get('/', 'TestingController@index');
+    Route::get('/tree', 'TestingController@tree');
+    Route::get('/form', 'TestingController@form');
+    Route::get('/table', 'TestingController@table');
+    Route::post('/form-post', 'TestingController@formPost')->name('test-front.form-post');
+    Route::get('/select2-ajax-data', 'TestingController@select2AjaxData')->name('test-front.select2-ajax-data');
+    Route::get('/datatable', 'TestingController@datatable')->name('test-front.datatable');
 });

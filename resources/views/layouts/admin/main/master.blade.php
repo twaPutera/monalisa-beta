@@ -23,7 +23,7 @@
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper " id="kt_wrapper">
                 @include('layouts.admin.main.header-menu')
                 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-grid--stretch">
-                    <div class="kt-container kt-body  kt-grid kt-grid--ver" id="kt_body">
+                    <div class="kt-container kt-body  kt-grid kt-grid--ver" style="padding: 30px;" id="kt_body">
                         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
                             @yield('subheader')
                             @yield('main-content')
@@ -41,24 +41,8 @@
     </div>
     @include('layouts.admin.main.js')
 
-    <div class="modal fade" id="progress-modal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header blue-400 my-bg-blue">
-                    <h5 class="modal-title text-white">
-                        <i class="fa fa-save"></i>
-                        Sedang diproses
-                    </h5>
-                </div>
-                <div class="modal-body">
-                    <div class="progress mb-3">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info saving-progress-bar"
-                            role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
-                            aria-valuemax="100"> </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="backdrop" style="display: none;">
+        <div class="loader"></div>
     </div>
 </body>
 
