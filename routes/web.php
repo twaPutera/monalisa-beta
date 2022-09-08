@@ -17,7 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {
     Route::get('/', 'TestingController@index');
     Route::get('/tree', 'TestingController@tree');
