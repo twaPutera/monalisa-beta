@@ -82,6 +82,12 @@ body {
     margin: 4px 0 20px;
 }
 
+.text-logo {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: #000;
+}
+
 .step .title {
     font-size: 16px;
     font-weight: 600;
@@ -227,4 +233,16 @@ thead>tr>th {
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
+}
+
+.kt-nav {
+    border-radius: 6px;
+}
+
+.kt-nav > .kt-nav__item .kt-nav__link.active, .kt-nav>.kt-nav__item .kt-nav__link:hover {
+    background-color: #0067D4 !important;
+}
+
+.kt-nav>.kt-nav__item .kt-nav__link.active span, .kt-nav>.kt-nav__item .kt-nav__link:hover span {
+    color: #FFF !important;
 }

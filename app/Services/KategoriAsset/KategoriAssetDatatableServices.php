@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Services\KategoriAsset;
+
+use App\Models\KategoriAsset;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+
+class KategoriAssetDatatableServices
+{
+    public function datatable(Request $request)
+    {
+        $query = KategoriAsset::query();
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<form action="' . route('admin.setting.kategori-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
+                $element .= csrf_field();
+                $element .= '<button type="button" onclick="edit(this)" data-url_edit="' . route('admin.setting.kategori-asset.edit', $item->id) . '" data-url_update="' . route('admin.setting.kategori-asset.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                <i class="fa fa-edit"></i>
+                            </button>';
+                $element .= '<button type="submit" class="btn btn-sm btn-icon btn-warning btn-confirm">
+                                <i class="fa fa-trash"></i>
+                            </button>';
+                $element .= '</form>';
+                return $element;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+}
