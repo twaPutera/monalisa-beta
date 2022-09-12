@@ -73,8 +73,10 @@ class FtpWrapper
      *
      * @param  string       $function
      * @param  array        $arguments
-     * @return mixed
+     *
      * @throws FtpException When the function is not valid
+     *
+     * @return mixed
      */
     public function __call($function, array $arguments)
     {
@@ -94,6 +96,7 @@ class FtpWrapper
      * @param  string   $host
      * @param  int      $port
      * @param  int      $timeout
+     *
      * @return resource
      */
     public function connect($host, $port = 21, $timeout = 90)
@@ -103,9 +106,11 @@ class FtpWrapper
 
     /**
      * Opens a Secure SSL-FTP connection
+     *
      * @param  string   $host
      * @param  int      $port
      * @param  int      $timeout
+     *
      * @return resource
      */
     public function ssl_connect($host, $port = 21, $timeout = 90)

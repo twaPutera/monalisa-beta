@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\TestFront;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class TestingController extends Controller
@@ -30,12 +30,12 @@ class TestingController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
             'gender' => 'required|in:male,female',
-            'description' => 'required'
+            'description' => 'required',
         ]);
 
         return response()->json([
             'success' => true,
-            'data' => $request->all()
+            'data' => $request->all(),
         ]);
     }
 
@@ -56,7 +56,7 @@ class TestingController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
