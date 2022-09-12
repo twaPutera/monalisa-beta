@@ -246,3 +246,10 @@ thead>tr>th {
 .kt-nav>.kt-nav__item .kt-nav__link.active span, .kt-nav>.kt-nav__item .kt-nav__link:hover span {
     color: #FFF !important;
 }
+
+.scroll-bar {
+    width: 100%;
+    height: 60vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
