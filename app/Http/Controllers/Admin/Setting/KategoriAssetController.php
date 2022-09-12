@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\KategoriAsset\KategoriAssetCommandServices;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Services\KategoriAsset\KategoriAssetQueryServices;
+use App\Services\KategoriAsset\KategoriAssetCommandServices;
+use App\Http\Requests\KategoriAsset\KategoriAssetStoreRequest;
 use App\Services\KategoriAsset\KategoriAssetDatatableServices;
 use App\Http\Requests\KategoriAsset\KategoriAssetUpdateRequest;
-use App\Http\Requests\KategoriAsset\KategoriAssetStoreRequest;
-use Illuminate\Support\Facades\DB;
 
 class KategoriAssetController extends Controller
 {
@@ -41,14 +41,14 @@ class KategoriAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil menambahkan data kategori asset',
-                'data' => $kategori_asset
+                'data' => $kategori_asset,
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
@@ -61,13 +61,13 @@ class KategoriAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengambil data kategori asset',
-                'data' => $kategori_asset
+                'data' => $kategori_asset,
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
@@ -82,14 +82,14 @@ class KategoriAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengubah data kategori asset',
-                'data' => $kategori_asset
+                'data' => $kategori_asset,
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
@@ -103,14 +103,14 @@ class KategoriAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil menghapus data kategori asset',
-                'data' => $kategori_asset
+                'data' => $kategori_asset,
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ], 500);
         }
     }
