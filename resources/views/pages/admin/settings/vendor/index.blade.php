@@ -12,7 +12,7 @@
                 // searchDelay: 500,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.setting.satuan-asset.datatable') }}",
+                ajax: "{{ route('admin.setting.vendor.datatable') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -28,10 +28,10 @@
                         name: 'action'
                     },
                     {
-                        data: 'kode_satuan'
+                        data: 'kode_vendor'
                     },
                     {
-                        data: 'nama_satuan'
+                        data: 'nama_vendor'
                     },
                 ],
                 columnDefs: [
@@ -68,11 +68,11 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    const modal = $('.modalEditSatuanAsset');
+                    const modal = $('.modalEditVendor');
                     const form = modal.find('form');
                     form.attr('action', url_update);
-                    form.find('input[name=kode_satuan]').val(response.data.kode_satuan);
-                    form.find('input[name=nama_satuan]').val(response.data.nama_satuan);
+                    form.find('input[name=kode_vendor]').val(response.data.kode_vendor);
+                    form.find('input[name=nama_vendor]').val(response.data.nama_vendor);
                     modal.modal('show');
                 }
             })
@@ -89,13 +89,13 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Satuan Asset
+                            Data Vendor
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateSatuanAsset')"
+                                <button type="button" onclick="openModalByClass('modalCreateVendor')"
                                     class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>Kode</th>
-                                    <th>Nama Satuan</th>
+                                    <th>Nama Vendor</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,6 +121,6 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.settings.satuan-asset._modal_create')
-    @include('pages.admin.settings.satuan-asset._modal_edit')
+    @include('pages.admin.settings.vendor._modal_create')
+    @include('pages.admin.settings.vendor._modal_edit')
 @endsection

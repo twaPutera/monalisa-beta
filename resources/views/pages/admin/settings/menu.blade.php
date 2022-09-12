@@ -37,6 +37,16 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-box"></i>
             </span>
-            <span class="kt-nav__link-text">Satuan</span> </a>
+            <span class="kt-nav__link-text">Satuan Asset</span> </a>
+    </li>
+    <li class="kt-nav__item">
+        <a
+            @if (\Request::segment(3) == 'vendor') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.setting.vendor.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-building"></i>
+            </span>
+            <span class="kt-nav__link-text">Vendor</span> </a>
     </li>
 </ul>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\Setting\VendorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,15 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/update/{id}', [SatuanAssetController::class, 'update'])->name('admin.setting.satuan-asset.update');
             Route::post('/delete/{id}', [SatuanAssetController::class, 'destroy'])->name('admin.setting.satuan-asset.delete');
             Route::get('/datatable', [SatuanAssetController::class, 'datatable'])->name('admin.setting.satuan-asset.datatable');
+        });
+        // # Vendor
+        Route::group(['prefix' => 'vendor'], function () {
+            Route::get('/', [VendorController::class, 'index'])->name('admin.setting.vendor.index');
+            Route::post('/store', [VendorController::class, 'store'])->name('admin.setting.vendor.store');
+            Route::get('/edit/{id}', [VendorController::class, 'edit'])->name('admin.setting.vendor.edit');
+            Route::post('/update/{id}', [VendorController::class, 'update'])->name('admin.setting.vendor.update');
+            Route::post('/delete/{id}', [VendorController::class, 'destroy'])->name('admin.setting.vendor.delete');
+            Route::get('/datatable', [VendorController::class, 'datatable'])->name('admin.setting.vendor.datatable');
         });
     });
 });
