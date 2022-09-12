@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\Setting\LokasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,18 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'setting'], function () {
+        // #Lokasi
+        Route::group(['prefix' => 'lokasi'], function () {
+            Route::get('/', [LokasiController::class, 'index'])->name('admin.setting.lokasi.index');
+            Route::post('/store', [LokasiController::class, 'store'])->name('admin.setting.lokasi.store');
+            Route::get('/edit/{id}', [LokasiController::class, 'edit'])->name('admin.setting.lokasi.edit');
+            Route::post('/update/{id}', [LokasiController::class, 'update'])->name('admin.setting.lokasi.update');
+            Route::post('/delete/{id}', [LokasiController::class, 'destroy'])->name('admin.setting.lokasi.delete');
+            Route::get('/datatable', [LokasiController::class, 'datatable'])->name('admin.setting.lokasi.datatable');
+            Route::get('/get-node-tree', [LokasiController::class, 'getNodeTree'])->name('admin.setting.lokasi.get-node-tree');
+            Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('admin.setting.lokasi.get-select2');
+        });
+        // #Kategori-Asset
         Route::group(['prefix' => 'kategori-asset'], function () {
             Route::get('/', [KategoriAssetController::class, 'index'])->name('admin.setting.kategori-asset.index');
             Route::post('/store', [KategoriAssetController::class, 'store'])->name('admin.setting.kategori-asset.store');
