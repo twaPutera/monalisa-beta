@@ -2,9 +2,9 @@
 
 namespace App\Services\SatuanAsset;
 
+use App\Models\SatuanAsset;
 use App\Http\Requests\SatuanAsset\SatuanAssetStoreRequest;
 use App\Http\Requests\SatuanAsset\SatuanAssetUpdateRequest;
-use App\Models\SatuanAsset;
 
 class SatuanAssetCommandServices
 {

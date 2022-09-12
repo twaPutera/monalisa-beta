@@ -39,12 +39,12 @@ class LokasiQueryServices
     public function generateSelect2(Request $request)
     {
         $id_parent_lokasi = $request->id_parent_lokasi === 'root' ? null : $request->id_parent_lokasi;
-        if ($id_parent_lokasi == null)
+        if ($id_parent_lokasi == null) {
             $parent[] = [
                 'id' => 'root',
                 'text' => '(Parent) Universitas Pertamina',
             ];
-        else {
+        } else {
             $parentLokasi = Lokasi::query()
                 ->where('id', $id_parent_lokasi)
                 ->first();
@@ -68,7 +68,7 @@ class LokasiQueryServices
     public function generateAllSelect2(Request $request)
     {
         $arraySelect2 = [];
-        if (!isset($request->keyword)) {
+        if (! isset($request->keyword)) {
             $arraySelect2[] = [
                 'id' => 'root',
                 'text' => 'Universitas Pertamina',

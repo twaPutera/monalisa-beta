@@ -2,8 +2,8 @@
 
 namespace App\Services\SatuanAsset;
 
-use Illuminate\Http\Request;
 use App\Models\SatuanAsset;
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class SatuanAssetDatatableServices

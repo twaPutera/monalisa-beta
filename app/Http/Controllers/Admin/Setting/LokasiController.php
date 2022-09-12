@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Lokasi\LokasiCommandServices;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Services\Lokasi\LokasiQueryServices;
+use App\Services\Lokasi\LokasiCommandServices;
+use App\Http\Requests\Lokasi\LokasiStoreRequest;
 use App\Services\Lokasi\LokasiDatatableServices;
 use App\Http\Requests\Lokasi\LokasiUpdateRequest;
-use App\Http\Requests\Lokasi\LokasiStoreRequest;
-use Illuminate\Support\Facades\DB;
 
 class LokasiController extends Controller
 {
