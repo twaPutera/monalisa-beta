@@ -2,9 +2,9 @@
 
 namespace App\Services\KategoriAsset;
 
+use App\Models\KategoriAsset;
 use App\Http\Requests\KategoriAsset\KategoriAssetStoreRequest;
 use App\Http\Requests\KategoriAsset\KategoriAssetUpdateRequest;
-use App\Models\KategoriAsset;
 
 class KategoriAssetCommandServices
 {
