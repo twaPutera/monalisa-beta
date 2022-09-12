@@ -2,9 +2,9 @@
 
 namespace App\Services\Lokasi;
 
-use Yajra\DataTables\DataTables;
-use Illuminate\Http\Request;
 use App\Models\Lokasi;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class LokasiDatatableServices
 {

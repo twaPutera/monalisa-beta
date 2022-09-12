@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
+use App\Http\Controllers\Admin\Setting\SatuanAssetController;
+use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,15 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/update/{id}', [KategoriAssetController::class, 'update'])->name('admin.setting.kategori-asset.update');
             Route::post('/delete/{id}', [KategoriAssetController::class, 'destroy'])->name('admin.setting.kategori-asset.delete');
             Route::get('/datatable', [KategoriAssetController::class, 'datatable'])->name('admin.setting.kategori-asset.datatable');
+        });
+        // # Satuan Asset
+        Route::group(['prefix' => 'satuan-asset'], function () {
+            Route::get('/', [SatuanAssetController::class, 'index'])->name('admin.setting.satuan-asset.index');
+            Route::post('/store', [SatuanAssetController::class, 'store'])->name('admin.setting.satuan-asset.store');
+            Route::get('/edit/{id}', [SatuanAssetController::class, 'edit'])->name('admin.setting.satuan-asset.edit');
+            Route::post('/update/{id}', [SatuanAssetController::class, 'update'])->name('admin.setting.satuan-asset.update');
+            Route::post('/delete/{id}', [SatuanAssetController::class, 'destroy'])->name('admin.setting.satuan-asset.delete');
+            Route::get('/datatable', [SatuanAssetController::class, 'datatable'])->name('admin.setting.satuan-asset.datatable');
         });
     });
 });
