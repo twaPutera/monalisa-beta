@@ -12,6 +12,18 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="">Group</label>
+                        <div class="input-group mb-2">
+                            <select name="id_group_kategori_asset" class="form-control selectGroup" id="">
+
+                            </select>
+                            <div class="input-group-append">
+                                <button onclick="openModalByClass('modalCreateGroupKategoriAsset')" type="button"
+                                    class="btn btn-primary btn-icon" type="button"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="">Kode Kategori</label>
                         <input type="text" class="form-control" name="kode_kategori">
                     </div>

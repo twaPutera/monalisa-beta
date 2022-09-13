@@ -8,7 +8,7 @@ class GroupKategoriAssetQueryServices
 {
     public function findAll()
     {
-        return GroupKategoriAsset::all();
+        return GroupKategoriAsset::query()->orderby('nama_group', 'asc')->get();
     }
 
     public function findById(string $id)

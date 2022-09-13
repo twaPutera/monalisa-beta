@@ -13,6 +13,7 @@ class KategoriAssetCommandServices
         $request->validated();
 
         $kategori_asset = new KategoriAsset();
+        $kategori_asset->id_group_kategori_asset = $request->id_group_kategori_asset;
         $kategori_asset->kode_kategori = $request->kode_kategori;
         $kategori_asset->nama_kategori = $request->nama_kategori;
         $kategori_asset->save();
@@ -25,6 +26,7 @@ class KategoriAssetCommandServices
         $request->validated();
 
         $kategori_asset = KategoriAsset::findOrFail($id);
+        $kategori_asset->id_group_kategori_asset = $request->id_group_kategori_asset;
         $kategori_asset->kode_kategori = $request->kode_kategori;
         $kategori_asset->nama_kategori = $request->nama_kategori;
         $kategori_asset->save();

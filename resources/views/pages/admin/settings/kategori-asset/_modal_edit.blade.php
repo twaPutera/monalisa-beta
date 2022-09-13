@@ -12,6 +12,12 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="">Group</label>
+                        <select name="id_group_kategori_asset" class="form-control selectGroup" id="selectGroupEdit">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="">Kode Kategori</label>
                         <input type="text" class="form-control" name="kode_kategori">
                     </div>

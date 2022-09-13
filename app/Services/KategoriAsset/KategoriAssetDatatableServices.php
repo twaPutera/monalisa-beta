@@ -14,6 +14,9 @@ class KategoriAssetDatatableServices
         $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('group', function ($item) {
+                return $item->group_kategori_asset->nama_group;
+            })
             ->addColumn('action', function ($item) {
                 $element = '';
                 $element .= '<form action="' . route('admin.setting.kategori-asset.delete', $item->id) . '" class="form-confirm" method="POST">';

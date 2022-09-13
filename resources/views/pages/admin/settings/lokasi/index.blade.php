@@ -92,6 +92,7 @@
                     modal.modal('hide');
                     table.DataTable().ajax.reload();
                     $('#lokasiTree').jstree(true).refresh();
+                    getDataOptionSelect();
                     showToastSuccess('Sukses', data.message);
                 }
             });
@@ -105,6 +106,7 @@
             });
 
             $('.modalCreateLokasi').on('shown.bs.modal', function(e) {
+                getDataOptionSelect();
                 generateSelect2Lokasi();
             });
 
@@ -156,6 +158,12 @@
                     form.find('input[name=kode_lokasi]').val(response.data.kode_lokasi);
                     form.find('input[name=nama_lokasi]').val(response.data.nama_lokasi);
                     form.find('textarea[name=keterangan]').val(response.data.keterangan);
+                    modal.on('shown.bs.modal', function(e) {
+                        getDataOptionSelect();
+                        generateSelect2Lokasi();
+                        form.find('select[name="parent_id"]').select2('val', response.data
+                            .parent_id);
+                    });
                     modal.modal('show');
                 }
             })

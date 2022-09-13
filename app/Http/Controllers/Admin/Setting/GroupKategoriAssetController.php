@@ -112,4 +112,20 @@ class GroupKategoriAssetController extends Controller
             ]);
         }
     }
+
+    public function findAll()
+    {
+        try {
+            $data = $this->groupKategoriAssetQueryServices->findAll();
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }
