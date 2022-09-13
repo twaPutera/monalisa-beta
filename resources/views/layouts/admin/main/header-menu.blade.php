@@ -493,9 +493,9 @@
                 <div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile ">
                     <ul class="kt-menu__nav ">
                         <li class="kt-menu__item @if (\Request::segment(2) == 'dashboard') kt-menu__item--active @endif"
-                            aria-haspopup="true"><a href="./index.html" class="kt-menu__link "><span
-                                    class="kt-menu__link-text"><span class="kt-menu__link-icon"><i
-                                            class="fa fa-home"></i></span> Home</span></a>
+                            aria-haspopup="true"><a href="{{ route('admin.dashboard') }}"
+                                class="kt-menu__link "><span class="kt-menu__link-text"><span
+                                        class="kt-menu__link-icon"><i class="fa fa-home"></i></span> Home</span></a>
                         </li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./listing-asset.html"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span

@@ -1,6 +1,6 @@
 <ul class="kt-nav kt-nav--bold my-kt-nav-blue3 pt-0 shadow-custom">
     <li class="kt-nav__item">
-        <a
+        <a style="border-top-right-radius: 6px; border-top-left-radius: 6px;"
             @if (\Request::segment(3) == 'sistem-config') class="kt-nav__link px-3 active" href="javascript:;"
         @else
             class="kt-nav__link px-3" href="{{ route('admin.sistem-config.index') }}" @endif>
