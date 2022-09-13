@@ -11,7 +11,7 @@ class KategoriAssetDatatableServices
     public function datatable(Request $request)
     {
         $query = KategoriAsset::query();
-
+        $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('action', function ($item) {

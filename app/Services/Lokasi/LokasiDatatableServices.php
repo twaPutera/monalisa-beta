@@ -16,7 +16,7 @@ class LokasiDatatableServices
             $id_parent_lokasi = $request->id_parent_lokasi === 'root' ? null : $request->id_parent_lokasi;
             $query->where('id_parent_lokasi', $id_parent_lokasi);
         }
-
+        $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('action', function ($item) {
