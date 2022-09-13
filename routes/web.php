@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
+use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,15 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('/update/{id}', [KategoriInventoriController::class, 'update'])->name('admin.setting.kategori-inventori.update');
             Route::post('/delete/{id}', [KategoriInventoriController::class, 'destroy'])->name('admin.setting.kategori-inventori.delete');
             Route::get('/datatable', [KategoriInventoriController::class, 'datatable'])->name('admin.setting.kategori-inventori.datatable');
+        });
+        // # Satuan Inventori
+        Route::group(['prefix' => 'satuan-inventori'], function () {
+            Route::get('/',[SatuanInventoriController::class, 'index'])->name('admin.setting.satuan-inventori.index');
+            Route::post('/store', [SatuanInventoriController::class, 'store'])->name('admin.setting.satuan-inventori.store');
+            Route::get('/edit/{id}', [SatuanInventoriController::class, 'edit'])->name('admin.setting.satuan-inventori.edit');
+            Route::post('/update/{id}', [SatuanInventoriController::class, 'update'])->name('admin.setting.satuan-inventori.update');
+            Route::post('/delete/{id}', [SatuanInventoriController::class, 'destroy'])->name('admin.setting.satuan-inventori.delete');
+            Route::get('/datatable', [SatuanInventoriController::class, 'datatable'])->name('admin.setting.satuan-inventori.datatable');
         });
     });
 });

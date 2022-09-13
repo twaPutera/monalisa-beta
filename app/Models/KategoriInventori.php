@@ -11,5 +11,4 @@ class KategoriInventori extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
     protected $table = "kategori_inventories";
-    protected $guarded = [];
 }

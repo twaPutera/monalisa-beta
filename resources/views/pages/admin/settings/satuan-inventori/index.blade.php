@@ -12,7 +12,7 @@
                 // searchDelay: 500,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.setting.satuan-asset.datatable') }}",
+                ajax: "{{ route('admin.setting.satuan-inventori.datatable') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -68,7 +68,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    const modal = $('.modalEditSatuanAsset');
+                    const modal = $('.modalEditSatuanInventori');
                     const form = modal.find('form');
                     form.attr('action', url_update);
                     form.find('input[name=kode_satuan]').val(response.data.kode_satuan);
@@ -89,13 +89,13 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Satuan Asset
+                            Data Satuan Inventori
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateSatuanAsset')"
+                                <button type="button" onclick="openModalByClass('modalCreateSatuanInventori')"
                                     class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
                             </div>
                         </div>
@@ -121,6 +121,6 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.settings.satuan-asset._modal_create')
-    @include('pages.admin.settings.satuan-asset._modal_edit')
+    @include('pages.admin.settings.satuan-inventori._modal_create')
+    @include('pages.admin.settings.satuan-inventori._modal_edit')
 @endsection
