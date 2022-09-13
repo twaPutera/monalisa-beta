@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\SatuanInventori\SatuanInventoriStoreRequest;
-use App\Http\Requests\SatuanInventori\SatuanInventoriUpdateRequest;
-use App\Services\SatuanInventori\SatuanInventoriCommandServices;
-use App\Services\SatuanInventori\SatuanInventoriDatatableServices;
-use App\Services\SatuanInventori\SatuanInventoriQueryServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\SatuanInventori\SatuanInventoriQueryServices;
+use App\Services\SatuanInventori\SatuanInventoriCommandServices;
+use App\Http\Requests\SatuanInventori\SatuanInventoriStoreRequest;
+use App\Services\SatuanInventori\SatuanInventoriDatatableServices;
+use App\Http\Requests\SatuanInventori\SatuanInventoriUpdateRequest;
 
 class SatuanInventoriController extends Controller
 {

@@ -10,5 +10,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SatuanInventori extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
-    protected $table = "satuan_inventories";
+    protected $table = 'satuan_inventories';
 }

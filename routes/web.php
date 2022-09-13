@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
-use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
+use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'admin'], function () {
         });
         // # Satuan Inventori
         Route::group(['prefix' => 'satuan-inventori'], function () {
-            Route::get('/',[SatuanInventoriController::class, 'index'])->name('admin.setting.satuan-inventori.index');
+            Route::get('/', [SatuanInventoriController::class, 'index'])->name('admin.setting.satuan-inventori.index');
             Route::post('/store', [SatuanInventoriController::class, 'store'])->name('admin.setting.satuan-inventori.store');
             Route::get('/edit/{id}', [SatuanInventoriController::class, 'edit'])->name('admin.setting.satuan-inventori.edit');
             Route::post('/update/{id}', [SatuanInventoriController::class, 'update'])->name('admin.setting.satuan-inventori.update');

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\KategoriInventori\KategoriInventoriStoreRequest;
-use App\Http\Requests\KategoriInventori\KategoriInventoriUpdateRequest;
-use App\Services\KategoriInventori\KategoriInventoriCommandServices;
-use App\Services\KategoriInventori\KategoriInventoriDatatableServices;
-use App\Services\KategoriInventori\KategoriInventoriQueryServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\KategoriInventori\KategoriInventoriQueryServices;
+use App\Services\KategoriInventori\KategoriInventoriCommandServices;
+use App\Http\Requests\KategoriInventori\KategoriInventoriStoreRequest;
+use App\Services\KategoriInventori\KategoriInventoriDatatableServices;
+use App\Http\Requests\KategoriInventori\KategoriInventoriUpdateRequest;
 
 class KategoriInventoriController extends Controller
 {

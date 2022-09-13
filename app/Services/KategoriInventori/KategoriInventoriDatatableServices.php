@@ -3,8 +3,8 @@
 namespace App\Services\KategoriInventori;
 
 use Illuminate\Http\Request;
-use App\Models\KategoriInventori;
 use Yajra\DataTables\DataTables;
+use App\Models\KategoriInventori;
 
 class KategoriInventoriDatatableServices
 {
