@@ -37,6 +37,16 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-box"></i>
             </span>
-            <span class="kt-nav__link-text">Satuan</span> </a>
+            <span class="kt-nav__link-text">Satuan Asset</span> </a>
+    </li>
+    <li class="kt-nav__item">
+        <a
+            @if (\Request::segment(3) == 'kategori-inventori') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.setting.kategori-inventori.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="kt-nav__link-text">Kategori Inventori</span> </a>
     </li>
 </ul>
