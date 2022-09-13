@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
+use App\Http\Controllers\Admin\Setting\KelasAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +94,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [SatuanInventoriController::class, 'update'])->name('admin.setting.satuan-inventori.update');
             Route::post('/delete/{id}', [SatuanInventoriController::class, 'destroy'])->name('admin.setting.satuan-inventori.delete');
             Route::get('/datatable', [SatuanInventoriController::class, 'datatable'])->name('admin.setting.satuan-inventori.datatable');
+        });
+        // # Satuan Inventori
+        Route::group(['prefix' => 'kelas-asset'], function () {
+            Route::get('/', [KelasAssetController::class, 'index'])->name('admin.setting.kelas-asset.index');
+            Route::post('/store', [KelasAssetController::class, 'store'])->name('admin.setting.kelas-asset.store');
+            Route::get('/edit/{id}',[KelasAssetController::class, 'edit'])->name('admin.setting.kelas-asset.edit');
+            Route::post('/update/{id}', [KelasAssetController::class, 'update'])->name('admin.setting.kelas-asset.update');
+            Route::post('/delete/{id}', [KelasAssetController::class, 'destroy'])->name('admin.setting.kelas-asset.delete');
+            Route::get('/datatable',[KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
         });
     });
 });
