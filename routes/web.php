@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
+use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +75,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [VendorController::class, 'update'])->name('admin.setting.vendor.update');
             Route::post('/delete/{id}', [VendorController::class, 'destroy'])->name('admin.setting.vendor.delete');
             Route::get('/datatable', [VendorController::class, 'datatable'])->name('admin.setting.vendor.datatable');
+        });
+        // #Kategori Inventori
+        Route::group(['prefix' => 'kategori-inventori'], function () {
+            Route::get('/', [KategoriInventoriController::class, 'index'])->name('admin.setting.kategori-inventori.index');
+            Route::post('/store', [KategoriInventoriController::class, 'store'])->name('admin.setting.kategori-inventori.store');
+            Route::get('/edit/{id}', [KategoriInventoriController::class, 'edit'])->name('admin.setting.kategori-inventori.edit');
+            Route::post('/update/{id}', [KategoriInventoriController::class, 'update'])->name('admin.setting.kategori-inventori.update');
+            Route::post('/delete/{id}', [KategoriInventoriController::class, 'destroy'])->name('admin.setting.kategori-inventori.delete');
+            Route::get('/datatable', [KategoriInventoriController::class, 'datatable'])->name('admin.setting.kategori-inventori.datatable');
+        });
+        // # Satuan Inventori
+        Route::group(['prefix' => 'satuan-inventori'], function () {
+            Route::get('/', [SatuanInventoriController::class, 'index'])->name('admin.setting.satuan-inventori.index');
+            Route::post('/store', [SatuanInventoriController::class, 'store'])->name('admin.setting.satuan-inventori.store');
+            Route::get('/edit/{id}', [SatuanInventoriController::class, 'edit'])->name('admin.setting.satuan-inventori.edit');
+            Route::post('/update/{id}', [SatuanInventoriController::class, 'update'])->name('admin.setting.satuan-inventori.update');
+            Route::post('/delete/{id}', [SatuanInventoriController::class, 'destroy'])->name('admin.setting.satuan-inventori.delete');
+            Route::get('/datatable', [SatuanInventoriController::class, 'datatable'])->name('admin.setting.satuan-inventori.datatable');
         });
     });
 });
