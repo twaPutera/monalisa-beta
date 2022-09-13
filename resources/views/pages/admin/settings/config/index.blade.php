@@ -6,19 +6,18 @@
         $(document).ready(function() {
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
-                    $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
-                    let modal = $(formElement).closest('.modal');
-                    modal.modal('hide');
-                    table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
                 for (let key in errors) {
-                    let element = formElement.find(`[name=${key}]`);
+                    let key_split = key.split('.');
+                    let name = `config[${key_split[1]}]`;
+                    console.log(name);
+                    let element = formElement.find(`[name='${name}']`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
                 }
@@ -55,7 +54,7 @@
                                 <div class="form-group col-md-6 col-12">
                                     <label for="">{{ $item->config_name }}</label>
                                     <input type="text" class="form-control" value="{{ $item->value }}"
-                                        name="config['{{ $item->config }}'][]">
+                                        name="config[{{ $item->config }}]">
                                 </div>
                             @endforeach
                         </div>
