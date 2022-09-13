@@ -13,6 +13,19 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'sso_client_id' => env('SSO_CLIENT_ID', 'client-id'),
+    'sso_client_secret' => env('SSO_CLIENT_SECRET', 'client-secret'),
+    'sso_client_callback' => env('SSO_CLIENT_CALLBACK', 'http://third-party-app.com/callback'),
+    'sso_ldap_url' => env('SSO_LDAP_URL', null),
+    'sso_siska_url' => env('SSO_SISKA_URL', null),
+
+    'jwt_secret' => env('JWT_SECRET', 'example_key'),
+
+    'sso_public_key' => env('SSO_PUBLIC_KEY', null),
+
+    'access_token_cookie_name' => env('ACCESS_TOKEN_COOKIE_NAME', 'access_token'),
+
+    'jwt_cookie_name' => env('JWT_COOKIE_NAME', 'jwt_token'),
 
     /*
     |--------------------------------------------------------------------------

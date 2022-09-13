@@ -16,6 +16,7 @@ class CreateSistemConfigsTable extends Migration
         Schema::create('sistem_configs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('config');
+            $table->string('config_name');
             $table->string('value');
             $table->timestamps();
             $table->softDeletes();

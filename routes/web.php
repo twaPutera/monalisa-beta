@@ -1,10 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\VendorController;
+use App\Http\Controllers\Auth\SsoController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +23,19 @@ use App\Http\Controllers\Admin\Setting\VendorController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.redirect');
 
-Route::group(['prefix' => 'admin'], function () {
+Route::get('/callback', [SsoController::class, 'callback']);
+
+Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
     Route::group(['prefix' => 'setting'], function () {
+        // #Sistem Config
+        Route::group(['prefix' => 'sistem-config'], function () {
+            Route::get('/', [SistemConfigController::class, 'index'])->name('admin.sistem-config.index');
+            Route::post('/store', [SistemConfigController::class, 'update'])->name('admin.sistem-config.update');
+        });
         // #Lokasi
         Route::group(['prefix' => 'lokasi'], function () {
             Route::get('/', [LokasiController::class, 'index'])->name('admin.setting.lokasi.index');

@@ -463,7 +463,7 @@
                         <!--begin: Navigation -->
                         <div class="kt-notification">
                             <div class="kt-notification__custom kt-space-end">
-                                <form method="GET" action="#">
+                                <form method="POST" action="{{ route('sso.logout') }}">
                                     @csrf
                                     <a class="btn btn-label btn-label-brand btn-sm btn-bold" href="#"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
@@ -514,7 +514,7 @@
                                         class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report
                                     Asset</span></a></li>
                         <li class="kt-menu__item @if (\Request::segment(2) == 'setting') kt-menu__item--active @endif"
-                            aria-haspopup="true"><a href="{{ route('admin.setting.kategori-asset.index') }}"
+                            aria-haspopup="true"><a href="{{ route('admin.sistem-config.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-cog"></i></span>
                                     Setting</span></a></li>
