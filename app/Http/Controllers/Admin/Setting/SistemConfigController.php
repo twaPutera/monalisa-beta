@@ -30,15 +30,22 @@ class SistemConfigController extends Controller
 
     public function update(SistemConfigUpdateRequest $request)
     {
-        return $request;
         DB::beginTransaction();
         try {
-            $this->sistemConfigCommandServices->update($request, $id);
+            $data = $this->sistemConfigCommandServices->updateAll($request);
             DB::commit();
-            return redirect()->route('admin.setting.sistem-config.index')->with('success', 'Data berhasil diubah');
-        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data config',
+                'data' => $data,
+            ], 200);
+        } catch (\Exception $th) {
+            // throw $th;
             DB::rollback();
-            return redirect()->route('admin.setting.sistem-config.index')->with('error', 'Data gagal diubah');
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
         }
     }
 }

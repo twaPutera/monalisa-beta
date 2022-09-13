@@ -24,8 +24,16 @@ class SistemConfigUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'config_name.*' => 'required|string|max:255',
-            'value.*' => 'required|string|max:255',
+            'config.*' => 'required|string|max:255',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'config.*.required' => 'This value must not be empty',
+            'config.*.string' => 'This value must be string',
+            'config.*.max' => 'This value must not be more than 255 characters',
         ];
     }
 }
