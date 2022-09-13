@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\SistemConfig\SistemConfigQueryServices;
 use App\Services\SistemConfig\SistemConfigCommandServices;
 use App\Http\Requests\SistemConfig\SistemConfigUpdateRequest;
-use Illuminate\Support\Facades\DB;
 
 class SistemConfigController extends Controller
 {

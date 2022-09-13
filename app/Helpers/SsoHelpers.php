@@ -2,10 +2,10 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\Http;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class SsoHelpers
 {

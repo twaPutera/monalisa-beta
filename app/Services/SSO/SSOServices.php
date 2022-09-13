@@ -2,9 +2,9 @@
 
 namespace App\Services\SSO;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Helpers\SsoHelpers;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class SSOServices
 {
