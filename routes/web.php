@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\SistemConfigController;
+use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
@@ -46,6 +47,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [LokasiController::class, 'datatable'])->name('admin.setting.lokasi.datatable');
             Route::get('/get-node-tree', [LokasiController::class, 'getNodeTree'])->name('admin.setting.lokasi.get-node-tree');
             Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('admin.setting.lokasi.get-select2');
+        });
+        // #Group-Kategori-Asset
+        Route::group(['prefix' => 'group-kategori-asset'], function () {
+            Route::get('/', [GroupKategoriAssetController::class, 'index'])->name('admin.setting.group-kategori-asset.index');
+            Route::post('/store', [GroupKategoriAssetController::class, 'store'])->name('admin.setting.group-kategori-asset.store');
+            Route::get('/edit/{id}', [GroupKategoriAssetController::class, 'edit'])->name('admin.setting.group-kategori-asset.edit');
+            Route::post('/update/{id}', [GroupKategoriAssetController::class, 'update'])->name('admin.setting.group-kategori-asset.update');
+            Route::post('/delete/{id}', [GroupKategoriAssetController::class, 'destroy'])->name('admin.setting.group-kategori-asset.delete');
+            Route::get('/datatable', [GroupKategoriAssetController::class, 'datatable'])->name('admin.setting.group-kategori-asset.datatable');
         });
         // #Kategori-Asset
         Route::group(['prefix' => 'kategori-asset'], function () {

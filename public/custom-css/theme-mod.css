@@ -2,6 +2,13 @@
     box-shadow: 0px 0px 30px #0067D426 !important;
 }
 
+@media (min-width: 1540px) {
+    .kt-container {
+        width: 100% !important;
+        margin: 0 auto;
+    }
+}
+
 .kt-header-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link {
     padding-left: 30px;
 }

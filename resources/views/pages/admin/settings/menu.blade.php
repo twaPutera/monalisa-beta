@@ -31,6 +31,16 @@
     </li>
     <li class="kt-nav__item">
         <a
+            @if (\Request::segment(3) == 'group-kategori-asset') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.setting.group-kategori-asset.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-object-group"></i>
+            </span>
+            <span class="kt-nav__link-text">Group Kategori Asset</span> </a>
+    </li>
+    <li class="kt-nav__item">
+        <a
             @if (\Request::segment(3) == 'kategori-asset') class="kt-nav__link px-3 active" href="javascript:;"
         @else
             class="kt-nav__link px-3" href="{{ route('admin.setting.kategori-asset.index') }}" @endif>
