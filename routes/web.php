@@ -1,19 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Http;
-use App\Http\Controllers\Admin\Setting\LokasiController;
-use App\Http\Controllers\Admin\Setting\SatuanAssetController;
-use App\Http\Controllers\Admin\Setting\KategoriAssetController;
-use App\Http\Controllers\Admin\Setting\SistemConfigController;
-use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Auth\SsoController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\Setting\LokasiController;
+use App\Http\Controllers\Admin\Setting\VendorController;
+use App\Http\Controllers\Admin\Setting\KelasAssetController;
+use App\Http\Controllers\Admin\Setting\SatuanAssetController;
+use App\Http\Controllers\Admin\Setting\SistemConfigController;
+use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
-use App\Http\Controllers\Admin\Setting\KelasAssetController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,10 +96,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'kelas-asset'], function () {
             Route::get('/', [KelasAssetController::class, 'index'])->name('admin.setting.kelas-asset.index');
             Route::post('/store', [KelasAssetController::class, 'store'])->name('admin.setting.kelas-asset.store');
-            Route::get('/edit/{id}',[KelasAssetController::class, 'edit'])->name('admin.setting.kelas-asset.edit');
+            Route::get('/edit/{id}', [KelasAssetController::class, 'edit'])->name('admin.setting.kelas-asset.edit');
             Route::post('/update/{id}', [KelasAssetController::class, 'update'])->name('admin.setting.kelas-asset.update');
             Route::post('/delete/{id}', [KelasAssetController::class, 'destroy'])->name('admin.setting.kelas-asset.delete');
-            Route::get('/datatable',[KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
+            Route::get('/datatable', [KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
         });
     });
 });

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\SistemConfig;
+use Illuminate\Database\Seeder;
 
 class ConfigSeeder extends Seeder
 {

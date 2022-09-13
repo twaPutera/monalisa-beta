@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\SSO\SSOServices;
+use App\Http\Controllers\Controller;
 
 class SsoController extends Controller
 {
@@ -27,15 +27,15 @@ class SsoController extends Controller
 
             if ($response) {
                 return redirect()->route('admin.dashboard');
-            } else {
-                return redirect()->route('sso.redirect');
             }
+            return redirect()->route('sso.redirect');
+            
             //code...
         } catch (\Throwable $th) {
             // throw $th;
             return response()->json([
                 'message' => 'error',
-                'data' => $th->getMessage()
+                'data' => $th->getMessage(),
             ], 500);
         }
     }
@@ -46,8 +46,7 @@ class SsoController extends Controller
 
         if ($response) {
             return redirect()->route('sso.redirect');
-        } else {
-            return redirect()->route('admin.dashboard');
         }
+        return redirect()->route('admin.dashboard');
     }
 }

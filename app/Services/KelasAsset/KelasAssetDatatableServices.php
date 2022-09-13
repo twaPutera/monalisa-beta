@@ -2,9 +2,9 @@
 
 namespace App\Services\KelasAsset;
 
+use App\Models\KelasAsset;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\KelasAsset;
 
 class KelasAssetDatatableServices
 {

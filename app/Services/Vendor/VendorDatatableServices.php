@@ -2,9 +2,9 @@
 
 namespace App\Services\Vendor;
 
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Vendor;
 
 class VendorDatatableServices
 {

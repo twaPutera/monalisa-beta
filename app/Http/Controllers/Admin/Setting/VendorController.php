@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Vendor\VendorCommandServices;
-use App\Services\Vendor\VendorQueryServices;
-use App\Services\Vendor\VendorDatatableServices;
-use App\Http\Requests\Vendor\VendorStoreRequest;
-use App\Http\Requests\Vendor\VendorUpdateRequest;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Vendor\VendorQueryServices;
+use App\Services\Vendor\VendorCommandServices;
+use App\Http\Requests\Vendor\VendorStoreRequest;
+use App\Services\Vendor\VendorDatatableServices;
+use App\Http\Requests\Vendor\VendorUpdateRequest;
 
 class VendorController extends Controller
 {
