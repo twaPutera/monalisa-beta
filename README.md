@@ -25,11 +25,12 @@
 1. `php artisan migrate --seed`
 2. `php artisan serve`
 
--   Jika tidak ada masalah, silahkan akses kehalaman `http://127.0.0.1/8000`
+-   Jika tidak ada masalah, silahkan akses kehalaman `http://localhost:8000/admin/dashboard`, maka anda akan diarahkan ke halaman Login SSO
 
 ## Account Information
 
-## Role User Information
+-   Username : admin
+-   Password : admin
 
 ## Noted
 
