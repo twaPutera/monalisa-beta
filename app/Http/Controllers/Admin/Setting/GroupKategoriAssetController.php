@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Services\GroupKategoriAsset\GroupKategoriAssetQueryServices;
 use App\Services\GroupKategoriAsset\GroupKategoriAssetCommandServices;
-use App\Services\GroupKategoriAsset\GroupKategoriAssetDatatableServices;
 use App\Http\Requests\GroupKategoriAsset\GroupKategoriAssetStoreRequest;
+use App\Services\GroupKategoriAsset\GroupKategoriAssetDatatableServices;
 use App\Http\Requests\GroupKategoriAsset\GroupKategoriAssetUpdateRequest;
-use Illuminate\Support\Facades\DB;
 
 class GroupKategoriAssetController extends Controller
 {
@@ -52,7 +52,7 @@ class GroupKategoriAssetController extends Controller
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -68,7 +68,7 @@ class GroupKategoriAssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -88,7 +88,7 @@ class GroupKategoriAssetController extends Controller
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -108,7 +108,7 @@ class GroupKategoriAssetController extends Controller
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -124,7 +124,7 @@ class GroupKategoriAssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }

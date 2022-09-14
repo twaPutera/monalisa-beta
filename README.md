@@ -13,7 +13,7 @@
 -   [GIT Windows](https://git-scm.com/download/win)
 -   [Composer](https://getcomposer.org/download/)
 -   Apache Server, SQL Server, => [Dapat diperoleh dengan menginstall [XAMPP](https://www.apachefriends.org/download.html) atau [Laragon](https://laragon.org/download/index.html)]
--   [NPM] dan [NodeJs](https://nodejs.org/en/)
+-   [Npm dan NodeJs](https://nodejs.org/en/)
 
 ## Installation & updates
 
@@ -25,11 +25,12 @@
 1. `php artisan migrate --seed`
 2. `php artisan serve`
 
--   Jika tidak ada masalah, silahkan akses kehalaman `http://127.0.0.1/8000`
+-   Jika tidak ada masalah, silahkan akses kehalaman `http://localhost:8000/admin/dashboard`, maka anda akan diarahkan ke halaman Login SSO
 
 ## Account Information
 
-## Role User Information
+-   Username : admin
+-   Password : admin
 
 ## Noted
 
