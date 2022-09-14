@@ -260,3 +260,56 @@ thead>tr>th {
     overflow-y: auto;
     overflow-x: auto;
 }
+
+th, td {
+    font-size: 10px;
+}
+td {
+    padding: 0.4rem !important;
+}
+
+.detail-asset-box {
+    width: 100%;
+    background-color: #F8FAFB;
+    padding: 18px;
+    border-radius: 9px;
+}
+
+.detail-asset-box .title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0067D4;
+}
+
+.detail-asset-box img {
+    width: 100%;
+    border-radius: 8px;
+    margin: 14px 0;
+}
+
+.detail-asset-box .detail-asset-keterangan {
+    margin: 12px 0;
+}
+
+.detail-asset-box .detail-asset-keterangan h6 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #878787;
+    margin: 0;
+}
+
+.detail-asset-box .detail-asset-keterangan .left  {
+    float: left;
+}
+
+.detail-asset-box .detail-asset-keterangan .right  {
+    float: right;
+}
+
+.text-success {
+    color: #359200 !important;
+}
+
+.kt-badge--success {
+    background-color: #359200 !important;
+}

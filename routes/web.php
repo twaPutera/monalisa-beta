@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,11 @@ Route::get('/callback', [SsoController::class, 'callback']);
 Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
+    # Listing Asset
+    Route::group(['prefix' => 'listing-asset'], function () {
+        Route::get('/', [MasterAssetController::class, 'index'])->name('admin.listing-asset.index');
+    });
+    # Setting
     Route::group(['prefix' => 'setting'], function () {
         // #Sistem Config
         Route::group(['prefix' => 'sistem-config'], function () {

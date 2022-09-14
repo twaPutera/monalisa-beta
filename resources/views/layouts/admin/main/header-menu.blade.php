@@ -497,7 +497,8 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fa fa-home"></i></span> Home</span></a>
                         </li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="./listing-asset.html"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'listing-asset') kt-menu__item--active @endif"
+                            aria-haspopup="true"><a href="{{ route('admin.listing-asset.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fa fa-list"></i></span> Listing
                                     Asset</span></a></li>
