@@ -13,7 +13,7 @@
 -   [GIT Windows](https://git-scm.com/download/win)
 -   [Composer](https://getcomposer.org/download/)
 -   Apache Server, SQL Server, => [Dapat diperoleh dengan menginstall [XAMPP](https://www.apachefriends.org/download.html) atau [Laragon](https://laragon.org/download/index.html)]
--   [NPM] dan [NodeJs](https://nodejs.org/en/)
+-   [Npm dan NodeJs](https://nodejs.org/en/)
 
 ## Installation & updates
 
