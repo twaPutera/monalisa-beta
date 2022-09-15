@@ -29,12 +29,17 @@ Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.re
 
 Route::get('/callback', [SsoController::class, 'callback']);
 
+Route::get('/', function() {
+    return redirect()->route('sso.redirect');
+});
+
 Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
     # Listing Asset
     Route::group(['prefix' => 'listing-asset'], function () {
         Route::get('/', [MasterAssetController::class, 'index'])->name('admin.listing-asset.index');
+        Route::post('/store', [MasterAssetController::class, 'store'])->name('admin.listing-asset.store');
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {
@@ -63,6 +68,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/delete/{id}', [GroupKategoriAssetController::class, 'destroy'])->name('admin.setting.group-kategori-asset.delete');
             Route::get('/datatable', [GroupKategoriAssetController::class, 'datatable'])->name('admin.setting.group-kategori-asset.datatable');
             Route::get('/find-all', [GroupKategoriAssetController::class, 'findAll'])->name('admin.setting.group-kategori-asset.find-all');
+            Route::get('/get-data-select2', [GroupKategoriAssetController::class, 'getDataSelect2'])->name('admin.setting.group-kategori-asset.get-data-select2');
         });
         // #Kategori-Asset
         Route::group(['prefix' => 'kategori-asset'], function () {
@@ -72,6 +78,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [KategoriAssetController::class, 'update'])->name('admin.setting.kategori-asset.update');
             Route::post('/delete/{id}', [KategoriAssetController::class, 'destroy'])->name('admin.setting.kategori-asset.delete');
             Route::get('/datatable', [KategoriAssetController::class, 'datatable'])->name('admin.setting.kategori-asset.datatable');
+            Route::get('/get-data-select2', [KategoriAssetController::class, 'getDataSelect2'])->name('admin.setting.kategori-asset.get-data-select2');
         });
         // # Satuan Asset
         Route::group(['prefix' => 'satuan-asset'], function () {
@@ -81,6 +88,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [SatuanAssetController::class, 'update'])->name('admin.setting.satuan-asset.update');
             Route::post('/delete/{id}', [SatuanAssetController::class, 'destroy'])->name('admin.setting.satuan-asset.delete');
             Route::get('/datatable', [SatuanAssetController::class, 'datatable'])->name('admin.setting.satuan-asset.datatable');
+            Route::get('/get-data-select2', [SatuanAssetController::class, 'getDataSelect2'])->name('admin.setting.satuan-asset.get-data-select2');
         });
         // # Vendor
         Route::group(['prefix' => 'vendor'], function () {
@@ -90,6 +98,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [VendorController::class, 'update'])->name('admin.setting.vendor.update');
             Route::post('/delete/{id}', [VendorController::class, 'destroy'])->name('admin.setting.vendor.delete');
             Route::get('/datatable', [VendorController::class, 'datatable'])->name('admin.setting.vendor.datatable');
+            Route::get('/get-data-select2', [VendorController::class, 'getDataSelect2'])->name('admin.setting.vendor.get-data-select2');
         });
         // #Kategori Inventori
         Route::group(['prefix' => 'kategori-inventori'], function () {
@@ -109,7 +118,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/delete/{id}', [SatuanInventoriController::class, 'destroy'])->name('admin.setting.satuan-inventori.delete');
             Route::get('/datatable', [SatuanInventoriController::class, 'datatable'])->name('admin.setting.satuan-inventori.datatable');
         });
-        // # Satuan Inventori
+        // # Kelas Asset
         Route::group(['prefix' => 'kelas-asset'], function () {
             Route::get('/', [KelasAssetController::class, 'index'])->name('admin.setting.kelas-asset.index');
             Route::post('/store', [KelasAssetController::class, 'store'])->name('admin.setting.kelas-asset.store');
@@ -117,6 +126,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [KelasAssetController::class, 'update'])->name('admin.setting.kelas-asset.update');
             Route::post('/delete/{id}', [KelasAssetController::class, 'destroy'])->name('admin.setting.kelas-asset.delete');
             Route::get('/datatable', [KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
+            Route::get('/get-data-select2', [KelasAssetController::class, 'getDataSelect2'])->name('admin.setting.kelas-asset.get-data-select2');
         });
     });
 });

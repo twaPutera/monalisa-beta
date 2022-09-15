@@ -35,4 +35,9 @@ class AssetData extends Model
     {
         return $this->belongsTo(KategoriAsset::class, 'id_kategori_asset', 'id');
     }
+
+    public function image()
+    {
+        return $this->morphMany(AssetImage::class, 'imageable');
+    }
 }
