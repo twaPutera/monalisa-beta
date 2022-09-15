@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
+use App\Http\Controllers\TestFront\TestingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,7 @@ Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.re
 
 Route::get('/callback', [SsoController::class, 'callback']);
 
-Route::get('/', function() {
+Route::get('/', function () {
     return redirect()->route('sso.redirect');
 });
 
@@ -134,6 +135,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/delete/{id}', [KelasAssetController::class, 'destroy'])->name('admin.setting.kelas-asset.delete');
             Route::get('/datatable', [KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
             Route::get('/get-data-select2', [KelasAssetController::class, 'getDataSelect2'])->name('admin.setting.kelas-asset.get-data-select2');
+        });
+
+        Route::group(['prefix' => 'print'], function () {
+            Route::post('/', [TestingController::class, 'print'])->name('admin.setting.print.index');
         });
     });
 });

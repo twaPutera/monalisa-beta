@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\TestFront;
 
+use App\Exports\MasterDataAssetExport;
+use App\Exports\MasterDataEksport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Lokasi;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class TestingController extends Controller
@@ -83,5 +87,10 @@ class TestingController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function print()
+    {
+        return Excel::download(new MasterDataAssetExport, 'export_master_data.xlsx');
     }
 }
