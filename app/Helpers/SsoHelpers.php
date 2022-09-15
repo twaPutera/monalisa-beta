@@ -54,7 +54,7 @@ class SsoHelpers
 
             \Session::put('user', $decoded);
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             $response['success'] = false;
             $response['data'] = $th->getMessage();
         }

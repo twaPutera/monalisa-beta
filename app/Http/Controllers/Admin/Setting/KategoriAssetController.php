@@ -119,4 +119,23 @@ class KategoriAssetController extends Controller
     {
         return $this->kategoriAssetDatatableServices->datatable($request);
     }
+
+    public function getDataSelect2(Request $request)
+    {
+        try {
+            $data = $this->kategoriAssetQueryServices->getDataSelect2($request);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengambil data kategori asset',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }

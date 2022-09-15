@@ -2,6 +2,8 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link href="{{ asset('assets/vendors/custom/jstree/jstree.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('custom_css')
     <style>
@@ -11,6 +13,8 @@
     </style>
 @endsection
 @section('plugin_js')
+    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/custom/jstree/jstree.bundle.js') }}" type="text/javascript"></script>
 @endsection
@@ -60,10 +64,7 @@
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
                 for (let key in errors) {
-                    let key_split = key.split('.');
-                    let name = `config[${key_split[1]}]`;
-                    console.log(name);
-                    let element = formElement.find(`[name='${name}']`);
+                    let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
                 }
@@ -118,7 +119,175 @@
                 ],
             });
 
+            $('.datepickerCreate').datepicker({
+                todayHighlight: true,
+                width: '100%',
+            })
         });
+
+        const generateGroupSelect2 = (idElement) => {
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Group',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.group-kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateKategoriSelect2Create = (idElement, idGroup) => {
+            $('#' + idElement).removeAttr('disabled');
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Kategori',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                            id_group_kategori_asset: idGroup,
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        $('.modalCreateAsset').on('shown.bs.modal', function() {
+            generateGroupSelect2('groupAssetCreate');
+            generateSelect2Lokasi();
+            generateKelasAsset();
+            generateSatuanAsset();
+            generateVendorAsset();
+        });
+
+        $('#groupAssetCreate').on('change', function() {
+            generateKategoriSelect2Create('kategoriAssetCreate', $(this).val());
+        });
+
+        const generateSelect2Lokasi = () => {
+            $('#lokasiAssetCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Lokasi',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route("admin.setting.lokasi.get-select2") }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateKelasAsset = () => {
+            $('#kelasAssetCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Kelas',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route("admin.setting.kelas-asset.get-data-select2") }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateVendorAsset = () => {
+            $('#vendorAssetCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Vendor',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route("admin.setting.vendor.get-data-select2") }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateSatuanAsset = () => {
+            $('#satuanAssetCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Satuan',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route("admin.setting.satuan-asset.get-data-select2") }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
     </script>
 @endsection
 @section('main-content')
@@ -165,7 +334,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-success shadow-custom btn-sm mr-2" type="button"><i class="fa fa-file"></i> Import CSV</button>
-                    <button class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
+                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
             </div>
             <div class="row">
@@ -250,4 +419,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.listing-asset._modal_create')
 @endsection
