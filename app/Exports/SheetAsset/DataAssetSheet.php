@@ -4,8 +4,8 @@ namespace App\Exports\SheetAsset;
 
 use App\Models\AssetData;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
 {
@@ -71,7 +71,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             'Kode Satuan Asset',
             'Kode Lokasi Asset',
             'Spesifikasi Asset',
-            'Status Kondisi Asset'
+            'Status Kondisi Asset',
         ];
     }
 }

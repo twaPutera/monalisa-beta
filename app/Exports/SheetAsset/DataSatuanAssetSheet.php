@@ -4,8 +4,8 @@ namespace App\Exports\SheetAsset;
 
 use App\Models\SatuanAsset;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DataSatuanAssetSheet implements FromQuery, WithTitle, WithHeadings
 {

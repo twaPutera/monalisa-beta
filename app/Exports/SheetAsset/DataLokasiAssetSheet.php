@@ -4,8 +4,8 @@ namespace App\Exports\SheetAsset;
 
 use App\Models\Lokasi;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DataLokasiAssetSheet implements FromQuery, WithTitle, WithHeadings
 {

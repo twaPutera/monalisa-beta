@@ -2,8 +2,8 @@
 
 namespace App\Services\KategoriAsset;
 
-use App\Models\KategoriAsset;
 use Illuminate\Http\Request;
+use App\Models\KategoriAsset;
 
 class KategoriAssetQueryServices
 {

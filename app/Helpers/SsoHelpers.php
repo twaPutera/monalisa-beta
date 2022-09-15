@@ -108,21 +108,21 @@ class SsoHelpers
         $access_token = \Session::get('access_token', null);
         if (isset($access_token)) {
             $access_token_decoded = self::checkAccessTokenIsValid($access_token);
-            if (!$access_token_decoded['success']) {
+            if (! $access_token_decoded['success']) {
                 $refresh_token = \Session::get('refresh_token', null);
                 if (isset($refresh_token)) {
                     $access_token = self::refreshTokenAccess($request, $refresh_token);
-                    if (!$access_token) {
+                    if (! $access_token) {
                         return false;
                     }
                 }
             }
             $jwt_token = \Session::get('jwt_token', null);
-            if (!isset($jwt_token)) {
+            if (! isset($jwt_token)) {
                 $jwt_token = self::generateNewJwtToken($access_token);
             }
             $jwt_token_decoded = self::decodeJwtToken($jwt_token);
-            if (!$jwt_token_decoded['success']) {
+            if (! $jwt_token_decoded['success']) {
                 $jwt_token = self::generateNewJwtToken($access_token);
             }
             return true;

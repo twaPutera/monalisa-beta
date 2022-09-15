@@ -3,10 +3,9 @@
 namespace App\Exports\SheetAsset;
 
 use App\Models\KelasAsset;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DataKelasAssetSheet implements FromQuery, WithTitle, WithHeadings
 {

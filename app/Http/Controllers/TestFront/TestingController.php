@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\TestFront;
 
-use App\Exports\MasterDataAssetExport;
-use App\Exports\MasterDataEksport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Lokasi;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MasterDataAssetExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class TestingController extends Controller

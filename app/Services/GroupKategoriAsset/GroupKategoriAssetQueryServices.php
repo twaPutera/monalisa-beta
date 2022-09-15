@@ -2,8 +2,8 @@
 
 namespace App\Services\GroupKategoriAsset;
 
-use App\Models\GroupKategoriAsset;
 use Illuminate\Http\Request;
+use App\Models\GroupKategoriAsset;
 
 class GroupKategoriAssetQueryServices
 {
