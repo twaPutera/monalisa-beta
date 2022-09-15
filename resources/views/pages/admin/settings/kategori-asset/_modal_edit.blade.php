@@ -25,6 +25,10 @@
                         <label for="">Nama Kategori</label>
                         <input type="text" class="form-control" name="nama_kategori">
                     </div>
+                    <div class="form-group">
+                        <label for="">Umur Asset</label>
+                        <input type="number" class="form-control" name="umur_asset">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

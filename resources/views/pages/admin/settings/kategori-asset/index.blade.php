@@ -40,6 +40,12 @@
                     {
                         data: 'nama_kategori'
                     },
+                    {
+                        data: 'umur_asset',
+                        render: function(o) {
+                            return o + " Bulan";
+                        }
+                    },
                 ],
                 columnDefs: [
                     //Custom template data
@@ -93,6 +99,7 @@
                     form.attr('action', url_update);
                     form.find('input[name=kode_kategori]').val(response.data.kode_kategori);
                     form.find('input[name=nama_kategori]').val(response.data.nama_kategori);
+                    form.find('input[name=umur_asset]').val(response.data.umur_asset);
                     modal.on('shown.bs.modal', function(e) {
                         // generateGroupSelect();
                         $('#selectGroupEdit option[value="' + response
@@ -161,6 +168,7 @@
                                     <th>Group Kategori</th>
                                     <th>Kode</th>
                                     <th>Nama Kategori</th>
+                                    <th>Umur Asset</th>
                                 </tr>
                             </thead>
                             <tbody>
