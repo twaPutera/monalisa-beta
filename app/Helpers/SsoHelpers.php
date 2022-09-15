@@ -27,6 +27,29 @@ class SsoHelpers
         return $response;
     }
 
+    public static function refreshTokenAccess(Request $request, $refresh_token)
+    {
+        try {
+            $response = Http::asForm()->post(config('app.sso_ldap_url') . '/oauth/token', [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refresh_token,
+                'client_id' => config('app.sso_client_id'),
+                'client_secret' => config('app.sso_client_secret'),
+                'code' => $request->code,
+            ]);
+
+            \Session::put('access_token', $response['access_token']);
+            \Session::put('refresh_token', $response['refresh_token']);
+
+            \Cookie::queue(config('app.access_token_cookie_name'), $response['access_token'], (60 * 60 * 24));
+
+            return $response['access_token'];
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
     public static function generateNewJwtToken($access_token)
     {
         $sso_siska_url = config('app.sso_siska_url') . '/api/auth/authorization-token';
@@ -85,15 +108,24 @@ class SsoHelpers
         $access_token = \Session::get('access_token', null);
         if (isset($access_token)) {
             $access_token_decoded = self::checkAccessTokenIsValid($access_token);
-            if ($access_token_decoded['success']) {
-                $jwt_token = \Session::get('jwt_token', null);
-                if (isset($jwt_token)) {
-                    $jwt_token_decoded = self::decodeJwtToken($jwt_token);
-                    if ($jwt_token_decoded['success']) {
-                        return true;
+            if (!$access_token_decoded['success']) {
+                $refresh_token = \Session::get('refresh_token', null);
+                if (isset($refresh_token)) {
+                    $access_token = self::refreshTokenAccess($request, $refresh_token);
+                    if (!$access_token) {
+                        return false;
                     }
                 }
             }
+            $jwt_token = \Session::get('jwt_token', null);
+            if (!isset($jwt_token)) {
+                $jwt_token = self::generateNewJwtToken($access_token);
+            }
+            $jwt_token_decoded = self::decodeJwtToken($jwt_token);
+            if (!$jwt_token_decoded['success']) {
+                $jwt_token = self::generateNewJwtToken($access_token);
+            }
+            return true;
         }
 
         return false;

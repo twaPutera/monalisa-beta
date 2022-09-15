@@ -1,4 +1,4 @@
-<div class="modal fade modalCreateAsset" id="modalCreate" role="dialog" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modalCreateAsset" id="modalCreate" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,8 +103,8 @@
                                 <label for="">Status Asset</label>
                                 <div>
                                     <select name="status_kondisi" class="form-control" style="width: 200px" id="">
-                                        <option value="">Aktif</option>
-                                        <option value="">Tidak Aktif</option>
+                                        <option value="Baik">Baik</option>
+                                        <option value="Rusak">Rusak</option>
                                     </select>
                                 </div>
                             </div>

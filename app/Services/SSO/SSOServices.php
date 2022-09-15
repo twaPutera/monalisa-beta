@@ -36,6 +36,7 @@ class SSOServices
         $jwt_token = $jwt_token['data']['jwt'];
 
         $jwt_decoded = SsoHelpers::decodeJwtToken($jwt_token);
+        \Session::put('user', $jwt_decoded['data']);
 
         if ($jwt_decoded['success']) {
             return true;

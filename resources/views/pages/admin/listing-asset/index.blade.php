@@ -122,6 +122,8 @@
             $('.datepickerCreate').datepicker({
                 todayHighlight: true,
                 width: '100%',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
             })
         });
 
@@ -178,11 +180,13 @@
         }
 
         $('.modalCreateAsset').on('shown.bs.modal', function() {
-            generateGroupSelect2('groupAssetCreate');
-            generateSelect2Lokasi();
-            generateKelasAsset();
-            generateSatuanAsset();
-            generateVendorAsset();
+            setTimeout(() => {
+                generateGroupSelect2('groupAssetCreate');
+                generateSelect2Lokasi();
+                generateKelasAsset();
+                generateSatuanAsset();
+                generateVendorAsset();
+            }, 2000);
         });
 
         $('#groupAssetCreate').on('change', function() {
