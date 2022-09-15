@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\ListingAsset;
 
+use App\Helpers\FileHelpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\AssetData\AssetDataCommandServices;
@@ -31,6 +32,11 @@ class MasterAssetController extends Controller
         return view('pages.admin.listing-asset.index');
     }
 
+    public function datatable(Request $request)
+    {
+        return $this->assetDataDatatableServices->datatable($request);
+    }
+
     public function store(AssetStoreRequest $request)
     {
         DB::beginTransaction();
@@ -44,6 +50,43 @@ class MasterAssetController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = $this->assetDataQueryServices->findById($id);
+            //code...
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data asset',
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function previewImage(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/asset/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AssetData extends Model
 {
-    use HasFactory, Uuid, SoftDeletes;
+    use HasFactory, Uuid;
 
     public function satuan_asset()
     {

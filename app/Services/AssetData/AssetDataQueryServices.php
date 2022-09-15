@@ -2,24 +2,32 @@
 
 namespace App\Services\AssetData;
 
-use Exception;
+use App\Models\AssetData;
+use App\Models\AssetImage;
 
 class AssetDataQueryServices
 {
-    protected $property1;
-
-    public function __construct($property1 = null)
+    public function findById(string $id)
     {
-        $this->property1 = $property1;
+        $data =  AssetData::query()
+            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $data->image = $data->image->map(function ($item) {
+            $item->link = route('admin.listing-asset.image.preview') . '?filename=' . $item->path;
+            return $item;
+        });
+
+        $data->link_detail = route('admin.listing-asset.detail', $data->id);
+
+        return $data;
     }
 
-    public function getProperty1()
+    public function findAssetImageById(string $id)
     {
-        return $this->property1;
-    }
-
-    public function setProperty1($property1)
-    {
-        $this->property1 = $property1;
+        return AssetImage::query()
+            ->where('id', $id)
+            ->firstOrFail();
     }
 }

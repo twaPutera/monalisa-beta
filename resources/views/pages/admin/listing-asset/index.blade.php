@@ -72,50 +72,73 @@
 
             table.DataTable({
                 responsive: true,
-                // searchDelay: 500,
+                searchDelay: 500,
                 processing: true,
                 searching: false,
                 bLengthChange: false,
                 ordering: false,
                 scrollX: true,
-                // serverSide: true,
-                // ajax: {
-                //     url: "{{ route('admin.setting.lokasi.datatable') }}",
-                //     data: function(d) {
-                //         d.id_parent_lokasi = $('#lokasiParentId').val();
-                //     }
-                // },
-                // columns: [{
-                //         data: "DT_RowIndex",
-                //         class: "text-center",
-                //         orderable: false,
-                //         searchable: false,
-                //         name: 'DT_RowIndex'
-                //     },
-                //     {
-                //         data: "action",
-                //         class: "text-center",
-                //         orderable: false,
-                //         searchable: false,
-                //         name: 'action'
-                //     },
-                //     {
-                //         data: 'parent'
-                //     },
-                //     {
-                //         data: 'kode_lokasi'
-                //     },
-                //     {
-                //         data: 'nama_lokasi'
-                //     },
-                // ],
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.datatable') }}",
+                    // data: function(d) {
+                    //     d.id_parent_lokasi = $('#lokasiParentId').val();
+                    // }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                    {
+                        data: 'kode_asset'
+                    },
+                    {
+                        data: 'deskripsi'
+                    },
+                    {
+                        data: 'group'
+                    },
+                    {
+                        data: 'kategori_asset.nama_kategori'
+                    },
+                    {
+                        data: 'status_kondisi'
+                    },
+                    {
+                        data: 'tanggal_perolehan'
+                    },
+                    {
+                        data: 'nilai_perolehan'
+                    },
+                    {
+                        data: 'lokasi.nama_lokasi'
+                    },
+                    {
+                        data: 'owner_name'
+                    },
+                    {
+                        data: 'register_oleh'
+                    },
+                    {
+                        data: 'satuan_asset.nama_satuan'
+                    },
+                    {
+                        data: 'vendor.nama_vendor'
+                    }
+                ],
                 columnDefs: [
-                    //Custom template data
-                    // { "width": "100%", "targets": 0 },
-                    // { "width": "20%", "targets": 1 },
-                    // { "width": "20%", "targets": 2 },
-                    // { "width": "20%", "targets": 3 },
-                    // { "width": "20%", "targets": 4 },
+
                 ],
             });
 
@@ -292,6 +315,27 @@
                 },
             });
         }
+
+        const showAsset = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    const data = response.data;
+                    if (response.success) {
+                        $('#assetNamePreview').text(data.deskripsi);
+                        if (data.image.length > 0) {
+                            $('#imgPreviewAsset').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        $('#linkDetailAsset').attr('href', data.link_detail);
+                    }
+                },
+            })
+        }
     </script>
 @endsection
 @section('main-content')
@@ -368,24 +412,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <button onclick="showDetail(this)" class="btn btn-icon btn-sm"><i class="fa fa-edit"></i></button>
-                                    </td>
-                                    <td>B001</td>
-                                    <td>Laptop Asus</td>
-                                    <td>Elektronik</td>
-                                    <td>Laptop</td>
-                                    <td>Baik</td>
-                                    <td>14 Jan 2020</td>
-                                    <td>Rp. 14.000.000</td>
-                                    <td>Rektorat</td>
-                                    <td>Prof. Bagus</td>
-                                    <td>Saleh</td>
-                                    <td>Unit</td>
-                                    <td>Pt Mekar Abadi</td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -393,8 +420,8 @@
                 <div class="col-4" id="colDetail">
                     <h5 class="text-primary mb-0 mb-3"><strong class="">Overview</strong></h5>
                     <div class="detail-asset-box">
-                        <h5 class="title">ASSET NAME</h5>
-                        <img src="https://via.placeholder.com/400x250?text=Preview Image" alt="">
+                        <h5 class="title" id="assetNamePreview">ASSET NAME</h5>
+                        <img id="imgPreviewAsset" src="https://via.placeholder.com/400x250?text=Preview Image" alt="">
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Status saat ini</h6>
                             <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
@@ -416,7 +443,7 @@
                             <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>
                         </div>
                         <div class="text-right">
-                            <a href="#" class="text-primary"><u>Lihat Detail</u></a>
+                            <a href="#" class="text-primary" id="linkDetailAsset"><u>Lihat Detail</u></a>
                         </div>
                     </div>
                 </div>
