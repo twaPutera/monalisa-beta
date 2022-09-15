@@ -19,6 +19,7 @@ class CreateKategoriAssetsTable extends Migration
             $table->foreign('id_group_kategori_asset')->references('id')->on('group_kategori_assets');
             $table->string('kode_kategori')->unique();
             $table->string('nama_kategori');
+            $table->smallInteger('umur_asset');
             $table->timestamps();
             $table->softDeletes();
         });

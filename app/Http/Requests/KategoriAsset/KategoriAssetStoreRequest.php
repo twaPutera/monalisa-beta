@@ -27,6 +27,7 @@ class KategoriAssetStoreRequest extends FormRequest
             'id_group_kategori_asset' => 'required|uuid|exists:group_kategori_assets,id',
             'kode_kategori' => 'required|string|max:255|unique:kategori_assets,kode_kategori',
             'nama_kategori' => 'required|string|max:255',
+            'umur_asset' => 'required|integer|min:1|max:99999',
         ];
     }
 }
