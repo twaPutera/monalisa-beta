@@ -76,6 +76,12 @@ class MasterAssetController extends Controller
         }
     }
 
+    public function detail($id)
+    {
+        $asset = $this->assetDataQueryServices->findById($id);
+        return view('pages.admin.listing-asset.detail', compact('asset'));
+    }
+
     public function previewImage(Request $request)
     {
         try {

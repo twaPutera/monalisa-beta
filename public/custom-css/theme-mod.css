@@ -261,6 +261,14 @@ thead>tr>th {
     overflow-x: auto;
 }
 
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #F8FAFB;
+}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #E5F3FD;
+}
+
 th, td {
     font-size: 10px;
 }
@@ -312,4 +320,28 @@ td {
 
 .kt-badge--success {
     background-color: #359200 !important;
+}
+
+.nav-tabs {
+    border: unset;
+}
+
+.nav-tabs .nav-item .nav-link {
+    color: #FFF;
+    background: #A9C0D8;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    font-weight: 700;
+    margin-right: 8px;
+    border: unset;
+}
+
+.nav-tabs .nav-item .nav-link.active, .nav-tabs .nav-item .nav-link:hover, .nav-tabs .nav-item .nav-link:active {
+    color: #767676;
+    background: #F8FAFB;
+}
+
+.tab-content {
+    background-color: #F8FAFB;
+    border: unset;
 }

@@ -1,0 +1,371 @@
+@extends('layouts.admin.main.master')
+@section('plugin_css')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+@endsection
+@section('custom_css')
+    <style>
+        div.dataTables_wrapper {
+            width: 200% !important;
+        }
+        #tableProperti th, #tableProperti td {
+            font-size: 14px;
+        }
+        th, td {
+            vertical-align: middle;
+        }
+    </style>
+@endsection
+@section('plugin_js')
+    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
+@endsection
+@section('custom_js')
+    <script>
+        var table = $('#datatableExample');
+        $(document).ready(function() {
+            $('#searchButton').on('click', function() {
+                $('#lokasiTree').jstree('search', $('#searchTree').val());
+            });
+
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    showToastSuccess('Sukses', data.message);
+                }
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
+            });
+
+            setHeightPropertiAsset();
+        });
+
+        const setHeightPropertiAsset = () => {
+            let height = $('.detailAssetBox').height();
+            let minHeight = $('.assetPropertuTitle').height();
+            let realHeight = height - (minHeight + 17);
+            $('.assetProperti').css('height', realHeight);
+        }
+    </script>
+@endsection
+@section('main-content')
+    <div class="row">
+        <div class="col-md-12 col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="input-group mr-3" style="width: 250px;">
+                        <input type="text" id="searchTree" class="form-control form-control-sm" placeholder="Search for...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
+                                    class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i> Pemutihan</button>
+                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Service</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-md-6 col-12 detailAssetBox">
+                            <div class="detail-asset-box">
+                                <h5 class="title" id="assetNamePreview">{{ \Str::upper($asset->deskripsi) }}</h5>
+                                <img id="imgPreviewAsset" src="{{ $asset->image[0]->link }}" alt="">
+                                <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                    <h6>Status saat ini</h6>
+                                    <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                    <h6 class="">Catatan</h6>
+                                    <h6 class="text-right">Perlu Pergantian Oli dan pergantian berbagai macam sparepart</h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                    <h6>Log Terakhir</h6>
+                                    <h6 class="text-right">18 Agustus 2020</h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                    <h6>Dicek Oleh</h6>
+                                    <h6 class="text-right"><strong>Rizal</strong></h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
+                                    <h6 class="mb-0">Status Peminjaman</h6>
+                                    <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3 py-2 border-bottom">
+                                    <h6 class="mb-0">Spesifikasi</h6>
+                                    <h6 class="text-right mb-0">
+                                        {{ $asset->spesifikasi }}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex assetPropertuTitle justify-content-between align-items-center mb-3">
+                                <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
+                                <button class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i class="fa fa-edit"></i></button>
+                            </div>
+                            <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
+                                <table id="tableProperti" class="table table-striped">
+                                    <tr>
+                                        <td width="40%">Asset Group</td>
+                                        <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Kategori</td>
+                                        <td><strong>{{ $asset->kategori_asset->nama_kategori }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Nilai perolehan</td>
+                                        <td><strong>{{ $asset->nilai_perolehan }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Tgl. Perolehan</td>
+                                        <td><strong>{{ $asset->tanggal_perolehan }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Jenis Penerimaan</td>
+                                        <td><strong>{{ $asset->jenis_penerimaan }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Lokasi</td>
+                                        <td><strong>{{ $asset->lokasi->nama_lokasi }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Ownership</td>
+                                        <td><strong>{{ $asset->ownership ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Tgl Register</td>
+                                        <td><strong>{{ $asset->tgl_register }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Satuan</td>
+                                        <td><strong>{{ $asset->satuan_asset->nama_satuan }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Vendor</td>
+                                        <td><strong>{{ $asset->vendor->nama_vendor }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">No. Surat / Memo</td>
+                                        <td><strong>{{ $asset->no_memo_surat ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">No. PO</td>
+                                        <td><strong>{{ $asset->no_po ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">No. SP3</td>
+                                        <td><strong>{{ $asset->no_sp3 ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">No. Seri</td>
+                                        <td><strong>{{ $asset->no_seri ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Kode Akun</td>
+                                        <td><strong>{{ $asset->kelas_asset->no_akun ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Last Update</td>
+                                        <td><strong>{{ $asset->updated_at }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="2">
+                                            <img src="https://via.placeholder.com/150" class="my-3" width="200px" alt="">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <ul class="nav nav-tabs mb-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Log Opname</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Log Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Log Moving</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">Log Peminjaman</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Status Awal</th>
+                                            <th>Status Akhir</th>
+                                            <th>Catatan</th>
+                                            <th>User</th>
+                                            <th>#</th>
+                                            <th>Log</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>12 Januari 2022</td>
+                                            <td>Baik</td>
+                                            <td>Baik</td>
+                                            <td>Asset Masih Aman</td>
+                                            <td>User</td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                            </td>
+                                            <td>12 Jan 2022, 12:45 Update</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12 Januari 2022</td>
+                                            <td>Baik</td>
+                                            <td>Baik</td>
+                                            <td>Asset Masih Aman</td>
+                                            <td>User</td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                            </td>
+                                            <td>12 Jan 2022, 12:45 Update</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Status Awal</th>
+                                        <th>Status Akhir</th>
+                                        <th>Catatan</th>
+                                        <th>User</th>
+                                        <th>#</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Status Awal</th>
+                                        <th>Status Akhir</th>
+                                        <th>Catatan</th>
+                                        <th>User</th>
+                                        <th>#</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Status Awal</th>
+                                        <th>Status Akhir</th>
+                                        <th>Catatan</th>
+                                        <th>User</th>
+                                        <th>#</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12 Januari 2022</td>
+                                        <td>Baik</td>
+                                        <td>Baik</td>
+                                        <td>Asset Masih Aman</td>
+                                        <td>User</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                        </td>
+                                        <td>12 Jan 2022, 12:45 Update</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
