@@ -17,11 +17,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Kode Kategori</label>
+                        <label for="">Kode Lokasi</label>
                         <input type="text" class="form-control" name="kode_lokasi">
                     </div>
                     <div class="form-group">
-                        <label for="">Nama Kategori</label>
+                        <label for="">Nama Lokasi</label>
                         <input type="text" class="form-control" name="nama_lokasi">
                     </div>
                     <div class="form-group">
