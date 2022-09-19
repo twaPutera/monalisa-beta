@@ -2,14 +2,14 @@
 
 namespace App\Imports\SheetAsset;
 
-use App\Models\AssetData;
-use App\Models\KategoriAsset;
-use App\Models\KelasAsset;
 use App\Models\Lokasi;
-use App\Models\SatuanAsset;
 use App\Models\Vendor;
-use Maatwebsite\Excel\Concerns\Importable;
+use App\Models\AssetData;
+use App\Models\KelasAsset;
+use App\Models\SatuanAsset;
+use App\Models\KategoriAsset;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
@@ -46,7 +46,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'no_memo_surat' => $row[6],
             'no_po' => $row[7],
             'no_sp3' => $row[8],
-            'status_kondisi' => $row[20] == "Baik" ? 1 : 0,
+            'status_kondisi' => $row[20] == 'Baik' ? 1 : 0,
             'no_seri' => $row[9],
             'spesifikasi' => $row[17],
             'nilai_buku_asset' => $row[10],
@@ -115,7 +115,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '17' => 'Spesifikasi',
             '18' => 'Umur Manfaat Fisikal',
             '19' => 'Umur Manfaat Komersial',
-            '20' => 'Status Kondisi Asset'
+            '20' => 'Status Kondisi Asset',
         ];
     }
 }

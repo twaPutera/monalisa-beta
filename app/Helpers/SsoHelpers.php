@@ -60,7 +60,7 @@ class SsoHelpers
 
         $response_sso_siska = json_decode($response_sso_siska->body(), true);
         \Session::put('jwt_token', $response_sso_siska['data']['jwt']);
-        setcookie(config('app.jwt_cookie_name'), $response_sso_siska['data']['jwt'], time() + (60 * 60 * 24), "/");
+        setcookie(config('app.jwt_cookie_name'), $response_sso_siska['data']['jwt'], time() + (60 * 60 * 24), '/');
 
         return $response_sso_siska;
     }

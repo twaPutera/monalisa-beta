@@ -24,7 +24,7 @@ class AssetImportRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|mimes:xlsx,xls,csv|max:2048'
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ];
     }
 }

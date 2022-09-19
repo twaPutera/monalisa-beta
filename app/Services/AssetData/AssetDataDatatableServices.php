@@ -3,9 +3,9 @@
 namespace App\Services\AssetData;
 
 use App\Models\AssetData;
-use App\Services\UserSso\UserSsoQueryServices;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataDatatableServices
 {

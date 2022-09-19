@@ -2,8 +2,8 @@
 
 namespace App\Services\UserSso;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class UserSsoQueryServices
 {
@@ -20,7 +20,7 @@ class UserSsoQueryServices
             'fields' => 'name,guid,email',
             'search' => 'type:staff,name:' . $request->keyword,
             'page' => 1,
-            'perPage' => 10
+            'perPage' => 10,
         ]);
 
         return $response_sso_siska['data']['nodes'];
