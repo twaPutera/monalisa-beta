@@ -61,10 +61,13 @@
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
                     table.DataTable().ajax.reload();
+                    $("#alert-error").addClass('d-none');
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                $("#list-import-error").html('');
+                let list_content = '';
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -72,6 +75,13 @@
                     if (key == "gambar_asset") {
                         $('#preview-file-error').html(errors[key][0]);
                     }
+                    if (key >= 0 && key <= 20) {
+                        list_content += "<li>" + errors[key][0] + "</li>"
+                    }
+                }
+                if (list_content !== '') {
+                    $("#alert-error").removeClass('d-none');
+                    $("#list-import-error").append(list_content);
                 }
             });
 
@@ -188,6 +198,10 @@
             const file = $(this)[0].files[0];
             $('#preview-file-text').text(file.name);
         });
+        $('#fileImport').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-excel-text').text(file.name);
+        });
     </script>
 
     @include('pages.admin.listing-asset._script_modal_create')
@@ -231,11 +245,12 @@
                         <input type="text" id="searchAsset" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton" type="button"><i
-                                    class="fa fa-search"></i></button>
+                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
+                                type="button"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
-                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom" type="button"><i class="fas fa-filter mr-2"></i>
+                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom"
+                        type="button"><i class="fas fa-filter mr-2"></i>
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
@@ -253,6 +268,12 @@
                         <h5 class="text-primary"><strong>Total 4</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
+                        <div class="alert alert-danger d-none" id="alert-error">
+                            <p>Data Pada File Excel Tidak Sesuai</p>
+                            <ul id="list-import-error">
+
+                            </ul>
+                        </div>
                         <table class="table table-striped table-hover" id="datatableExample">
                             <thead>
                                 <tr>

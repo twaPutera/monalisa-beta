@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class AssetData extends Model
 {
     use HasFactory, Uuid;
-
+    protected $guarded = [];
     public function satuan_asset()
     {
         return $this->belongsTo(SatuanAsset::class, 'id_satuan_asset', 'id');

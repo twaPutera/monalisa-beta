@@ -13,6 +13,8 @@ use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
+use App\Http\Requests\AssetData\AssetImportRequest;
+use App\Imports\DataAssetImport;
 
 class MasterAssetController extends Controller
 {
@@ -135,5 +137,10 @@ class MasterAssetController extends Controller
                 'message' => $th->getMessage(),
             ]);
         }
+    }
+
+    public function importAssetData(AssetImportRequest $request)
+    {
+        return Excel::import(new DataAssetImport(), $request->file('file'));
     }
 }

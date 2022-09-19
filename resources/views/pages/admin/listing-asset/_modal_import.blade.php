@@ -8,19 +8,29 @@
                 </button>
             </div>
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.setting.lokasi.store') }}" method="POST">
+                action="{{ route('admin.listing-asset.import-asset-data') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="d-flex justify-content-between align-items-center">
-                            <label for="">File Import</label>
+                            <label for="">Unduh Format File Import</label>
                             <a href="{{ route('admin.listing-asset.download-template-import') }}" target="_blank"
                                 class="btn btn-sm btn-icon btn-success"><i class="fa fa-file"></i></a>
                         </div>
-                        <label for="fileImport" class="btn btn-sm btn-primary">
-                            <span>Import Asset</span>
-                            <input type="file" id="fileImport" name="file" class="d-none">
-                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Import CSV Data Asset</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span id="preview-file-excel-text">No File Choosen</span> <br>
+                                <span id="preview-file-excel-error" class="text-danger"></span>
+                            </div>
+                            <label for="fileImport" class="btn btn-primary">
+                                Upload
+                                <input type="file" id="fileImport" name="file" accept=".csv,.xlsx,.xls"
+                                    class="d-none">
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

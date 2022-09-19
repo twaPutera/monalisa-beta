@@ -1,4 +1,5 @@
-<div class="modal fade modalCreateAsset" id="modalCreate" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modalCreateAsset" id="modalCreate" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,7 +8,8 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="{{ route('admin.listing-asset.store') }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
+                action="{{ route('admin.listing-asset.store') }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <div class="form-group col-md-4 col-6">
@@ -104,7 +106,8 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="">Status Asset</label>
                                 <div>
-                                    <select name="status_kondisi" class="form-control" style="width: 200px" id="">
+                                    <select name="status_kondisi" class="form-control" style="width: 200px"
+                                        id="">
                                         <option value="Baik">Baik</option>
                                         <option value="Rusak">Rusak</option>
                                     </select>
@@ -120,7 +123,8 @@
                                 </div>
                                 <label for="gambar_asset" class="btn btn-primary">
                                     Upload
-                                    <input type="file" id="gambar_asset" class="d-none" name="gambar_asset">
+                                    <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg"
+                                        class="d-none" name="gambar_asset">
                                 </label>
                             </div>
                         </div>
