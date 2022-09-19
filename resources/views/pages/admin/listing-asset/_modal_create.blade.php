@@ -55,7 +55,9 @@
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Ownership / Dipindahkan Ke</label>
-                        <input type="text" class="form-control" name="ownership">
+                        <select name="ownership" class="form-control" id="ownershipAssetCreate">
+
+                        </select>
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Satuan</label>
@@ -112,7 +114,10 @@
                         <div class="form-group">
                             <label for="">Gambar Asset</label>
                             <div class="d-flex justify-content-between align-items-center">
-                                <span>Lorem ipsum dolor sit.</span>
+                                <div>
+                                    <span id="preview-file-text">No File Choosen</span> <br>
+                                    <span id="preview-file-error" class="text-danger"></span>
+                                </div>
                                 <label for="gambar_asset" class="btn btn-primary">
                                     Upload
                                     <input type="file" id="gambar_asset" class="d-none" name="gambar_asset">

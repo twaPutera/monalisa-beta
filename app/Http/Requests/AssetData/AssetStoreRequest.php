@@ -24,9 +24,9 @@ class AssetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_asset' => 'required|string|max:255',
-            'id_vendor' => 'required|uuid|exists:vendors,id',
-            'id_lokasi' => 'required|uuid|exists:lokasis,id',
+            'kode_asset' => 'required|string|unique:asset_data,kode_asset|max:255',
+            'id_vendor' => 'nullable|uuid|exists:vendors,id',
+            'id_lokasi' => 'nullable|uuid|exists:lokasis,id',
             'id_kelas_asset' => 'required|uuid|exists:kelas_assets,id',
             'id_kategori_asset' => 'required|uuid|exists:kategori_assets,id',
             'id_satuan_asset' => 'required|uuid|exists:satuan_assets,id',
@@ -46,7 +46,21 @@ class AssetStoreRequest extends FormRequest
             // 'nilai_depresiasi' => 'required|numeric',
             // 'umur_manfaat_fisikal' => 'nullable|numeric',
             // 'umur_manfaat_komersial' => 'nullable|numeric',
-            'gambar_asset' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
+
+    // public function messages()
+    // {
+    //     return [
+    //         'id_vendor.exists' => 'Vendor not found',
+    //         'id_lokasi.exists' => 'Lokasi not found',
+    //         'id_kelas_asset.exists' => 'Kelas Asset not found',
+    //         'id_kelas_asset.required' => 'Kelas Asset must not be empty',
+    //         'id_kategori_asset.exists' => 'Kategori Asset not found',
+    //         'id_kategori_asset.required' => 'Kategori Asset must not be empty',
+    //         'id_satuan_asset.exists' => 'Satuan Asset not found',
+    //         'id_satuan_asset.required' => 'Satuan Asset must not be empty',
+    //     ];
+    // }
 }

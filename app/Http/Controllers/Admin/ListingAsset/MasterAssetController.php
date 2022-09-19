@@ -10,6 +10,7 @@ use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
+use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 
@@ -18,15 +19,18 @@ class MasterAssetController extends Controller
     protected $assetDataCommandServices;
     protected $assetDataDatatableServices;
     protected $assetDataQueryServices;
+    protected $userSsoQueryServices;
 
     public function __construct(
         AssetDataCommandServices $assetDataCommandServices,
         AssetDataDatatableServices $assetDataDatatableServices,
-        AssetDataQueryServices $assetDataQueryServices
+        AssetDataQueryServices $assetDataQueryServices,
+        UserSsoQueryServices $userSsoQueryServices
     ) {
         $this->assetDataCommandServices = $assetDataCommandServices;
         $this->assetDataDatatableServices = $assetDataDatatableServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
+        $this->userSsoQueryServices = $userSsoQueryServices;
     }
 
     public function index()
@@ -105,5 +109,31 @@ class MasterAssetController extends Controller
     public function downloadTemplateImport()
     {
         return Excel::download(new MasterDataAssetExport, 'template-import-asset.xlsx');
+    }
+
+    public function getDataAllOwnerSelect2(Request $request)
+    {
+        try {
+            $response = $this->userSsoQueryServices->getUserSso($request);
+            $data = collect($response)->map(function ($item) {
+                return [
+                    'id' => $item['guid'],
+                    'text' => $item['name'] . ' - ' . $item['email'],
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data owner',
+                'data' => $data,
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 }

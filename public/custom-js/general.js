@@ -53,8 +53,6 @@ $(".form-submit").submit(function (e) {
                 //     fileinput.fileinput("clear");
                 // }
                 // showToaster(response.message, 'Berhasil');
-                let modal = form.closest(".modal");
-                modal.modal('hide');
             } else {
                 console.log(response);
                 // showToaster(response.error, "Error");

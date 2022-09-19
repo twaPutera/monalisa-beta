@@ -60,6 +60,8 @@
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     showToastSuccess('Sukses', data.message);
+                    $('#preview-file-error').html('');
+                    table.DataTable().ajax.reload();
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -68,6 +70,9 @@
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
+                    if (key == "gambar_asset") {
+                        $('#preview-file-error').html(errors[key][0]);
+                    }
                 }
             });
 
@@ -209,6 +214,7 @@
                 generateKelasAsset();
                 generateSatuanAsset();
                 generateVendorAsset();
+                generateOwnerAsset();
             }, 2000);
         });
 
@@ -316,6 +322,31 @@
             });
         }
 
+        const generateOwnerAsset = () => {
+            $('#ownershipAssetCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Pemegang',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.listing-asset.get-all-data-owner-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
         const showAsset = (button) => {
             const url = $(button).data('url_detail');
             $.ajax({
@@ -337,6 +368,11 @@
                 },
             })
         }
+
+        $('#gambar_asset').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-text').text(file.name);
+        });
     </script>
 @endsection
 @section('main-content')
