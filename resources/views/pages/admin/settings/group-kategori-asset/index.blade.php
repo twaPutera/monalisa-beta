@@ -89,7 +89,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Group Kategori Asset
+                            Data Kelompok Asset
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -108,8 +108,8 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Kode</th>
-                                    <th>Nama Group</th>
+                                    <th>Kode Kelompok Asset</th>
+                                    <th>Nama Kelompok Asset</th>
                                 </tr>
                             </thead>
                             <tbody>

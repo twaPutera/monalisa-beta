@@ -37,7 +37,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-object-group"></i>
             </span>
-            <span class="kt-nav__link-text">Group Kategori Asset</span> </a>
+            <span class="kt-nav__link-text">Kelompok Asset</span> </a>
     </li>
     <li class="kt-nav__item">
         <a
@@ -47,7 +47,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-list"></i>
             </span>
-            <span class="kt-nav__link-text">Kategori Asset</span> </a>
+            <span class="kt-nav__link-text">Jenis Asset</span> </a>
     </li>
     <li class="kt-nav__item">
         <a
@@ -77,7 +77,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-list"></i>
             </span>
-            <span class="kt-nav__link-text">Kategori Inventori</span> </a>
+            <span class="kt-nav__link-text">Kategori Inventaris</span> </a>
     </li>
     <li class="kt-nav__item">
         <a
@@ -87,7 +87,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-box"></i>
             </span>
-            <span class="kt-nav__link-text">Satuan Inventori</span> </a>
+            <span class="kt-nav__link-text">Satuan Inventaris</span> </a>
     </li>
 
 </ul>

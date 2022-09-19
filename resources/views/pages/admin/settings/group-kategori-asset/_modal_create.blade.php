@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Tambah Group Kategori Asset</h5>
+                <h5 class="modal-title" id="">Tambah Kelompok Asset</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -12,11 +12,11 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Kode Group</label>
+                        <label for="">Kode Kelompok Asset</label>
                         <input type="text" class="form-control" name="kode_group">
                     </div>
                     <div class="form-group">
-                        <label for="">Nama Group</label>
+                        <label for="">Nama Kelompok Asset</label>
                         <input type="text" class="form-control" name="nama_group">
                     </div>
                 </div>

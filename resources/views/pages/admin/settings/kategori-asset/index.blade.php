@@ -79,7 +79,14 @@
                 generateGroupSelect();
                 $('.selectGroup').select2({
                     width: '91%',
-                    placeholder: 'Pilih Group',
+                    placeholder: 'Pilih Kelompok Asset',
+                    allowClear: true,
+                    parent: $(this)
+                });
+
+                $('.selectUmurAsset').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Umur Asset',
                     allowClear: true,
                     parent: $(this)
                 });
@@ -99,18 +106,25 @@
                     form.attr('action', url_update);
                     form.find('input[name=kode_kategori]').val(response.data.kode_kategori);
                     form.find('input[name=nama_kategori]').val(response.data.nama_kategori);
-                    form.find('input[name=umur_asset]').val(response.data.umur_asset);
                     modal.on('shown.bs.modal', function(e) {
                         // generateGroupSelect();
-                        $('#selectGroupEdit option[value="' + response
-                            .data.id_group_kategori_asset + '"]').attr('selected', 'selected');
+                        $('#selectGroupEdit option[value="' + response.data
+                            .id_group_kategori_asset + '"]').attr('selected', 'selected');
                         $('#selectGroupEdit').select2({
                             width: '100%',
-                            placeholder: 'Pilih Group',
+                            placeholder: 'Pilih Kelompok Asset',
                             allowClear: true,
                             parent: $(this)
                         });
                         // $('#selectGroupEdit').select2('val', response.data.id_group_kategori_asset);
+                        $('#selectUmurAssetEdit option[value="' + response.data.umur_asset + '"]')
+                            .attr('selected', 'selected');
+                        $('#selectUmurAssetEdit').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Umur Asset',
+                            allowClear: true,
+                            parent: $(this)
+                        });
                     })
                     modal.modal('show');
                 }
@@ -146,7 +160,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Kategori Asset
+                            Data Jenis Asset
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -165,10 +179,10 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Group Kategori</th>
-                                    <th>Kode</th>
-                                    <th>Nama Kategori</th>
-                                    <th>Umur Asset</th>
+                                    <th>Kelompok Asset</th>
+                                    <th>Kode Jenis Asset</th>
+                                    <th>Nama Jenis Asset</th>
+                                    <th>Masa Manfaat Komersial</th>
                                 </tr>
                             </thead>
                             <tbody>
