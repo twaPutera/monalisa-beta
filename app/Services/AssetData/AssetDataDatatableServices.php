@@ -20,6 +20,39 @@ class AssetDataDatatableServices
     {
         $query = AssetData::query()
             ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image']);
+
+        if (isset($request->searchKeyword)) {
+            $query->where(function ($querySearch) use ($request) {
+                $querySearch->where('deskripsi', 'like', '%' . $request->searchKeyword . '%')
+                    ->orWhere('kode_asset', 'like', '%' . $request->searchKeyword . '%')
+                    ->orWhere('no_seri', 'like', '%' . $request->searchKeyword . '%');
+            });
+        }
+
+        if (isset($request->id_satuan_asset)) {
+            $query->where('id_satuan_asset', $request->id_satuan_asset);
+        }
+
+        if (isset($request->id_vendor)) {
+            $query->where('id_vendor', $request->id_vendor);
+        }
+
+        if (isset($request->id_lokasi) && $request->id_lokasi != 'root') {
+            $query->where('id_lokasi', $request->id_lokasi);
+        }
+
+        if (isset($request->id_kelas_asset)) {
+            $query->where('id_kelas_asset', $request->id_kelas_asset);
+        }
+
+        if (isset($request->id_kategori_asset)) {
+            $query->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+        if (isset($request->categories)) {
+            $query->whereIn('id_kategori_asset', $request->categories);
+        }
+
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()

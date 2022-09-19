@@ -47,7 +47,6 @@
                 "plugins": ["dnd", "types", "search", "adv_search"]
             }).on('changed.jstree', function(e, data) {
                 $('#lokasiParentId').val(data.selected[0]);
-                $('.select2Lokasi option[value="' + data.selected[0] + '"]').attr('selected', 'selected');
                 table.DataTable().ajax.reload();
             });
 
@@ -87,9 +86,13 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.listing-asset.datatable') }}",
-                    // data: function(d) {
-                    //     d.id_parent_lokasi = $('#lokasiParentId').val();
-                    // }
+                    data: function(d) {
+                        d.id_lokasi = $('#lokasiParentId').val();
+                        d.id_satuan_asset = $('#satuanAssetFilter').val();
+                        d.id_vendor = $('#vendorAssetFilter').val();
+                        d.id_kategori_asset = $('#kategoriAssetFilter').val();
+                        d.searchKeyword = $('#searchAsset').val();
+                    }
                 },
                 columns: [{
                         data: "DT_RowIndex",
@@ -155,196 +158,8 @@
             })
         });
 
-        const generateGroupSelect2 = (idElement) => {
-            $('#' + idElement).select2({
-                width: '100%',
-                placeholder: 'Pilih Group',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.group-kategori-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        const generateKategoriSelect2Create = (idElement, idGroup) => {
-            $('#' + idElement).removeAttr('disabled');
-            $('#' + idElement).select2({
-                width: '100%',
-                placeholder: 'Pilih Kategori',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                            id_group_kategori_asset: idGroup,
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        $('.modalCreateAsset').on('shown.bs.modal', function() {
-            setTimeout(() => {
-                generateGroupSelect2('groupAssetCreate');
-                generateSelect2Lokasi();
-                generateKelasAsset();
-                generateSatuanAsset();
-                generateVendorAsset();
-                generateOwnerAsset();
-            }, 2000);
-        });
-
-        $('#groupAssetCreate').on('change', function() {
-            generateKategoriSelect2Create('kategoriAssetCreate', $(this).val());
-        });
-
-        const generateSelect2Lokasi = () => {
-            $('#lokasiAssetCreate').select2({
-                width: '100%',
-                placeholder: 'Pilih Lokasi',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.lokasi.get-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        const generateKelasAsset = () => {
-            $('#kelasAssetCreate').select2({
-                width: '100%',
-                placeholder: 'Pilih Kelas',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.kelas-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        const generateVendorAsset = () => {
-            $('#vendorAssetCreate').select2({
-                width: '100%',
-                placeholder: 'Pilih Vendor',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.vendor.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        const generateSatuanAsset = () => {
-            $('#satuanAssetCreate').select2({
-                width: '100%',
-                placeholder: 'Pilih Satuan',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.setting.satuan-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
-        }
-
-        const generateOwnerAsset = () => {
-            $('#ownershipAssetCreate').select2({
-                width: '100%',
-                placeholder: 'Pilih Pemegang',
-                dropdownParent: $('.modal.show'),
-                ajax: {
-                    url: '{{ route('admin.listing-asset.get-all-data-owner-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
+        const filterTableAsset = () => {
+            table.DataTable().ajax.reload();
         }
 
         const showAsset = (button) => {
@@ -374,8 +189,12 @@
             $('#preview-file-text').text(file.name);
         });
     </script>
+
+    @include('pages.admin.listing-asset._script_modal_create')
+    @include('pages.admin.listing-asset._script_modal_filter')
 @endsection
 @section('main-content')
+    <input type="hidden" value="" id="lokasiParentId">
     <div class="row">
         <div class="col-md-2 col-12">
             <div class="kt-portlet shadow-custom">
@@ -409,14 +228,14 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchTree" class="form-control form-control-sm"
+                        <input type="text" id="searchAsset" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
+                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton" type="button"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-secondary shadow-custom" type="button"><i class="fas fa-filter mr-2"></i>
+                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom" type="button"><i class="fas fa-filter mr-2"></i>
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
@@ -497,4 +316,5 @@
     </div>
     @include('pages.admin.listing-asset._modal_create')
     @include('pages.admin.listing-asset._modal_import')
+    @include('pages.admin.listing-asset._modal_filter')
 @endsection
