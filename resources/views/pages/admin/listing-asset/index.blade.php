@@ -3,7 +3,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link href="{{ asset('assets/vendors/custom/jstree/jstree.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('custom_css')
     <style>
@@ -85,8 +86,7 @@
                     //     d.id_parent_lokasi = $('#lokasiParentId').val();
                     // }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -159,12 +159,12 @@
                     url: '{{ route('admin.setting.group-kategori-asset.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -185,13 +185,13 @@
                     url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                             id_group_kategori_asset: idGroup,
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -222,15 +222,15 @@
                 placeholder: 'Pilih Lokasi',
                 dropdownParent: $('.modal.show'),
                 ajax: {
-                    url: '{{ route("admin.setting.lokasi.get-select2") }}',
+                    url: '{{ route('admin.setting.lokasi.get-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -247,15 +247,15 @@
                 placeholder: 'Pilih Kelas',
                 dropdownParent: $('.modal.show'),
                 ajax: {
-                    url: '{{ route("admin.setting.kelas-asset.get-data-select2") }}',
+                    url: '{{ route('admin.setting.kelas-asset.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -272,15 +272,15 @@
                 placeholder: 'Pilih Vendor',
                 dropdownParent: $('.modal.show'),
                 ajax: {
-                    url: '{{ route("admin.setting.vendor.get-data-select2") }}',
+                    url: '{{ route('admin.setting.vendor.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -297,15 +297,15 @@
                 placeholder: 'Pilih Satuan',
                 dropdownParent: $('.modal.show'),
                 ajax: {
-                    url: '{{ route("admin.setting.satuan-asset.get-data-select2") }}',
+                    url: '{{ route('admin.setting.satuan-asset.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
-                    data: function (params) {
+                    data: function(params) {
                         return {
                             keyword: params.term, // search term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function(data, params) {
                         params.page = params.page || 1;
                         return {
                             results: data.data,
@@ -322,14 +322,15 @@
                 url: url,
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     const data = response.data;
                     if (response.success) {
                         $('#assetNamePreview').text(data.deskripsi);
                         if (data.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', data.image[0].link);
                         } else {
-                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
                         }
                         $('#linkDetailAsset').attr('href', data.link_detail);
                     }
@@ -372,23 +373,28 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchTree" class="form-control form-control-sm" placeholder="Search for...">
+                        <input type="text" id="searchTree" class="form-control form-control-sm"
+                            placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-secondary shadow-custom" type="button"><i class="fas fa-filter mr-2"></i> Filter</button>
+                    <button class="btn btn-sm btn-secondary shadow-custom" type="button"><i class="fas fa-filter mr-2"></i>
+                        Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-success shadow-custom btn-sm mr-2" type="button"><i class="fa fa-file"></i> Import CSV</button>
-                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
+                    <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
+                        type="button"><i class="fa fa-file"></i> Import CSV</button>
+                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
+                        type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-8" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> - Lokasi Asset(Rektorat)</span></h5>
+                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
+                                Lokasi Asset(Rektorat)</span></h5>
                         <h5 class="text-primary"><strong>Total 4</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
@@ -421,10 +427,12 @@
                     <h5 class="text-primary mb-0 mb-3"><strong class="">Overview</strong></h5>
                     <div class="detail-asset-box">
                         <h5 class="title" id="assetNamePreview">ASSET NAME</h5>
-                        <img id="imgPreviewAsset" src="https://via.placeholder.com/400x250?text=Preview Image" alt="">
+                        <img id="imgPreviewAsset" src="https://via.placeholder.com/400x250?text=Preview Image"
+                            alt="">
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Status saat ini</h6>
-                            <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
+                            <span
+                                class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6 class="">Catatan</h6>
@@ -440,7 +448,8 @@
                         </div>
                         <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                             <h6 class="mb-0">Status Peminjaman</h6>
-                            <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>
+                            <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i
+                                    class="fas fa-check-circle"></i></h6>
                         </div>
                         <div class="text-right">
                             <a href="#" class="text-primary" id="linkDetailAsset"><u>Lihat Detail</u></a>
@@ -451,4 +460,5 @@
         </div>
     </div>
     @include('pages.admin.listing-asset._modal_create')
+    @include('pages.admin.listing-asset._modal_import')
 @endsection

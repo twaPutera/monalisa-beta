@@ -10,6 +10,8 @@ use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MasterDataAssetExport;
 
 class MasterAssetController extends Controller
 {
@@ -98,5 +100,10 @@ class MasterAssetController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function downloadTemplateImport()
+    {
+        return Excel::download(new MasterDataAssetExport, 'template-import-asset.xlsx');
     }
 }

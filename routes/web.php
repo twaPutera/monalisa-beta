@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::post('/store', [MasterAssetController::class, 'store'])->name('admin.listing-asset.store');
         Route::get('/show/{id}', [MasterAssetController::class, 'show'])->name('admin.listing-asset.show');
         Route::get('/detail/{id}', [MasterAssetController::class, 'detail'])->name('admin.listing-asset.detail');
+        Route::get('/download-template-import', [MasterAssetController::class, 'downloadTemplateImport'])->name('admin.listing-asset.download-template-import');
         # Asset Image
         Route::group(['asset-image'], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');

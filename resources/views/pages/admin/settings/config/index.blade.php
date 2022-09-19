@@ -41,12 +41,7 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <form action="{{ route('admin.setting.print.index') }}" method="POST">
-                                    @csrf
-                                    <div class="d-flex justify-content-end">
-                                        <button class="btn btn-warning" type="submit">Example Print</button>
-                                    </div>
-                                </form>
+
                             </div>
                         </div>
                     </div>

@@ -39,6 +39,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             ->join('kategori_assets', 'kategori_assets.id', '=', 'asset_data.id_kategori_asset')
             ->join('satuan_assets', 'satuan_assets.id', '=', 'asset_data.id_satuan_asset')
             ->join('lokasis', 'lokasis.id', '=', 'asset_data.id_lokasi')
+            ->where('asset_data.id', '0')
             ->orderBy('asset_data.created_at', 'ASC');
         return $data_asset;
     }
