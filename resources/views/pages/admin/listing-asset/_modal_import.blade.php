@@ -8,7 +8,8 @@
                 </button>
             </div>
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.listing-asset.import-asset-data') }}" method="POST">
+                action="{{ route('admin.listing-asset.import-asset-data') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
