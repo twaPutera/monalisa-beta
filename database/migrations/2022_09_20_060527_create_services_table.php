@@ -21,7 +21,7 @@ class CreateServicesTable extends Migration
             $table->text('deskripsi_service');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
-            $table->varchar('status_service', 50);
+            $table->string('status_service', 50);
             $table->timestamps();
         });
     }

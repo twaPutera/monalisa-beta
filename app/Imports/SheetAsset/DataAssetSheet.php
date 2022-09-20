@@ -8,8 +8,8 @@ use App\Models\AssetData;
 use App\Models\KelasAsset;
 use App\Models\SatuanAsset;
 use App\Models\KategoriAsset;
-use App\Helpers\DepresiasiHelpers;
 use App\Helpers\QrCodeHelpers;
+use App\Helpers\DepresiasiHelpers;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -60,7 +60,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             // 'umur_manfaat_fisikal' => $row[18],
             'umur_manfaat_komersial' => $id_kategori->umur_asset,
             'created_by' => $user->guid,
-            'qr_code' => $qr_name
+            'qr_code' => $qr_name,
         ]);
         return $data_asset;
     }

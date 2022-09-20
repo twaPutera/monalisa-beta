@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
+use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -54,6 +55,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         # Asset Image
         Route::group(['asset-image'], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
+        });
+
+        # Service Asset
+        Route::group(['prefix' => 'service-asset'], function () {
+            Route::post('/store/{id_asset}', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
         });
     });
     # Setting
@@ -151,6 +157,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [KategoriServiceController::class, 'update'])->name('admin.setting.kategori-service.update');
             Route::post('/delete/{id}', [KategoriServiceController::class, 'destroy'])->name('admin.setting.kategori-service.delete');
             Route::get('/datatable', [KategoriServiceController::class, 'datatable'])->name('admin.setting.kategori-service.datatable');
+            Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('admin.setting.kategori-service.get-data-select2');
         });
     });
 });

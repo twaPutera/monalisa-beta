@@ -3,17 +3,22 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link href="{{ asset('assets/vendors/custom/jstree/jstree.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('custom_css')
     <style>
         div.dataTables_wrapper {
             width: 200% !important;
         }
-        #tableProperti th, #tableProperti td {
+
+        #tableProperti th,
+        #tableProperti td {
             font-size: 14px;
         }
-        th, td {
+
+        th,
+        td {
             vertical-align: middle;
         }
     </style>
@@ -36,6 +41,8 @@
                 if (data.success) {
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
                     showToastSuccess('Sukses', data.message);
                     if (data.form == 'editAsset') {
                         $('#modalEdit').modal('hide');
@@ -61,6 +68,13 @@
             let realHeight = height - (minHeight + 17);
             $('.assetProperti').css('height', realHeight);
         }
+
+        $('.datepickerCreate').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        })
     </script>
     @include('pages.admin.listing-asset._script_modal_create')
 @endsection
@@ -70,7 +84,8 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchTree" class="form-control form-control-sm" placeholder="Search for...">
+                        <input type="text" id="searchTree" class="form-control form-control-sm"
+                            placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
                                     class="fa fa-search"></i></button>
@@ -78,8 +93,11 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i> Pemutihan</button>
-                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Service</button>
+                    <button class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
+                        Pemutihan</button>
+                    <button onclick="openModalByClass('modalCreateAssetService')"
+                        class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i>
+                        Service</button>
                 </div>
             </div>
             <div class="row">
@@ -88,10 +106,13 @@
                         <div class="col-md-6 col-12 detailAssetBox">
                             <div class="detail-asset-box">
                                 <h5 class="title" id="assetNamePreview">{{ \Str::upper($asset->deskripsi) }}</h5>
-                                <img id="imgPreviewAsset" src="{{ isset($asset->image[0]) ? $asset->image[0]->link : 'https://via.placeholder.com/400x250?text=No Image' }}" alt="">
+                                <img id="imgPreviewAsset"
+                                    src="{{ isset($asset->image[0]) ? $asset->image[0]->link : 'https://via.placeholder.com/400x250?text=No Image' }}"
+                                    alt="">
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Status saat ini</h6>
-                                    <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
+                                    <span
+                                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6 class="">Catatan</h6>
@@ -107,7 +128,8 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
-                                    <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>
+                                    <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i
+                                            class="fas fa-check-circle"></i></h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 border-bottom">
                                     <h6 class="mb-0">Spesifikasi</h6>
@@ -122,11 +144,13 @@
                                 <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
                                 <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i class="fa fa-edit"></i></button>
                             </div>
-                            <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
+                            <div class="pt-3 pb-1 scroll-bar assetProperti"
+                                style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
                                         <td width="40%">Asset Group</td>
-                                        <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</strong></td>
+                                        <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Kategori</td>
@@ -201,16 +225,19 @@
                 <div class="col-md-6 col-12">
                     <ul class="nav nav-tabs mb-0" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Log Opname</a>
+                            <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Log
+                                Opname</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Log Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Log Moving</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Log
+                                Moving</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">Log Peminjaman</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">Log
+                                Peminjaman</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -236,7 +263,8 @@
                                             <td>Asset Masih Aman</td>
                                             <td>User</td>
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                                <a href="#" class="btn btn-sm btn-icon"><i
+                                                        class="fa fa-image"></i></a>
                                             </td>
                                             <td>12 Jan 2022, 12:45 Update</td>
                                         </tr>
@@ -247,7 +275,8 @@
                                             <td>Asset Masih Aman</td>
                                             <td>User</td>
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
+                                                <a href="#" class="btn btn-sm btn-icon"><i
+                                                        class="fa fa-image"></i></a>
                                             </td>
                                             <td>12 Jan 2022, 12:45 Update</td>
                                         </tr>
@@ -378,4 +407,5 @@
         </div>
     </div>
     @include('pages.admin.listing-asset._modal_edit')
+    @include('pages.admin.listing-asset._modal_create_service')
 @endsection
