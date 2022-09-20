@@ -85,12 +85,13 @@
                 }
               
                 if (formElement.attr('id') == 'formImportAsset') {
+                    $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
                         let message = `<li class="text-danger"><strong>Baris ${value.row} dalam kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
                         $('.error-import-container').append(message);
                     });
                     $('.error-import-asset').show();
-                    formElement.find('input[type="file"]').val('');
+                    formElement.reset();
                 }
             });
 

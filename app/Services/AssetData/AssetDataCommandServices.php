@@ -5,7 +5,9 @@ namespace App\Services\AssetData;
 use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
+use App\Helpers\DepresiasiHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
+use App\Models\KategoriAsset;
 
 class AssetDataCommandServices
 {
@@ -14,6 +16,9 @@ class AssetDataCommandServices
         $request->validated();
 
         $user = \Session::get('user');
+
+        $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
+        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, $kategori_asset->umur_asset);
 
         $asset = new AssetData();
         $asset->deskripsi = $request->deskripsi;
@@ -36,8 +41,9 @@ class AssetDataCommandServices
         $asset->no_seri = $request->no_seri;
         $asset->spesifikasi = $request->spesifikasi;
         $asset->nilai_buku_asset = $request->nilai_perolehan;
-        $asset->nilai_depresiasi = $request->nilai_perolehan / 10;
+        $asset->nilai_depresiasi = $nilai_depresiasi;
         $asset->created_by = $user->guid;
+        $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {
