@@ -9,6 +9,7 @@ use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Services\AssetService\AssetServiceDatatableServices;
+use Illuminate\Http\Request;
 
 class AssetServiceController extends Controller
 {
@@ -48,5 +49,10 @@ class AssetServiceController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function datatable(Request $request)
+    {
+        return $this->assetServiceDatatableServices->datatable($request);
     }
 }

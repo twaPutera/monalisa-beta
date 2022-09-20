@@ -31,8 +31,45 @@
 @endsection
 @section('custom_js')
     <script>
-        var table = $('#datatableExample');
         $(document).ready(function() {
+            var table2 = $('#datatableLogService');
+            table2.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                ordering: false,
+                serverSide: true,
+                ajax: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                columns: [{
+                        name: 'tanggal_mulai',
+                        data: 'tanggal_mulai'
+                    },
+                    {
+                        name: 'kategori_service',
+                        data: 'kategori_service'
+                    },
+                    {
+                        data: 'status_service'
+                    },
+                    {
+                        data: 'deskripsi_service'
+                    },
+                    {
+                        name: 'user',
+                        data: 'user'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                ],
+                columnDefs: [
+                    //Custom template data
+                ],
+            });
             $('#searchButton').on('click', function() {
                 $('#lokasiTree').jstree('search', $('#searchTree').val());
             });
@@ -43,6 +80,7 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
+                    table2.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.form == 'editAsset') {
                         $('#modalEdit').modal('hide');
@@ -142,7 +180,9 @@
                         <div class="col-md-6 col-12">
                             <div class="d-flex assetPropertuTitle justify-content-between align-items-center mb-3">
                                 <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
-                                <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i class="fa fa-edit"></i></button>
+                                <button onclick="openModalByClass('modalCreateAsset')"
+                                    class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                        class="fa fa-edit"></i></button>
                             </div>
                             <div class="pt-3 pb-1 scroll-bar assetProperti"
                                 style="border-radius: 9px; background: #E5F3FD;">
@@ -214,7 +254,8 @@
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="2">
-                                            <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}" class="my-3" width="200px" alt="">
+                                            <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}"
+                                                class="my-3" width="200px" alt="">
                                         </td>
                                     </tr>
                                 </table>
@@ -229,7 +270,8 @@
                                 Opname</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Log Services</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Log
+                                Services</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Log
@@ -285,43 +327,23 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
-                            <table class="table table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Status Awal</th>
-                                        <th>Status Akhir</th>
-                                        <th>Catatan</th>
-                                        <th>User</th>
-                                        <th>#</th>
-                                        <th>Log</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive  pt-3">
+                                <table class="table table-striped mb-0" id="datatableLogService">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Jenis Service</th>
+                                            <th>Status Service</th>
+                                            <th>Catatan</th>
+                                            <th>User</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
                             <table class="table table-striped mb-0">

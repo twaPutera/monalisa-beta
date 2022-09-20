@@ -80,7 +80,7 @@ class MasterAssetController extends Controller
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $th->getMessage(),
             ]);
         }
     }
