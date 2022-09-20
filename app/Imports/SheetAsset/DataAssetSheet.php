@@ -9,6 +9,7 @@ use App\Models\KelasAsset;
 use App\Models\SatuanAsset;
 use App\Models\KategoriAsset;
 use App\Helpers\DepresiasiHelpers;
+use App\Helpers\QrCodeHelpers;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -30,6 +31,10 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $id_satuan = SatuanAsset::where('kode_satuan', $row[13])->first();
         $id_lokasi = Lokasi::where('kode_lokasi', $row[14])->first();
         $user = \Session::get('user');
+
+        $qr_name = 'qr-asset-' . $row[0] . '.png';
+        $path = storage_path('app/images/qr-code/' . $qr_name);
+        $qr_code = QrCodeHelpers::generateQrCode($row[0], $path);
 
         $data_asset = AssetData::create([
             'id_vendor' => $id_vendor->id,
@@ -55,6 +60,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             // 'umur_manfaat_fisikal' => $row[18],
             'umur_manfaat_komersial' => $id_kategori->umur_asset,
             'created_by' => $user->guid,
+            'qr_code' => $qr_name
         ]);
         return $data_asset;
     }

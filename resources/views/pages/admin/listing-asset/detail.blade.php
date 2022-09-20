@@ -79,7 +79,7 @@
                         <div class="col-md-6 col-12 detailAssetBox">
                             <div class="detail-asset-box">
                                 <h5 class="title" id="assetNamePreview">{{ \Str::upper($asset->deskripsi) }}</h5>
-                                <img id="imgPreviewAsset" src="{{ $asset->image[0]->link }}" alt="">
+                                <img id="imgPreviewAsset" src="{{ isset($asset->image[0]) ? $asset->image[0]->link : 'https://via.placeholder.com/400x250?text=No Image' }}" alt="">
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Status saat ini</h6>
                                     <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
