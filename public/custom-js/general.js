@@ -60,6 +60,7 @@ $(".form-submit").submit(function (e) {
             $("body").trigger("_EventAjaxSuccess", [form, response]);
         },
         error: function (response) {
+            console.log(response);
             $(".backdrop").hide();
             let errors = response.responseJSON.errors;
             $("body").trigger("_EventAjaxErrors", [form, errors]);

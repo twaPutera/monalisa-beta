@@ -58,10 +58,20 @@
                 if (data.success) {
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    if (data.form == 'import') {
+                        let modal = $('#modalImport');
+                        let form = modal.find('form');
+                        $('.error-import-container').empty();
+                        $('.error-import-asset').hide();
+                        form[0].reset();
+                        modal.modal('hide');
+                    }
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
                     table.DataTable().ajax.reload();
                     $("#alert-error").addClass('d-none');
+                } else {
+
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -82,6 +92,14 @@
                 if (list_content !== '') {
                     $("#alert-error").removeClass('d-none');
                     $("#list-import-error").append(list_content);
+                }
+                if (formElement.attr('id') == 'formImportAsset') {
+                    $(errors).each(function(index, value) {
+                        let message = `<li class="text-danger"><strong>Baris ${value.row} dan kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
+                        $('.error-import-container').append(message);
+                    });
+                    $('.error-import-asset').show();
+                    formElement.find('input[type="file"]').val('');
                 }
             });
 

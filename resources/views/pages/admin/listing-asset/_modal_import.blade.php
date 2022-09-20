@@ -7,7 +7,7 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" id="formImportAsset"
                 action="{{ route('admin.listing-asset.import-asset-data') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -32,6 +32,12 @@
                                     class="d-none">
                             </label>
                         </div>
+                    </div>
+                    <div class="form-group error-import-asset" style="display: none;">
+                        <p class="text-danger"><strong>Error:</strong></p>
+                        <ul class="error-import-container">
+
+                        </ul>
                     </div>
                 </div>
                 <div class="modal-footer">

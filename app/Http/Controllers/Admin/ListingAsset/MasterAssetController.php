@@ -103,7 +103,7 @@ class MasterAssetController extends Controller
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -141,6 +141,43 @@ class MasterAssetController extends Controller
 
     public function importAssetData(AssetImportRequest $request)
     {
-        return Excel::import(new DataAssetImport(), $request->file('file'));
+        try {
+            DB::beginTransaction();
+            $response = Excel::import(new DataAssetImport(), $request->file('file'));
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'form' => 'import',
+                'message' => 'Berhasil mengimport data asset',
+                // 'data' => $response,
+            ], 200);
+            //code...
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $th) {
+            DB::rollback();
+            $failures = $th->failures();
+            $errors = [];
+            foreach ($failures as $failure) {
+                $errors[] = [
+                    'row' => $failure->row(),
+                    'attribute' => $failure->attribute(),
+                    'errors' => $failure->errors(),
+                    'values' => $failure->values(),
+                ];
+            }
+            return response()->json([
+                'success' => false,
+                'form' => 'import',
+                'message' => $th->getMessage(),
+                'errors' => $errors,
+            ], 400);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'form' => 'import',
+                'message' => $th->getMessage(),
+            ], 400);
+        }
+
     }
 }
