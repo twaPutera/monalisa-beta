@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\KategoriService\KategoriServiceStoreRequest;
-use App\Http\Requests\KategoriService\KategoriServiceUpdateRequest;
-use App\Services\KategoriService\KategoriServiceCommandServices;
-use App\Services\KategoriService\KategoriServiceDatatableServices;
-use App\Services\KategoriService\KategoriServiceQueryServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\KategoriService\KategoriServiceQueryServices;
+use App\Services\KategoriService\KategoriServiceCommandServices;
+use App\Http\Requests\KategoriService\KategoriServiceStoreRequest;
+use App\Services\KategoriService\KategoriServiceDatatableServices;
+use App\Http\Requests\KategoriService\KategoriServiceUpdateRequest;
 
 class KategoriServiceController extends Controller
 {

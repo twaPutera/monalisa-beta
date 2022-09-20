@@ -9,12 +9,12 @@ use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 
 /*
 |--------------------------------------------------------------------------
