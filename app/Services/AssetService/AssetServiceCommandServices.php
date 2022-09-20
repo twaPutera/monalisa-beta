@@ -2,9 +2,9 @@
 
 namespace App\Services\AssetService;
 
-use App\Http\Requests\AssetService\AssetServiceStoreRequest;
-use App\Models\DetailService;
 use App\Models\Service;
+use App\Models\DetailService;
+use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 
 class AssetServiceCommandServices
 {
@@ -18,7 +18,7 @@ class AssetServiceCommandServices
         $asset_service->guid_pembuat = $user->guid;
         $asset_service->deskripsi_service = $request->deskripsi_service;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
-        $asset_service->status_service = "On Progress";
+        $asset_service->status_service = 'On Progress';
         $asset_service->save();
 
         $detail_asset_service = new DetailService();

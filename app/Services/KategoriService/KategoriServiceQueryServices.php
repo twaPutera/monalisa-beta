@@ -2,8 +2,8 @@
 
 namespace App\Services\KategoriService;
 
-use App\Models\KategoriService;
 use Illuminate\Http\Request;
+use App\Models\KategoriService;
 
 class KategoriServiceQueryServices
 {

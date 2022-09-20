@@ -5,7 +5,6 @@ namespace App\Services\AssetService;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetServiceDatatableServices
 {

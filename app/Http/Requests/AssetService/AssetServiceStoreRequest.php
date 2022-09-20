@@ -27,7 +27,7 @@ class AssetServiceStoreRequest extends FormRequest
             'deskripsi_service' => 'required|string|max:255',
             'tanggal_mulai_service' => 'required|date|date_format:Y-m-d',
             'id_kategori_service' => 'required|uuid|exists:kategori_services,id',
-            'kondisi_sebelum' => 'required|string|max:255'
+            'kondisi_sebelum' => 'required|string|max:255',
         ];
     }
 }
