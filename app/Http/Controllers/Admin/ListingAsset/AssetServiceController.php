@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\ListingAsset;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -9,7 +10,6 @@ use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Services\AssetService\AssetServiceDatatableServices;
-use Illuminate\Http\Request;
 
 class AssetServiceController extends Controller
 {
