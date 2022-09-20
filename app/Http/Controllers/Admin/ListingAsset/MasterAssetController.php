@@ -178,6 +178,5 @@ class MasterAssetController extends Controller
                 'message' => $th->getMessage(),
             ], 400);
         }
-
     }
 }

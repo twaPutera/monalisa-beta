@@ -69,15 +69,12 @@
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
                     table.DataTable().ajax.reload();
-                    $("#alert-error").addClass('d-none');
                 } else {
 
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
-                $("#list-import-error").html('');
-                let list_content = '';
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -85,18 +82,12 @@
                     if (key == "gambar_asset") {
                         $('#preview-file-error').html(errors[key][0]);
                     }
-                    if (key >= 0 && key <= 20) {
-                        list_content += "<li>" + errors[key][0] + "</li>"
-                    }
                 }
-                if (list_content !== '') {
-                    $("#alert-error").removeClass('d-none');
-                    $("#list-import-error").append(list_content);
-                }
+              
                 if (formElement.attr('id') == 'formImportAsset') {
                     $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
-                        let message = `<li class="text-danger"><strong>Baris ${value.row} dan kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
+                        let message = `<li class="text-danger"><strong>Baris ${value.row} dalam kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
                         $('.error-import-container').append(message);
                     });
                     $('.error-import-asset').show();
