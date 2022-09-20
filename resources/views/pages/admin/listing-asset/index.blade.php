@@ -83,7 +83,7 @@
                         $('#preview-file-error').html(errors[key][0]);
                     }
                 }
-              
+
                 if (formElement.attr('id') == 'formImportAsset') {
                     $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
@@ -188,8 +188,12 @@
                 url: url,
                 type: 'GET',
                 dataType: 'json',
+                beforeSend: function () {
+                    $(".backdrop").show();
+                },
                 success: function(response) {
                     const data = response.data;
+                    $(".backdrop").hide();
                     if (response.success) {
                         $('#assetNamePreview').text(data.deskripsi);
                         if (data.image.length > 0) {
@@ -201,6 +205,10 @@
                         $('#linkDetailAsset').attr('href', data.link_detail);
                     }
                 },
+                error: function (response) {
+                    $(".backdrop").hide();
+                    showToastError('Error', 'Terjadi kesalahan');
+                }
             })
         }
 

@@ -6,6 +6,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
 use App\Helpers\DepresiasiHelpers;
+use App\Helpers\QrCodeHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Models\KategoriAsset;
 
@@ -19,6 +20,10 @@ class AssetDataCommandServices
 
         $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
         $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, $kategori_asset->umur_asset);
+
+        $qr_name = 'qr-asset-' . $request->kode_asset . '.png';
+        $path = storage_path('app/images/qr-code/' . $qr_name);
+        $qr_code = QrCodeHelpers::generateQrCode($request->kode_asset, $path);
 
         $asset = new AssetData();
         $asset->deskripsi = $request->deskripsi;
@@ -43,6 +48,7 @@ class AssetDataCommandServices
         $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->nilai_depresiasi = $nilai_depresiasi;
         $asset->created_by = $user->guid;
+        $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->save();
 

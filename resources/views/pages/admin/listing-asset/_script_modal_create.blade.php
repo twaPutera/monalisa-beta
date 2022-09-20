@@ -2,7 +2,7 @@
     const generateGroupSelect2 = (idElement) => {
         $('#' + idElement).select2({
             width: '100%',
-            placeholder: 'Pilih Group',
+            placeholder: 'Pilih Kelompok',
             dropdownParent: $('.modal.show'),
             ajax: {
                 url: '{{ route('admin.setting.group-kategori-asset.get-data-select2') }}',
@@ -28,7 +28,7 @@
         $('#' + idElement).removeAttr('disabled');
         $('#' + idElement).select2({
             width: '100%',
-            placeholder: 'Pilih Kategori',
+            placeholder: 'Pilih Jenis',
             dropdownParent: $('.modal.show'),
             ajax: {
                 url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
