@@ -94,12 +94,13 @@
                     $("#list-import-error").append(list_content);
                 }
                 if (formElement.attr('id') == 'formImportAsset') {
+                    $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
                         let message = `<li class="text-danger"><strong>Baris ${value.row} dan kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
                         $('.error-import-container').append(message);
                     });
                     $('.error-import-asset').show();
-                    formElement.find('input[type="file"]').val('');
+                    formElement.reset();
                 }
             });
 
@@ -286,12 +287,6 @@
                         <h5 class="text-primary"><strong>Total 4</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
-                        <div class="alert alert-danger d-none" id="alert-error">
-                            <p>Data Pada File Excel Tidak Sesuai</p>
-                            <ul id="list-import-error">
-
-                            </ul>
-                        </div>
                         <table class="table table-striped table-hover" id="datatableExample">
                             <thead>
                                 <tr>

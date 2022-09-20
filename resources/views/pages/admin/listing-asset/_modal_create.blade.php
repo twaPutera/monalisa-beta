@@ -17,13 +17,13 @@
                         <input type="text" class="form-control" name="deskripsi">
                     </div>
                     <div class="form-group col-md-4 col-6">
-                        <label for="">Group Asset</label>
+                        <label for="">Kelompok Aset</label>
                         <select name="id_group_asset" class="form-control" id="groupAssetCreate">
 
                         </select>
                     </div>
                     <div class="form-group col-md-4 col-6">
-                        <label for="">Kategori Asset</label>
+                        <label for="">Jenis Asset</label>
                         <select name="id_kategori_asset" class="form-control" id="kategoriAssetCreate">
 
                         </select>
