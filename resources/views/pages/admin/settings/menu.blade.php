@@ -89,5 +89,14 @@
             </span>
             <span class="kt-nav__link-text">Satuan Inventaris</span> </a>
     </li>
-
+    <li class="kt-nav__item">
+        <a
+            @if (\Request::segment(3) == 'kategori-service') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.setting.kategori-service.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-list"></i>
+            </span>
+            <span class="kt-nav__link-text">Kategori Servis</span> </a>
+    </li>
 </ul>

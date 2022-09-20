@@ -7,9 +7,10 @@ use App\Models\Vendor;
 use App\Models\AssetData;
 use App\Models\KelasAsset;
 use App\Models\SatuanAsset;
+use App\Models\KategoriAsset;
 use App\Helpers\DepresiasiHelpers;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
@@ -46,7 +47,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'no_memo_surat' => $row[6],
             'no_po' => $row[7],
             'no_sp3' => $row[8],
-            'status_kondisi' => $row[16] == "Baik" ? 1 : 0,
+            'status_kondisi' => $row[16],
             'no_seri' => $row[9],
             'spesifikasi' => $row[15],
             'nilai_buku_asset' => $row[4],
@@ -115,7 +116,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '15' => 'Spesifikasi',
             // '18' => 'Umur Manfaat Fisikal',
             // '19' => 'Umur Manfaat Komersial',
-            '16' => 'Status Kondisi Asset'
+            '16' => 'Status Kondisi Asset',
         ];
     }
 }

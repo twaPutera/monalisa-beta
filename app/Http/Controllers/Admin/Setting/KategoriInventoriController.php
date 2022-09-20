@@ -107,7 +107,7 @@ class KategoriInventoriController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil menghapus data kategori asset',
+                'message' => 'Berhasil menghapus data kategori inventori',
                 'data' => $kategori_inventori,
             ], 200);
         } catch (\Throwable $th) {

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
 use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
@@ -140,14 +141,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [KelasAssetController::class, 'datatable'])->name('admin.setting.kelas-asset.datatable');
             Route::get('/get-data-select2', [KelasAssetController::class, 'getDataSelect2'])->name('admin.setting.kelas-asset.get-data-select2');
         });
-
-        Route::group(['prefix' => 'print'], function () {
-            Route::post('/', [TestingController::class, 'print'])->name('admin.setting.print.index');
+        // # Kategori Service
+        Route::group(['prefix' => 'kategori-service'], function () {
+            Route::get('/', [KategoriServiceController::class, 'index'])->name('admin.setting.kategori-service.index');
+            Route::post('/store', [KategoriServiceController::class, 'store'])->name('admin.setting.kategori-service.store');
+            Route::get('/edit/{id}', [KategoriServiceController::class, 'edit'])->name('admin.setting.kategori-service.edit');
+            Route::post('/update/{id}', [KategoriServiceController::class, 'update'])->name('admin.setting.kategori-service.update');
+            Route::post('/delete/{id}', [KategoriServiceController::class, 'destroy'])->name('admin.setting.kategori-service.delete');
+            Route::get('/datatable', [KategoriServiceController::class, 'datatable'])->name('admin.setting.kategori-service.datatable');
         });
     });
 });
 
 Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {
+    Route::group(['prefix' => 'print'], function () {
+        Route::post('/', [TestingController::class, 'print'])->name('admin.setting.print.index');
+    });
     Route::get('/', 'TestingController@index');
     Route::get('/tree', 'TestingController@tree');
     Route::get('/form', 'TestingController@form');
