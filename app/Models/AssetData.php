@@ -39,4 +39,9 @@ class AssetData extends Model
     {
         return $this->morphMany(AssetImage::class, 'imageable');
     }
+
+    public function detail_service()
+    {
+        return $this->hasMany(DetailService::class, 'id_asset_data', 'id');
+    }
 }
