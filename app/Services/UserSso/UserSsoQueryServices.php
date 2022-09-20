@@ -37,7 +37,7 @@ class UserSsoQueryServices
             'Authorization' => 'Bearer ' . $jwt_token,
         ])->get($sso_siska_url, [
             'fields' => 'name,guid,email',
-            'search' => 'type:staff,guid:' . $guid,
+            'search' => 'guid:' . $guid,
         ]);
 
         return $response_sso_siska['data']['nodes'];

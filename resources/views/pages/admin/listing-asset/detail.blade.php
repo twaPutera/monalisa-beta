@@ -1,5 +1,7 @@
 @extends('layouts.admin.main.master')
 @section('plugin_css')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+    <link href="{{ asset('assets/vendors/custom/jstree/jstree.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
@@ -19,6 +21,8 @@
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/custom/jstree/jstree.bundle.js') }}" type="text/javascript"></script>
 @endsection
 @section('custom_js')
     <script>
@@ -33,6 +37,10 @@
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     showToastSuccess('Sukses', data.message);
+                    if (data.form == 'editAsset') {
+                        $('#modalEdit').modal('hide');
+                        window.location.reload();
+                    }
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -54,6 +62,7 @@
             $('.assetProperti').css('height', realHeight);
         }
     </script>
+    @include('pages.admin.listing-asset._script_modal_create')
 @endsection
 @section('main-content')
     <div class="row">
@@ -111,7 +120,7 @@
                         <div class="col-md-6 col-12">
                             <div class="d-flex assetPropertuTitle justify-content-between align-items-center mb-3">
                                 <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
-                                <button class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i class="fa fa-edit"></i></button>
+                                <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i class="fa fa-edit"></i></button>
                             </div>
                             <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
@@ -141,7 +150,7 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Ownership</td>
-                                        <td><strong>{{ $asset->ownership ?? '-' }}</strong></td>
+                                        <td><strong>{{ $asset->owner_name }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Tgl Register</td>
@@ -181,7 +190,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-center" colspan="2">
-                                            <img src="https://via.placeholder.com/150" class="my-3" width="200px" alt="">
+                                            <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}" class="my-3" width="200px" alt="">
                                         </td>
                                     </tr>
                                 </table>
@@ -368,4 +377,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.listing-asset._modal_edit')
 @endsection

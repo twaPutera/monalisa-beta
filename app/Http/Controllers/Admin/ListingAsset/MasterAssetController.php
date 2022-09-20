@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
+use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Http\Requests\AssetData\AssetImportRequest;
 use App\Services\AssetData\AssetDataCommandServices;
@@ -90,10 +91,49 @@ class MasterAssetController extends Controller
         return view('pages.admin.listing-asset.detail', compact('asset'));
     }
 
+    public function update(AssetUpdateRequest $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $this->assetDataCommandServices->update($request, $id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data asset',
+                'form' => 'editAsset',
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function previewImage(Request $request)
     {
         try {
             $path = storage_path('app/images/asset/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function previewQr(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/qr-code/' . $request->filename);
             $filename = $request->filename;
             $response = FileHelpers::viewFile($path, $filename);
 

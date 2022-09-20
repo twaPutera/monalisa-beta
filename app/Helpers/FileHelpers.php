@@ -52,4 +52,19 @@ class FileHelpers
 
         return response('FILE_NOT_FOUND', 404);
     }
+
+    public static function removeFile($path)
+    {
+        if (file_exists($path)) {
+            if (is_file($path)) {
+                if (is_readable($path)) {
+                    File::delete($path);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }
