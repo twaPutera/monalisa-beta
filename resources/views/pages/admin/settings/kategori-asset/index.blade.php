@@ -118,7 +118,7 @@
                         });
                         // $('#selectGroupEdit').select2('val', response.data.id_group_kategori_asset);
                         $('#selectUmurAssetEdit option[value="' + response.data.umur_asset + '"]')
-                            .attr('selected', 'selected');
+                            .prop('selected', 'selected');
                         $('#selectUmurAssetEdit').select2({
                             width: '100%',
                             placeholder: 'Pilih Umur Asset',
