@@ -8,8 +8,7 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.listing-asset.update', $asset->id) }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="{{ route('admin.listing-asset.update', $asset->id) }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <div class="form-group col-md-4 col-6">
@@ -130,7 +129,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
             </form>
         </div>
