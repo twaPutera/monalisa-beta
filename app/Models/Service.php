@@ -14,4 +14,9 @@ class Service extends Model
     {
         return $this->hasMany(DetailService::class, 'id_service', 'id');
     }
+
+    public function image()
+    {
+        return $this->morphMany(AssetImage::class, 'imageable');
+    }
 }

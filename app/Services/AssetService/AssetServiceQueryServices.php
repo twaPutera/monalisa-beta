@@ -13,6 +13,15 @@ class AssetServiceQueryServices
 
     public function findById(string $id)
     {
-        return Service::findOrFail($id);
+        $data = Service::query()
+        ->with(['image'])
+        ->where('id', $id)
+        ->firstOrFail();
+        
+        $data->image = $data->image->map(function ($item) {
+            $item->link = route('admin.listing-asset.service.image.preview') . '?filename=' . $item->path;
+            return $item;
+        });
+        return $data;
     }
 }

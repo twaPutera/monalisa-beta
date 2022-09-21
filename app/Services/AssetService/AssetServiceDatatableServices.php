@@ -20,6 +20,7 @@ class AssetServiceDatatableServices
     {
         $query = Service::query();
         $query->select(
+            'services.id',
             'kategori_services.nama_service',
             'services.tanggal_mulai',
             'services.deskripsi_service',
@@ -42,7 +43,7 @@ class AssetServiceDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>';
+                $element .= '<button type="button" onclick="showAsset(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $element;
             })
             ->rawColumns(['action'])

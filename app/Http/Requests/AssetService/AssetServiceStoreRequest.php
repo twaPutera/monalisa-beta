@@ -28,6 +28,8 @@ class AssetServiceStoreRequest extends FormRequest
             'tanggal_mulai_service' => 'required|date|date_format:Y-m-d',
             'id_kategori_service' => 'required|uuid|exists:kategori_services,id',
             'kondisi_sebelum' => 'required|string|max:255',
+            'status_service' => 'required|in:onprogress,backlog',
+            'file_asset_service' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

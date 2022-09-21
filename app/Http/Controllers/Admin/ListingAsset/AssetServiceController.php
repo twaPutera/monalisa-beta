@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\ListingAsset;
 
+use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -54,5 +55,41 @@ class AssetServiceController extends Controller
     public function datatable(Request $request)
     {
         return $this->assetServiceDatatableServices->datatable($request);
+    }
+
+    public function show($id)
+    {
+        try {
+            $data = $this->assetServiceQueryServices->findById($id);
+            //code...
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data image',
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+    public function previewImage(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/asset-service/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 }

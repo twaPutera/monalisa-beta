@@ -55,13 +55,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         # Asset Image
         Route::group(['asset-image'], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
+            Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
         });
 
         # Service Asset
         Route::group(['prefix' => 'service-asset'], function () {
             Route::post('/store/{id_asset}', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
+            Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });
+
+
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {

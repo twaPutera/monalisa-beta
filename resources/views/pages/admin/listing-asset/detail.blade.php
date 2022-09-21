@@ -9,8 +9,8 @@
 @section('custom_css')
     <style>
         /* div.dataTables_wrapper {
-            width: 200% !important;
-        } */
+                                                                        width: 200% !important;
+                                                                    } */
 
         .dataTables_wrapper .dataTable {
             margin: 0 !important;
@@ -89,6 +89,7 @@
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
+                    $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
@@ -107,6 +108,9 @@
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
+                    if (key == "file_asset_service") {
+                        $('#preview-file-image-error').html(errors[key][0]);
+                    }
                 }
             });
 
@@ -125,7 +129,33 @@
             width: '100%',
             format: 'yyyy-mm-dd',
             autoclose: true,
-        })
+        });
+
+        const showAsset = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const data = response.data;
+                    const modal = $('.modalPreviewAssetService');
+                    if (response.success) {
+                        if (data.image.length > 0) {
+                            $('#imgPreviewAssetService').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewAssetService').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        modal.modal('show');
+                    }
+                },
+            })
+        }
+        $('#file_asset_service').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-image-text').text(file.name);
+        });
     </script>
     @include('pages.admin.listing-asset._script_modal_create')
 @endsection
@@ -441,4 +471,5 @@
     </div>
     @include('pages.admin.listing-asset._modal_edit')
     @include('pages.admin.listing-asset._modal_create_service')
+    @include('pages.admin.listing-asset._modal_preview_service')
 @endsection
