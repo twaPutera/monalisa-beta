@@ -21,6 +21,13 @@
 
             <!-- begin:: Header Topbar -->
             <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid">
+                <div class="kt-header__topbar-item d-flex align-items-center mr-3">
+                    <a class="kt-header__topbar-wrapper" href="{{ route('admin.sistem-config.index') }}">
+                        <div class="kt-header__topbar-icon shadow-custom">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                    </a>
+                </div>
                 <div class="kt-header__topbar-item dropdown">
                     <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,10px">
                         <span class="kt-header__topbar-icon shadow-custom">
@@ -441,8 +448,7 @@
                             alt="Profile" class="kt-hidden-">
                         <span class="kt-header__topbar-icon kt-header__topbar-icon--brand kt-hidden"><b>S</b></span>
                     </div>
-                    <div
-                        class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
 
                         <!--begin: Head -->
                         <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
@@ -505,20 +511,22 @@
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./jumlah-asset.html"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fa fa-list"></i></span>
-                                    Pemeliharaan</span></a></li>
+                                    Services</span></a></li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-clipboard-check"></i></span>
-                                    Daftar Laporan</span></a></li>
+                                    Keluhan</span></a></li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
-                                        class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report
-                                    Asset</span></a></li>
-                        <li class="kt-menu__item @if (\Request::segment(2) == 'setting') kt-menu__item--active @endif"
+                                        class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Peminjaman</span></a></li>
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'inventory') kt-menu__item--active @endif"
                             aria-haspopup="true"><a href="{{ route('admin.sistem-config.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-cog"></i></span>
-                                    Setting</span></a></li>
+                                    Inventory</span></a></li>
+                        <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
+                            class="kt-menu__link "><span class="kt-menu__link-text"><span
+                                    class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report</span></a></li>
                     </ul>
                 </div>
             </div>

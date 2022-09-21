@@ -16,9 +16,15 @@
             margin: 0 !important;
         }
 
+        #imgPreviewAsset {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
         #tableProperti th,
         #tableProperti td {
-            font-size: 14px;
+            font-size: 12px;
         }
 
         th,

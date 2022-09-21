@@ -345,3 +345,12 @@ td {
     background-color: #F8FAFB;
     border: unset;
 }
+
+.kt-header__topbar-wrapper:hover .kt-header__topbar-icon {
+    background-color: #0067D4 !important;
+    border: unset !important;
+}
+
+.kt-header__topbar-wrapper:hover .kt-header__topbar-icon svg path {
+    fill: #FFF !important;
+}

@@ -271,7 +271,7 @@
                         </div>
                     </div>
                     <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom"
-                        type="button"><i class="fas fa-filter mr-2"></i>
+                        type="button"><i class="fas fa-sliders-h mr-2"></i>
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
