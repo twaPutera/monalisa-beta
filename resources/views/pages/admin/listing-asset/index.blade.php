@@ -275,6 +275,8 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
+                    <button class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
+                        Pemutihan</button>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"

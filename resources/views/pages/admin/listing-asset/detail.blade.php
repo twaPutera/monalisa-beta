@@ -8,8 +8,12 @@
 @endsection
 @section('custom_css')
     <style>
-        div.dataTables_wrapper {
+        /* div.dataTables_wrapper {
             width: 200% !important;
+        } */
+
+        .dataTables_wrapper .dataTable {
+            margin: 0 !important;
         }
 
         #tableProperti th,
@@ -39,6 +43,9 @@
                 searching: false,
                 ordering: false,
                 serverSide: true,
+                bLengthChange: false,
+                paging: false,
+                info: false,
                 ajax: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                 columns: [{
                         name: 'tanggal_mulai',
@@ -131,8 +138,6 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
-                        Pemutihan</button>
                     <button onclick="openModalByClass('modalCreateAssetService')"
                         class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i>
                         Service</button>
@@ -327,7 +332,7 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
-                            <div class="table-responsive  pt-3">
+                            <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="datatableLogService">
                                     <thead>
                                         <tr>
