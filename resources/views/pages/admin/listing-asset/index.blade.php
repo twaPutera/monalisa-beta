@@ -66,6 +66,8 @@
                         form[0].reset();
                         modal.modal('hide');
                     }
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
                     table.DataTable().ajax.reload();
@@ -87,7 +89,8 @@
                 if (formElement.attr('id') == 'formImportAsset') {
                     $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
-                        let message = `<li class="text-danger"><strong>Baris ${value.row} dalam kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
+                        let message =
+                            `<li class="text-danger"><strong>Baris ${value.row} dalam kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
                         $('.error-import-container').append(message);
                     });
                     $('.error-import-asset').show();
@@ -188,7 +191,7 @@
                 url: url,
                 type: 'GET',
                 dataType: 'json',
-                beforeSend: function () {
+                beforeSend: function() {
                     $(".backdrop").show();
                 },
                 success: function(response) {
@@ -205,7 +208,7 @@
                         $('#linkDetailAsset').attr('href', data.link_detail);
                     }
                 },
-                error: function (response) {
+                error: function(response) {
                     $(".backdrop").hide();
                     showToastError('Error', 'Terjadi kesalahan');
                 }

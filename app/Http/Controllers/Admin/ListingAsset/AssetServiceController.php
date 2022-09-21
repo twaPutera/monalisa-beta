@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\ListingAsset;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -48,5 +49,10 @@ class AssetServiceController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+
+    public function datatable(Request $request)
+    {
+        return $this->assetServiceDatatableServices->datatable($request);
     }
 }

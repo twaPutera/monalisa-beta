@@ -11,9 +11,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
-use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Http\Requests\AssetData\AssetImportRequest;
+use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
 
@@ -80,7 +80,7 @@ class MasterAssetController extends Controller
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $th->getMessage(),
             ]);
         }
     }
