@@ -17,7 +17,7 @@ class DataKelasAssetSheet implements FromQuery, WithTitle, WithHeadings
 
     public function title(): string
     {
-        return 'Kelas Asset';
+        return 'Kode Akun';
     }
 
     public function headings(): array

@@ -17,7 +17,7 @@ class DataSatuanAssetSheet implements FromQuery, WithTitle, WithHeadings
 
     public function title(): string
     {
-        return 'Satuan Asset';
+        return 'Kode Satuan Asset';
     }
 
     public function headings(): array

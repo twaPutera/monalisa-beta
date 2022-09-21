@@ -17,7 +17,7 @@ class DataVendorAssetSheet implements FromQuery, WithTitle, WithHeadings
 
     public function title(): string
     {
-        return 'Vendor Asset';
+        return 'Kode Vendor Asset';
     }
 
     public function headings(): array
