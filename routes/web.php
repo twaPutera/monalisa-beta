@@ -64,8 +64,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });
-
-
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {
