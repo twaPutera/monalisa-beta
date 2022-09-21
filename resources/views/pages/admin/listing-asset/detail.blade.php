@@ -9,8 +9,8 @@
 @section('custom_css')
     <style>
         /* div.dataTables_wrapper {
-                                                                        width: 200% !important;
-                                                                    } */
+                                                                                            width: 200% !important;
+                                                                                        } */
 
         .dataTables_wrapper .dataTable {
             margin: 0 !important;
@@ -298,6 +298,12 @@
                                             <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}"
                                                 class="my-3" width="200px" alt="">
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Unduh QR Code</td>
+                                        <td> <a href="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}" download class="btn btn-primary shadow-custom btn-sm"><i
+                                                    class="fa fa-download"></i>
+                                                Unduh</a></td>
                                     </tr>
                                 </table>
                             </div>
