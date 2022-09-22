@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\Services\ServicesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });
+    });
+    # Services
+    Route::group(['prefix' => 'services'], function () {
+        Route::get('/', [ServicesController::class, 'index'])->name('admin.services.index');
+        Route::get('/datatable', [ServicesController::class, 'datatable'])->name('admin.services.datatable');
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {

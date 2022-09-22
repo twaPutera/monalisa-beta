@@ -123,7 +123,8 @@
                         d.searchKeyword = $('#searchAsset').val();
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
