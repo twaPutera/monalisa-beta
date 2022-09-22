@@ -17,7 +17,7 @@ class DataLokasiAssetSheet implements FromQuery, WithTitle, WithHeadings
 
     public function title(): string
     {
-        return 'Lokasi Asset';
+        return 'Kode Lokasi Asset';
     }
 
     public function headings(): array

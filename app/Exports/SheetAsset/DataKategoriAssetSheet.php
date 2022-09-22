@@ -11,17 +11,17 @@ class DataKategoriAssetSheet implements FromQuery, WithTitle, WithHeadings
 {
     public function query()
     {
-        $kategori_asset = KategoriAsset::select('group_kategori_assets.kode_group', 'group_kategori_assets.nama_group', 'kategori_assets.kode_kategori', 'kategori_assets.nama_kategori', 'kategori_assets.umur_asset')->join('group_kategori_assets', 'group_kategori_assets.id', '=', 'kategori_assets.id_group_kategori_asset')->orderBy('kategori_assets.created_at', 'ASC');
+        $kategori_asset = KategoriAsset::select('kategori_assets.kode_kategori', 'kategori_assets.nama_kategori', 'kategori_assets.umur_asset', 'group_kategori_assets.kode_group', 'group_kategori_assets.nama_group')->join('group_kategori_assets', 'group_kategori_assets.id', '=', 'kategori_assets.id_group_kategori_asset')->orderBy('kategori_assets.created_at', 'ASC');
         return $kategori_asset;
     }
 
     public function title(): string
     {
-        return 'Kategori Asset';
+        return 'Kode Jenis Asset';
     }
 
     public function headings(): array
     {
-        return ['Kode Kelompok Asset', 'Nama Kelompok Asset', 'Kode Jenis Asset', 'Nama Jenis Asset', 'Masa Manfaat Komersial'];
+        return ['Kode Jenis Asset', 'Nama Jenis Asset', 'Masa Manfaat Komersial', 'Kode Kelompok Asset', 'Nama Kelompok Asset',];
     }
 }
