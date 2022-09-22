@@ -76,7 +76,12 @@ class AssetServiceDatatableServices
 
                 return $asset->toArray();
             })
-            ->rawColumns(['btn_show_service', 'asset_data', 'action'])
+            ->addColumn('checkbox', function ($item) {
+                $element = '';
+                $element .= '<input type="checkbox" name="id[]" value="' . $item->id . '">';
+                return $element;
+            })
+            ->rawColumns(['btn_show_service', 'asset_data', 'action', 'checkbox'])
             ->make(true);
     }
 }
