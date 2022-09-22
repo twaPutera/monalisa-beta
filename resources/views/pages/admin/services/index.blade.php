@@ -2,7 +2,8 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('custom_css')
     <style>
@@ -13,8 +14,12 @@
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.js" integrity="sha512-ohOeYvGoLlCxYkfMoPBKJh/wp4Oe76rEJDWOmQq1LLrJD6yCBSPVmhhXuZYvuxdYR3PiozsUf+TZZ6yhVBGYAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.js"
+        integrity="sha512-ohOeYvGoLlCxYkfMoPBKJh/wp4Oe76rEJDWOmQq1LLrJD6yCBSPVmhhXuZYvuxdYR3PiozsUf+TZZ6yhVBGYAQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"
+        integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endsection
 @section('custom_js')
     <script>
@@ -22,6 +27,7 @@
         $(document).ready(function() {
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
+                    $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
@@ -39,8 +45,8 @@
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
-                    if (key == "gambar_asset") {
-                        $('#preview-file-error').html(errors[key][0]);
+                    if (key == "file_asset_service") {
+                        $('#preview-file-image-error').html(errors[key][0]);
                     }
                 }
             });
@@ -60,8 +66,7 @@
                         //
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "checkbox",
                         class: "text-center",
                         orderable: false,
@@ -105,8 +110,7 @@
                         data: 'tanggal_selesai'
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: [3, 8],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
@@ -117,11 +121,14 @@
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
-                                element += `<span class="kt-badge kt-badge--primary kt-badge--inline">Progress</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Progress</span>`;
                             } else if (data == "backlog") {
-                                element += `<span class="kt-badge kt-badge--danger kt-badge--inline">Backlog</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Backlog</span>`;
                             } else if (data == "done") {
-                                element += `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
                             }
                             return element;
                         },
@@ -228,7 +235,20 @@
                 }
             }
         });
+        $('.datepickerCreate').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerCreateSelesai').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
     </script>
+    @include('pages.admin.services._script_modal_create')
 @endsection
 @section('main-content')
     <input type="hidden" value="" id="lokasiParentId">
@@ -289,12 +309,16 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <select name="" class="filterLokasi select2Lokasi form-control mr-2" style="width: 150px;" id="">
+                    <select name="" class="filterLokasi select2Lokasi form-control mr-2" style="width: 150px;"
+                        id="">
 
                     </select>
-                    <input type="text" readonly class="form-control yearpicker mx-2" style="width: 150px;" placeholder="Tahun">
-                    <input type="text" readonly class="form-control monthpicker mr-2" style="width: 150px;" placeholder="Bulan">
-                    <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"     type="button"><i class="fa fa-plus"></i> Add</button>
+                    <input type="text" readonly class="form-control yearpicker mx-2" style="width: 150px;"
+                        placeholder="Tahun">
+                    <input type="text" readonly class="form-control monthpicker mr-2" style="width: 150px;"
+                        placeholder="Bulan">
+                    <button onclick="openModalByClass('modalCreateAssetService')"
+                        class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center">
@@ -344,4 +368,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.services._modal_create_service')
 @endsection

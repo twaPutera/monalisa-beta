@@ -9,22 +9,20 @@
                 </button>
             </div>
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.listing-asset.service-asset.store') }}" method="POST">
+                action="{{ route('admin.services.store') }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <label for="">Pilih Lokasi</label>
                             <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
-                                <option selected="selected" value="{{ $asset->lokasi->id }}">
-                                    {{ $asset->lokasi->nama_lokasi }}</option>
+
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Pilih Asset</label>
                             <select name="id_asset" class="form-control" id="listAssetLocation">
-                                <option selected="selected" value="{{ $asset->id }}">
-                                    {{ $asset->deskripsi . '(' . $asset->kode_asset . ')' }}</option>
+
                             </select>
                         </div>
                         <div class="form-group">

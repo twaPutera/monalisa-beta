@@ -72,6 +72,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'services'], function () {
         Route::get('/', [ServicesController::class, 'index'])->name('admin.services.index');
         Route::get('/datatable', [ServicesController::class, 'datatable'])->name('admin.services.datatable');
+        Route::post('/store', [ServicesController::class, 'store'])->name('admin.services.store');
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {
