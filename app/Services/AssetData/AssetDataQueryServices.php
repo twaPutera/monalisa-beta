@@ -4,9 +4,9 @@ namespace App\Services\AssetData;
 
 use App\Models\AssetData;
 use App\Models\AssetImage;
+use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
 use App\Services\UserSso\UserSsoQueryServices;
-use Illuminate\Http\Request;
 
 class AssetDataQueryServices
 {

@@ -2,7 +2,6 @@
 
 namespace App\Services\AssetService;
 
-use Carbon\Carbon;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -42,8 +41,8 @@ class AssetServiceDatatableServices
                 return isset($user[0]) ? $user[0]['name'] : 'Not Found';
             })
             ->addColumn('status_service', function ($item) {
-                if ($item->status_service == "onprogress") {
-                    $status = "on progress";
+                if ($item->status_service == 'onprogress') {
+                    $status = 'on progress';
                 } else {
                     $status = $item->status_service;
                 }
