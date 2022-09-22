@@ -16,6 +16,7 @@ use App\Http\Requests\AssetData\AssetImportRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
+use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller
 {
@@ -23,17 +24,20 @@ class MasterAssetController extends Controller
     protected $assetDataDatatableServices;
     protected $assetDataQueryServices;
     protected $userSsoQueryServices;
+    protected $assetServiceQueryServices;
 
     public function __construct(
         AssetDataCommandServices $assetDataCommandServices,
         AssetDataDatatableServices $assetDataDatatableServices,
         AssetDataQueryServices $assetDataQueryServices,
-        UserSsoQueryServices $userSsoQueryServices
+        UserSsoQueryServices $userSsoQueryServices,
+        AssetServiceQueryServices $assetServiceQueryServices
     ) {
         $this->assetDataCommandServices = $assetDataCommandServices;
         $this->assetDataDatatableServices = $assetDataDatatableServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->userSsoQueryServices = $userSsoQueryServices;
+        $this->assetServiceQueryServices = $assetServiceQueryServices;
     }
 
     public function index()
@@ -70,11 +74,15 @@ class MasterAssetController extends Controller
     {
         try {
             $data = $this->assetDataQueryServices->findById($id);
+            $service = $this->assetServiceQueryServices->findLastestLogByAssetId($id);
             //code...
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil menampilkan data asset',
-                'data' => $data,
+                'data' => [
+                    'asset' => $data,
+                    'service' => $service,
+                ],
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -136,6 +144,24 @@ class MasterAssetController extends Controller
             $path = storage_path('app/images/qr-code/' . $request->filename);
             $filename = $request->filename;
             $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function downloadQr(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/qr-code/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::downloadFile($path, $filename);
 
             return $response;
             //code...

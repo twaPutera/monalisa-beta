@@ -20,7 +20,7 @@ class AssetServiceCommandServices
         $asset_service->guid_pembuat = $user->guid;
         $asset_service->deskripsi_service = $request->deskripsi_service;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
-        $asset_service->status_service = $request->status_service == 'onprogress' ? 'On Progress' : 'Backlog';
+        $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : 'backlog';
         $asset_service->save();
 
         $detail_asset_service = new DetailService();

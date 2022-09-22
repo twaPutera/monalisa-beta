@@ -11,6 +11,12 @@
         div.dataTables_wrapper {
             width: 200% !important;
         }
+
+        #imgPreviewAsset {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
     </style>
 @endsection
 @section('plugin_js')
@@ -195,17 +201,19 @@
                     $(".backdrop").show();
                 },
                 success: function(response) {
-                    const data = response.data;
                     $(".backdrop").hide();
                     if (response.success) {
-                        $('#assetNamePreview').text(data.deskripsi);
-                        if (data.image.length > 0) {
-                            $('#imgPreviewAsset').attr('src', data.image[0].link);
+                        const asset = response.data.asset;
+                        const service = response.data.service;
+                        $('#assetNamePreview').text(asset.deskripsi);
+                        $('#catatanService').text(service ? service.deskripsi_service : '-');
+                        $('#lastLogServiceDate').text(service ? formatDateIntoIndonesia(service.tanggal_service) : '-');
+                        if (asset.image.length > 0) {
+                            $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
-                            $('#imgPreviewAsset').attr('src',
-                                'https://via.placeholder.com/400x250?text=Preview Image');
+                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
                         }
-                        $('#linkDetailAsset').attr('href', data.link_detail);
+                        $('#linkDetailAsset').attr('href', asset.link_detail);
                     }
                 },
                 error: function(response) {
@@ -329,11 +337,11 @@
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6 class="">Catatan</h6>
-                            <h6 class="text-right">Perlu Pergantian Oli dan pergantian berbagai macam sparepart</h6>
+                            <h6 class="text-right" id="catatanService">Perlu Pergantian Oli dan pergantian berbagai macam sparepart</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Log Terakhir</h6>
-                            <h6 class="text-right">18 Agustus 2020</h6>
+                            <h6 class="text-right" id="lastLogServiceDate">18 Agustus 2020</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Dicek Oleh</h6>

@@ -15,6 +15,11 @@ class Service extends Model
         return $this->hasMany(DetailService::class, 'id_service', 'id');
     }
 
+    public function kategori_service()
+    {
+        return $this->belongsTo(KategoriService::class, 'id_kategori_service', 'id');
+    }
+
     public function image()
     {
         return $this->morphMany(AssetImage::class, 'imageable');

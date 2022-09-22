@@ -18,35 +18,44 @@ class AssetServiceDatatableServices
     }
     public function datatable(Request $request)
     {
-        $query = Service::query();
-        $query->select(
-            'services.id',
-            'kategori_services.nama_service',
-            'services.tanggal_mulai',
-            'services.deskripsi_service',
-            'services.status_service',
-            'services.guid_pembuat'
-        );
-        $query->join('kategori_services', 'kategori_services.id', '=', 'services.id_kategori_service');
+        $query = Service::query()
+            ->with(['detail_service', 'kategori_service', 'image']);
+
+        if (isset($request->id_asset_data)) {
+            $query->whereHas('detail_service', function ($query) use ($request) {
+                $query->where('id_asset_data', $request->id_asset_data);
+            });
+        }
+
+        if (isset($request->id_kategori_service)) {
+            $query->where('id_kategori_service', $request->id_kategori_service);
+        }
+
+        // $query->select(
+        //     'services.id',
+        //     'kategori_services.nama_service',
+        //     'services.tanggal_mulai',
+        //     'services.deskripsi_service',
+        //     'services.status_service',
+        //     'services.guid_pembuat'
+        // );
+        // $query->join('kategori_services', 'kategori_services.id', '=', 'services.id_kategori_service');
         $query->orderBy('services.created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
-            ->editColumn('tanggal_mulai', function ($item) {
-                return Carbon::parse($item->tanggal_mulai)->format('d M Y');
+            ->addColumn('nama_service', function ($item) {
+                return $item->kategori_service->nama_service ?? 'no data';
             })
-            ->editColumn('kategori_service', function ($item) {
-                return $item->nama_service;
-            })
-            ->editColumn('user', function ($item) {
+            ->addColumn('user', function ($item) {
                 $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
                 return isset($user[0]) ? $user[0]['name'] : 'Not Found';
             })
-            ->addColumn('action', function ($item) {
+            ->addColumn('btn_show_service', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="showAsset(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
+                $element .= '<button type="button" onclick="showAssetServices(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $element;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['btn_show_service'])
             ->make(true);
     }
 }

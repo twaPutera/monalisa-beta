@@ -167,3 +167,25 @@ const openModalByClass = (classname) => {
     $(`.${classname}`).modal("show");
 };
 
+const arrayMonth = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+];
+
+const formatDateIntoIndonesia = (data) => {
+    let date = new Date(data);
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    return `${day} ${arrayMonth[month]} ${year}`;
+}

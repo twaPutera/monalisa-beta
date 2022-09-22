@@ -8,10 +8,6 @@
 @endsection
 @section('custom_css')
     <style>
-        /* div.dataTables_wrapper {
-                                                                                            width: 200% !important;
-                                                                                        } */
-
         .dataTables_wrapper .dataTable {
             margin: 0 !important;
         }
@@ -52,14 +48,19 @@
                 bLengthChange: false,
                 paging: false,
                 info: false,
-                ajax: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                    data: function(d) {
+                        d.id_asset_data = "{{ $asset->id }}"
+                    }
+                },
                 columns: [{
                         name: 'tanggal_mulai',
                         data: 'tanggal_mulai'
                     },
                     {
-                        name: 'kategori_service',
-                        data: 'kategori_service'
+                        name: 'nama_service',
+                        data: 'nama_service'
                     },
                     {
                         data: 'status_service'
@@ -72,7 +73,7 @@
                         data: 'user'
                     },
                     {
-                        data: "action",
+                        data: "btn_show_service",
                         class: "text-center",
                         orderable: false,
                         searchable: false,
@@ -80,6 +81,12 @@
                     },
                 ],
                 columnDefs: [
+                    {
+                        targets: 0,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        },
+                    }
                     //Custom template data
                 ],
             });
@@ -131,7 +138,7 @@
             autoclose: true,
         });
 
-        const showAsset = (button) => {
+        const showAssetServices = (button) => {
             const url = $(button).data('url_detail');
             $.ajax({
                 url: url,
@@ -300,10 +307,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40%">Unduh QR Code</td>
-                                        <td> <a href="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $asset->qr_code }}" download class="btn btn-primary shadow-custom btn-sm"><i
+                                        <td colspan="2" class="text-center">
+                                            <a href="{{ route('admin.listing-asset.download-qr') . '?filename=' . $asset->qr_code }}"
+                                                download class="btn btn-primary shadow-custom btn-sm"><i
                                                     class="fa fa-download"></i>
-                                                Unduh</a></td>
+                                                Unduh QR</a>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

@@ -53,6 +53,22 @@ class FileHelpers
         return response('FILE_NOT_FOUND', 404);
     }
 
+    public static function downloadFile($path, $filename)
+    {
+        if (file_exists($path)) {
+            if (is_file($path)) {
+                if (is_readable($path)) {
+                    return response()->download(
+                        $path,
+                        $filename
+                    );
+                }
+            }
+        }
+
+        return response('FILE_NOT_FOUND', 404);
+    }
+
     public static function removeFile($path)
     {
         if (file_exists($path)) {
