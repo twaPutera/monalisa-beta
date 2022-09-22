@@ -59,7 +59,7 @@ class AssetServiceDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="showAssetServices(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-primary btn-icon"><i class="fa fa-edit"></i></button>';
+                $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-primary btn-icon"><i class="fa fa-edit"></i></button>';
                 return $element;
             })
             ->addColumn('asset_data', function ($item) {

@@ -14,7 +14,7 @@ class AssetServiceQueryServices
     public function findById(string $id)
     {
         $data = Service::query()
-            ->with(['image'])
+            ->with(['detail_service', 'kategori_service', 'image'])
             ->where('id', $id)
             ->firstOrFail();
 

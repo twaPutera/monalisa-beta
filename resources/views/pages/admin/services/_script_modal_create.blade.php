@@ -2,7 +2,7 @@
     $('.modalCreateAssetService').on('shown.bs.modal', function() {
         setTimeout(() => {
             generateSelect2Lokasi('lokasiAssetCreateService');
-            generateSelect2KategoriService();
+            generateSelect2KategoriService('kategoriServiceCreate');
         }, 2000);
     });
 
@@ -10,6 +10,10 @@
         generateAssetSelect2Create('listAssetLocation', $(this).val());
     });
 
+    $('#lokasiAssetUpdateService').on('change', function() {
+        generateAssetSelect2Create('listAssetLocationUpdate', $(this).val());
+    });
+    
     const generateSelect2Lokasi = (id) => {
         $('#' + id).select2({
             width: '100%',
@@ -63,8 +67,8 @@
         });
     }
 
-    const generateSelect2KategoriService = () => {
-        $('#kategoriServiceCreate').select2({
+    const generateSelect2KategoriService = (id) => {
+        $('#' + id).select2({
             width: '100%',
             placeholder: 'Pilih Kategori Service',
             dropdownParent: $('.modal.show'),

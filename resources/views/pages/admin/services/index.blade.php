@@ -23,35 +23,9 @@
 @endsection
 @section('custom_js')
     <script>
-        var table2 = $('#datatableLogService');
+        var table = $('#datatableLogService');
         $(document).ready(function() {
-            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
-                if (data.success) {
-                    $(formElement).trigger('reset');
-                    $(formElement).find(".invalid-feedback").remove();
-                    $(formElement).find(".is-invalid").removeClass("is-invalid");
-                    let modal = $(formElement).closest('.modal');
-                    modal.modal('hide');
-                    showToastSuccess('Sukses', data.message);
-                    $('#preview-file-error').html('');
-                    table.DataTable().ajax.reload();
-                } else {
-
-                }
-            });
-            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-                //if validation not pass
-                for (let key in errors) {
-                    let element = formElement.find(`[name=${key}]`);
-                    clearValidation(element);
-                    showValidation(element, errors[key][0]);
-                    if (key == "file_asset_service") {
-                        $('#preview-file-image-error').html(errors[key][0]);
-                    }
-                }
-            });
-
-            table2.DataTable({
+            table.DataTable({
                 responsive: true,
                 processing: true,
                 searching: false,
@@ -137,14 +111,38 @@
                 ],
             });
 
-            getDataOptionSelect2Lokasi();
-
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    $(formElement).trigger('reset');
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
+                    showToastSuccess('Sukses', data.message);
+                    $('#preview-file-error').html('');
+                    table.DataTable().ajax.reload();
+                }
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                    if (key == "file_asset_service") {
+                        $('#preview-file-image-error').html(errors[key][0]);
+                        $('#preview-file-image-error-update').html(errors[key][0]);
+                    }
+                }
+            });
             $('.filterLokasi').select2({
                 width: '150px',
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
             })
-
+            generateKategoriServiceSelect();
+            generateLocationServiceSelect();
+            generateAssetServiceSelect();
             generateMonthPicker();
             generateYearPicker();
         });
@@ -166,27 +164,6 @@
                 minViewMode: 'years',
                 autoclose: true,
             });
-        }
-
-        const getDataOptionSelect2Lokasi = () => {
-            $.ajax({
-                url: "{{ route('admin.setting.lokasi.get-select2') }}",
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    const select = $('.select2Lokasi');
-                    select.empty();
-                    response.data.forEach(element => {
-                        let selected = '';
-                        if (element.id == $('#lokasiParentId').val()) {
-                            selected = 'selected';
-                        }
-                        select.append(
-                            `<option ${selected} value="${element.id}">${element.text}</option>`
-                        );
-                    });
-                }
-            })
         }
     </script>
     <script>
@@ -247,6 +224,131 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+        $('#file_asset_service').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-image-text').text(file.name);
+        });
+
+         $('#file_asset_service_update').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-image-text-update').text(file.name);
+        });
+
+        const editService = (button) => {
+            const url_edit = $(button).data('url_edit');
+            const url_update = $(button).data('url_update');
+            $.ajax({
+                url: url_edit,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const modal = $('.modalEditAssetService');
+                    const form = modal.find('form');
+                    if (response.data.status_service == "on progress") {
+                        var status_service = "onprogress";
+                    } else {
+                        var status_service = response.data.status_service;
+                    }
+                    form.attr('action', url_update);
+                    form.find('input[name=tanggal_mulai_service]').val(response.data.tanggal_mulai);
+                    form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
+                    form.find('textarea[name=permasalahan]').val(response.data.detail_service.permasalahan);
+                    form.find('textarea[name=tindakan]').val(response.data.detail_service.tindakan);
+                    form.find('textarea[name=catatan]').val(response.data.detail_service.tindakan);
+                    modal.on('shown.bs.modal', function(e) {
+                        $('#kategoriServiceUpdate option[value="' + response.data
+                            .id_kategori_service + '"]').attr('selected', 'selected');
+                        $('#kategoriServiceUpdate').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Kategori Service',
+                            allowClear: true,
+                            parent: $(this)
+                        });
+                        $("input[name=status_service][value=" + status_service + "]").prop(
+                            'checked', true);
+
+                        $('#service_kondisi option[value="' + response.data
+                            .status_kondisi + '"]').attr('selected', 'selected');
+
+                        $('#lokasiAssetUpdateService option[value="' + response.data
+                            .detail_service.id_lokasi + '"]').attr('selected', 'selected');
+                        $('#lokasiAssetUpdateService').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Lokasi',
+                            allowClear: true,
+                            parent: $(this)
+                        });
+
+                        $('#listAssetLocationUpdate option[value="' + response.data
+                            .detail_service.id_asset_data + '"]').attr('selected', 'selected');
+                        $('#listAssetLocationUpdate').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Lokasi',
+                            allowClear: true,
+                            parent: $(this)
+                        });
+                    })
+                    modal.modal('show');
+                }
+            })
+        }
+
+        const generateKategoriServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.kategori-service.get-data-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectGroupKategoriService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Kategori Service</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
+        const generateLocationServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectLocationService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Lokasi</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
+        const generateAssetServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectAssetService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Asset</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
     </script>
     @include('pages.admin.services._script_modal_create')
 @endsection
@@ -369,4 +471,5 @@
         </div>
     </div>
     @include('pages.admin.services._modal_create_service')
+    @include('pages.admin.services._modal_edit_service')
 @endsection
