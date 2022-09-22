@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetService;
 
+use App\Models\AssetData;
 use Carbon\Carbon;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -31,15 +32,6 @@ class AssetServiceDatatableServices
             $query->where('id_kategori_service', $request->id_kategori_service);
         }
 
-        // $query->select(
-        //     'services.id',
-        //     'kategori_services.nama_service',
-        //     'services.tanggal_mulai',
-        //     'services.deskripsi_service',
-        //     'services.status_service',
-        //     'services.guid_pembuat'
-        // );
-        // $query->join('kategori_services', 'kategori_services.id', '=', 'services.id_kategori_service');
         $query->orderBy('services.created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -55,7 +47,26 @@ class AssetServiceDatatableServices
                 $element .= '<button type="button" onclick="showAssetServices(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $element;
             })
-            ->rawColumns(['btn_show_service'])
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<button type="button" onclick="showAssetServices(this)" data-url_detail="' . route('admin.listing-asset.service-asset.show', $item->id) . '" class="btn btn-sm btn-primary btn-icon"><i class="fa fa-edit"></i></button>';
+                return $element;
+            })
+            ->addColumn('asset_data', function ($item) {
+                $asset = AssetData::query()
+                            ->join('kategori_assets', 'kategori_assets.id', '=', 'asset_data.id_kategori_asset')
+                            ->join('group_kategori_assets', 'group_kategori_assets.id', '=', 'kategori_assets.id_group_kategori_asset')
+                            ->select([
+                                'asset_data.id',
+                                'asset_data.deskripsi',
+                                'kategori_assets.nama_kategori',
+                                'group_kategori_assets.nama_group',
+                            ])->where('asset_data.id', $item->detail_service->id_asset_data)
+                            ->first();
+
+                return $asset->toArray();
+            })
+            ->rawColumns(['btn_show_service', 'asset_data', 'action'])
             ->make(true);
     }
 }

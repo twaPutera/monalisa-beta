@@ -354,3 +354,7 @@ td {
 .kt-header__topbar-wrapper:hover .kt-header__topbar-icon svg path {
     fill: #FFF !important;
 }
+
+.datepicker table td, .datepicker table th {
+    font-size: 14px;
+}
