@@ -51,10 +51,17 @@
         });
     }
 
+    $('.modalCreateAssetService').on('shown.bs.modal', function() {
+        setTimeout(() => {
+            generateSelect2Lokasi('lokasiAssetCreateService');
+            generateSelect2KategoriService();
+        }, 2000);
+    });
+
     $('.modalCreateAsset').on('shown.bs.modal', function() {
         setTimeout(() => {
             generateGroupSelect2('groupAssetCreate');
-            generateSelect2Lokasi();
+            generateSelect2Lokasi('lokasiAssetCreate');
             generateKelasAsset();
             generateSatuanAsset();
             generateVendorAsset();
@@ -66,8 +73,12 @@
         generateKategoriSelect2Create('kategoriAssetCreate', $(this).val());
     });
 
-    const generateSelect2Lokasi = () => {
-        $('#lokasiAssetCreate').select2({
+    $('#lokasiAssetCreateService').on('change', function() {
+        generateAssetSelect2Create('listAssetLocation', $(this).val());
+    });
+
+    const generateSelect2Lokasi = (id) => {
+        $('#' + id).select2({
             width: '100%',
             placeholder: 'Pilih Lokasi',
             dropdownParent: $('.modal.show'),
@@ -78,6 +89,34 @@
                 data: function(params) {
                     return {
                         keyword: params.term, // search term
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.data,
+                    };
+                },
+                cache: true
+            },
+        });
+    }
+
+
+    const generateAssetSelect2Create = (idElement, idLokasi) => {
+        $('#' + idElement).removeAttr('disabled');
+        $('#' + idElement).select2({
+            width: '100%',
+            placeholder: 'Pilih Jenis',
+            dropdownParent: $('.modal.show'),
+            ajax: {
+                url: '{{ route('admin.listing-asset.get-all-data-asset-select2') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        keyword: params.term, // search term
+                        id_lokasi: idLokasi,
                     };
                 },
                 processResults: function(data, params) {
@@ -215,10 +254,4 @@
             },
         });
     }
-
-    $('.modalCreateAssetService').on('shown.bs.modal', function() {
-        setTimeout(() => {
-            generateSelect2KategoriService();
-        }, 2000);
-    });
 </script>

@@ -31,11 +31,11 @@ class AssetServiceController extends Controller
         $this->userSsoQueryServices = $userSsoQueryServices;
     }
 
-    public function store(AssetServiceStoreRequest $request, $id)
+    public function store(AssetServiceStoreRequest $request)
     {
         try {
             DB::beginTransaction();
-            $asset_service = $this->assetServiceCommandServices->store($id, $request);
+            $asset_service = $this->assetServiceCommandServices->store($request);
             DB::commit();
             return response()->json([
                 'success' => true,

@@ -10,7 +10,7 @@ use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 
 class AssetServiceCommandServices
 {
-    public function store(string $id, AssetServiceStoreRequest $request)
+    public function store(AssetServiceStoreRequest $request)
     {
         $request->validated();
         $user = \Session::get('user');
@@ -18,16 +18,19 @@ class AssetServiceCommandServices
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = $user->guid;
-        $asset_service->deskripsi_service = $request->deskripsi_service;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
-        $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : 'backlog';
+        $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
+        $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
+        $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
         $detail_asset_service = new DetailService();
-        $detail_asset_service->id_asset_data = $id;
+        $detail_asset_service->id_asset_data = $request->id_asset;
+        $detail_asset_service->id_lokasi = $request->id_lokasi;
         $detail_asset_service->id_service = $asset_service->id;
-        $detail_asset_service->kondisi_asset_sebelum = $request->kondisi_sebelum;
-        $detail_asset_service->biaya_service = 0;
+        $detail_asset_service->permasalahan = $request->permasalahan;
+        $detail_asset_service->tindakan = $request->tindakan;
+        $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
         if ($request->hasFile('file_asset_service')) {

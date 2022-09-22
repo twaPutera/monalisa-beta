@@ -12,7 +12,7 @@ class Service extends Model
 
     public function detail_service()
     {
-        return $this->hasMany(DetailService::class, 'id_service', 'id');
+        return $this->hasOne(DetailService::class, 'id_service', 'id');
     }
 
     public function kategori_service()

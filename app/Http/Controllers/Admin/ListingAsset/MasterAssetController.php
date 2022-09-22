@@ -205,6 +205,23 @@ class MasterAssetController extends Controller
         }
     }
 
+    public function getDataAllAssetSelect2(Request $request)
+    {
+        try {
+            $data = $this->assetDataQueryServices->getDataAssetSelect2($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
     public function importAssetData(AssetImportRequest $request)
     {
         try {

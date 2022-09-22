@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::post('/update/{id}', [MasterAssetController::class, 'update'])->name('admin.listing-asset.update');
         Route::get('/download-template-import', [MasterAssetController::class, 'downloadTemplateImport'])->name('admin.listing-asset.download-template-import');
         Route::get('/get-all-data-owner-select2', [MasterAssetController::class, 'getDataAllOwnerSelect2'])->name('admin.listing-asset.get-all-data-owner-select2');
+        Route::get('/get-all-data-asset-select2', [MasterAssetController::class, 'getDataAllAssetSelect2'])->name('admin.listing-asset.get-all-data-asset-select2');
         Route::post('/import-asset-data', [MasterAssetController::class, 'importAssetData'])->name('admin.listing-asset.import-asset-data');
         Route::get('/preview-qr', [MasterAssetController::class, 'previewQr'])->name('admin.listing-asset.preview-qr');
         Route::get('/download-qr', [MasterAssetController::class, 'downloadQr'])->name('admin.listing-asset.download-qr');
@@ -61,7 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 
         # Service Asset
         Route::group(['prefix' => 'service-asset'], function () {
-            Route::post('/store/{id_asset}', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
+            Route::post('/store', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });

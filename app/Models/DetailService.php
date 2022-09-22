@@ -19,4 +19,9 @@ class DetailService extends Model
     {
         return $this->belongsTo(AssetData::class, 'id_asset_data', 'id');
     }
+
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class, 'id_lokasi', 'id');
+    }
 }

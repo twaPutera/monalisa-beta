@@ -6,6 +6,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\QrCodeHelpers;
 use App\Services\UserSso\UserSsoQueryServices;
+use Illuminate\Http\Request;
 
 class AssetDataQueryServices
 {
@@ -49,5 +50,34 @@ class AssetDataQueryServices
         return AssetImage::query()
             ->where('id', $id)
             ->firstOrFail();
+    }
+
+    public function getDataAssetSelect2(Request $request)
+    {
+        $data = AssetData::query();
+
+        if (isset($request->keyword)) {
+            $data->where('deskripsi', 'like', '%' . $request->keyword . '%')
+                ->where(function ($query) use ($request) {
+                    $query->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
+                });
+        }
+
+        if (isset($request->id_lokasi)) {
+            $data->where('id_lokasi', $request->id_lokasi);
+        }
+
+        $data = $data->orderby('deskripsi', 'asc')
+            ->get();
+
+        $results = [];
+        foreach ($data as $item) {
+            $results[] = [
+                'id' => $item->id,
+                'text' => $item->deskripsi . ' (' . $item->kode_asset . ')',
+            ];
+        }
+
+        return $results;
     }
 }

@@ -31,15 +31,6 @@ class AssetServiceDatatableServices
             $query->where('id_kategori_service', $request->id_kategori_service);
         }
 
-        // $query->select(
-        //     'services.id',
-        //     'kategori_services.nama_service',
-        //     'services.tanggal_mulai',
-        //     'services.deskripsi_service',
-        //     'services.status_service',
-        //     'services.guid_pembuat'
-        // );
-        // $query->join('kategori_services', 'kategori_services.id', '=', 'services.id_kategori_service');
         $query->orderBy('services.created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -49,6 +40,17 @@ class AssetServiceDatatableServices
             ->addColumn('user', function ($item) {
                 $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
                 return isset($user[0]) ? $user[0]['name'] : 'Not Found';
+            })
+            ->addColumn('status_service', function ($item) {
+                if ($item->status_service == "onprogress") {
+                    $status = "on progress";
+                } else {
+                    $status = $item->status_service;
+                }
+                return $status;
+            })
+            ->addColumn('deskripsi_service', function ($item) {
+                return $item->detail_service->catatan;
             })
             ->addColumn('btn_show_service', function ($item) {
                 $element = '';

@@ -63,9 +63,11 @@
                         data: 'nama_service'
                     },
                     {
+                        name: 'status_service',
                         data: 'status_service'
                     },
                     {
+                        name: 'deskripsi_service',
                         data: 'deskripsi_service'
                     },
                     {
@@ -80,8 +82,7 @@
                         name: 'action'
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 0,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
@@ -137,6 +138,33 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+        $('.datepickerCreateSelesai').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
+        let buttonService = $('#create-service');
+        let buttonPemutihan = $('#pemutihan');
+        const showButton = (status) => {
+            if (status === "services") {
+                buttonService.removeClass('d-none');
+                buttonPemutihan.addClass('d-none');
+            } else if (status == "pemutihan") {
+                buttonService.removeClass('d-none');
+                buttonPemutihan.removeClass('d-none');
+            } else {
+                buttonService.addClass('d-none');
+                buttonPemutihan.addClass('d-none');
+            }
+        }
+        const hideButton = () => {
+            buttonService.addClass('d-none');
+            buttonPemutihan.addClass('d-none');
+        }
+        buttonService.addClass('d-none');
+        buttonPemutihan.addClass('d-none');
 
         const showAssetServices = (button) => {
             const url = $(button).data('url_detail');
@@ -181,8 +209,11 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button onclick="openModalByClass('modalCreateAssetService')"
-                        class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i>
+                    <button class="btn btn-danger shadow-custom d-none btn-sm mr-2" id="pemutihan" type="button"><i
+                            class="fas fa-backspace"></i>
+                        Pemutihan</button>
+                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
+                        class="btn btn-primary shadow-custom d-none btn-sm" type="button"><i class="fa fa-plus"></i>
                         Service</button>
                 </div>
             </div>
@@ -322,19 +353,23 @@
                 <div class="col-md-6 col-12">
                     <ul class="nav nav-tabs mb-0" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">Log
+                            <a class="nav-link active" data-toggle="tab" href="#" onclick="hideButton()"
+                                data-target="#kt_tabs_1_1">Log
                                 Opname</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">Log
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('services')"
+                                data-target="#kt_tabs_1_2">Log
                                 Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">Log
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
+                                data-target="#kt_tabs_1_3">Log
                                 Moving</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">Log
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
+                                data-target="#kt_tabs_1_4">Log
                                 Peminjaman</a>
                         </li>
                     </ul>
