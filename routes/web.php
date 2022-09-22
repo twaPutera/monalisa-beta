@@ -63,7 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 
         # Service Asset
         Route::group(['prefix' => 'service-asset'], function () {
-            Route::post('/store', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
+            Route::post('/store/{id}', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });

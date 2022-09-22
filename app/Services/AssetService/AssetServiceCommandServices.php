@@ -10,7 +10,7 @@ use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 
 class AssetServiceCommandServices
 {
-    public function store(AssetServiceStoreRequest $request)
+    public function store(string $id, AssetServiceStoreRequest $request)
     {
         $request->validated();
         $user = \Session::get('user');
@@ -25,7 +25,7 @@ class AssetServiceCommandServices
         $asset_service->save();
 
         $detail_asset_service = new DetailService();
-        $detail_asset_service->id_asset_data = $request->id_asset;
+        $detail_asset_service->id_asset_data = $id;
         $detail_asset_service->id_lokasi = $request->id_lokasi;
         $detail_asset_service->id_service = $asset_service->id;
         $detail_asset_service->permasalahan = $request->permasalahan;
