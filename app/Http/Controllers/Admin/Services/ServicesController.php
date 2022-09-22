@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Services;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Services\ServicesStoreRequest;
-use Illuminate\Http\Request;
-use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
-use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
 {
