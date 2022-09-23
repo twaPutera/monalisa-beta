@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::post('/store', [ServicesController::class, 'store'])->name('admin.services.store');
         Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('admin.services.edit');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
+        Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {

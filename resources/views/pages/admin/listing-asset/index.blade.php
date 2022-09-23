@@ -176,8 +176,20 @@
                     }
                 ],
                 columnDefs: [
-
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        }
+                    }
                 ],
+                createdRow: function (row, data, index) {
+                    $(row).attr('data-id', data.id).addClass('row-asset').attr("style", "cursor: pointer;");
+                    $(row).on('click', function() {
+                        let id = $(this).data('id');
+                        showAsset(data.action);
+                    });
+                },
             });
 
             $('.datepickerCreate').datepicker({
@@ -185,7 +197,7 @@
                 width: '100%',
                 format: 'yyyy-mm-dd',
                 autoclose: true,
-            })
+            });
         });
 
         const filterTableAsset = () => {
@@ -338,15 +350,15 @@
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6 class="">Catatan</h6>
-                            <h6 class="text-right" id="catatanService">Perlu Pergantian Oli dan pergantian berbagai macam sparepart</h6>
+                            <h6 class="text-right" id="catatanService">No Item Selected</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Log Terakhir</h6>
-                            <h6 class="text-right" id="lastLogServiceDate">18 Agustus 2020</h6>
+                            <h6 class="text-right" id="lastLogServiceDate">No Item Selected</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Dicek Oleh</h6>
-                            <h6 class="text-right"><strong>Rizal</strong></h6>
+                            <h6 class="text-right"><strong>No Item Selected</strong></h6>
                         </div>
                         <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                             <h6 class="mb-0">Status Peminjaman</h6>

@@ -37,16 +37,14 @@
                 ajax: {
                     url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                     data: function(d) {
-                        //
+                        d.month = $('.monthpicker').val();
+                        d.year = $('.yearpicker').val();
+                        d.status_service = $("input[name='status_services']:checked").val();
+                        d.id_lokasi = $('#lokasiFilter').val();
+                        d.keyword = $('#searchServices').val();
                     }
                 },
-                columns: [{
-                        data: "checkbox",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'checkbox'
-                    },
+                columns: [
                     {
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -85,13 +83,13 @@
                     },
                 ],
                 columnDefs: [{
-                        targets: [3, 8],
+                        targets: [2, 7],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 7,
+                        targets: 6,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -100,7 +98,7 @@
                             } else if (data == "backlog") {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">Backlog</span>`;
-                            } else if (data == "done") {
+                            } else if (data == "selesai") {
                                 element +=
                                     `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
                             }
@@ -135,7 +133,7 @@
                     }
                 }
             });
-            $('.filterLokasi').select2({
+            $('#lokasiFilter').select2({
                 width: '150px',
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
@@ -146,6 +144,10 @@
             generateMonthPicker();
             generateYearPicker();
         });
+
+        const filterTableService = () => {
+            table.DataTable().ajax.reload();
+        }
 
         const generateMonthPicker = () => {
             $('.monthpicker').datepicker({
@@ -212,6 +214,35 @@
                 }
             }
         });
+        const changeChartData = (data) => {
+            chartServices.data.datasets[0].data = data;
+            chartServices.update();
+        }
+
+        const getDataChart = () => {
+            $.ajax({
+                url: "{{ route('admin.services.get-data-chart') }}",
+                method: "GET",
+                data: {
+                    month: $('.monthpicker').val(),
+                    year: $('.yearpicker').val(),
+                },
+                success: function(response) {
+                    changeChartData(response.data);
+                }
+            })
+        }
+
+        $(document).ready(function() {
+            getDataChart();
+        })
+
+        const filterTime = () => {
+            getDataChart();
+            filterTableService();
+        }
+    </script>
+    <script>
         $('.datepickerCreate').datepicker({
             todayHighlight: true,
             width: '100%',
@@ -229,7 +260,7 @@
             $('#preview-file-image-text').text(file.name);
         });
 
-         $('#file_asset_service_update').on('change', function() {
+        $('#file_asset_service_update').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text-update').text(file.name);
         });
@@ -402,22 +433,22 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchAsset" class="form-control form-control-sm"
+                        <input type="text" id="searchServices" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
-                                type="button"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton" type="button"><i
+                                    class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <select name="" class="filterLokasi select2Lokasi form-control mr-2" style="width: 150px;"
-                        id="">
+                    <select name="" class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
+                        id="lokasiFilter">
 
                     </select>
-                    <input type="text" readonly class="form-control yearpicker mx-2" style="width: 150px;"
+                    <input type="text" onchange="filterTime()" value="{{ date('Y') }}" readonly class="form-control yearpicker mx-2" style="width: 150px;"
                         placeholder="Tahun">
-                    <input type="text" readonly class="form-control monthpicker mr-2" style="width: 150px;"
+                    <input type="text" onchange="filterTime()" readonly class="form-control monthpicker mr-2" style="width: 150px;"
                         placeholder="Bulan">
                     <button onclick="openModalByClass('modalCreateAssetService')"
                         class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
@@ -427,19 +458,19 @@
                 <h5 class="mb-0 text-primary"><strong>Data Service</strong></h5>
                 <div class="kt-radio-inline">
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" checked="checked" value="all" name="radio4"> Semua Services
+                        <input type="radio" onchange="filterTableService()" checked="checked" value="" name="status_services"> Semua Services
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" name="radio4" value="on progress"> On Progress
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> On Progress
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" name="radio4" value="backlog"> Backlog
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="backlog"> Backlog
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" name="radio4" value="selesai"> Selesai
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="selesai"> Selesai
                         <span></span>
                     </label>
                 </div>
@@ -450,7 +481,6 @@
                         <table class="table table-striped mb-0" id="datatableLogService">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>No</th>
                                     <th>#</th>
                                     <th>Tanggal</th>

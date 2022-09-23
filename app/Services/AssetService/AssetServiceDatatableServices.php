@@ -31,7 +31,31 @@ class AssetServiceDatatableServices
             $query->where('id_kategori_service', $request->id_kategori_service);
         }
 
-        $query->orderBy('services.created_at', 'ASC');
+        if (isset($request->status_service)) {
+            $query->where('status_service', $request->status_service);
+        }
+
+        if (isset($request->id_lokasi)) {
+            $query->whereHas('detail_service', function ($query) use ($request) {
+                $query->where('id_lokasi', $request->id_lokasi);
+            });
+        }
+
+        if (isset($request->year)) {
+            $query->whereYear('tanggal_mulai', $request->year);
+        }
+
+        if (isset($request->month)) {
+            $query->whereMonth('tanggal_mulai', $request->month);
+        }
+
+        if (isset($request->keyword)) {
+            $query->whereHas('detail_service', function ($query) use ($request) {
+                $query->where('permasalahan', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        $query->orderBy('services.created_at', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_service', function ($item) {

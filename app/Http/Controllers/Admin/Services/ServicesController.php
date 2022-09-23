@@ -97,4 +97,22 @@ class ServicesController extends Controller
             ], 500);
         }
     }
+
+    public function getDataChartServices(Request $request)
+    {
+        try {
+            $data = $this->assetServiceQueryServices->getDataChartServices($request);
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengambil data chart service',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }
