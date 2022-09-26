@@ -44,4 +44,9 @@ class AssetData extends Model
     {
         return $this->hasMany(DetailService::class, 'id_asset_data', 'id');
     }
+
+    public function log_asset()
+    {
+        return $this->hasMany(LogAsset::class, 'asset_id', 'id');
+    }
 }

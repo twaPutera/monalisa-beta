@@ -121,6 +121,7 @@
                         d.id_vendor = $('#vendorAssetFilter').val();
                         d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
+                        d.is_sparepart = $('#isSparepartFilter').val();
                     }
                 },
                 columns: [
@@ -376,4 +377,5 @@
     @include('pages.admin.listing-asset._modal_create')
     @include('pages.admin.listing-asset._modal_import')
     @include('pages.admin.listing-asset._modal_filter')
+    @include('pages.admin.listing-asset._modal_search_asset')
 @endsection

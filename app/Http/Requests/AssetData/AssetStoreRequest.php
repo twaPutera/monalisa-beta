@@ -47,6 +47,8 @@ class AssetStoreRequest extends FormRequest
             // 'umur_manfaat_fisikal' => 'nullable|numeric',
             // 'umur_manfaat_komersial' => 'nullable|numeric',
             'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'is_sparepart' => 'nullable|in:0,1',
+            'asal_asset' => 'nullable|string|uuid',
         ];
     }
 

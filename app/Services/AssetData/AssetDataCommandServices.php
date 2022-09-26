@@ -10,6 +10,7 @@ use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
+use App\Models\LogAsset;
 
 class AssetDataCommandServices
 {
@@ -51,6 +52,7 @@ class AssetDataCommandServices
         $asset->created_by = $user->guid;
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
+        $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {
@@ -63,6 +65,17 @@ class AssetDataCommandServices
             $asset_images->imageable_id = $asset->id;
             $asset_images->path = $filenamesave;
             $asset_images->save();
+        }
+
+        if (isset($request->asal_asset)) {
+            $asset_asal = AssetData::find($request->asal_asset);
+            if (isset($asset_asal)) {
+                $message_log = 'Asset ini diambil dari asset ' . $asset_asal->deskripsi . ' dengan kode asset ' . $asset_asal->kode_asset;
+                $log_asset = new LogAsset();
+                $log_asset->asset_id = $asset->id;
+                $log_asset->log = $message_log;
+                $log_asset->save();
+            }
         }
 
         return $asset;

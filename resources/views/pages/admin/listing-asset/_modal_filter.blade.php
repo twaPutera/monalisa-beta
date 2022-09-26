@@ -26,6 +26,14 @@
 
                     </select>
                 </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Jenis</label>
+                    <select name="is_sparepart" class="form-control" id="isSparepartFilter">
+                        <option value="">Semua Jenis</option>
+                        <option value="0">Asset</option>
+                        <option value="1">Sparepart</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

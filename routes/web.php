@@ -67,6 +67,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });
+
+        # Log Asset
+        Route::group(['prefix' => 'log-asset'], function () {
+            Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
+        });
     });
     # Services
     Route::group(['prefix' => 'services'], function () {

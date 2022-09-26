@@ -332,7 +332,8 @@ td {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     font-weight: 700;
-    margin-right: 8px;
+    margin-right: 6px;
+    padding: 0.65rem 0.90rem !important;
     border: unset;
 }
 

@@ -73,6 +73,10 @@
         generateKategoriSelect2Create('kategoriAssetCreate', $(this).val());
     });
 
+    $('#groupAssetSearch').on('change', function() {
+        generateKategoriSelect2Create('kategoriAssetSearch', $(this).val());
+    });
+
     $('#lokasiAssetCreateService').on('change', function() {
         generateAssetSelect2Create('listAssetLocation', $(this).val());
     });
@@ -253,5 +257,55 @@
                 cache: true
             },
         });
+    }
+
+    $("#kategoriAssetSearch").on('change', function() {
+        generateSelect2AssetDataSearch();
+    });
+
+    const generateSelect2AssetDataSearch = () => {
+        $('#assetDataSearch').select2({
+            width: '100%',
+            placeholder: 'Pilih Asset',
+            dropdownParent: $('#modalSearchAsset'),
+            ajax: {
+                url: '{{ route('admin.listing-asset.get-all-data-asset-select2') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        keyword: params.term, // search term
+                        id_kategori_asset: $('#kategoriAssetSearch').val(),
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.data,
+                    };
+                },
+                cache: true
+            },
+        });
+    }
+
+    $("#buttonSearchAsset").on('click', function() {
+        $('#asal_asset_preview').val($("#assetDataSearch").children("option:selected").text());
+        $('#asal_asset_id').val($("#assetDataSearch").val());
+        $('#modalSearchAsset').modal('hide');
+    });
+
+    const jenisAssetChange = (select) => {
+        const assetLama = $(select).children("option:selected").data('asset-lama');
+        if (assetLama == "1") {
+            $('#asal-asset-container').show();
+            $("#modalSearchAsset").on('shown.bs.modal', function() {
+                generateGroupSelect2('groupAssetSearch');
+            }).modal('show');
+        } else {
+            $('#asal-asset-container').hide();
+            $('#asal_asset_preview').val("");
+            $('#asal_asset_id').val("");
+        }
     }
 </script>

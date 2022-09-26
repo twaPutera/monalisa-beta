@@ -261,4 +261,10 @@ class MasterAssetController extends Controller
             ], 400);
         }
     }
+
+    public function log_asset_dt(Request $request)
+    {
+        $response = $this->assetDataDatatableServices->log_asset_dt($request);
+        return $response;
+    }
 }

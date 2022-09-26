@@ -63,6 +63,10 @@ class AssetDataQueryServices
                 });
         }
 
+        if (isset($request->id_kategori_asset)) {
+            $data->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
         if (isset($request->id_lokasi)) {
             $data->where('id_lokasi', $request->id_lokasi);
         }

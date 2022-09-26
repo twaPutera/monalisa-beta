@@ -3,6 +3,7 @@
 namespace App\Services\AssetData;
 
 use App\Models\AssetData;
+use App\Models\LogAsset;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -53,6 +54,10 @@ class AssetDataDatatableServices
             $query->whereIn('id_kategori_asset', $request->categories);
         }
 
+        if (isset($request->is_sparepart)) {
+            $query->where('is_sparepart', $request->is_sparepart);
+        }
+
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -75,6 +80,19 @@ class AssetDataDatatableServices
                 return isset($user[0]) ? $user[0]['name'] : 'Not Found';
             })
             ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function log_asset_dt(Request $request)
+    {
+        $query = LogAsset::query();
+        if (isset($request->asset_id)) {
+            $query->where('asset_id', $request->asset_id);
+        }
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->rawColumns([])
             ->make(true);
     }
 }

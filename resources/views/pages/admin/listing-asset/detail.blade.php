@@ -147,24 +147,16 @@
 
         let buttonService = $('#create-service');
         let buttonPemutihan = $('#pemutihan');
-        const showButton = (status) => {
-            if (status === "services") {
-                buttonService.removeClass('d-none');
-                buttonPemutihan.addClass('d-none');
-            } else if (status == "pemutihan") {
-                buttonService.removeClass('d-none');
-                buttonPemutihan.removeClass('d-none');
-            } else {
-                buttonService.addClass('d-none');
-                buttonPemutihan.addClass('d-none');
-            }
+        const showButton = (elementId) => {
+            $(".btn-log").hide();
+            $('#' + elementId).show();
         }
-        const hideButton = () => {
-            buttonService.addClass('d-none');
-            buttonPemutihan.addClass('d-none');
-        }
-        buttonService.addClass('d-none');
-        buttonPemutihan.addClass('d-none');
+        // const hideButton = () => {
+        //     buttonService.addClass('d-none');
+        //     buttonPemutihan.addClass('d-none');
+        // }
+        // buttonService.addClass('d-none');
+        // buttonPemutihan.addClass('d-none');
 
         const showAssetServices = (button) => {
             const url = $(button).data('url_detail');
@@ -209,11 +201,11 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-danger shadow-custom d-none btn-sm mr-2" id="pemutihan" type="button"><i
-                            class="fas fa-backspace"></i>
-                        Pemutihan</button>
-                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
-                        class="btn btn-primary shadow-custom d-none btn-sm" type="button"><i class="fa fa-plus"></i>
+                    <button class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan" type="button">
+                        <i class="fas fa-sync-alt"></i>
+                        Pindahkan Asset</button>
+                    <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;" id="create-service"
+                        class="btn btn-primary shadow-custom btn-sm btn-log" type="button"><i class="fa fa-plus"></i>
                         Service</button>
                 </div>
             </div>
@@ -358,19 +350,24 @@
                                 Opname</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('services')"
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('create-service')"
                                 data-target="#kt_tabs_1_2">Log
                                 Services</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemindahan')"
                                 data-target="#kt_tabs_1_3">Log
-                                Moving</a>
+                                Pemindahan</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
                                 data-target="#kt_tabs_1_4">Log
                                 Peminjaman</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
+                                data-target="#kt_tabs_1_4">Log
+                                Riwayat</a>
                         </li>
                     </ul>
                     <div class="tab-content">
