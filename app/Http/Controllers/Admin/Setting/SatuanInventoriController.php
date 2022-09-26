@@ -118,4 +118,20 @@ class SatuanInventoriController extends Controller
             ], 500);
         }
     }
+
+    public function getDataSelect2(Request $request)
+    {
+        try {
+            $data = $this->satuanInventoriQueryServices->getDataSelect2($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

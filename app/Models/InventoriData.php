@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class InventoriData extends Model
+{
+    use HasFactory, Uuid;
+
+    public function kategori_inventori()
+    {
+        return $this->belongsTo(KategoriInventori::class, 'id_kategori_inventori', 'id');
+    }
+
+    public function satuan_inventori()
+    {
+        return $this->belongsTo(SatuanInventori::class, 'id_satuan_inventori', 'id');
+    }
+
+    public function detail_inventori_data()
+    {
+        return $this->hasMany(DetailInventoriData::class, 'id_inventori', 'id');
+    }
+}
