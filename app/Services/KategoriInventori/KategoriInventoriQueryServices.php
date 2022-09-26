@@ -2,8 +2,8 @@
 
 namespace App\Services\KategoriInventori;
 
-use App\Models\KategoriInventori;
 use Illuminate\Http\Request;
+use App\Models\KategoriInventori;
 
 class KategoriInventoriQueryServices
 {

@@ -2,10 +2,9 @@
 
 namespace App\Services\InventarisData;
 
-use App\Models\InventarisData;
+use App\Models\InventoriData;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
-use App\Models\InventoriData;
 
 class InventarisDataCommandServices
 {

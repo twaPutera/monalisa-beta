@@ -2,11 +2,9 @@
 
 namespace App\Services\DetailInventaris;
 
-use App\Models\DetailInventaris;
+use App\Models\DetailInventoriData;
 use App\Http\Requests\DetailInventaris\DetailInventarisStoreRequest;
 use App\Http\Requests\DetailInventaris\DetailInventarisUpdateRequest;
-use App\Models\DetailInventoriData;
-use App\Models\InventoriData;
 
 class DetailInventarisCommandServices
 {

@@ -29,7 +29,7 @@ class InventarisDataStoreRequest extends FormRequest
             'kode_inventori' => 'required|string|max:50|unique:inventori_data,kode_inventori',
             'nama_inventori' => 'required|string|max:255',
             'stok' => 'required|numeric',
-            'deskripsi_inventori' => 'required|string|max:255'
+            'deskripsi_inventori' => 'required|string|max:255',
         ];
     }
 }

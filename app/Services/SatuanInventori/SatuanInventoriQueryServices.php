@@ -2,8 +2,8 @@
 
 namespace App\Services\SatuanInventori;
 
-use App\Models\SatuanInventori;
 use Illuminate\Http\Request;
+use App\Models\SatuanInventori;
 
 class SatuanInventoriQueryServices
 {

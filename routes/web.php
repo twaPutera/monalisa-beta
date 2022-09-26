@@ -16,9 +16,9 @@ use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\Inventaris\DetailInventarisController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------

@@ -26,7 +26,7 @@ class DetailInventarisStoreRequest extends FormRequest
         return [
             'id_lokasi' => 'required|uuid|exists:lokasis,id',
             'stok' => 'required|numeric',
-            'keterangan' => 'required|string|max:255'
+            'keterangan' => 'required|string|max:255',
         ];
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Inventaris;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
-use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
-use App\Services\InventarisData\InventarisDataCommandServices;
-use App\Services\InventarisData\InventarisDataDatatableServices;
-use App\Services\InventarisData\InventarisDataQueryServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\InventarisData\InventarisDataQueryServices;
+use App\Services\InventarisData\InventarisDataCommandServices;
+use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
+use App\Services\InventarisData\InventarisDataDatatableServices;
+use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 
 class MasterInventarisController extends Controller
 {

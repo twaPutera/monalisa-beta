@@ -19,7 +19,7 @@ class InventarisDataDatatableServices
                 return $item->kategori_inventori->nama_kategori;
             })
             ->addColumn('satuan', function ($item) {
-                return $item->stok . " " . $item->satuan_inventori->nama_satuan;
+                return $item->stok . ' ' . $item->satuan_inventori->nama_satuan;
             })
             ->addColumn('action', function ($item) {
                 $element = '';
