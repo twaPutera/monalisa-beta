@@ -18,7 +18,7 @@ class CreateLogAssetsTable extends Migration
             $table->uuid("asset_id");
             $table->foreign("asset_id")->references("id")->on("asset_data");
             $table->text("log");
-            $table->uuid("created_by");
+            $table->string("created_by");
             $table->timestamps();
         });
 
