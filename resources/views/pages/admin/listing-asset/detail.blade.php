@@ -38,8 +38,9 @@
 @section('custom_js')
     <script>
         $(document).ready(function() {
-            var table2 = $('#datatableLogService');
-            table2.DataTable({
+            var tableServices = $('#datatableLogService');
+            var tableLogAsset = $('#logDataTable');
+            tableServices.DataTable({
                 responsive: true,
                 processing: true,
                 searching: false,
@@ -91,6 +92,48 @@
                     //Custom template data
                 ],
             });
+
+            tableLogAsset.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                ordering: false,
+                serverSide: true,
+                bLengthChange: false,
+                autoWidth: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.log-asset.datatable') }}",
+                    data: function(d) {
+                        d.asset_id = "{{ $asset->id }}"
+                    }
+                },
+                columns: [{
+                        name: 'created_at',
+                        data: 'created_at',
+                        width: '150px'
+                    },
+                    {
+                        name: 'created_by',
+                        data: 'created_by',
+                        width: '100px'
+                    },
+                    {
+                        name: 'log',
+                        data: 'log'
+                    },
+                ],
+                columnDefs: [{
+                        targets: 0,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        },
+                    }
+                    //Custom template data
+                ],
+            });
+
             $('#searchButton').on('click', function() {
                 $('#lokasiTree').jstree('search', $('#searchTree').val());
             });
@@ -366,7 +409,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
-                                data-target="#kt_tabs_1_4">Log
+                                data-target="#kt_tabs_1_5">Log
                                 Riwayat</a>
                         </li>
                     </ul>
@@ -508,6 +551,20 @@
                                         </td>
                                         <td>12 Jan 2022, 12:45 Update</td>
                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="kt_tabs_1_5" role="tabpanel">
+                            <table class="table table-striped mb-0" id="logDataTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 150px">Tanggal</th>
+                                        <th style="width: 100px">Pembuat</th>
+                                        <th>Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
                                 </tbody>
                             </table>
                         </div>
