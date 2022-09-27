@@ -67,21 +67,14 @@ class AssetDataCommandServices
             $asset_images->save();
         }
 
-        $log = new LogAsset();
-        $log->asset_id = $asset->id;
-        $log->log = 'Asset baru dengan kode ' . $asset->kode_asset . ' telah ditambahkan';
-        $log->created_by = $user->name;
-        $log->save();
+        $message_log = 'Asset baru dengan kode ' . $asset->kode_asset . ' telah ditambahkan';
+        $this->insertLogAsset($asset->id, $message_log);
 
         if (isset($request->asal_asset)) {
             $asset_asal = AssetData::find($request->asal_asset);
             if (isset($asset_asal)) {
                 $message_log = 'Asset ini diambil dari asset ' . $asset_asal->deskripsi . ' dengan kode asset ' . $asset_asal->kode_asset;
-                $log_asset = new LogAsset();
-                $log_asset->asset_id = $asset->id;
-                $log_asset->log = $message_log;
-                $log_asset->created_by = $user->name;
-                $log_asset->save();
+                $this->insertLogAsset($asset->id, $message_log);
             }
         }
 
@@ -136,6 +129,17 @@ class AssetDataCommandServices
         }
 
         return $asset;
+    }
+
+    public function insertLogAsset($asset_id, $log)
+    {
+        $user = \Session::get('user');
+
+        $log_asset = new LogAsset();
+        $log_asset->asset_id = $asset_id;
+        $log_asset->log = $log;
+        $log_asset->created_by = $user->name;
+        $log_asset->save();
     }
 
     protected static function generateNameImage($extension, $kodeasset)
