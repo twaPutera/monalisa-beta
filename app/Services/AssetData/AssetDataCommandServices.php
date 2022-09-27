@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetData;
 
+use App\Models\LogAsset;
 use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
@@ -10,7 +11,6 @@ use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
-use App\Models\LogAsset;
 
 class AssetDataCommandServices
 {

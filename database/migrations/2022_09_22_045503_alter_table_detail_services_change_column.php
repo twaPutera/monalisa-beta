@@ -15,7 +15,7 @@ class AlterTableDetailServicesChangeColumn extends Migration
     {
         Schema::table('detail_services', function (Blueprint $table) {
             $table->dropColumn(['biaya_service']);
-            $table->renameColumn('permasalahan', 'kondisi_asset_sebelum');
+            $table->renameColumn('kondisi_asset_sebelum', 'permasalahan');
             $table->renameColumn('kondisi_asset_sesudah', 'tindakan');
             $table->after('kondisi_asset_sesudah', function ($table) {
                 $table->text('catatan')->nullable();

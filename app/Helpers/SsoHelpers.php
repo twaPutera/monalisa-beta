@@ -84,7 +84,7 @@ class SsoHelpers
         return $response;
     }
 
-    public function checkAccessTokenIsValid($access_token)
+    public static function checkAccessTokenIsValid($access_token)
     {
         $response = [];
         $jwt_key = config('app.sso_public_key');

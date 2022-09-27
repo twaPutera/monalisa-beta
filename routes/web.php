@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
+use App\Http\Controllers\Admin\Inventaris\DetailInventarisController;
+use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 /*
@@ -81,6 +83,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('admin.services.edit');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
+    });
+
+    # Inventaris
+    Route::group(['prefix' => 'listing-inventaris'], function () {
+        Route::get('/', [MasterInventarisController::class, 'index'])->name('admin.listing-inventaris.index');
+        Route::get('/datatable', [MasterInventarisController::class, 'datatable'])->name('admin.listing-inventaris.datatable');
+        Route::post('/store', [MasterInventarisController::class, 'store'])->name('admin.listing-inventaris.store');
+        Route::get('/edit/{id}', [MasterInventarisController::class, 'edit'])->name('admin.listing-inventaris.edit');
+        Route::post('/update/{id}', [MasterInventarisController::class, 'update'])->name('admin.listing-inventaris.update');
+        Route::post('/delete/{id}', [MasterInventarisController::class, 'destroy'])->name('admin.listing-inventaris.delete');
+    });
+
+    Route::group(['prefix' => 'detail-inventaris'], function () {
+        Route::get('/{id}', [DetailInventarisController::class, 'index'])->name('admin.detail-inventaris.index');
+        Route::get('/datatable/{id_inventaris}', [DetailInventarisController::class, 'datatable'])->name('admin.detail-inventaris.datatable');
+        Route::post('/store/{id_inventaris}', [DetailInventarisController::class, 'store'])->name('admin.detail-inventaris.store');
+        Route::get('/edit/{id_detail}', [DetailInventarisController::class, 'edit'])->name('admin.detail-inventaris.edit');
+        Route::post('/update/{id_detail}', [DetailInventarisController::class, 'update'])->name('admin.detail-inventaris.update');
+        Route::post('/delete/{id_detail}', [DetailInventarisController::class, 'destroy'])->name('admin.detail-inventaris.delete');
     });
     # Setting
     Route::group(['prefix' => 'setting'], function () {
@@ -149,6 +170,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [KategoriInventoriController::class, 'update'])->name('admin.setting.kategori-inventori.update');
             Route::post('/delete/{id}', [KategoriInventoriController::class, 'destroy'])->name('admin.setting.kategori-inventori.delete');
             Route::get('/datatable', [KategoriInventoriController::class, 'datatable'])->name('admin.setting.kategori-inventori.datatable');
+            Route::get('/get-data-select2', [KategoriInventoriController::class, 'getDataSelect2'])->name('admin.setting.kategori-inventori.get-data-select2');
         });
         // # Satuan Inventori
         Route::group(['prefix' => 'satuan-inventori'], function () {
@@ -158,6 +180,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/update/{id}', [SatuanInventoriController::class, 'update'])->name('admin.setting.satuan-inventori.update');
             Route::post('/delete/{id}', [SatuanInventoriController::class, 'destroy'])->name('admin.setting.satuan-inventori.delete');
             Route::get('/datatable', [SatuanInventoriController::class, 'datatable'])->name('admin.setting.satuan-inventori.datatable');
+            Route::get('/get-data-select2', [SatuanInventoriController::class, 'getDataSelect2'])->name('admin.setting.satuan-inventori.get-data-select2');
         });
         // # Kelas Asset
         Route::group(['prefix' => 'kelas-asset'], function () {

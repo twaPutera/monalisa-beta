@@ -2,8 +2,8 @@
 
 namespace App\Services\AssetData;
 
-use App\Models\AssetData;
 use App\Models\LogAsset;
+use App\Models\AssetData;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;

@@ -11,4 +11,9 @@ class KategoriInventori extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
     protected $table = 'kategori_inventories';
+
+    public function inventori_data()
+    {
+        return $this->hasMany(InventoriData::class, 'id_kategori_inventori', 'id');
+    }
 }
