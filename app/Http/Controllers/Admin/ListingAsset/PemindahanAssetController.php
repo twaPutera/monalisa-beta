@@ -46,4 +46,9 @@ class PemindahanAssetController extends Controller
             ], 500);
         }
     }
+
+    public function datatable(Request $request)
+    {
+        return $this->pemindahanDatatableServices->datatable($request);
+    }
 }

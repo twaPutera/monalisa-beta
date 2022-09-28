@@ -2,24 +2,12 @@
 
 namespace App\Services\PemindahanAsset;
 
-use Exception;
+use App\Models\PemindahanAsset;
+use App\Models\PemindahanAssetDetail;
+use App\Models\AssetData;
+use App\Models\ApprovalPemindahanAsset;
 
 class PemindahanAssetQueryServices
 {
-    protected $property1;
-
-    public function __construct($property1 = null)
-    {
-        $this->property1 = $property1;
-    }
-
-    public function getProperty1()
-    {
-        return $this->property1;
-    }
-
-    public function setProperty1($property1)
-    {
-        $this->property1 = $property1;
-    }
+    //
 }

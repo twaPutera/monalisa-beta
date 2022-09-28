@@ -67,6 +67,10 @@
         toastr.success(message, title);
     }
 
+    const showToastError = (title, message) => {
+        toastr.error(message, title);
+    }
+
     warningMessage = (msg) => {
         swal.fire({
             title: 'Warning!',

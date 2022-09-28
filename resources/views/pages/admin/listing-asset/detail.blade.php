@@ -40,6 +40,7 @@
         $(document).ready(function() {
             var tableServices = $('#datatableLogService');
             var tableLogAsset = $('#logDataTable');
+            var tableLogPemindahan = $('#tableLogPemindahan');
             tableServices.DataTable({
                 responsive: true,
                 processing: true,
@@ -134,6 +135,78 @@
                 ],
             });
 
+            tableLogPemindahan.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                ordering: false,
+                serverSide: true,
+                bLengthChange: false,
+                autoWidth: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.pemindahan-asset.datatable') }}",
+                    data: function(d) {
+                        d.id_asset = "{{ $asset->id }}"
+                    }
+                },
+                columns: [
+                    {
+                        name: 'created_at',
+                        data: 'created_at',
+                        width: '100px'
+                    },
+                    {
+                        data: "btn_download",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'btn_download'
+                    },
+                    {
+                        name: 'status',
+                        data: 'status'
+                    },
+                    {
+                        name: 'penyerah',
+                        data: 'penyerah'
+                    },
+                    {
+                        name: 'penerima',
+                        data: 'penerima'
+                    },
+                    {
+                        name: 'pembuat',
+                        data: 'pembuat',
+                        width: '100px'
+                    },
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        },
+                    },
+                    {
+                        targets: 2,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "pending") {
+                                element += `<span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span>`;
+                            } else if (data == "ditolak") {
+                                element += `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
+                            } else if (data == "disetujui") {
+                                element += `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                    //Custom template data
+                ],
+            });
+
             $('#searchButton').on('click', function() {
                 $('#lokasiTree').jstree('search', $('#searchTree').val());
             });
@@ -151,9 +224,15 @@
                         $('#modalEdit').modal('hide');
                         window.location.reload();
                     }
+                } else {
+                    showToastError('Gagal', data.message);
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                console.log(errors);
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
                 //if validation not pass
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
@@ -551,41 +630,19 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
-                            <table class="table table-striped mb-0">
+                            <table class="table table-striped mb-0" id="tableLogPemindahan">
                                 <thead>
                                     <tr>
                                         <th>Tanggal</th>
-                                        <th>Status Awal</th>
-                                        <th>Status Akhir</th>
-                                        <th>Catatan</th>
-                                        <th>User</th>
                                         <th>#</th>
-                                        <th>Log</th>
+                                        <th>Status</th>
+                                        <th>Pemberi</th>
+                                        <th>Penerima Terakhirnya</th>
+                                        <th>User</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>

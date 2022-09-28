@@ -36,7 +36,7 @@ class UserSsoQueryServices
             'accept' => 'application/json',
             'Authorization' => 'Bearer ' . $jwt_token,
         ])->get($siska_url, [
-            'fields' => 'nama,guid,email,no_induk,no_hp',
+            'fields' => 'nama,guid,email,no_induk,no_hp,token_user',
             'search' => 'token_user:' . $guid,
         ]);
 
