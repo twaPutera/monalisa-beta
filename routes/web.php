@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Inventaris\DetailInventarisController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Sso\SsoDataController;
+use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +70,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/store/{id}', [AssetServiceController::class, 'store'])->name('admin.listing-asset.service-asset.store');
             Route::get('/datatable', [AssetServiceController::class, 'datatable'])->name('admin.listing-asset.service-asset.datatable');
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
+        });
+
+        # Service Asset
+        Route::group(['prefix' => 'pemindahan-asset'], function () {
+            Route::post('/store', [PemindahanAssetController::class, 'store'])->name('admin.listing-asset.pemindahan-asset.store');
+            Route::get('/datatable', [PemindahanAssetController::class, 'datatable'])->name('admin.listing-asset.pemindahan-asset.datatable');
+            Route::get('/show/{id}', [PemindahanAssetController::class, 'show'])->name('admin.listing-asset.pemindahan-asset.show');
         });
 
         # Log Asset
@@ -203,6 +212,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('admin.setting.kategori-service.get-data-select2');
         });
     });
+});
+
+Route::group(['prefix' => 'sso-api'], function() {
+    Route::get('/get-data-unit', [SsoDataController::class, 'getDataUnit'])->name('sso-api.get-data-unit');
+    Route::get('/get-data-position', [SsoDataController::class, 'getDataPosition'])->name('sso-api.get-data-position');
 });
 
 Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {

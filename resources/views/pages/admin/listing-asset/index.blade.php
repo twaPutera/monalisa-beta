@@ -247,8 +247,8 @@
         });
     </script>
 
-    @include('pages.admin.listing-asset._script_modal_create')
-    @include('pages.admin.listing-asset._script_modal_filter')
+    @include('pages.admin.listing-asset.components.script-js._script_modal_create')
+    @include('pages.admin.listing-asset.components.script-js._script_modal_filter')
 @endsection
 @section('main-content')
     <input type="hidden" value="" id="lokasiParentId">
@@ -374,8 +374,8 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.listing-asset._modal_create')
-    @include('pages.admin.listing-asset._modal_import')
-    @include('pages.admin.listing-asset._modal_filter')
-    @include('pages.admin.listing-asset._modal_search_asset')
+    @include('pages.admin.listing-asset.components.modal._modal_create')
+    @include('pages.admin.listing-asset.components.modal._modal_import')
+    @include('pages.admin.listing-asset.components.modal._modal_filter')
+    @include('pages.admin.listing-asset.components.modal._modal_search_asset')
 @endsection

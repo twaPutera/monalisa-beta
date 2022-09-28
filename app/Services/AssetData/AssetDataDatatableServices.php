@@ -66,7 +66,7 @@ class AssetDataDatatableServices
             })
             ->addColumn('owner_name', function ($item) {
                 $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
-                return isset($user[0]) ? $user[0]['name'] : 'Not Found';
+                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -77,7 +77,7 @@ class AssetDataDatatableServices
             })
             ->addColumn('register_oleh', function ($item) {
                 $user = $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
-                return isset($user[0]) ? $user[0]['name'] : 'Not Found';
+                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             })
             ->rawColumns(['action'])
             ->make(true);

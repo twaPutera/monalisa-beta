@@ -166,6 +166,86 @@
             });
 
             setHeightPropertiAsset();
+
+            generateOptionUnit();
+
+            generateOptionPosition();
+        });
+
+        const generateNewOwnerAsset = () => {
+            $('#newOwnership').select2({
+                width: '100%',
+                placeholder: 'Pilih Pemilik Selanjutnya',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.listing-asset.get-all-data-owner-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                            except_id: '{{ $asset->ownership }}'
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateOptionUnit = () => {
+            $.ajax({
+                url: '{{ route("sso-api.get-data-unit") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $('.unitKerjaSelect').html(option);
+                    }
+                }
+            })
+        }
+
+        const generateOptionPosition = () => {
+            $.ajax({
+                url: '{{ route("sso-api.get-data-position") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $('.positionSelect').html(option);
+                    }
+                }
+            })
+        }
+
+        $('#modalCreatePemindahan').on('shown.bs.modal', function() {
+            generateNewOwnerAsset();
+            $('.positionSelect').select2({
+                width: '100%',
+                placeholder: 'Pilih Jabatan',
+                dropdownParent: $('.modal.show'),
+            });
+            $('.unitKerjaSelect').select2({
+                width: '100%',
+                placeholder: 'Pilih Unit Kerja',
+                dropdownParent: $('.modal.show'),
+            });
         });
 
         const setHeightPropertiAsset = () => {
@@ -194,12 +274,6 @@
             $(".btn-log").hide();
             $('#' + elementId).show();
         }
-        // const hideButton = () => {
-        //     buttonService.addClass('d-none');
-        //     buttonPemutihan.addClass('d-none');
-        // }
-        // buttonService.addClass('d-none');
-        // buttonPemutihan.addClass('d-none');
 
         const showAssetServices = (button) => {
             const url = $(button).data('url_detail');
@@ -222,12 +296,13 @@
                 },
             })
         }
+
         $('#file_asset_service').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
         });
     </script>
-    @include('pages.admin.listing-asset._script_modal_create')
+    @include('pages.admin.listing-asset.components.script-js._script_modal_create')
 @endsection
 @section('main-content')
     <div class="row">
@@ -244,7 +319,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan" type="button">
+                    <button onclick="openModalByClass('modalCreatePemindahan')" class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan" type="button">
                         <i class="fas fa-sync-alt"></i>
                         Pindahkan Asset</button>
                     <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;" id="create-service"
@@ -298,8 +373,7 @@
                                     class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
                                         class="fa fa-edit"></i></button>
                             </div>
-                            <div class="pt-3 pb-1 scroll-bar assetProperti"
-                                style="border-radius: 9px; background: #E5F3FD;">
+                            <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
                                         <td width="40%">Asset Group</td>
@@ -573,7 +647,8 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.listing-asset._modal_edit')
-    @include('pages.admin.listing-asset._modal_create_service')
-    @include('pages.admin.listing-asset._modal_preview_service')
+    @include('pages.admin.listing-asset.components.modal._modal_edit')
+    @include('pages.admin.listing-asset.components.modal._modal_create_service')
+    @include('pages.admin.listing-asset.components.modal._modal_preview_service')
+    @include('pages.admin.listing-asset.components.modal._modal_create_pemindahan')
 @endsection

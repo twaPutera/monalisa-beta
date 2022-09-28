@@ -185,8 +185,8 @@ class MasterAssetController extends Controller
             $response = $this->userSsoQueryServices->getUserSso($request);
             $data = collect($response)->map(function ($item) {
                 return [
-                    'id' => $item['guid'],
-                    'text' => $item['name'] . ' - ' . $item['email'],
+                    'id' => $item['token_user'],
+                    'text' => $item['nama'] . ' - ' . $item['email'],
                 ];
             });
 

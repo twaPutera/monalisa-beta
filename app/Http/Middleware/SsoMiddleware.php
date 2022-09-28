@@ -18,6 +18,8 @@ class SsoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // dd(\Session::get('access_token'));
+        // dd(\Session::get('user'));
         $token = SsoHelpers::checkTokenIsValid($request);
 
         if ($token) {

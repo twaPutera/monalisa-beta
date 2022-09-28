@@ -63,7 +63,7 @@ class AssetServiceDatatableServices
             })
             ->addColumn('user', function ($item) {
                 $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
-                return isset($user[0]) ? $user[0]['name'] : 'Not Found';
+                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             })
             ->addColumn('status_service', function ($item) {
                 if ($item->status_service == 'onprogress') {

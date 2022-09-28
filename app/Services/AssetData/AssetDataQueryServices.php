@@ -40,7 +40,7 @@ class AssetDataQueryServices
         });
 
         $data->link_detail = route('admin.listing-asset.detail', $data->id);
-        $data->owner_name = $user == null ? 'Tidak ada' : $user[0]['name'];
+        $data->owner_name = $user == null ? 'Tidak ada' : $user[0]['nama'];
 
         return $data;
     }

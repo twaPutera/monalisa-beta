@@ -18,6 +18,7 @@ return [
     'sso_client_callback' => env('SSO_CLIENT_CALLBACK', 'http://third-party-app.com/callback'),
     'sso_ldap_url' => env('SSO_LDAP_URL', null),
     'sso_siska_url' => env('SSO_SISKA_URL', null),
+    'siska_url' => env('SISKA_URL', null),
 
     'jwt_secret' => env('JWT_SECRET', 'example_key'),
 
