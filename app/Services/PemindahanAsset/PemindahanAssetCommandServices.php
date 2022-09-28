@@ -2,11 +2,13 @@
 
 namespace App\Services\PemindahanAsset;
 
+use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
 use App\Models\PemindahanAsset;
 use App\Models\PemindahanAssetDetail;
 use App\Models\AssetData;
 use App\Models\ApprovalPemindahanAsset;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
+use App\Http\Requests\PemindahanAsset\PemindahanAssetUpdateRequest;
 use App\Models\DetailPemindahanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
@@ -82,5 +84,39 @@ class PemindahanAssetCommandServices
         $this->assetDataCommandServices->insertLogAsset($asset->id, $message_log);
 
         return $pemindahan_asset;
+    }
+
+    public function changeStatus(PemindahanAssetChangeStatusRequest $request)
+    {
+        $request->validated();
+        $user = \Session::get('user');
+
+        $approval_pemindahan_asset = ApprovalPemindahanAsset::query()
+            ->where('id_pemindahan_asset', $request->id_pemindahan_asset)
+            ->where('guid_approver', $user->guid)->where('status', 'pending')
+            ->first();
+
+        if (!$approval_pemindahan_asset) {
+            throw new Exception('Anda tidak memiliki akses untuk mengubah status pemindahan asset');
+        }
+
+        $approval_pemindahan_asset->is_approve = $request->status == 'disetujui' ? '1' : '0';
+        $approval_pemindahan_asset->tanggal_approval = date('Y-m-d');
+        $approval_pemindahan_asset->keterangan = $request->keterangan;
+        $approval_pemindahan_asset->save();
+
+        $pemindahan_asset = PemindahanAsset::find($approval_pemindahan_asset->id_pemindahan_asset);
+        $pemindahan_asset->status = $request->status;
+        $pemindahan_asset->save();
+
+        $message_log = 'Pemindahan asset dengan nomor surat ' . $pemindahan_asset->no_surat . ' berhasil diubah statusnya menjadi ' . $request->status;
+        $detail_pemindahan_asset = DetailPemindahanAsset::query()->where('id_pemindahan_asset', $pemindahan_asset->id)->first();
+        $this->assetDataCommandServices->insertLogAsset($detail_pemindahan_asset->id_asset, $message_log);
+
+        if ($request->status == 'disetujui') {
+            $asset = AssetData::find($detail_pemindahan_asset->id_asset);
+            $asset->ownership = $pemindahan_asset->guid_penerima_asset;
+            $asset->save();
+        }
     }
 }
