@@ -246,9 +246,11 @@
 
             setHeightPropertiAsset();
 
-            generateOptionUnit();
+            getPositionPenyerah();
 
-            generateOptionPosition();
+            // generateOptionUnit();
+
+            // generateOptionPosition();
         });
 
         const generateNewOwnerAsset = () => {
@@ -315,14 +317,9 @@
 
         $('#modalCreatePemindahan').on('shown.bs.modal', function() {
             generateNewOwnerAsset();
-            $('.positionSelect').select2({
+            $(`#positionPenyerahSelect`).select2({
                 width: '100%',
                 placeholder: 'Pilih Jabatan',
-                dropdownParent: $('.modal.show'),
-            });
-            $('.unitKerjaSelect').select2({
-                width: '100%',
-                placeholder: 'Pilih Unit Kerja',
                 dropdownParent: $('.modal.show'),
             });
         });
@@ -380,6 +377,85 @@
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
         });
+    </script>
+    <script>
+        const getPositionPenyerah = () => {
+            $.ajax({
+                url: "{{ route('sso-api.get-data-position-by-guid') }}",
+                data: {
+                    guid: "{{ $asset->ownership }}"
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $(`#positionPenyerahSelect`).html('<option value="0">Pilih Jabatan</option>');
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $(`#positionPenyerahSelect`).append(option);
+                    }
+                }
+            })
+        }
+
+        const getPositionByGuid = (select, idElement) => {
+            let guid = $(select).val();
+            $.ajax({
+                url: "{{ route('sso-api.get-data-position-by-guid') }}",
+                data: {
+                    guid: guid
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $(`#${idElement}`).html('<option value="0">Pilih Jabatan</option>');
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $(`#${idElement}`).append(option);
+                        $(`#${idElement}`).select2({
+                            width: '100%',
+                            placeholder: 'Pilih Jabatan',
+                            dropdownParent: $('.modal.show'),
+                        });
+                    }
+                }
+            })
+        }
+
+        const getUnitByPosition = (select, idElement) => {
+            let guid = $(select).val();
+            $.ajax({
+                url: "{{ route('sso-api.get-data-unit-by-position') }}",
+                data: {
+                    guid_position: guid
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        $(`#${idElement}`).html('<option value="0">Pilih Unit</option>');
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $(`#${idElement}`).append(option);
+                        $(`#${idElement}`).select2({
+                            width: '100%',
+                            placeholder: 'Pilih Unit',
+                            dropdownParent: $('.modal.show'),
+                        });
+                    }
+                }
+            })
+        }
     </script>
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
 @endsection
