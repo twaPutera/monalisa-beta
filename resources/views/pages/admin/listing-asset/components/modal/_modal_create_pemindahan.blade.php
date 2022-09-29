@@ -83,14 +83,14 @@
                             <input type="hidden" value="{{ $asset->ownership }}" class="form-control" name="penyerah_asset">
                         </div>
                         <div class="form-group">
-                            <label for="">Unit Kerja Pemilik</label>
-                            <select name="unit_kerja_penyerah" class="form-control unitKerjaSelect" id="">
+                            <label for="">Jabatan Pemilik</label>
+                            <select name="jabatan_penyerah" onchange="getUnitByPosition(this, 'unitKerjaPenyerahSelect')" class="form-control" id="positionPenyerahSelect">
 
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Jabatan Pemilik</label>
-                            <select name="jabatan_penyerah" class="form-control positionSelect" id="">
+                            <label for="">Unit Kerja Pemilik</label>
+                            <select name="unit_kerja_penyerah" class="form-control" id="unitKerjaPenyerahSelect">
 
                             </select>
                         </div>
@@ -98,19 +98,19 @@
                     <div class="col-md-4 col-12">
                         <div class="form-group">
                             <label for="">Penerima Asset</label>
-                            <select name="penerima_asset" class="form-control" id="newOwnership">
-
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Unit Kerja Penerima</label>
-                            <select name="unit_kerja_penerima" class="form-control unitKerjaSelect" id="">
+                            <select name="penerima_asset" onchange="getPositionByGuid(this, 'positionPenerimaSelect')" class="form-control" id="newOwnership">
 
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Jabatan Penerima</label>
-                            <select name="jabatan_penerima" class="form-control positionSelect" id="">
+                            <select name="jabatan_penerima" onchange="getUnitByPosition(this, 'unitKerjaPenerimaSelect')" class="form-control" id="positionPenerimaSelect">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Unit Kerja Penerima</label>
+                            <select name="unit_kerja_penerima" class="form-control" id="unitKerjaPenerimaSelect">
 
                             </select>
                         </div>

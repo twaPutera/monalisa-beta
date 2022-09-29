@@ -217,6 +217,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 Route::group(['prefix' => 'sso-api'], function() {
     Route::get('/get-data-unit', [SsoDataController::class, 'getDataUnit'])->name('sso-api.get-data-unit');
     Route::get('/get-data-position', [SsoDataController::class, 'getDataPosition'])->name('sso-api.get-data-position');
+    Route::get('/get-data-position-by-guid', [SsoDataController::class, 'getDataPositionByGuid'])->name('sso-api.get-data-position-by-guid');
+    Route::get('/get-data-unit-by-position', [SsoDataController::class, 'getDataUnitByGuid'])->name('sso-api.get-data-unit-by-position');
 });
 
 Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {

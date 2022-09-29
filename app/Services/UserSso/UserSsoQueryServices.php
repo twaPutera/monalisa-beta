@@ -11,14 +11,15 @@ class UserSsoQueryServices
     {
         $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
 
-        $siska_url = config('app.siska_url') . '/api/pegawai';
+        $sso_siska_url = config('app.sso_siska_url') . '/api/users';
 
         $response_sso_siska = Http::withHeaders([
             'accept' => 'application/json',
             'Authorization' => 'Bearer ' . $jwt_token,
-        ])->get($siska_url, [
-            'fields' => 'nama,token_user,email',
-            'search' => 'nama:' . $request->keyword,
+        ])->get($sso_siska_url, [
+            'fields' => 'name,guid,email',
+            'search' => 'name:' . $request->keyword,
+            'roles' => [33, 34, 36],
             'page' => 1,
             'perPage' => 20,
         ]);
@@ -62,6 +63,54 @@ class UserSsoQueryServices
     {
         $access_token = \Session::get('access_token');
         $ldap_url = config('app.sso_ldap_url') . '/api/position/all';
+        $response_ldap = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $access_token,
+        ])->get($ldap_url);
+
+        return $response_ldap['data'];
+    }
+
+    public function getDataPositionById(string $id)
+    {
+        $access_token = \Session::get('access_token');
+        $ldap_url = config('app.sso_ldap_url') . '/api/position/' . $id;
+        $response_ldap = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $access_token,
+        ])->get($ldap_url);
+
+        return $response_ldap['data'];
+    }
+
+    public function getPositionByGuid(string $guid_position)
+    {
+        $access_token = \Session::get('access_token');
+        $ldap_url = config('app.sso_ldap_url') . '/api/user/' . $guid_position . '/position';
+        $response_ldap = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $access_token,
+        ])->get($ldap_url);
+
+        return $response_ldap['data'];
+    }
+
+    public function getUnitByGuid(string $guid_position)
+    {
+        $access_token = \Session::get('access_token');
+        $ldap_url = config('app.sso_ldap_url') . '/api/position-unit/member/position/' . $guid_position . '/unit';
+        $response_ldap = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $access_token,
+        ])->get($ldap_url);
+
+        return $response_ldap['data'];
+    }
+
+    public function getUnitById(string $id)
+    {
+        $access_token = \Session::get('access_token');
+        $ldap_url = config('app.sso_ldap_url') . '/api/unit/' . $id;
         $response_ldap = Http::withHeaders([
             'accept' => 'application/json',
             'Authorization' => 'Bearer ' . $access_token,
