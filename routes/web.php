@@ -77,6 +77,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/store', [PemindahanAssetController::class, 'store'])->name('admin.listing-asset.pemindahan-asset.store');
             Route::get('/datatable', [PemindahanAssetController::class, 'datatable'])->name('admin.listing-asset.pemindahan-asset.datatable');
             Route::get('/show/{id}', [PemindahanAssetController::class, 'show'])->name('admin.listing-asset.pemindahan-asset.show');
+            Route::get('/print-bast/{id}', [PemindahanAssetController::class, 'printBast'])->name('admin.listing-asset.pemindahan-asset.print-bast');
         });
 
         # Log Asset

@@ -42,7 +42,7 @@ class PemindahanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('btn_download', function ($item) {
-                $element = '<a href="#" target="_blank" class="btn btn-icon"><i class="fa fa-download"></i></a>';
+                $element = '<a href="'. route('admin.listing-asset.pemindahan-asset.print-bast', $item->id) .'" target="_blank" class="btn btn-icon"><i class="fa fa-download"></i></a>';
                 return $element;
             })
             ->addColumn('penyerah', function ($item) {

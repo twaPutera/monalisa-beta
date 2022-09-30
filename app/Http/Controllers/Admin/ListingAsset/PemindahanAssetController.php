@@ -9,6 +9,7 @@ use App\Services\PemindahanAsset\PemindahanDatatableServices;
 use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
 use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
 
 class PemindahanAssetController extends Controller
 {
@@ -50,5 +51,13 @@ class PemindahanAssetController extends Controller
     public function datatable(Request $request)
     {
         return $this->pemindahanDatatableServices->datatable($request);
+    }
+
+    public function printBast($id)
+    {
+        $data = $this->pemindahanAssetQueryServices->findById($id);
+        $pdf = \PDF::loadView('pages.admin.pemindahan-asset.bast.index', compact('data'));
+        return $pdf->stream();
+        // return view('pages.admin.pemindahan-asset.bast.index', compact('data'));
     }
 }
