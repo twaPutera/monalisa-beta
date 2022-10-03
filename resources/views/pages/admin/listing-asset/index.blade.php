@@ -365,6 +365,10 @@
                             <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i
                                     class="fas fa-check-circle"></i></h6>
                         </div>
+                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                            <h6>Peminjam</h6>
+                            <h6 class="text-right">No Item Selected</h6>
+                        </div>
                         <div class="text-right">
                             <a href="#" class="text-primary" id="linkDetailAsset"><u>Lihat Detail</u></a>
                         </div>

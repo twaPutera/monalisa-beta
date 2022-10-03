@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Firebase\JWT\JWT;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Illuminate\View\View as ViewView;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view::composer('*', function (ViewView $view) {
+            $user = \Session::get('user');
+            $view->with('user', $user);
+        });
     }
 }

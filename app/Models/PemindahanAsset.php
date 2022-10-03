@@ -17,6 +17,6 @@ class PemindahanAsset extends Model
 
     public function approval_pemindahan_asset()
     {
-        return $this->hasMany(ApprovalPemindahanAsset::class, 'id_pemindahan_asset', 'id');
+        return $this->hasOne(ApprovalPemindahanAsset::class, 'id_pemindahan_asset', 'id');
     }
 }

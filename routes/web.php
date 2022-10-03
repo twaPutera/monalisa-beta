@@ -19,7 +19,8 @@ use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,6 +210,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     });
 });
 
+Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
+    Route::group(['prefix' => 'approval', 'middleware' => ['sso']], function () {
+        Route::get('/', [UserApprovalController::class, 'index'])->name('user.approval.index');
+        Route::get('/detail/{id}', [UserApprovalController::class, 'detail'])->name('user.approval.detail');
+        Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');
+    });
+});
+
 Route::group(['prefix' => 'sso-api'], function () {
     Route::get('/get-data-unit', [SsoDataController::class, 'getDataUnit'])->name('sso-api.get-data-unit');
     Route::get('/get-data-position', [SsoDataController::class, 'getDataPosition'])->name('sso-api.get-data-position');
@@ -227,4 +237,8 @@ Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function ()
     Route::post('/form-post', 'TestingController@formPost')->name('test-front.form-post');
     Route::get('/select2-ajax-data', 'TestingController@select2AjaxData')->name('test-front.select2-ajax-data');
     Route::get('/datatable', 'TestingController@datatable')->name('test-front.datatable');
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', [TestingController::class, 'user'])->name('admin.setting.print.user');
+    });
 });

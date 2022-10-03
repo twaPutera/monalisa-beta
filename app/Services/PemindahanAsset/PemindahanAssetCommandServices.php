@@ -40,10 +40,10 @@ class PemindahanAssetCommandServices
         $user = \Session::get('user');
         $data_penerima = $this->userSsoQueryServices->getUserByGuid($request->penerima_asset);
         $data_penyerah = $this->userSsoQueryServices->getUserByGuid($request->penyerah_asset);
-        $data_jabatan_penyerah = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penyerah);
-        $data_jabatan_penerima = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penerima);
-        $data_unit_kerja_penyerah = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penyerah);
-        $data_unit_kerja_penerima = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penerima);
+        // $data_jabatan_penyerah = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penyerah);
+        // $data_jabatan_penerima = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penerima);
+        // $data_unit_kerja_penyerah = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penyerah);
+        // $data_unit_kerja_penerima = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penerima);
         $asset = AssetData::find($request->asset_id);
 
         $pemindahan_asset = new PemindahanAsset();
@@ -57,8 +57,8 @@ class PemindahanAssetCommandServices
             'email' => $data_penerima[0]['email'],
             'no_hp' => $data_penerima[0]['no_hp'],
             'no_induk' => $data_penerima[0]['no_induk'],
-            'jabatan' => $data_jabatan_penerima['cn'][0],
-            'unit_kerja' => $data_unit_kerja_penerima['cn'][0],
+            'jabatan' => $request->jabatan_penerima,
+            'unit_kerja' => $request->unit_kerja_penerima,
         ];
         $data_penyerah_array = [
             'guid' => $data_penyerah[0]['token_user'],
@@ -66,8 +66,8 @@ class PemindahanAssetCommandServices
             'email' => $data_penyerah[0]['email'],
             'no_hp' => $data_penyerah[0]['no_hp'],
             'no_induk' => $data_penyerah[0]['no_induk'],
-            'jabatan' => $data_jabatan_penyerah['cn'][0],
-            'unit_kerja' => $data_unit_kerja_penyerah['cn'][0],
+            'jabatan' => $request->jabatan_penyerah,
+            'unit_kerja' => $request->unit_kerja_penyerah,
         ];
         $pemindahan_asset->json_penerima_asset = json_encode($data_penerima_array ?? []);
         $pemindahan_asset->json_penyerah_asset = json_encode($data_penyerah_array ?? []);

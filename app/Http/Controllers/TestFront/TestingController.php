@@ -91,4 +91,9 @@ class TestingController extends Controller
     {
         return Excel::download(new MasterDataAssetExport, 'export_master_data.xlsx');
     }
+
+    public function user()
+    {
+        return view('layouts.user.master');
+    }
 }
