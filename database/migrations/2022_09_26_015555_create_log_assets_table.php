@@ -14,11 +14,11 @@ class CreateLogAssetsTable extends Migration
     public function up()
     {
         Schema::create('log_assets', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->uuid("asset_id");
-            $table->foreign("asset_id")->references("id")->on("asset_data");
-            $table->text("log");
-            $table->string("created_by");
+            $table->uuid('id')->primary();
+            $table->uuid('asset_id');
+            $table->foreign('asset_id')->references('id')->on('asset_data');
+            $table->text('log');
+            $table->string('created_by');
             $table->timestamps();
         });
 

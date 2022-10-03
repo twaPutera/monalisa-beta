@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Inventaris;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -11,7 +12,6 @@ use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Services\InventarisData\InventarisDataDatatableServices;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
-use Throwable;
 
 class MasterInventarisController extends Controller
 {

@@ -3,10 +3,10 @@
 namespace App\Services\InventarisData;
 
 use App\Models\InventoriData;
+use App\Models\DetailInventoriData;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
-use App\Models\DetailInventoriData;
 
 class InventarisDataCommandServices
 {
@@ -51,10 +51,10 @@ class InventarisDataCommandServices
         $inventori_data = InventoriData::findOrFail($id);
         if ($request->jumlah_saat_ini > $inventori_data->jumlah_saat_ini) {
             $selisih = $request->jumlah_saat_ini - $inventori_data->jumlah_saat_ini;
-            $status = "penambahan";
+            $status = 'penambahan';
         } elseif ($request->jumlah_saat_ini < $inventori_data->jumlah_saat_ini) {
             $selisih =  $inventori_data->jumlah_saat_ini - $request->jumlah_saat_ini;
-            $status = "pengurangan";
+            $status = 'pengurangan';
         }
         $inventori_data->jumlah_sebelumnya = $inventori_data->jumlah_saat_ini;
         $inventori_data->jumlah_saat_ini = $request->jumlah_saat_ini;

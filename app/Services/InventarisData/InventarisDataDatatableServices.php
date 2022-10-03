@@ -2,10 +2,10 @@
 
 namespace App\Services\InventarisData;
 
-use App\Models\DetailInventoriData;
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
 use Yajra\DataTables\DataTables;
+use App\Models\DetailInventoriData;
 
 class InventarisDataDatatableServices
 {
@@ -51,7 +51,7 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('jumlah', function ($item) {
-                return $item->jumlah . " " . $item->inventori_data->satuan_inventori->nama_satuan;
+                return $item->jumlah . ' ' . $item->inventori_data->satuan_inventori->nama_satuan;
             })
             ->addColumn('status', function ($item) {
                 return ucWords($item->status);
