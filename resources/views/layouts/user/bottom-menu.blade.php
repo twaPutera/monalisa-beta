@@ -1,4 +1,4 @@
-<a href="index.html" class="item active">
+<a href="{{ route('user.dashboard.index') }}" class="item @if(\Request::segment(2) == 'dashboard') active @endif">
     <div class="col">
         <ion-icon name="pie-chart-outline"></ion-icon>
         <strong>Dashboard</strong>
@@ -24,7 +24,7 @@
 </a>
 <a href="app-settings.html" class="item">
     <div class="col">
-        <ion-icon name="person-circle-outline"></ion-icon>
-        <strong>Profile</strong>
+        <ion-icon name="albums-outline"></ion-icon>
+        <strong>Daftar Aset</strong>
     </div>
 </a>

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Sso\SsoDataController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -213,6 +214,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('admin.setting.kategori-service.get-data-select2');
         });
     });
+});
+
+Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
 });
 
 Route::group(['prefix' => 'sso-api'], function() {
