@@ -41,10 +41,10 @@
 @section('body')
 <div style="text-align: center;">
     <h6 style="text-decoration: underline; margin-bottom: 0;"><strong>BERITA ACARA SERAH TERIMA BARANG</strong></h6>
-    <p>Nomor: /UP-WR2.3.1/BA/V/2022</p>
+    <p>Nomor: {{ $data->no_surat }}</p>
 </div>
 <div style="margin-top: 20px;">
-    <p style="text-align: justify;">Pada hari ini …….. tanggal ….………….. bertempat di Universitas Pertamina telah dilakukan penyerahan dan penerimaan barang sebagai fasilitas operasional :</p>
+    <p style="text-align: justify;">Pada hari ini {{ App\Helpers\DateIndoHelpers::getDayName($data->tanggal_pemindahan) }} tanggal {{ App\Helpers\DateIndoHelpers::formatDateToIndo($data->tanggal_pemindahan) }} bertempat di Universitas Pertamina telah dilakukan penyerahan dan penerimaan barang sebagai fasilitas operasional :</p>
 </div>
 
 <div style="margin-top: 20px;">
@@ -52,22 +52,22 @@
         <tr>
             <td style="width: 100px;">Nama</td>
             <td style="width: 10px;">:</td>
-            <td> Randi Farmana Putra</td>
+            <td> {{ $penyerah->nama }}</td>
         </tr>
         <tr>
             <td style="width: 100px;">Jabatan</td>
             <td style="width: 10px;">:</td>
-            <td> Manajer Teknologi Informasi dan Komunikasi</td>
+            <td> {{ $penyerah->jabatan }}</td>
         </tr>
         <tr>
             <td style="width: 100px;">NIP</td>
             <td style="width: 10px;">:</td>
-            <td> 119030</td>
+            <td> {{ $penyerah->no_induk }}</td>
         </tr>
     </table>
 </div>
 <div style="margin-top: 20px;">
-    <p style="text-align: justify;">Selaku penanggungjawab Fungsi Teknologi Informasi dan Komunikasi yang selanjutnya disebut PIHAK PERTAMA, dan</p>
+    <p style="text-align: justify;">Selaku penanggungjawab {{ $penyerah->unit_kerja }} yang selanjutnya disebut PIHAK PERTAMA, dan</p>
 </div>
 
 <div style="margin-top: 20px;">
@@ -75,17 +75,17 @@
         <tr>
             <td style="width: 100px;">Nama</td>
             <td style="width: 10px;">:</td>
-            <td> User</td>
+            <td> {{ $penerima->nama }}</td>
         </tr>
         <tr>
             <td style="width: 100px;">Jabatan</td>
             <td style="width: 10px;">:</td>
-            <td> Staf Pengembangan Produk dan Kekayaan Intelektual</td>
+            <td> {{ $penerima->jabatan }}</td>
         </tr>
         <tr>
             <td style="width: 100px;">NIP</td>
             <td style="width: 10px;">:</td>
-            <td> 218011</td>
+            <td> {{ $penerima->no_induk }}</td>
         </tr>
         <tr>
             <td style="width: 100px;">No HP</td>
@@ -95,7 +95,7 @@
         <tr>
             <td style="width: 100px;">Email</td>
             <td style="width: 10px;">:</td>
-            <td> User@universitaspertamina.ac.id</td>
+            <td> {{ $penerima->email }}</td>
         </tr>
     </table>
 </div>
@@ -118,8 +118,8 @@
         </tr>
         <tr>
             <td style="border: 1px solid #000; padding: 5px; text-align: center;">1</td>
-            <td style="border: 1px solid #000; padding: 5px;">Laptop HP 14-DQ1088WM</td>
-            <td style="border: 1px solid #000; padding: 5px;">SN : </td>
+            <td style="border: 1px solid #000; padding: 5px;">{{ $asset->deskripsi }}</td>
+            <td style="border: 1px solid #000; padding: 5px;">SN : {{ $asset->no_seri }}</td>
             <td style="border: 1px solid #000; padding: 5px;">1 Unit</td>
         </tr>
     </table>
@@ -139,12 +139,12 @@
             <td style="width: 70%;">
                 <p>PIHAK PERTAMA</p>
                 <div style="height: 80px"></div>
-                <p>Randi Farmana Putra</p>
+                <p>{{ $penyerah->nama }}</p>
             </td>
             <td style="width: 30%;">
                 <p>PIHAK KEDUA</p>
                 <div style="height: 80px"></div>
-                <p>(...............)</p>
+                <p>{{ $penerima->nama }}</p>
             </td>
         </tr>
     </table>

@@ -218,7 +218,9 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
-                    table2.DataTable().ajax.reload();
+                    tableServices.DataTable().ajax.reload();
+                    tableLogPemindahan.DataTable().ajax.reload();
+                    tableLogAsset.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.form == 'editAsset') {
                         $('#modalEdit').modal('hide');

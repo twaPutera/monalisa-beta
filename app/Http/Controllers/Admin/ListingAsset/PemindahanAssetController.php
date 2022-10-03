@@ -56,7 +56,10 @@ class PemindahanAssetController extends Controller
     public function printBast($id)
     {
         $data = $this->pemindahanAssetQueryServices->findById($id);
-        $pdf = \PDF::loadView('pages.admin.pemindahan-asset.bast.index', compact('data'));
+        $penerima = json_decode($data->json_penerima_asset);
+        $penyerah = json_decode($data->json_penyerah_asset);
+        $asset = json_decode($data->detail_pemindahan_asset->json_asset_data);
+        $pdf = \PDF::loadView('pages.admin.pemindahan-asset.bast.index', compact('data', 'penerima', 'penyerah', 'asset'));
         return $pdf->stream();
         // return view('pages.admin.pemindahan-asset.bast.index', compact('data'));
     }

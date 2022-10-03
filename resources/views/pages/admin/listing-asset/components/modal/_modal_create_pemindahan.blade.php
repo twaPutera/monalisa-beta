@@ -78,41 +78,45 @@
                             <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate" readonly name="tanggal_pemindahan">
                         </div>
                         <div class="form-group">
-                            <label for="">Pemilik Sebelumnya</label>
+                            <label for="">Penanggung Jawab Sebelumnya</label>
                             <input type="text" value="{{ $asset->owner_name }}" readonly class="form-control" name="penyerah_asset_nama">
                             <input type="hidden" value="{{ $asset->ownership }}" class="form-control" name="penyerah_asset">
                         </div>
                         <div class="form-group">
-                            <label for="">Jabatan Pemilik</label>
-                            <select name="jabatan_penyerah" onchange="getUnitByPosition(this, 'unitKerjaPenyerahSelect')" class="form-control" id="positionPenyerahSelect">
+                            <label for="">Jabatan Penanggung Jawab Sebelumnya</label>
+                            <input type="text" value="" class="form-control" name="jabatan_penyerah">
+                            {{-- <select name="jabatan_penyerah" onchange="getUnitByPosition(this, 'unitKerjaPenyerahSelect')" class="form-control" id="positionPenyerahSelect">
 
-                            </select>
+                            </select> --}}
                         </div>
                         <div class="form-group">
                             <label for="">Unit Kerja Pemilik</label>
-                            <select name="unit_kerja_penyerah" class="form-control" id="unitKerjaPenyerahSelect">
+                            <input type="text" value="" class="form-control" name="unit_kerja_penyerah">
+                            {{-- <select name="unit_kerja_penyerah" class="form-control" id="unitKerjaPenyerahSelect">
 
-                            </select>
+                            </select> --}}
                         </div>
                     </div>
                     <div class="col-md-4 col-12">
                         <div class="form-group">
-                            <label for="">Penerima Asset</label>
-                            <select name="penerima_asset" onchange="getPositionByGuid(this, 'positionPenerimaSelect')" class="form-control" id="newOwnership">
+                            <label for="">Penanggung Jawab Selanjutnya</label>
+                            <select name="penerima_asset" class="form-control" id="newOwnership">
 
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="">Jabatan Penerima</label>
-                            <select name="jabatan_penerima" onchange="getUnitByPosition(this, 'unitKerjaPenerimaSelect')" class="form-control" id="positionPenerimaSelect">
+                            <label for="">Jabatan Penanggung Jawab Selanjutnya</label>
+                            <input type="text" value="" class="form-control" name="jabatan_penerima">
+                            {{-- <select name="jabatan_penerima" onchange="getUnitByPosition(this, 'unitKerjaPenerimaSelect')" class="form-control" id="positionPenerimaSelect">
 
-                            </select>
+                            </select> --}}
                         </div>
                         <div class="form-group">
-                            <label for="">Unit Kerja Penerima</label>
-                            <select name="unit_kerja_penerima" class="form-control" id="unitKerjaPenerimaSelect">
+                            <label for="">Unit Kerja Penanggung Jawab Selanjutnya</label>
+                            <input type="text" value="" class="form-control" name="unit_kerja_penerima">
+                            {{-- <select name="unit_kerja_penerima" class="form-control" id="unitKerjaPenerimaSelect">
 
-                            </select>
+                            </select> --}}
                         </div>
                     </div>
                 </div>
