@@ -230,7 +230,7 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 console.log(errors);
-                if (!errors.success) {
+                if (errors.success && !errors.success) {
                     showToastError('Gagal', errors.message);
                 }
                 //if validation not pass

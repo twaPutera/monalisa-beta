@@ -62,10 +62,11 @@ $(".form-submit").submit(function (e) {
         error: function (response) {
             console.log(response);
             $(".backdrop").hide();
+            let errors;
             if (response.status == 500) {
                 errors = response.responseJSON;
             } else if (response.status == 422) {
-                let errors = response.responseJSON.errors;
+                errors = response.responseJSON.errors;
             }
             $("body").trigger("_EventAjaxErrors", [form, errors]);
             // for (let key in errors) {
