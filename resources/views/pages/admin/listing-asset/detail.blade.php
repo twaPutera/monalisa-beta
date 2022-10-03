@@ -533,13 +533,13 @@
                             <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
-                                        <td width="40%">Asset Group</td>
-                                        <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</strong>
+                                        <td width="40%">Kelompok</td>
+                                        <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? 'Kelompok Tidak Ada' }}</strong>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="40%">Kategori</td>
-                                        <td><strong>{{ $asset->kategori_asset->nama_kategori }}</strong></td>
+                                        <td width="40%">Jenis</td>
+                                        <td><strong>{{ $asset->kategori_asset->nama_kategori ?? 'Jenis Tidak Ada' }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Nilai perolehan</td>
@@ -555,7 +555,7 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Lokasi</td>
-                                        <td><strong>{{ $asset->lokasi->nama_lokasi }}</strong></td>
+                                        <td><strong>{{ $asset->lokasi->nama_lokasi ?? 'Tidak dalam lokasi' }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Ownership</td>
@@ -567,11 +567,11 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Satuan</td>
-                                        <td><strong>{{ $asset->satuan_asset->nama_satuan }}</strong></td>
+                                        <td><strong>{{ $asset->satuan_asset->nama_satuan ?? 'Satuan Tidak Ada' }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Vendor</td>
-                                        <td><strong>{{ $asset->vendor->nama_vendor }}</strong></td>
+                                        <td><strong>{{ $asset->vendor->nama_vendor ?? 'Tidak Memiliki Vendor' }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">No. Surat / Memo</td>

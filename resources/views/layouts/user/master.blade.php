@@ -21,7 +21,8 @@
             </a>
         </div>
         <div class="pageTitle">
-            <img src="/assets/user/img/logo.png" alt="logo" class="logo">
+            <h2 class="text-white mb-0">@yield('page-title')</h2>
+            {{-- <img src="/assets/user/img/logo.png" alt="logo" class="logo"> --}}
         </div>
         <div class="right">
             <a href="app-notifications.html" class="headerButton">

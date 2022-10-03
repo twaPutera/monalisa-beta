@@ -16,7 +16,7 @@
         <strong>Stock Opname</strong>
     </div>
 </a>
-<a href="app-cards.html" class="item">
+<a href="{{ route('user.approval.index') }}" class="item @if(\Request::segment(2) == 'approval') active @endif">
     <div class="col">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
         <strong>Approval</strong>
