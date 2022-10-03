@@ -1,6 +1,6 @@
 <div class="modal fade modalEditInventarisData" id="modalEditInventarisData" role="dialog" aria-labelledby=""
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="">Edit Inventaris</h5>
@@ -9,47 +9,59 @@
                 </button>
             </div>
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.listing-inventaris.store') }}" method="POST">
+                action="#" method="POST">
                 @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Kategori Inventaris</label>
-                        <div class="input-group mb-2">
-                            <select name="id_kategori_inventori" class="form-control selectKategoriData"
-                                id="selectKategoriDataEdit">
+                <div class="modal-body row">
+                    <div class="col-6 col-md-6">
+                        <div class="form-group">
+                            <label for="">Kategori Inventaris</label>
+                            <div class="input-group mb-2">
+                                <select name="id_kategori_inventori" class="form-control selectKategoriData"
+                                    id="selectKategoriDataEdit">
 
-                            </select>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Jenis Inventaris</label>
+                            <input type="text" class="form-control" name="kode_inventori">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Satuan Inventaris</label>
+                            <div class="input-group mb-2">
+                                <select name="id_satuan_inventori" class="form-control selectSatuanData"
+                                    id="selectSatuanDataEdit">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Merk Inventaris</label>
+                            <input type="text" class="form-control" name="nama_inventori">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Jumlah Sebelumnya</label>
+                            <input type="number" min="0" class="form-control" disabled name="stok_sebelumnya">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="">Satuan Inventaris</label>
-                        <div class="input-group mb-2">
-                            <select name="id_satuan_inventori" class="form-control selectSatuanData"
-                                id="selectSatuanDataEdit">
-
-                            </select>
+                    <div class="col-6 col-md-6">
+                        <div class="form-group">
+                            <label for="">Jumlah Saat Ini</label>
+                            <input type="number" min="0" class="form-control" disabled name="stok_saat_ini">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Kode Inventaris</label>
-                        <input type="text" class="form-control" name="kode_inventori">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Nama Inventaris</label>
-                        <input type="text" class="form-control" name="nama_inventori">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Stok</label>
-                        <input type="number" min="0" class="form-control" name="stok">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Deskripsi Inventaris</label>
-                        <textarea cols="30" rows="10" class="form-control" name="deskripsi_inventori"></textarea>
+                        <div class="form-group">
+                            <label for="">Harga Beli</label>
+                            <input type="number" min="0" class="form-control" name="harga_beli">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Deskripsi Inventaris</label>
+                            <textarea cols="30" rows="10" class="form-control" name="deskripsi_inventori"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Ubah</button>
                 </div>
             </form>
         </div>

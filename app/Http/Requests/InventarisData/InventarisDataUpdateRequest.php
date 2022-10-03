@@ -28,7 +28,7 @@ class InventarisDataUpdateRequest extends FormRequest
             'id_satuan_inventori' => 'required|uuid|exists:satuan_inventories,id',
             'kode_inventori' => 'required|string|max:50|unique:inventori_data,kode_inventori,' . $this->id,
             'nama_inventori' => 'required|string|max:255',
-            'stok' => 'required|numeric',
+            'harga_beli' => 'required|numeric',
             'deskripsi_inventori' => 'required|string|max:255',
         ];
     }

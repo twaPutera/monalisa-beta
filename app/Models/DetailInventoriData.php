@@ -14,9 +14,4 @@ class DetailInventoriData extends Model
     {
         return $this->belongsTo(InventoriData::class, 'id_inventori', 'id');
     }
-
-    public function lokasi()
-    {
-        return $this->belongsTo(Lokasi::class, 'id_lokasi', 'id');
-    }
 }

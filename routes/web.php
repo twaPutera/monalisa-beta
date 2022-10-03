@@ -102,17 +102,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::post('/store', [MasterInventarisController::class, 'store'])->name('admin.listing-inventaris.store');
         Route::get('/edit/{id}', [MasterInventarisController::class, 'edit'])->name('admin.listing-inventaris.edit');
         Route::post('/update/{id}', [MasterInventarisController::class, 'update'])->name('admin.listing-inventaris.update');
-        Route::post('/delete/{id}', [MasterInventarisController::class, 'destroy'])->name('admin.listing-inventaris.delete');
+        Route::get('/detail/{id}', [MasterInventarisController::class, 'detail'])->name('admin.listing-inventaris.detail');
+        Route::post('/update-stok/{id}', [MasterInventarisController::class, 'updateStok'])->name('admin.listing-inventaris.update.stok');
+        Route::get('/edit-stok/{id}', [MasterInventarisController::class, 'editStok'])->name('admin.listing-inventaris.edit.stok');
+        Route::get('/datatable-stok', [MasterInventarisController::class, 'datatableStok'])->name('admin.listing-inventaris.datatable.stok');
     });
 
-    Route::group(['prefix' => 'detail-inventaris'], function () {
-        Route::get('/{id}', [DetailInventarisController::class, 'index'])->name('admin.detail-inventaris.index');
-        Route::get('/datatable/{id_inventaris}', [DetailInventarisController::class, 'datatable'])->name('admin.detail-inventaris.datatable');
-        Route::post('/store/{id_inventaris}', [DetailInventarisController::class, 'store'])->name('admin.detail-inventaris.store');
-        Route::get('/edit/{id_detail}', [DetailInventarisController::class, 'edit'])->name('admin.detail-inventaris.edit');
-        Route::post('/update/{id_detail}', [DetailInventarisController::class, 'update'])->name('admin.detail-inventaris.update');
-        Route::post('/delete/{id_detail}', [DetailInventarisController::class, 'destroy'])->name('admin.detail-inventaris.delete');
-    });
     # Setting
     Route::group(['prefix' => 'setting'], function () {
         // #Sistem Config
@@ -215,7 +210,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     });
 });
 
-Route::group(['prefix' => 'sso-api'], function() {
+Route::group(['prefix' => 'sso-api'], function () {
     Route::get('/get-data-unit', [SsoDataController::class, 'getDataUnit'])->name('sso-api.get-data-unit');
     Route::get('/get-data-position', [SsoDataController::class, 'getDataPosition'])->name('sso-api.get-data-position');
     Route::get('/get-data-position-by-guid', [SsoDataController::class, 'getDataPositionByGuid'])->name('sso-api.get-data-position-by-guid');
