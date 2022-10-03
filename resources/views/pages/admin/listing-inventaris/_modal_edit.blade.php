@@ -8,8 +8,7 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="#" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="#" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <div class="col-6 col-md-6">
@@ -43,8 +42,6 @@
                             <label for="">Jumlah Sebelumnya</label>
                             <input type="number" min="0" class="form-control" disabled name="stok_sebelumnya">
                         </div>
-                    </div>
-                    <div class="col-6 col-md-6">
                         <div class="form-group">
                             <label for="">Jumlah Saat Ini</label>
                             <input type="number" min="0" class="form-control" disabled name="stok_saat_ini">
@@ -53,9 +50,11 @@
                             <label for="">Harga Beli</label>
                             <input type="number" min="0" class="form-control" name="harga_beli">
                         </div>
+                    </div>
+                    <div class="col-6 col-md-6">
                         <div class="form-group">
                             <label for="">Deskripsi Inventaris</label>
-                            <textarea cols="30" rows="10" class="form-control" name="deskripsi_inventori"></textarea>
+                            <textarea cols="30" rows="20" class="form-control" name="deskripsi_inventori"></textarea>
                         </div>
                     </div>
                 </div>

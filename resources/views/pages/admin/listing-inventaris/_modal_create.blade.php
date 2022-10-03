@@ -42,15 +42,15 @@
                             <label for="">Jumlah</label>
                             <input type="number" min="0" class="form-control" name="stok">
                         </div>
-                    </div>
-                    <div class="col-6 col-md-6">
                         <div class="form-group">
                             <label for="">Harga Beli</label>
                             <input type="number" min="0" class="form-control" name="harga_beli">
                         </div>
+                    </div>
+                    <div class="col-6 col-md-6">
                         <div class="form-group">
                             <label for="">Deskripsi Inventaris</label>
-                            <textarea cols="30" rows="10" class="form-control" name="deskripsi_inventori"></textarea>
+                            <textarea cols="30" rows="15" class="form-control" name="deskripsi_inventori"></textarea>
                         </div>
                     </div>
                 </div>
