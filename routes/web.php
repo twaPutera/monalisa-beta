@@ -233,4 +233,8 @@ Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function ()
     Route::post('/form-post', 'TestingController@formPost')->name('test-front.form-post');
     Route::get('/select2-ajax-data', 'TestingController@select2AjaxData')->name('test-front.select2-ajax-data');
     Route::get('/datatable', 'TestingController@datatable')->name('test-front.datatable');
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', [TestingController::class, 'user'])->name('admin.setting.print.user');
+    });
 });
