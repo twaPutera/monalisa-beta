@@ -17,6 +17,7 @@ use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Helpers\StatusAssetDataHelpers;
 
 class MasterAssetController extends Controller
 {
@@ -42,7 +43,8 @@ class MasterAssetController extends Controller
 
     public function index()
     {
-        return view('pages.admin.listing-asset.index');
+        $list_status = StatusAssetDataHelpers::listStatusAssetData();
+        return view('pages.admin.listing-asset.index', compact('list_status'));
     }
 
     public function datatable(Request $request)

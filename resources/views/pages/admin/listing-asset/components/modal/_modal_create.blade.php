@@ -124,13 +124,11 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Asset</label>
-                                        <div>
-                                            <select name="status_kondisi" class="form-control" style="width: 200px"
-                                                id="">
-                                                <option value="Baik">Baik</option>
-                                                <option value="Rusak">Rusak</option>
-                                            </select>
-                                        </div>
+                                        <select name="status_kondisi" class="form-control mr-3" style="width: 50%;" id="">
+                                            @foreach ($list_status as $key => $item)
+                                                <option value="{{ $key }}">{{ $item }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">

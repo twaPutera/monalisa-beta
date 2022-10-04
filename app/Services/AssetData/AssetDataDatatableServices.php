@@ -62,7 +62,7 @@ class AssetDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
-                return $item->kategori_asset->group_kategori_asset->nama_group;
+                return $item->kategori_asset->group_kategori_asset->nama_group ?? "Tidak ada Grup";
             })
             ->addColumn('owner_name', function ($item) {
                 $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
