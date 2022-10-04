@@ -1,4 +1,55 @@
 @extends('layouts.user.master')
+@section('page-title', 'Dashboard')
+@section('custom-js')
+    <script>
+        $(document).ready(function() {
+            getAllDataAssetOwner();
+        });
+        const getAllDataAssetOwner = () => {
+            $.ajax({
+                url: '{{ route("user.asset-data.get-all-data-asset-by-user") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $(response.data).each(function (index, value) {
+                                $('#assetContainer').append(generateTemplateAsset(value));
+                            });
+                        }
+                        console.log(response.data);
+                    }
+                }
+            })
+        }
+        const generateTemplateAsset = (data) => {
+            return `
+                <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
+                    <div class="d-flex align-items-center" style="width: 60%;">
+                        <div style="width: 50px;">
+                            <div class="icon-wrapper pt-1 bg-primary rounded-circle text-center" style="width: 40px; height: 40px;">
+                                <ion-icon name="checkmark-circle" style="font-size: 22px;"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="ms-1" style="width: calc(100% - 50px);">
+                            <p class="text-dark mb-0 asset-deskripsi">${data.deskripsi}</p>
+                            <p class="text-primary mb-0 asset-deskripsi"><i>Vechicle, Mobil</i></p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
+                        <div class="me-1 text-end">
+                            <p class="text-grey mb-0 text-end">${data.status_diterima}</p>
+                            <span class="text-grey text-end">${data.tanggal_diterima}</span>
+                        </div>
+                        <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+    </script>
+@endsection
 @section('content')
 <div class="section wallet-card-section pt-1">
     <div class="wallet-card">
@@ -52,28 +103,9 @@
 </div>
 <div class="section mt-2">
     <div class="card p-1 bg-light-grey border-radius-sm">
-        <div class="card-body p-1 bg-light-grey">
-            <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
-                <div class="d-flex align-items-center">
-                    <div class="icon-wrapper pt-1 bg-primary rounded-circle text-center" style="width: 40px; height: 40px;">
-                        <ion-icon name="checkmark-circle" style="font-size: 23px;"></ion-icon>
-                    </div>
-                    <div class="ms-2">
-                        <p class="text-dark mb-0">Mobil Xpander</p>
-                        <p class="text-primary mb-0"><i>Vechicle, Mobil</i></p>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-end align-items-center">
-                    <div class="me-2">
-                        <p class="text-grey mb-0 text-end">Diterima</p>
-                        <span class="text-grey text-end">12/05/2022</span>
-                    </div>
-                    <div class="mb-0 text-grey text-end" style="font-size: 27px !important;">
-                        <ion-icon name="chevron-forward-outline"></ion-icon>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
+        <div class="card-body p-1 bg-light-grey" id="assetContainer">
+
+            {{-- <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
                 <div class="d-flex align-items-center">
                     <div class="icon-wrapper pt-1 bg-danger rounded-circle text-center" style="width: 40px; height: 40px;">
                         <ion-icon name="remove-circle-outline" style="font-size: 23px;"></ion-icon>
@@ -92,7 +124,7 @@
                         <ion-icon name="chevron-forward-outline"></ion-icon>
                     </div>
                 </div>
-            </a>
+            </a> --}}
         </div>
     </div>
 </div>

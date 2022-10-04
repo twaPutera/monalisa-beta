@@ -6,6 +6,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
+use App\Models\DetailPemindahanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataQueryServices
@@ -85,5 +86,62 @@ class AssetDataQueryServices
         }
 
         return $results;
+    }
+
+    public function getDataAssetForDashboardUser(string $user_id)
+    {
+        $asset_by_ownership = AssetData::query()
+            ->select([
+                'id'
+            ])
+            ->where('ownership', $user_id)
+            ->get()->toArray();
+
+        $asset_from_pemindahan = DetailPemindahanAsset::query()
+            ->select([
+                'id_asset'
+            ])
+            ->whereHas('pemindahan_asset', function ($query) use ($user_id) {
+                $query->where('guid_penerima_asset', $user_id)
+                    ->where('status', 'pending');
+            })
+            ->get()->toArray();
+
+        // * Tambah Query Peminjaman Asset
+
+        $array_id_asset = \Arr::flatten(array_merge($asset_by_ownership, $asset_from_pemindahan));
+
+        $asset_data = AssetData::query()
+            ->select([
+                'id',
+                'kode_asset',
+                'deskripsi',
+                'tgl_register',
+                'id_kategori_asset',
+            ])
+            ->with(['kategori_asset.group_kategori_asset'])
+            ->whereIn('id', $array_id_asset)
+            ->get();
+
+        return $asset_data;
+    }
+
+    public function checkIsAssetOnPemindahanAsset(string $asset_id, string $user_id)
+    {
+        $asset_from_pemindahan = DetailPemindahanAsset::query()
+            ->select([
+                'id',
+                'id_pemindahan_asset',
+                'id_asset'
+            ])
+            ->with(['pemindahan_asset'])
+            ->whereHas('pemindahan_asset', function ($query) use ($user_id) {
+                $query->where('guid_penerima_asset', $user_id)
+                    ->where('status', 'pending');
+            })
+            ->where('id_asset', $asset_id)
+            ->first();
+
+        return $asset_from_pemindahan;
     }
 }
