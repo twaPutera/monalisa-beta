@@ -43,7 +43,7 @@
                     {
                         data: 'umur_asset',
                         render: function(o) {
-                            return o + " Bulan";
+                            return o + " Tahun";
                         }
                     },
                 ],
