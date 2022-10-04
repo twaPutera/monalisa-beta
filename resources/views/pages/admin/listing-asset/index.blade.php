@@ -147,7 +147,7 @@
                         data: 'group'
                     },
                     {
-                        data: 'kategori_asset.nama_kategori'
+                        data: 'nama_kategori'
                     },
                     {
                         data: 'status_kondisi'
@@ -159,7 +159,7 @@
                         data: 'nilai_perolehan'
                     },
                     {
-                        data: 'lokasi.nama_lokasi'
+                        data: 'nama_lokasi'
                     },
                     {
                         data: 'owner_name'
@@ -168,10 +168,10 @@
                         data: 'register_oleh'
                     },
                     {
-                        data: 'satuan_asset.nama_satuan'
+                        data: 'nama_satuan'
                     },
                     {
-                        data: 'vendor.nama_vendor'
+                        data: 'nama_vendor'
                     }
                 ],
                 columnDefs: [{

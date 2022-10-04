@@ -22,12 +22,12 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">Asset Group</td>
-                                    <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</strong>
+                                    <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? "Tidak Ada Group" }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="40%">Kategori</td>
-                                    <td><strong>{{ $asset->kategori_asset->nama_kategori }}</strong></td>
+                                    <td><strong>{{ $asset->kategori_asset->nama_kategori ?? "Tidak Ada Kategori" }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td width="40%">Nilai perolehan</td>
@@ -43,7 +43,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">Satuan</td>
-                                    <td><strong>{{ $asset->satuan_asset->nama_satuan }}</strong></td>
+                                    <td><strong>{{ $asset->satuan_asset->nama_satuan ?? "Tidak Ada Satuan" }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td width="40%">No. Surat / Memo</td>
