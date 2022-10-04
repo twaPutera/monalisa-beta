@@ -45,6 +45,7 @@ class AssetDataCommandServices
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->status_kondisi = $request->status_kondisi;
+        $asset->status_akunting = $request->status_akunting;
         $asset->no_seri = $request->no_seri;
         $asset->spesifikasi = $request->spesifikasi;
         $asset->nilai_buku_asset = $request->nilai_perolehan;
@@ -74,7 +75,17 @@ class AssetDataCommandServices
             $asset_asal = AssetData::find($request->asal_asset);
             if (isset($asset_asal)) {
                 $message_log = 'Asset ini diambil dari asset ' . $asset_asal->deskripsi . ' dengan kode asset ' . $asset_asal->kode_asset;
+                if ($asset_asal->status_kondisi != 'rusak') {
+                    $asset_asal->status_kondisi = 'tidak-lengkap';
+                    $asset_asal->save();
+                }
+
+                // * insert log asset
                 $this->insertLogAsset($asset->id, $message_log);
+
+                // * store log ke asal asset
+                $message_log_asal_asset = 'Sparepart Asset ' . $asset_asal->deskripsi . ' dengan kode asset ' . $asset_asal->kode_asset . ' telah diambil menjadi sparepart asset ' . $asset->deskripsi . ' dengan kode asset ' . $asset->kode_asset;
+                $this->insertLogAsset($asset_asal->id, $message_log_asal_asset);
             }
         }
 
