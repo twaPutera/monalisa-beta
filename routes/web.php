@@ -19,8 +19,8 @@ use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
-use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
 
 /*

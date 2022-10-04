@@ -68,7 +68,9 @@ class AssetDataQueryServices
         }
 
         if (isset($request->id_lokasi)) {
-            $data->where('id_lokasi', $request->id_lokasi);
+            if ($request->id_lokasi != "root") {
+                $data->where('id_lokasi', $request->id_lokasi);
+            }
         }
 
         $data = $data->orderby('deskripsi', 'asc')

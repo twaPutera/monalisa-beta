@@ -24,7 +24,7 @@ class ServicesStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_lokasi' => 'required|uuid|exists:lokasis,id',
+            'id_lokasi' => 'nullable|uuid|exists:lokasis,id',
             'id_asset' => 'required|uuid|exists:asset_data,id',
             'tanggal_mulai_service' => 'required|date|date_format:Y-m-d',
             'tanggal_selesai_service' => 'required_if:status_service,selesai',
