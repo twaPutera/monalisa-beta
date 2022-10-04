@@ -13,6 +13,6 @@ class InventarisDataQueryServices
 
     public function findById(string $id)
     {
-        return InventoriData::findOrFail($id);
+        return InventoriData::with(['satuan_inventori', 'kategori_inventori'])->findOrFail($id);
     }
 }

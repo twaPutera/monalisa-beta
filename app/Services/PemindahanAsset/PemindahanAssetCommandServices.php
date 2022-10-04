@@ -2,17 +2,15 @@
 
 namespace App\Services\PemindahanAsset;
 
-use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
-use App\Models\PemindahanAsset;
-use App\Models\PemindahanAssetDetail;
+use Exception;
 use App\Models\AssetData;
-use App\Models\ApprovalPemindahanAsset;
-use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
-use App\Http\Requests\PemindahanAsset\PemindahanAssetUpdateRequest;
+use App\Models\PemindahanAsset;
 use App\Models\DetailPemindahanAsset;
+use App\Models\ApprovalPemindahanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
-use Exception;
+use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
+use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
 
 class PemindahanAssetCommandServices
 {
@@ -104,7 +102,7 @@ class PemindahanAssetCommandServices
             ->where('guid_approver', $user->guid)->where('status', 'pending')
             ->first();
 
-        if (!$approval_pemindahan_asset) {
+        if (! $approval_pemindahan_asset) {
             throw new Exception('Anda tidak memiliki akses untuk mengubah status pemindahan asset');
         }
 

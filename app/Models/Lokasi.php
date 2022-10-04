@@ -15,9 +15,4 @@ class Lokasi extends Model
     {
         return $this->hasMany(AssetData::class, 'id_lokasi', 'id');
     }
-
-    public function detail_inventori_data()
-    {
-        return $this->hasMany(DetailInventoriData::class, 'id_lokasi', 'id');
-    }
 }

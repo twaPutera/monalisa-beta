@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\DetailInventaris;
+namespace App\Http\Requests\InventarisData;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DetailInventarisUpdateRequest extends FormRequest
+class InventarisDataUpdateStokRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class DetailInventarisUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_lokasi' => 'required|uuid|exists:lokasis,id',
-            'stok' => 'required|numeric',
-            'keterangan' => 'required|string|max:255',
+            'jumlah_saat_ini' => 'required|numeric',
+            'no_memo' => 'nullable|string',
+            'tanggal' => 'required|date',
         ];
     }
 }

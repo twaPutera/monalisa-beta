@@ -91,7 +91,6 @@
                         $('#preview-file-error').html(errors[key][0]);
                     }
                 }
-
                 if (formElement.attr('id') == 'formImportAsset') {
                     $('.error-import-container').empty();
                     $(errors).each(function(index, value) {
@@ -124,8 +123,7 @@
                         d.is_sparepart = $('#isSparepartFilter').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -176,16 +174,15 @@
                         data: 'vendor.nama_vendor'
                     }
                 ],
-                columnDefs: [
-                    {
-                        targets: 7,
-                        render: function(data, type, full, meta) {
-                            return formatDateIntoIndonesia(data);
-                        }
+                columnDefs: [{
+                    targets: 7,
+                    render: function(data, type, full, meta) {
+                        return formatDateIntoIndonesia(data);
                     }
-                ],
-                createdRow: function (row, data, index) {
-                    $(row).attr('data-id', data.id).addClass('row-asset').attr("style", "cursor: pointer;");
+                }],
+                createdRow: function(row, data, index) {
+                    $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
+                        "cursor: pointer;");
                     $(row).on('click', function() {
                         let id = $(this).data('id');
                         showAsset(data.action);
@@ -221,11 +218,13 @@
                         const service = response.data.service;
                         $('#assetNamePreview').text(asset.deskripsi);
                         $('#catatanService').text(service ? service.deskripsi_service : '-');
-                        $('#lastLogServiceDate').text(service ? formatDateIntoIndonesia(service.tanggal_service) : '-');
+                        $('#lastLogServiceDate').text(service ? formatDateIntoIndonesia(service
+                            .tanggal_service) : '-');
                         if (asset.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
-                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
                         }
                         $('#linkDetailAsset').attr('href', asset.link_detail);
                     }

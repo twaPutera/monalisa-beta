@@ -2,10 +2,9 @@
 
 namespace App\Services\PemindahanAsset;
 
-use Exception;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Models\PemindahanAsset;
+use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
 
 class PemindahanDatatableServices

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Sso;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Services\UserSso\UserSsoQueryServices;
 
 class SsoDataController extends Controller
@@ -22,17 +22,17 @@ class SsoDataController extends Controller
             $data = collect($response)->map(function ($item) {
                 return [
                     'id' => $item['cn'][0],
-                    'text' => $item['cn'][0]
+                    'text' => $item['cn'][0],
                 ];
             });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -44,17 +44,17 @@ class SsoDataController extends Controller
             $data = collect($response)->map(function ($item) {
                 return [
                     'id' => $item['cn'][0],
-                    'text' => $item['cn'][0]
+                    'text' => $item['cn'][0],
                 ];
             });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -66,17 +66,17 @@ class SsoDataController extends Controller
             $data = collect($response)->map(function ($item) {
                 return [
                     'id' => $item['entryuuid'][0],
-                    'text' => $item['cn'][0]
+                    'text' => $item['cn'][0],
                 ];
             });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
@@ -88,17 +88,17 @@ class SsoDataController extends Controller
             $data = collect($response)->map(function ($item) {
                 return [
                     'id' => $item['entryuuid'][0],
-                    'text' => $item['cn'][0]
+                    'text' => $item['cn'][0],
                 ];
             });
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }
