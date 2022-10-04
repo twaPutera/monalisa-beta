@@ -64,6 +64,18 @@ class AssetDataDatatableServices
             ->addColumn('group', function ($item) {
                 return $item->kategori_asset->group_kategori_asset->nama_group ?? "Tidak ada Grup";
             })
+            ->addColumn('nama_lokasi', function ($item) {
+                return $item->lokasi->nama_lokasi ?? "Tidak ada Lokasi";
+            })
+            ->addColumn('nama_vendor', function ($item) {
+                return $item->vendor->nama_vendor ?? "Tidak ada Vendor";
+            })
+            ->addColumn('nama_satuan', function ($item) {
+                return $item->satuan_asset->nama_satuan ?? "Tidak ada Satuan";
+            })
+            ->addColumn('nama_kategori', function ($item) {
+                return $item->kategori_asset->nama_kategori ?? "Tidak ada Kategori";
+            })
             ->addColumn('owner_name', function ($item) {
                 $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
                 return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
