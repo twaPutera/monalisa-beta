@@ -16,8 +16,9 @@
                         <div class="form-group">
                             <label for="">Pilih Lokasi</label>
                             <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
-                                <option selected="selected" value="{{ $asset->lokasi->id }}">
-                                    {{ $asset->lokasi->nama_lokasi }}</option>
+                                @if (isset($asset->lokasi))
+                                    <option selected="selected" value="{{ $asset->lokasi->id }}">{{ $asset->lokasi->nama_lokasi }}</option>
+                                @endif
                             </select>
                         </div>
                         <div class="form-group">
