@@ -106,7 +106,9 @@
                         <div class="form-group">
                             <label for="">Nomor Akun</label>
                             <select name="id_kelas_asset" class="form-control" id="kelasAssetCreate">
-                                <option selected="selected" value="{{ $asset->kelas_asset->id }}">{{ $asset->kelas_asset->nama_kelas }}</option>
+                                @if (isset($asset->kelas_asset))
+                                    <option selected="selected" value="{{ $asset->kelas_asset->id }}">{{ $asset->kelas_asset->nama_kelas }}</option>
+                                @endif
                             </select>
                         </div>
                         <div class="form-group">
