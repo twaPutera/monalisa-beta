@@ -1,0 +1,11 @@
+.text-grey {
+    color: #6F6F6F !important;
+}
+
+.bg-light-grey {
+    background-color: #DEE2E6 !important;
+}
+
+.border-radius-sm {
+    border-radius: 0.35rem !important;
+}

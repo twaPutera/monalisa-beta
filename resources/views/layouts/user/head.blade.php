@@ -13,4 +13,5 @@
 <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/user/img/icon/192x192.png') }}">
 <link rel="stylesheet" href="{{ asset('assets/user/css/style.css') }}">
 <link rel="manifest" href="{{ asset('assets/user/__manifest.json') }}">
+<link rel="stylesheet" href="{{ asset('custom-css/style.user.css') }}">
 @yield('custom-css')

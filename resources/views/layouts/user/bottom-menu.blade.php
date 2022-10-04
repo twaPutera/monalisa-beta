@@ -1,30 +1,21 @@
-<a href="{{ route('user.dashboard.index') }}" class="item @if(\Request::segment(2) == 'dashboard') active @endif">
-    <div class="col">
-        <ion-icon name="pie-chart-outline"></ion-icon>
-        <strong>Dashboard</strong>
-    </div>
-</a>
-<a href="app-pages.html" class="item">
-    <div class="col">
-        <ion-icon name="warning-outline"></ion-icon>
-        <strong>Keluhan</strong>
-    </div>
-</a>
-<a href="app-components.html" class="item">
-    <div class="col">
-        <ion-icon name="file-tray-stacked-outline"></ion-icon>
-        <strong>Stock Opname</strong>
-    </div>
-</a>
-<a href="{{ route('user.approval.index') }}" class="item @if(\Request::segment(2) == 'approval') active @endif">
-    <div class="col">
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
-        <strong>Approval</strong>
-    </div>
-</a>
-<a href="app-settings.html" class="item">
-    <div class="col">
-        <ion-icon name="albums-outline"></ion-icon>
-        <strong>Daftar Aset</strong>
-    </div>
-</a>
+<div class="appBottomMenu" style="position: relative; z-index: 0; padding-bottom: 0;">
+    <a href="#" class="item">
+        <div class="col">
+            <ion-icon name="card-outline" role="img" class="md hydrated" aria-label="card outline"></ion-icon>
+            <strong>Peminjaman</strong>
+        </div>
+    </a>
+    <a href="#" class="item">
+        <div class="col">
+            <div class="action-button large">
+                <ion-icon name="home-outline" role="img" class="md hydrated" aria-label="home outline"></ion-icon>
+            </div>
+        </div>
+    </a>
+    <a href="#" class="item">
+        <div class="col">
+            <ion-icon name="person-outline" role="img" class="md hydrated"></ion-icon>
+            <strong>Profile</strong>
+        </div>
+    </a>
+</div>
