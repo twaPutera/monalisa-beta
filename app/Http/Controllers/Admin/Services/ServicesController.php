@@ -7,29 +7,51 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
+use App\Models\DetailService;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
+use App\Services\Lokasi\LokasiQueryServices;
 
 class ServicesController extends Controller
 {
     protected $assetServiceCommandServices;
     protected $assetServiceQueryServices;
     protected $assetServiceDatatableServices;
+    protected $lokasiQueryServices;
 
     public function __construct(
         AssetServiceCommandServices $assetServiceCommandServices,
         AssetServiceQueryServices $assetServiceQueryServices,
-        AssetServiceDatatableServices $assetServiceDatatableServices
+        AssetServiceDatatableServices $assetServiceDatatableServices,
+        LokasiQueryServices $lokasiQueryServices
     ) {
         $this->assetServiceCommandServices = $assetServiceCommandServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
         $this->assetServiceDatatableServices = $assetServiceDatatableServices;
+        $this->lokasiQueryServices = $lokasiQueryServices;
     }
 
     public function index()
     {
-        return view('pages.admin.services.index');
+        $allServices = $this->assetServiceQueryServices->findAll();
+        $allLokasi = $this->lokasiQueryServices->findAll();
+        $allDetail = DetailService::all();
+        $data['totalService'] = $allServices->count();
+        $data['onProgress'] = $allServices->where('status_service', 'on progress')->count();
+        $data['selesai'] = $allServices->where('status_service', 'selesai')->count();
+        $data['backlog'] = $allServices->where('status_service', 'backlog')->count();
+        $data['totalLokasi'] = 0;
+        $data['namaLokasi'] = "Tidak Ada";
+        foreach ($allLokasi as $itemLokasi) {
+            foreach ($allDetail as $itemServices) {
+                if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {
+                    $data['namaLokasi'] =  $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi;
+                    $data['totalLokasi'] = $itemServices->where('id_lokasi', $itemLokasi->id)->count();
+                }
+            }
+        }
+        return view('pages.admin.services.index', compact('data'));
     }
 
     public function datatable(Request $request)

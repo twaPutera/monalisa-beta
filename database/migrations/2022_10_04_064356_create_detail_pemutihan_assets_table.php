@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApprovalPemutihanAssetsTable extends Migration
+class CreateDetailPemutihanAssetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateApprovalPemutihanAssetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('approval_pemutihan_assets', function (Blueprint $table) {
+        Schema::create('detail_pemutihan_assets', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('id_pemutihan_asset');
             $table->foreign('id_pemutihan_asset')->references('id')->on('pemutihan_assets');
-            $table->uuid('guid_approval');
-            $table->date('tanggal_approval');
-            $table->string('status_approval');
+            $table->uuid('id_asset_data');
+            $table->foreign('id_asset_data')->references('id')->on('asset_data');
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });
@@ -32,6 +31,6 @@ class CreateApprovalPemutihanAssetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('approval_pemutihan_assets');
+        Schema::dropIfExists('detail_pemutihan_assets');
     }
 }

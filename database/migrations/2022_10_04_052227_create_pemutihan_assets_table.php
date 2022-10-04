@@ -19,8 +19,9 @@ class CreatePemutihanAssetsTable extends Migration
             $table->uuid('guid_atasan');
             $table->text('json_manager');
             $table->text('json_atasan');
-            $table->uuid('id_asset_data');
-            $table->foreign('id_asset_data')->references('id')->on('asset_data');
+            $table->date('tanggal');
+            $table->string('status');
+            $table->string('created_by', 50);
             $table->timestamps();
         });
     }

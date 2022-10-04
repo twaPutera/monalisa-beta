@@ -44,8 +44,7 @@
                         d.keyword = $('#searchServices').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -409,23 +408,23 @@
             <div class="mt-3">
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Asset sedang diservice</h6>
-                    <h6 class="text-primary mb-0"><strong>12</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['totalService'] }}</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Lokasi terbanyak</h6>
-                    <h6 class="text-primary mb-0"><strong>Rektorat (22)</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['namaLokasi'] }} ({{ $data['totalLokasi'] }})</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Sedang on Progress</h6>
-                    <h6 class="text-primary mb-0"><strong>10</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['onProgress'] }}</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Selesai di kerjakan</h6>
-                    <h6 class="text-primary mb-0"><strong>1</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['selesai'] }}</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Mengalami Backlog</h6>
-                    <h6 class="text-primary mb-0"><strong>1</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['backlog'] }}</strong></h6>
                 </div>
             </div>
         </div>
@@ -436,20 +435,20 @@
                         <input type="text" id="searchServices" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton" type="button"><i
-                                    class="fa fa-search"></i></button>
+                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton"
+                                type="button"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <select name="" class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
-                        id="lokasiFilter">
+                    <select name="" class="filterLokasi selectLocationService form-control mr-2"
+                        style="width: 150px;" id="lokasiFilter">
 
                     </select>
-                    <input type="text" onchange="filterTime()" value="{{ date('Y') }}" readonly class="form-control yearpicker mx-2" style="width: 150px;"
-                        placeholder="Tahun">
-                    <input type="text" onchange="filterTime()" readonly class="form-control monthpicker mr-2" style="width: 150px;"
-                        placeholder="Bulan">
+                    <input type="text" onchange="filterTime()" value="{{ date('Y') }}" readonly
+                        class="form-control yearpicker mx-2" style="width: 150px;" placeholder="Tahun">
+                    <input type="text" onchange="filterTime()" readonly class="form-control monthpicker mr-2"
+                        style="width: 150px;" placeholder="Bulan">
                     <button onclick="openModalByClass('modalCreateAssetService')"
                         class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
@@ -458,19 +457,23 @@
                 <h5 class="mb-0 text-primary"><strong>Data Service</strong></h5>
                 <div class="kt-radio-inline">
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" checked="checked" value="" name="status_services"> Semua Services
+                        <input type="radio" onchange="filterTableService()" checked="checked" value=""
+                            name="status_services"> Semua Services
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> On Progress
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> On
+                        Progress
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" name="status_services" value="backlog"> Backlog
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="backlog">
+                        Backlog
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" name="status_services" value="selesai"> Selesai
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="selesai">
+                        Selesai
                         <span></span>
                     </label>
                 </div>
