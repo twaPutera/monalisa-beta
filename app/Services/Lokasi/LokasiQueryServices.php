@@ -2,6 +2,7 @@
 
 namespace App\Services\Lokasi;
 
+use App\Models\AssetData;
 use App\Models\Lokasi;
 use Illuminate\Http\Request;
 
@@ -68,16 +69,18 @@ class LokasiQueryServices
     public function generateAllSelect2(Request $request)
     {
         $arraySelect2 = [];
-        if (! isset($request->keyword)) {
+        if (!isset($request->keyword)) {
             $arraySelect2[] = [
                 'id' => 'root',
                 'text' => 'Universitas Pertamina',
             ];
         }
+
         $lokasi = Lokasi::query();
         if (isset($request->keyword)) {
             $lokasi->where('nama_lokasi', 'like', '%' . $request->keyword . '%');
         }
+        
         $lokasi = $lokasi->where('id_parent_lokasi', null)
             ->get();
         foreach ($lokasi as $item) {

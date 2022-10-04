@@ -34,21 +34,32 @@
                     <div class="form-group">
                         <label for="">Masa Manfaat Komersial</label>
                         <select name="umur_asset" id="" class="form-control selectUmurAsset">
-                            <option value="15">15 Bulan</option>
-                            <option value="14">14 Bulan</option>
-                            <option value="13">13 Bulan</option>
-                            <option value="12">12 Bulan</option>
-                            <option value="11">11 Bulan</option>
-                            <option value="10">10 Bulan</option>
-                            <option value="9">9 Bulan</option>
-                            <option value="8">8 Bulan</option>
-                            <option value="7">7 Bulan</option>
-                            <option value="6">6 Bulan</option>
-                            <option value="5">5 Bulan</option>
-                            <option value="4">4 Bulan</option>
-                            <option value="3">3 Bulan</option>
-                            <option value="2">2 Bulan</option>
-                            <option value="1">1 Bulan</option>
+                            <option value="25">25 Tahun</option>
+                            <option value="24">24 Tahun</option>
+                            <option value="23">23 Tahun</option>
+                            <option value="22">22 Tahun</option>
+                            <option value="21">21 Tahun</option>
+                            <option value="20">20 Tahun</option>
+                            <option value="19">19 Tahun</option>
+                            <option value="18">18 Tahun</option>
+                            <option value="17">17 Tahun</option>
+                            <option value="16">16 Tahun</option>
+                            <option value="15">15 Tahun</option>
+                            <option value="14">14 Tahun</option>
+                            <option value="13">13 Tahun</option>
+                            <option value="12">12 Tahun</option>
+                            <option value="11">11 Tahun</option>
+                            <option value="10">10 Tahun</option>
+                            <option value="9">9 Tahun</option>
+                            <option value="8">8 Tahun</option>
+                            <option value="7">7 Tahun</option>
+                            <option value="6">6 Tahun</option>
+                            <option value="5">5 Tahun</option>
+                            <option value="4">4 Tahun</option>
+                            <option value="3">3 Tahun</option>
+                            <option value="2">2 Tahun</option>
+                            <option value="1">1 Tahun</option>
+                            <option value="0">0 Tahun</option>
                         </select>
                     </div>
                 </div>

@@ -53,7 +53,7 @@
 
     $('.modalCreateAssetService').on('shown.bs.modal', function() {
         setTimeout(() => {
-            generateSelect2Lokasi('lokasiAssetCreateService');
+            // generateSelect2Lokasi('lokasiAssetCreateService');
             generateSelect2KategoriService();
         }, 2000);
     });

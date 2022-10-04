@@ -15,7 +15,7 @@
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <label for="">Pilih Lokasi</label>
-                            <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
+                            <select name="id_lokasi" class="form-control" disabled id="lokasiAssetCreateService">
                                 <option selected="selected" value="{{ $asset->lokasi->id }}">
                                     {{ $asset->lokasi->nama_lokasi }}</option>
                             </select>

@@ -9,6 +9,7 @@ use App\Models\DetailService;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
+use App\Models\AssetData;
 
 class AssetServiceCommandServices
 {
@@ -26,9 +27,10 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
+        $asset_data = AssetData::findOrFail($id);
         $detail_asset_service = new DetailService();
-        $detail_asset_service->id_asset_data = $id;
-        $detail_asset_service->id_lokasi = $request->id_lokasi;
+        $detail_asset_service->id_asset_data = $asset_data->id;
+        $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
         $detail_asset_service->id_service = $asset_service->id;
         $detail_asset_service->permasalahan = $request->permasalahan;
         $detail_asset_service->tindakan = $request->tindakan;
@@ -63,9 +65,10 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
+        $asset_data = AssetData::findOrFail($request->id_asset);
         $detail_asset_service = new DetailService();
-        $detail_asset_service->id_asset_data = $request->id_asset;
-        $detail_asset_service->id_lokasi = $request->id_lokasi;
+        $detail_asset_service->id_asset_data = $asset_data->id;
+        $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
         $detail_asset_service->id_service = $asset_service->id;
         $detail_asset_service->permasalahan = $request->permasalahan;
         $detail_asset_service->tindakan = $request->tindakan;
@@ -100,9 +103,10 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
+        $asset_data = AssetData::findOrFail($request->id_asset);
         $detail_asset_service = DetailService::where('id_service', $asset_service->id)->firstOrFail();
-        $detail_asset_service->id_asset_data = $request->id_asset;
-        $detail_asset_service->id_lokasi = $request->id_lokasi;
+        $detail_asset_service->id_asset_data = $asset_data->id;
+        $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
         $detail_asset_service->id_service = $asset_service->id;
         $detail_asset_service->permasalahan = $request->permasalahan;
         $detail_asset_service->tindakan = $request->tindakan;
