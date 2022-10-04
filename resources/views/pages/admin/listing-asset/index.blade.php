@@ -123,7 +123,8 @@
                         d.is_sparepart = $('#isSparepartFilter').val();
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -174,12 +175,31 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [{
-                    targets: 7,
-                    render: function(data, type, full, meta) {
-                        return formatDateIntoIndonesia(data);
+                columnDefs: [
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        }
+                    },
+                    {
+                        targets: 6,
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            if (data == 'bagus') {
+                                element = `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                            } else if (data == 'rusak') {
+                                element = `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                            } else if (data == 'maintenance') {
+                                element = `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                            } else if (data == 'tidak-lengkap') {
+                                element = `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            }
+
+                            return element;
+                        }
                     }
-                }],
+                ],
                 createdRow: function(row, data, index) {
                     $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
                         "cursor: pointer;");
@@ -223,8 +243,7 @@
                         if (asset.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
-                            $('#imgPreviewAsset').attr('src',
-                                'https://via.placeholder.com/400x250?text=Preview Image');
+                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
                         }
                         $('#linkDetailAsset').attr('href', asset.link_detail);
                     }
@@ -321,7 +340,7 @@
                                     <th width="200px">Deskripsi</th>
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Kategori</th>
-                                    <th width="100px">Status</th>
+                                    <th width="180px">Status</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
                                     <th width="150px">Lokasi</th>

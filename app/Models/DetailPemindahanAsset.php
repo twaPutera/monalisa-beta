@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class DetailPemindahanAsset extends Model
 {
     use HasFactory, Uuid;
+
+    public function pemindahan_asset()
+    {
+        return $this->belongsTo(PemindahanAsset::class, 'id_pemindahan_asset');
+    }
 }

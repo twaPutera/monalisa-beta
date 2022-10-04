@@ -19,4 +19,9 @@ class PemindahanAsset extends Model
     {
         return $this->hasOne(ApprovalPemindahanAsset::class, 'id_pemindahan_asset', 'id');
     }
+
+    public function approval()
+    {
+        return $this->morphMany(Approval::class, 'approvable');
+    }
 }
