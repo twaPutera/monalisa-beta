@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
+use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -232,6 +233,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'asset-data'], function () {
         Route::get('/get-all-data-asset-by-user', [UserAssetController::class, 'getDataAssetByUser'])->name('user.asset-data.get-all-data-asset-by-user');
         Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
+        Route::group(['prefix' => 'pemindahan-asset'], function () {
+            Route::get('/detail/{id}', [UserPemindahanAssetController::class, 'detail'])->name('user.asset-data.pemindahan.detail');
+        });
     });
     Route::group(['prefix' => 'approval'], function () {
         Route::get('/', [UserApprovalController::class, 'index'])->name('user.approval.index');

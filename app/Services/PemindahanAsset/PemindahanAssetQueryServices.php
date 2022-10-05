@@ -10,7 +10,7 @@ class PemindahanAssetQueryServices
     public function findById(string $id)
     {
         $pemindahan_asset = PemindahanAsset::query()
-            ->with(['detail_pemindahan_asset', 'approval_pemindahan_asset'])
+            ->with(['detail_pemindahan_asset', 'approval'])
             ->where('id', $id)
             ->first();
 

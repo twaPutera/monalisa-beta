@@ -25,7 +25,9 @@ class AssetController extends Controller
                 $item->status_diterima = 'Diterima';
                 $pemindahan_asset = $this->assetDataQueryServices->checkIsAssetOnPemindahanAsset($item->id, $user->guid);
                 if (isset($pemindahan_asset)) {
-                    $item->link_detail = '#';
+                    if ($pemindahan_asset->pemindahan_asset->status == 'pending') {
+                        $item->link_detail = route('user.asset-data.pemindahan.detail', $pemindahan_asset->id_pemindahan_asset);
+                    }
                     $item->tanggal_diterima = $pemindahan_asset->pemindahan_asset->status != 'pending' ? date('d/m/Y', strtotime($pemindahan_asset->pemindahan_asset->tanggal_pemindahan)) : '-';
                     $item->status_diterima = $pemindahan_asset->pemindahan_asset->status != 'pending' ? 'Diterima' : 'Belum Diterima';
                 }
