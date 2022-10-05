@@ -21,6 +21,7 @@ class CreateLogPenguranganInventoriTable extends Migration
             $table->string('no_memo', 100);
             $table->integer('jumlah');
             $table->date('tanggal');
+            $table->string('created_by');
             $table->timestamps();
         });
     }

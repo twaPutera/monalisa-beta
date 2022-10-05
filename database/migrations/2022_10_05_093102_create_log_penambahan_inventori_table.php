@@ -20,6 +20,7 @@ class CreateLogPenambahanInventoriTable extends Migration
             $table->foreign('id_inventori')->references('id')->on('inventori_data');
             $table->integer('jumlah');
             $table->date('tanggal');
+            $table->string('created_by');
             $table->timestamps();
         });
     }
