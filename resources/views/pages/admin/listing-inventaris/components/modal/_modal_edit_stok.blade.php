@@ -11,13 +11,35 @@
                 @csrf
                 <div class="modal-body row">
                     <div class="col-12 col-md-4">
-                        <div class="form-group">
-                            <label for="">Jumlah Sebelumnya</label>
-                            <input type="number" min="0" class="form-control" disabled name="jumlah_sebelumnya">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Jumlah Saat Ini</label>
-                            <input type="number" min="0" class="form-control" disabled name="jumlah_saat_ini">
+                        <div class="pt-3 pb-1" style="border-radius: 9px; background: #E5F3FD;">
+                            <table id="tablePropertiEditStok" class="table table-striped">
+                                <tr>
+                                    <td width="40%">Jenis Inventaris</td>
+                                    <td><strong class="kode_inventori"></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Kategori Inventaris</td>
+                                    <td><strong class="nama_kategori"></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Merk Inventaris</td>
+                                    <td><strong class="merk_inventaris"></strong></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Jumlah Inventaris Sebelumnya</td>
+                                    <td><strong class="jumlah_sebelumnya"></strong></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Jumlah Inventaris Saat Ini</td>
+                                    <td><strong class="jumlah_saat_ini"></strong></td>
+                                </tr>
+                                <tr>
+                                    <td width="40%">Deskripsi Inventaris</td>
+                                    <td><strong class="deskripsi_inventaris"></strong></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="col-12 col-md-8">

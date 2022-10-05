@@ -160,8 +160,13 @@ class MasterInventarisController extends Controller
         }
     }
 
-    public function datatableStok(Request $request)
+    public function datatablePenambahan(Request $request)
     {
-        return $this->inventarisDataDatatableServices->datatableStok($request);
+        return $this->inventarisDataDatatableServices->datatablePenambahan($request);
+    }
+
+    public function datatablePengurangan(Request $request)
+    {
+        return $this->inventarisDataDatatableServices->datatablePengurangan($request);
     }
 }

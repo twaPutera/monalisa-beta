@@ -185,9 +185,25 @@
                 success: function(response) {
                     const modal = $('.modalEditStokData');
                     const form = modal.find('form');
+                    const table = modal.find('table');
                     form.attr('action', url_update);
-                    form.find('input[name=jumlah_sebelumnya]').val(response.data.jumlah_sebelumnya);
-                    form.find('input[name=jumlah_saat_ini]').val(response.data.jumlah_saat_ini);
+                    table.find('strong[class=kode_inventori]').empty();
+                    table.find('strong[class=nama_kategori]').empty();
+                    table.find('strong[class=merk_inventaris]').empty();
+                    table.find('strong[class=jumlah_sebelumnya]').empty();
+                    table.find('strong[class=jumlah_saat_ini]').empty();
+                    table.find('strong[class=deskripsi_inventaris]').empty();
+
+                    table.find('strong[class=kode_inventori]').append(response.data.kode_inventori);
+                    table.find('strong[class=nama_kategori]').append(response.data.kategori_inventori
+                        .nama_kategori);
+                    table.find('strong[class=merk_inventaris]').append(response.data.nama_inventori);
+                    table.find('strong[class=jumlah_sebelumnya]').append(response.data.jumlah_sebelumnya +
+                        " " + response.data.satuan_inventori.nama_satuan);
+                    table.find('strong[class=jumlah_saat_ini]').append(response.data.jumlah_saat_ini +
+                        " " + response.data.satuan_inventori.nama_satuan);
+                    table.find('strong[class=deskripsi_inventaris]').append(response.data
+                        .deskripsi_inventori);
                     modal.modal('show');
                 }
             })

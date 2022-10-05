@@ -48,7 +48,7 @@ class InventarisDataCommandServices
     public function updateStok(string $id, InventarisDataUpdateStokRequest $request)
     {
         $request->validated();
-
+        $user = \Session::get('user');
         $inventori_data = InventoriData::findOrFail($id);
         $selisih = $inventori_data->jumlah_saat_ini - $request->jumlah_keluar;
         if ($selisih >= 0) {
@@ -61,6 +61,7 @@ class InventarisDataCommandServices
             $detailInventori->no_memo = $request->no_memo;
             $detailInventori->jumlah = $request->jumlah_keluar;
             $detailInventori->tanggal = $request->tanggal;
+            $detailInventori->created_by = $user->name;
             $detailInventori->save();
             return $inventori_data;
         } else {

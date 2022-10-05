@@ -123,7 +123,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/detail/{id}', [MasterInventarisController::class, 'detail'])->name('admin.listing-inventaris.detail');
         Route::post('/update-stok/{id}', [MasterInventarisController::class, 'updateStok'])->name('admin.listing-inventaris.update.stok');
         Route::get('/edit-stok/{id}', [MasterInventarisController::class, 'editStok'])->name('admin.listing-inventaris.edit.stok');
-        Route::get('/datatable-stok', [MasterInventarisController::class, 'datatableStok'])->name('admin.listing-inventaris.datatable.stok');
+        Route::get('/datatable-penambahan', [MasterInventarisController::class, 'datatablePenambahan'])->name('admin.listing-inventaris.datatable.penambahan');
+        Route::get('/datatable-pengurangan', [MasterInventarisController::class, 'datatablePengurangan'])->name('admin.listing-inventaris.datatable.pengurangan');
     });
 
     # Setting
