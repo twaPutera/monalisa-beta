@@ -207,7 +207,7 @@
                             size: '10',
                         },
                         formatter: function(value, context) {
-                            return context.chart.data.labels[context.dataIndex] + `\n (${value}%)`;
+                            return context.chart.data.labels[context.dataIndex] + `\n (${value.toFixed(2)}%)`;
                         }
                     }
                 }
