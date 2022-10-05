@@ -4,6 +4,7 @@ namespace App\Services\PemindahanAsset;
 
 use Exception;
 use App\Models\AssetData;
+use App\Models\Approval;
 use App\Models\PemindahanAsset;
 use App\Models\DetailPemindahanAsset;
 use App\Models\ApprovalPemindahanAsset;
@@ -81,10 +82,16 @@ class PemindahanAssetCommandServices
         $pemindahan_asset_detail->json_asset_data = json_encode($asset);
         $pemindahan_asset_detail->save();
 
-        $approval_pemindahan_asset_penerima = new ApprovalPemindahanAsset();
-        $approval_pemindahan_asset_penerima->id_pemindahan_asset = $pemindahan_asset->id;
-        $approval_pemindahan_asset_penerima->guid_approver = $request->penerima_asset;
-        $approval_pemindahan_asset_penerima->save();
+        // $approval_pemindahan_asset_penerima = new ApprovalPemindahanAsset();
+        // $approval_pemindahan_asset_penerima->id_pemindahan_asset = $pemindahan_asset->id;
+        // $approval_pemindahan_asset_penerima->guid_approver = $request->penerima_asset;
+        // $approval_pemindahan_asset_penerima->save();
+
+        $approval = new Approval();
+        $approval->approvable_type = get_class($pemindahan_asset);
+        $approval->approvable_id = $pemindahan_asset->id;
+        $approval->guid_approver = $request->penerima_asset;
+        $approval->save();
 
         $message_log = 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' berhasil dibuat pada asset ' . $asset->deskripsi;;
         $this->assetDataCommandServices->insertLogAsset($asset->id, $message_log);

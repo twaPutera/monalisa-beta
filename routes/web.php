@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
+use App\Http\Controllers\User\AssetController as UserAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -229,7 +230,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 
 Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
-    Route::group(['prefix' => 'approval', 'middleware' => ['sso']], function () {
+    Route::group(['prefix' => 'asset-data'], function () {
+        Route::get('/get-all-data-asset-by-user', [UserAssetController::class, 'getDataAssetByUser'])->name('user.asset-data.get-all-data-asset-by-user');
+        Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
+    });
+    Route::group(['prefix' => 'approval'], function () {
         Route::get('/', [UserApprovalController::class, 'index'])->name('user.approval.index');
         Route::get('/detail/{id}', [UserApprovalController::class, 'detail'])->name('user.approval.detail');
         Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');

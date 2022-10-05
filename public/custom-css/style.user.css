@@ -9,3 +9,10 @@
 .border-radius-sm {
     border-radius: 0.35rem !important;
 }
+
+.asset-deskripsi {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+}
