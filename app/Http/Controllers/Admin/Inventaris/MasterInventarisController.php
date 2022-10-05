@@ -9,10 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Services\InventarisData\InventarisDataQueryServices;
 use App\Services\InventarisData\InventarisDataCommandServices;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
-use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Services\InventarisData\InventarisDataDatatableServices;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
+use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 
 class MasterInventarisController extends Controller
 {
@@ -149,10 +149,10 @@ class MasterInventarisController extends Controller
             DB::beginTransaction();
             $listing_inventaris = $this->inventarisDataCommandServices->updateStok($id, $request);
             DB::commit();
-            if (!$listing_inventaris) {
+            if (! $listing_inventaris) {
                 return response()->json([
                     'success' => false,
-                    'message' => "Jumlah Stok Tidak Mencukupi",
+                    'message' => 'Jumlah Stok Tidak Mencukupi',
                 ], 500);
             }
             return response()->json([

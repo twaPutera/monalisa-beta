@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\InventarisData;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 class InventarisDataStoreUpdateRequest extends FormRequest
 {

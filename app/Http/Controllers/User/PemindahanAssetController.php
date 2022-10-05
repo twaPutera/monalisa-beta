@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 
 class PemindahanAssetController extends Controller
 {
@@ -18,8 +17,7 @@ class PemindahanAssetController extends Controller
         PemindahanAssetQueryServices $pemindahanAssetQueryServices,
         AssetDataQueryServices $assetDataQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices
-    )
-    {
+    ) {
         $this->pemindahanAssetQueryServices = $pemindahanAssetQueryServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;

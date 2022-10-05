@@ -2,8 +2,8 @@
 
 namespace App\Services\InventarisData;
 
-use App\Models\InventoriData;
 use Illuminate\Http\Request;
+use App\Models\InventoriData;
 
 class InventarisDataQueryServices
 {

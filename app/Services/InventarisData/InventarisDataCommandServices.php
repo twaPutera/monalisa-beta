@@ -3,13 +3,12 @@
 namespace App\Services\InventarisData;
 
 use App\Models\InventoriData;
-use App\Models\DetailInventoriData;
-use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
-use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
-use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
-use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
+use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
+use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
+use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
+use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 
 class InventarisDataCommandServices
 {
@@ -99,8 +98,7 @@ class InventarisDataCommandServices
             $detailInventori->created_by = $user->name;
             $detailInventori->save();
             return $inventori_data;
-        } else {
-            return false;
         }
+        return false;
     }
 }

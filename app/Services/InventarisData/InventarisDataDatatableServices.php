@@ -5,7 +5,6 @@ namespace App\Services\InventarisData;
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
 use Yajra\DataTables\DataTables;
-use App\Models\DetailInventoriData;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
 
