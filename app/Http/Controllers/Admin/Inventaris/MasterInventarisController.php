@@ -145,7 +145,7 @@ class MasterInventarisController extends Controller
     {
         try {
             $listing_inventaris = $this->inventarisDataQueryServices->findById($id);
-            return view('pages.admin.listing-inventaris.components._data_modal_detail', compact('listing_inventaris'));
+            return view('pages.admin.listing-inventaris.components.data._data_modal_detail', compact('listing_inventaris'));
         } catch (Throwable $th) {
             return response()->json([
                 'success' => false,

@@ -57,24 +57,24 @@ class AssetDataDatatableServices
         if (isset($request->is_sparepart)) {
             $query->where('is_sparepart', $request->is_sparepart);
         }
-
+        $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
-                return $item->kategori_asset->group_kategori_asset->nama_group ?? "Tidak ada Grup";
+                return $item->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';
             })
             ->addColumn('nama_lokasi', function ($item) {
-                return $item->lokasi->nama_lokasi ?? "Tidak ada Lokasi";
+                return $item->lokasi->nama_lokasi ?? 'Tidak ada Lokasi';
             })
             ->addColumn('nama_vendor', function ($item) {
-                return $item->vendor->nama_vendor ?? "Tidak ada Vendor";
+                return $item->vendor->nama_vendor ?? 'Tidak ada Vendor';
             })
             ->addColumn('nama_satuan', function ($item) {
-                return $item->satuan_asset->nama_satuan ?? "Tidak ada Satuan";
+                return $item->satuan_asset->nama_satuan ?? 'Tidak ada Satuan';
             })
             ->addColumn('nama_kategori', function ($item) {
-                return $item->kategori_asset->nama_kategori ?? "Tidak ada Kategori";
+                return $item->kategori_asset->nama_kategori ?? 'Tidak ada Kategori';
             })
             ->addColumn('owner_name', function ($item) {
                 $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);

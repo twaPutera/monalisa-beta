@@ -15,7 +15,7 @@ class KategoriAssetDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
-                return $item->group_kategori_asset->nama_group ?? "Tidak Ada Group";
+                return $item->group_kategori_asset->nama_group ?? 'Tidak Ada Group';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
