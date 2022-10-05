@@ -67,7 +67,10 @@ $(".form-submit").submit(function (e) {
                 errors = response.responseJSON;
             } else if (response.status == 422) {
                 errors = response.responseJSON.errors;
+            } else if (response.status == 400) {
+                errors = response.responseJSON.errors;
             }
+
             $("body").trigger("_EventAjaxErrors", [form, errors]);
             // for (let key in errors) {
             //     let element = form.find(`[name=${key}]`);
