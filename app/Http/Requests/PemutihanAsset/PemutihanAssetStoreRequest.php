@@ -29,7 +29,7 @@ class PemutihanAssetStoreRequest extends FormRequest
             'tanggal' => 'required|date',
             'no_memo' => 'nullable|string|max:50',
             'keterangan_pemutihan' => 'required|string|max:255',
-            'status_pemutihan' => 'required|in:Draft,Publish'
+            'status_pemutihan' => 'required|in:Draft,Publish',
         ];
     }
 }

@@ -18,12 +18,12 @@ use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
+use App\Http\Controllers\User\AssetController as UserAssetController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
-use App\Http\Controllers\User\AssetController as UserAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +100,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::post('/store', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
         Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
         Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');
-    
     });
 
     # Services

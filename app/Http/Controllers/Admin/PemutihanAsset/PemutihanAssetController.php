@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin\PemutihanAsset;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
-use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
-use App\Services\AssetData\AssetDataQueryServices;
-use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
-use App\Services\PemutihanAsset\PemutihanAssetDatatableServices;
-use App\Services\PemutihanAsset\PemutihanAssetQueryServices;
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Throwable;
+use App\Http\Controllers\Controller;
+use App\Services\AssetData\AssetDataQueryServices;
+use App\Services\PemutihanAsset\PemutihanAssetQueryServices;
+use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
+use App\Services\PemutihanAsset\PemutihanAssetDatatableServices;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 
 class PemutihanAssetController extends Controller
 {
@@ -61,7 +61,7 @@ class PemutihanAssetController extends Controller
                     break;
                     return response()->json([
                         'success' => false,
-                        'message' => "Terdapat item asset yang sudah diputihkan sebelumnya",
+                        'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
                     ], 500);
                 }
             }
@@ -97,7 +97,7 @@ class PemutihanAssetController extends Controller
             }
             return response()->json([
                 'success' => false,
-                'message' => "Gagal menghapus data pemutihan asset",
+                'message' => 'Gagal menghapus data pemutihan asset',
             ], 500);
         } catch (Throwable $th) {
             DB::rollBack();
@@ -154,7 +154,7 @@ class PemutihanAssetController extends Controller
                     break;
                     return response()->json([
                         'success' => false,
-                        'message' => "Terdapat item asset yang sudah diputihkan sebelumnya",
+                        'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
                     ], 500);
                 }
             }

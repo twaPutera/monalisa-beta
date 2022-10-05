@@ -3,10 +3,10 @@
 namespace App\Services\PemutihanAsset;
 
 use App\Models\AssetData;
-use App\Models\DetailPemutihanAsset;
 use Illuminate\Http\Request;
 use App\Models\PemutihanAsset;
 use Yajra\DataTables\DataTables;
+use App\Models\DetailPemutihanAsset;
 
 class PemutihanAssetDatatableServices
 {
@@ -22,7 +22,7 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                if ($item->status == "Draft") {
+                if ($item->status == 'Draft') {
                     $element .= '<form action="' . route('admin.pemutihan-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
                     $element .= csrf_field();
                     $element .= '<button type="button" onclick="edit(this)" data-url_edit="' . route('admin.pemutihan-asset.edit', $item->id) . '" data-url_update="' . route('admin.pemutihan-asset.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
@@ -61,9 +61,9 @@ class PemutihanAssetDatatableServices
         return DataTables::of($query)
             ->addColumn('id', function ($item) {
                 if (in_array($item->id, $this->assetInPemutihan)) {
-                    $checked = "checked";
+                    $checked = 'checked';
                 } else {
-                    $checked = "";
+                    $checked = '';
                 }
                 $data = '';
                 $data .= '<div class="form-check text-center">

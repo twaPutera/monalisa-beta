@@ -69,7 +69,7 @@ class AssetDataQueryServices
         }
 
         if (isset($request->id_lokasi)) {
-            if ($request->id_lokasi != "root") {
+            if ($request->id_lokasi != 'root') {
                 $data->where('id_lokasi', $request->id_lokasi);
             }
         }
@@ -92,14 +92,14 @@ class AssetDataQueryServices
     {
         $asset_by_ownership = AssetData::query()
             ->select([
-                'id'
+                'id',
             ])
             ->where('ownership', $user_id)
             ->get()->toArray();
 
         $asset_from_pemindahan = DetailPemindahanAsset::query()
             ->select([
-                'id_asset'
+                'id_asset',
             ])
             ->whereHas('pemindahan_asset', function ($query) use ($user_id) {
                 $query->where('guid_penerima_asset', $user_id)
@@ -132,7 +132,7 @@ class AssetDataQueryServices
             ->select([
                 'id',
                 'id_pemindahan_asset',
-                'id_asset'
+                'id_asset',
             ])
             ->with(['pemindahan_asset'])
             ->whereHas('pemindahan_asset', function ($query) use ($user_id) {

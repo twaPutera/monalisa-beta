@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\User\Approval;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
+use App\Http\Controllers\Controller;
 use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
-use Illuminate\Support\Facades\DB;
+use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 
 class ApprovalController extends Controller
 {
@@ -40,14 +39,14 @@ class ApprovalController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $pemindahan_asset
+                'data' => $pemindahan_asset,
             ]);
             //code...
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

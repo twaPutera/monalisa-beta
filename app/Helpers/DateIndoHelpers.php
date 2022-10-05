@@ -9,7 +9,8 @@ class DateIndoHelpers
         //
     }
 
-    public static function formatDateToIndo($date, $withDayName = false) {
+    public static function formatDateToIndo($date, $withDayName = false)
+    {
         $dateArray = explode('-', $date);
         $monthname = self::getMonthName($dateArray[1]);
         $fulldate = $dateArray[2] . ' ' . $monthname . ' ' . $dateArray[0];
@@ -20,7 +21,8 @@ class DateIndoHelpers
         return $fulldate;
     }
 
-    public static function getMonthName($month) {
+    public static function getMonthName($month)
+    {
         $month = (int) $month;
         $arrayMonth = [
             1 => 'Januari',
@@ -40,7 +42,8 @@ class DateIndoHelpers
         return $arrayMonth[$month];
     }
 
-    public static function getDayName($date) {
+    public static function getDayName($date)
+    {
         $day = (int) date('N', strtotime($date));
         $arrayDay = [
             1 => 'Senin',

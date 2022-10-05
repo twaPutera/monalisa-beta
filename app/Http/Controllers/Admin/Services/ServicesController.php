@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin\Services;
 
 use Illuminate\Http\Request;
+use App\Models\DetailService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Lokasi\LokasiQueryServices;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
-use App\Models\DetailService;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
-use App\Services\Lokasi\LokasiQueryServices;
 
 class ServicesController extends Controller
 {
@@ -42,7 +42,7 @@ class ServicesController extends Controller
         $data['selesai'] = $allServices->where('status_service', 'selesai')->count();
         $data['backlog'] = $allServices->where('status_service', 'backlog')->count();
         $data['totalLokasi'] = 0;
-        $data['namaLokasi'] = "Tidak Ada";
+        $data['namaLokasi'] = 'Tidak Ada';
         foreach ($allLokasi as $itemLokasi) {
             foreach ($allDetail as $itemServices) {
                 if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {

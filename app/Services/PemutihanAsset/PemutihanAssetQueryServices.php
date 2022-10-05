@@ -6,7 +6,6 @@ use App\Models\PemutihanAsset;
 
 class PemutihanAssetQueryServices
 {
-
     public function findAll()
     {
         return PemutihanAsset::where('status', 'Publish')->get();
