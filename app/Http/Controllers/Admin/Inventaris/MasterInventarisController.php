@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\InventarisData\InventarisDataQueryServices;
 use App\Services\InventarisData\InventarisDataCommandServices;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
+use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Services\InventarisData\InventarisDataDatatableServices;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
@@ -44,6 +45,28 @@ class MasterInventarisController extends Controller
         try {
             DB::beginTransaction();
             $listing_inventaris = $this->inventarisDataCommandServices->store($request);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menambahkan data inventaris',
+                'data' => $listing_inventaris,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function storeUpdate(InventarisDataStoreUpdateRequest $request)
+    {
+        $request->request->add(['id' => $request->id_inventaris]);
+        try {
+            DB::beginTransaction();
+            $listing_inventaris = $this->inventarisDataCommandServices->storeUpdate($request);
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -168,5 +191,39 @@ class MasterInventarisController extends Controller
     public function datatablePengurangan(Request $request)
     {
         return $this->inventarisDataDatatableServices->datatablePengurangan($request);
+    }
+
+    public function getDataSelect2(Request $request)
+    {
+        try {
+            $data = $this->inventarisDataQueryServices->getDataSelect2($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function getOne(Request $request)
+    {
+        try {
+            $listing_inventaris = $this->inventarisDataQueryServices->findById($request->id_inventori);
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengambil data stok inventaris',
+                'data' => $listing_inventaris,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }

@@ -14,10 +14,29 @@
                 <div class="modal-body row">
                     <div class="col-6 col-md-6">
                         <div class="form-group">
+                            <label for="">Jenis Penambahan</label>
+                            <div class="input-group mb-2">
+                                <select name="id_jenis_penambahan" class="form-control"
+                                    onchange="jenisPenambahan(this.value)" id="">
+                                    <option value="">Pilih Jenis Penambahan Inventaris</option>
+                                    <option value="baru">Tambah Inventaris Baru</option>
+                                    <option value="lama">Gunakan Yang Sudah Ada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group d-none" id="form-inventaris">
+                            <label for="">Daftar Inventaris</label>
+                            <div class="input-group mb-2">
+                                <select name="id_inventaris" class="form-control selectInventarisData" id="">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="">Kategori Inventaris</label>
                             <div class="input-group mb-2">
                                 <select name="id_kategori_inventori" class="form-control selectKategoriData"
-                                    id="">
+                                    id="selectKategoriDataCreate">
 
                                 </select>
                             </div>
@@ -26,10 +45,11 @@
                             <label for="">Jenis Inventaris</label>
                             <input type="text" class="form-control" name="kode_inventori">
                         </div>
-                        <label for="">Satuan Inventaris</label>
                         <div class="form-group">
+                            <label for="">Satuan Inventaris</label>
                             <div class="input-group mb-2">
-                                <select name="id_satuan_inventori" class="form-control selectSatuanData" id="">
+                                <select name="id_satuan_inventori" class="form-control selectSatuanData"
+                                    id="selectSatuanDataCreate">
 
                                 </select>
                             </div>
@@ -38,16 +58,20 @@
                             <label for="">Merk Inventaris</label>
                             <input type="text" class="form-control" name="nama_inventori">
                         </div>
+                    </div>
+                    <div class="col-6 col-md-6">
                         <div class="form-group">
-                            <label for="">Jumlah</label>
+                            <label for="">Tanggal Masuk</label>
+                            <input type="text" class="form-control datepickerCreate" readonly name="tanggal">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Jumlah Masuk</label>
                             <input type="number" min="0" class="form-control" name="stok">
                         </div>
                         <div class="form-group">
                             <label for="">Harga Beli</label>
                             <input type="number" min="0" class="form-control" name="harga_beli">
                         </div>
-                    </div>
-                    <div class="col-6 col-md-6">
                         <div class="form-group">
                             <label for="">Deskripsi Inventaris</label>
                             <textarea cols="30" rows="15" class="form-control" name="deskripsi_inventori"></textarea>

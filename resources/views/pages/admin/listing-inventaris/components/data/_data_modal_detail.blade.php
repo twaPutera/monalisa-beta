@@ -39,7 +39,7 @@
             <thead>
                 <tr>
                     <th>Tanggal</th>
-                    <th>Jumlah Inventaris</th>
+                    <th>Jumlah Masuk</th>
                     <th>Harga Beli</th>
                     <th>Created By</th>
                 </tr>
@@ -59,7 +59,7 @@
                 <tr>
                     <th>Tanggal</th>
                     <th>No Memo</th>
-                    <th>Jumlah Inventaris</th>
+                    <th>Jumlah Keluar</th>
                     <th>Created By</th>
                 </tr>
             </thead>
