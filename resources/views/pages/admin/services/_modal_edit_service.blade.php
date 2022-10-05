@@ -62,12 +62,12 @@
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadioEdit1" class="custom-control-input"
                                         name="status_service" id="status_service" value="onprogress">
-                                    <label class="custom-control-label" for="customRadioEdit1"> On Progress</label>
+                                    <label class="custom-control-label" for="customRadioEdit1"> Proses</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadioEdit2" class="custom-control-input"
                                         name="status_service" id="status_service" value="backlog">
-                                    <label class="custom-control-label" for="customRadioEdit2"> Backlog</label>
+                                    <label class="custom-control-label" for="customRadioEdit2"> Tertunda</label>
                                 </div>
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadioEdit3" class="custom-control-input"

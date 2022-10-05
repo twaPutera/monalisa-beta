@@ -32,7 +32,7 @@ class PemutihanAssetController extends Controller
     }
     public function index()
     {
-        $total_asset = $this->pemutihanAssetQueryServices->findAll()->count();
+        $total_asset = $this->pemutihanAssetQueryServices->findAll()->where('status', 'Accept')->count();
         return view('pages.admin.pemutihan-asset.index', compact('total_asset'));
     }
 
