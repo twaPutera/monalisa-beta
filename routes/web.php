@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
 use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
 
@@ -86,6 +87,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
         });
     });
+
+    # Pemutihan Asset
+    Route::group(['prefix' => 'pemutihan-asset'], function () {
+        Route::get('/', [PemutihanAssetController::class, 'index'])->name('admin.pemutihan-asset.index');
+        Route::get('/datatable', [PemutihanAssetController::class, 'datatable'])->name('admin.pemutihan-asset.datatable');
+        Route::get('/edit/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
+        Route::get('/detail/{id}', [PemutihanAssetController::class, 'detail'])->name('admin.pemutihan-asset.detail');
+        Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
+        Route::post('/delete/{id}', [PemutihanAssetController::class, 'destroy'])->name('admin.pemutihan-asset.delete');
+        Route::post('/store', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
+        Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
+        Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');
+    
+    });
+
     # Services
     Route::group(['prefix' => 'services'], function () {
         Route::get('/', [ServicesController::class, 'index'])->name('admin.services.index');

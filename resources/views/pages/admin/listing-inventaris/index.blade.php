@@ -280,8 +280,8 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.listing-inventaris._modal_create')
-    @include('pages.admin.listing-inventaris._modal_edit')
-    @include('pages.admin.listing-inventaris._modal_edit_stok')
-    @include('pages.admin.listing-inventaris._modal_detail')
+    @include('pages.admin.listing-inventaris.components.modal._modal_create')
+    @include('pages.admin.listing-inventaris.components.modal._modal_edit')
+    @include('pages.admin.listing-inventaris.components.modal._modal_edit_stok')
+    @include('pages.admin.listing-inventaris.components.modal._modal_detail')
 @endsection

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\InventarisData;
+namespace App\Http\Requests\PemutihanAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InventarisDataUpdateStokRequest extends FormRequest
+class PemutihanAssetStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,12 @@ class InventarisDataUpdateStokRequest extends FormRequest
     public function rules()
     {
         return [
-            'jumlah_saat_ini' => 'required|numeric',
-            'no_memo' => 'nullable|string|max:50',
+            'id_checkbox.*' => 'required',
+            'id_checkbox' => 'required|min:1',
             'tanggal' => 'required|date',
+            'no_memo' => 'nullable|string|max:50',
+            'keterangan_pemutihan' => 'required|string|max:255',
+            'status_pemutihan' => 'required|in:Draft,Publish'
         ];
     }
 }

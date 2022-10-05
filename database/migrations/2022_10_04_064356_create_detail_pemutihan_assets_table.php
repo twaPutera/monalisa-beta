@@ -19,7 +19,6 @@ class CreateDetailPemutihanAssetsTable extends Migration
             $table->foreign('id_pemutihan_asset')->references('id')->on('pemutihan_assets');
             $table->uuid('id_asset_data');
             $table->foreign('id_asset_data')->references('id')->on('asset_data');
-            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

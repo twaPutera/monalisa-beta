@@ -49,4 +49,9 @@ class AssetData extends Model
     {
         return $this->hasMany(LogAsset::class, 'asset_id', 'id');
     }
+
+    public function detail_pemutihan_asset()
+    {
+        return $this->hasMany(DetailPemutihanAsset::class, 'id_asset_data', 'id');
+    }
 }

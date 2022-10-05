@@ -57,7 +57,7 @@ class AssetDataDatatableServices
         if (isset($request->is_sparepart)) {
             $query->where('is_sparepart', $request->is_sparepart);
         }
-
+        $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()

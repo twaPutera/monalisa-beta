@@ -16,12 +16,12 @@ class CreatePemutihanAssetsTable extends Migration
         Schema::create('pemutihan_assets', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('guid_manager');
-            $table->uuid('guid_atasan');
             $table->text('json_manager');
-            $table->text('json_atasan');
             $table->date('tanggal');
+            $table->string('no_memo', 50)->nullable();
             $table->string('status');
             $table->string('created_by', 50);
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
