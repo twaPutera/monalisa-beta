@@ -24,8 +24,8 @@ class InventarisDataUpdateStokRequest extends FormRequest
     public function rules()
     {
         return [
-            'jumlah_saat_ini' => 'required|numeric',
-            'no_memo' => 'nullable|string|max:50',
+            'jumlah_keluar' => 'required|integer|min:0',
+            'no_memo' => 'required|string|max:50',
             'tanggal' => 'required|date',
         ];
     }

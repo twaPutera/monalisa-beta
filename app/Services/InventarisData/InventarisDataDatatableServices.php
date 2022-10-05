@@ -42,20 +42,20 @@ class InventarisDataDatatableServices
             ->make(true);
     }
 
-    public function datatableStok(Request $request)
-    {
-        $query = DetailInventoriData::query();
-        $query->with(['inventori_data']);
-        $query->where('id_inventori', $request->id_inventaris);
-        $query->orderBy('created_at', 'ASC');
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('jumlah', function ($item) {
-                return $item->jumlah . ' ' . $item->inventori_data->satuan_inventori->nama_satuan;
-            })
-            ->addColumn('status', function ($item) {
-                return ucWords($item->status);
-            })
-            ->make(true);
-    }
+    // public function datatableStok(Request $request)
+    // {
+    //     $query = DetailInventoriData::query();
+    //     $query->with(['inventori_data']);
+    //     $query->where('id_inventori', $request->id_inventaris);
+    //     $query->orderBy('created_at', 'ASC');
+    //     return DataTables::of($query)
+    //         ->addIndexColumn()
+    //         ->addColumn('jumlah', function ($item) {
+    //             return $item->jumlah . ' ' . $item->inventori_data->satuan_inventori->nama_satuan;
+    //         })
+    //         ->addColumn('status', function ($item) {
+    //             return ucWords($item->status);
+    //         })
+    //         ->make(true);
+    // }
 }

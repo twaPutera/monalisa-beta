@@ -84,6 +84,9 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -250,7 +253,7 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
                                 <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
                             </div>
                         </div>
                     </div>

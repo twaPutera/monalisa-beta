@@ -125,6 +125,9 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
