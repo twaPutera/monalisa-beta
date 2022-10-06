@@ -5,10 +5,17 @@ namespace App\Models;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use App\Services\UserSso\UserSsoQueryServices;
 class Approval extends Model
 {
     use HasFactory, Uuid;
+
+    protected $userSsoQueryServices;
+
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+    }
 
     public function approvable()
     {
@@ -35,5 +42,22 @@ class Approval extends Model
         }
 
         return "Tipe Tidak Terdaftar";
+    }
+
+    public function getPembuatApproval()
+    {
+        $guid = null;
+        if ($this->approvable instanceof PemindahanAsset) {
+            $guid = $this->approvable->created_by;
+        } else if ($this->approvable instanceof PemutihanAsset) {
+            $guid = $this->approvable->created_by;
+        }
+        $name = 'Tidak Terdaftar di Siska';
+        if (isset($guid)) {
+            $user_sso = $this->userSsoQueryServices->getUserByGuid($guid);
+            $name = isset($user_sso[0]) ? $user_sso[0]['nama'] : 'Not Found';
+        }
+
+        return $name;
     }
 }

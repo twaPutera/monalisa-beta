@@ -20,7 +20,12 @@
                 searching: false,
                 bLengthChange: false,
                 serverSide: true,
-                ajax: "{{ route('admin.approval.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.approval.datatable') }}",
+                    data: function(d) {
+                        d.is_approve = '1';
+                    }
+                },
                 columns: [
                     {
                         data: "DT_RowIndex",
@@ -41,11 +46,25 @@
                     },
                     {
                         data: 'is_approve'
+                    },
+                    {
+                        data: 'pembuat_approval'
                     }
-
                 ],
                 columnDefs: [
                     //Custom template data
+                    {
+                        targets: [3],
+                        render: function(data, type, full, meta) {
+                            let element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
+                            if (data == '1') {
+                                element = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
+                            } else if (data == '2') {
+                                element = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
+                            }
+                            return element;
+                        },
+                    }
                 ],
             });
 
@@ -62,13 +81,15 @@
 @endsection
 @section('main-content')
     <div class="row">
-
-        <div class="col-md-12 col-12">
+        <div class="col-md-2 col-12">
+            @include('pages.admin.approval.menu')
+        </div>
+        <div class="col-md-10 col-10">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Approval
+                            History Approval
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -88,6 +109,7 @@
                                     <th width="100px">#</th>
                                     <th>Jenis Approval</th>
                                     <th>Status</th>
+                                    <th>Pemohon</th>
                                 </tr>
                             </thead>
                             <tbody>

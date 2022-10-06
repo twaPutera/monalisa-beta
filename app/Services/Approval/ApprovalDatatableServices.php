@@ -20,7 +20,7 @@ class ApprovalDatatableServices
             $query->where('approvable_type', $request->approvable_type);
         }
 
-        if (isset($request->is_approve)) {
+        if ($request->has('is_approve')) {
             $query->where('is_approve', $request->is_approve);
         }
 
@@ -31,11 +31,14 @@ class ApprovalDatatableServices
             ->addColumn('tipe_approval', function ($row) {
                 return $row->approvalType();
             })
+            ->addColumn('pembuat_approval', function ($row) {
+                return $row->getPembuatApproval();
+            })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="edit(this)" data-url_edit="' . route('admin.setting.group-kategori-asset.edit', $item->id) . '" data-url_update="' . route('admin.setting.group-kategori-asset.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
-                                <i class="fa fa-edit"></i>
-                            </button>';
+                $element .= '<a href="#" onclick="edit(this)" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                <i class="fa fa-eye"></i>
+                            </a>';
                 return $element;
             })
             ->rawColumns(['action'])
