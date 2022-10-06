@@ -35,12 +35,15 @@
                         name: 'action'
                     },
                     {
+                        name: 'tanggal',
                         data: 'tanggal'
                     },
                     {
+                        name: 'no_memo',
                         data: 'no_memo'
                     },
                     {
+                        name: 'keterangan',
                         data: 'keterangan'
                     },
                     {
@@ -90,6 +93,7 @@
                         searchable: false,
                     },
                     {
+                        name: 'kode_asset',
                         data: 'kode_asset'
                     },
                     {

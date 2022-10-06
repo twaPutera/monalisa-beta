@@ -17,8 +17,17 @@ class PemutihanAssetDatatableServices
         $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('keterangan', function ($item) {
+                return empty($item->keterangan) ? 'Tidak Ada' : $item->keterangan;
+            })
+            ->addColumn('tanggal', function ($item) {
+                return empty($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
+            })
+            ->addColumn('no_memo', function ($item) {
+                return empty($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
+            })
             ->addColumn('status', function ($item) {
-                return $item->status;
+                return empty($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -72,14 +81,17 @@ class PemutihanAssetDatatableServices
                          </div>';
                 return $data;
             })
+            ->addColumn('kode_asset', function ($item) {
+                return empty($item->kode_asset) ? 'Tidak Ada' : $item->kode_asset;
+            })
             ->addColumn('jenis_asset', function ($item) {
-                return $item->kategori_asset->nama_kategori;
+                return empty($item->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->kategori_asset->nama_kategori;
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return $item->lokasi->nama_lokasi;
+                return empty($item->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->lokasi->nama_lokasi;
             })
             ->addColumn('kondisi_asset', function ($item) {
-                return $item->status_kondisi;
+                return empty($item->status_kondisi) ? 'Tidak Ada' : $item->status_kondisi;
             })
             ->rawColumns(['id'])
             ->make(true);
@@ -93,16 +105,16 @@ class PemutihanAssetDatatableServices
         $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
             ->addColumn('kode_asset', function ($item) {
-                return $item->asset_data->kode_asset;
+                return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;
             })
             ->addColumn('jenis_asset', function ($item) {
-                return $item->asset_data->kategori_asset->nama_kategori;
+                return empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori;
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return $item->asset_data->lokasi->nama_lokasi;
+                return empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi;
             })
             ->addColumn('kondisi_asset', function ($item) {
-                return $item->asset_data->status_kondisi;
+                return empty($item->asset_data->status_kondisi) ? 'Tidak Ada' : $item->asset_data->status_kondisi;
             })
             ->make(true);
     }

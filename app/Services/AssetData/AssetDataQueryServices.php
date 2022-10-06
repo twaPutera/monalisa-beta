@@ -46,6 +46,15 @@ class AssetDataQueryServices
         return $data;
     }
 
+    public function findBykode(Request $request)
+    {
+        $data =  AssetData::query()
+            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image'])
+            ->where('kode_asset', $request->kode_asset)
+            ->firstOrFail();
+        return $data;
+    }
+
     public function findAssetImageById(string $id)
     {
         return AssetImage::query()
