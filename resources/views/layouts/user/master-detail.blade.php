@@ -12,7 +12,8 @@
         <img src="/assets/user/img/loading-icon.png" alt="icon" class="loading-icon">
     </div>
 
-    <div class="loadingSpiner" style="position: absolute; background: rgb(0, 0, 0, 0.3); height: 100vh; width: 100%; z-index: 99999; top: 0, left: 0; display: none;">
+    <div class="loadingSpiner"
+        style="position: absolute; background: rgb(0, 0, 0, 0.3); height: 100vh; width: 100%; z-index: 99999; top: 0, left: 0; display: none;">
         <div class="spinner-border text-primary" role="status" style="position: absolute; top: 48%; left: 48%;"></div>
     </div>
     <!-- * loader -->
@@ -31,7 +32,7 @@
     </div>
     <!-- * App Header -->
 
-
+    @yield('isFormStart')
     <!-- App Capsule -->
     <div id="appCapsule">
         @yield('content')
@@ -53,7 +54,7 @@
         @yield('button-menu')
     </div>
     <!-- * App Bottom Menu -->
-
+    @yield('isFormEnd')
     <div id="toastDanger" class="toast-box toast-bottom bg-danger">
         <div class="in">
             <div class="text toastText">
