@@ -28,6 +28,8 @@ use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetCo
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
 use App\Http\Controllers\User\AssetOpnameController;
+use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
+use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\User\ScanQrCodeController;
 
 /*
@@ -54,10 +56,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
     # Approval
     Route::group(['prefix' => 'approval'], function () {
-        Route::get('/', [AdminApprovalController::class, 'index'])->name('admin.approval.index');
         Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');
-        Route::get('/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
-        Route::post('/{id}', [AdminApprovalController::class, 'update'])->name('admin.approval.update');
+        Route::get('/detail/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
+        Route::group(['prefix' => 'daftar'], function () {
+            Route::get('/', [DaftarApprovalController::class, 'index'])->name('admin.approval.daftar.index');
+        });
+        Route::group(['prefix' => 'history'], function () {
+            Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
+        });
     });
     # Listing Asset
     Route::group(['prefix' => 'listing-asset'], function () {

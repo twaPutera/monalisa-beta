@@ -25,11 +25,6 @@ class ApprovalController extends Controller
         $this->approvalDatatableServices = $approvalDatatableServices;
     }
 
-    public function index()
-    {
-        return view('pages.admin.approval.index');
-    }
-
     public function datatable(Request $request)
     {
         return $this->approvalDatatableServices->datatable($request);
