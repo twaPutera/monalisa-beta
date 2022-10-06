@@ -40,7 +40,7 @@
                             Pinjam
                         </div>
                     </a>
-                    <a href="index.html" class="action-button">
+                    <a href="{{ route('user.scan-qr.index') }}" class="action-button">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="grid-outline"></ion-icon>

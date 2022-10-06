@@ -27,6 +27,7 @@ use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalControl
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
+use App\Http\Controllers\User\ScanQrCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -243,6 +244,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 
 Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
+    Route::group(['prefix' => 'scan-qr'], function () {
+        Route::get('/', [ScanQrCodeController::class, 'index'])->name('user.scan-qr.index');
+        Route::post('find', [ScanQrCodeController::class, 'find'])->name('user.scan-qr.find');
+    });
     Route::group(['prefix' => 'asset-data'], function () {
         Route::get('/get-all-data-asset-by-user', [UserAssetController::class, 'getDataAssetByUser'])->name('user.asset-data.get-all-data-asset-by-user');
         Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
