@@ -17,7 +17,7 @@
                                 $('#assetContainer').append(generateTemplateAsset(value));
                             });
                         }
-                        console.log(response.data);
+                        $('#countAsset').text(response.data.length);
                     }
                 }
             })
@@ -98,7 +98,7 @@
 <div class="section mt-2">
     <div class="d-flex justify-content-between">
         <h2 class="text-grey"><strong>Daftar Aset Anda</strong></h2>
-        <h2 class="text-grey"><strong>(2)</strong></h2>
+        <h2 class="text-grey"><strong id="countAsset">(2)</strong></h2>
     </div>
 </div>
 <div class="section mt-2">

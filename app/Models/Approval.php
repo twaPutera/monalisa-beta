@@ -14,4 +14,14 @@ class Approval extends Model
     {
         return $this->morphTo();
     }
+
+    public function linkApproval()
+    {
+        if ($this->approvable instanceof PemindahanAsset) {
+            return route('user.asset-data.pemindahan.approve', $this->approvable_id);
+        } else if ($this->approvable instanceof PemutihanAsset) {
+            return '#';
+            // return route('pemutihan_asset.show', $this->approvable->id);
+        }
+    }
 }

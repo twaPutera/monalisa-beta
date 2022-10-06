@@ -12,7 +12,9 @@
         <img src="/assets/user/img/loading-icon.png" alt="icon" class="loading-icon">
     </div>
     <!-- * loader -->
-
+    <div class="loadingSpiner" style="position: absolute; background: rgb(0, 0, 0, 0.3); height: 100vh; width: 100%; z-index: 99999; top: 0, left: 0; display: none;">
+        <div class="spinner-border text-primary" role="status" style="position: absolute; top: 48%; left: 48%;"></div>
+    </div>
     <!-- App Header -->
     <div class="appHeader bg-primary text-light">
         <div class="left">

@@ -1,23 +1,14 @@
 @extends('layouts.user.master-detail')
-@section('page-title', 'Detail Pemindahan')
+@section('page-title', 'Detail Asset')
 @section('custom-js')
     <script>
         $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
             if (data.success) {
-                changeTextToast('toastSuccess', data.message);
-                toastbox('toastSuccess', 2000);
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                //
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-            $('#dialogApprove').modal('hide');
-            if (!errors.success) {
-                changeTextToast('toastDanger', errors.message);
-                toastbox('toastDanger', 2000)
-            }
+            //
         });
     </script>
 @endsection
@@ -29,7 +20,6 @@
 @section('content')
 <div class="section mt-2">
     <h2 style="color: #6F6F6F;">{{ $asset_data->deskripsi }}</h2>
-
     <div class="mt-2">
         <div class="py-2 border-bottom border-secondary">
             <div class="row">
@@ -115,6 +105,42 @@
         <div class="py-2 border-bottom border-secondary">
             <div class="row">
                 <div class="col">
+                    <p class="mb-0 text-green">Status Peminjam</p>
+                </div>
+                <div class="col">
+                    <p class="mb-0 text-green text-end">
+                        <strong>
+                            <ion-icon name="checkmark-circle-outline"></ion-icon>
+                        </strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="py-2 border-bottom border-secondary">
+            <div class="row">
+                <div class="col">
+                    <p class="mb-0 text-green">Peminjam</p>
+                </div>
+                <div class="col">
+                    <p class="mb-0 text-green text-end">
+                        -
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="py-2 border-bottom border-secondary">
+            <div class="row">
+                <div class="col">
+                    <p class="mb-0 text-green">Status Service</p>
+                </div>
+                <div class="col">
+                    Tidak Ada
+                </div>
+            </div>
+        </div>
+        <div class="py-2 border-bottom border-secondary">
+            <div class="row">
+                <div class="col">
                     <p class="mb-0 text-green">Spesifikasi</p>
                 </div>
                 <div class="col">
@@ -124,33 +150,16 @@
         </div>
     </div>
 </div>
-<div class="modal fade dialogbox" id="dialogApprove" data-bs-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Pemindahan Asset</h5>
-            </div>
-            <div class="modal-body">
-                Apakah anda yakin ingin menerima asset ini?
-            </div>
-            <div class="modal-footer">
-                <form action="{{ $approval->linkApproval() }}" class="form-submit" method="POST">
-                    @csrf
-                    <input type="hidden" value="disetujui" name="status">
-                    <div class="btn-inline">
-                        <a href="#" class="btn btn-text-secondary" data-bs-dismiss="modal">Tutup</a>
-                        <button type="submit" class="btn btn-text-primary">Approve</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 @section('button-menu')
-    @if ($pemindahan_asset->status == "pending")
-        <button type="button" data-bs-toggle="modal" data-bs-target="#dialogApprove" class="btn btn-primary border-radius-sm px-5">Terima</button>
-    @elseif($pemindahan_asset->status == "disetujui")
-        <button type="button" class="btn btn-success border-radius-sm px-5">Download BAST</button>
-    @endif
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-primary border-radius-sm px-3 me-2" href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
+            <ion-icon name="add-outline"></ion-icon>
+            <span class="">Service</span>
+        </a>
+        <a class="btn btn-success border-radius-sm px-3" href="a">
+            <ion-icon name="add-outline"></ion-icon>
+            <span class="">Opname</span>
+        </a>
+    </div>
 @endsection

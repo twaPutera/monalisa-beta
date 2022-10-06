@@ -8,10 +8,15 @@
 @yield('pluggin-js')
 <!-- Base Js File -->
 <script src="{{ asset('assets/user/js/base.js') }}"></script>
+<script src="{{ asset('custom-js/general.js') }}"></script>
 
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
+
+    const changeTextToast = (id, text) => {
+        $('#'+id).find('.toastText').text(text);
+    }
 </script>
 
 @yield('custom-js')

@@ -5,14 +5,20 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\AssetData\AssetDataQueryServices;
+use App\Services\AssetService\AssetServiceQueryServices;
 
 class AssetController extends Controller
 {
     protected $assetDataQueryServices;
+    protected $assetServiceQueryServices;
 
-    public function __construct(AssetDataQueryServices $assetDataQueryServices)
+    public function __construct(
+        AssetDataQueryServices $assetDataQueryServices,
+        AssetServiceQueryServices $assetServiceQueryServices
+    )
     {
         $this->assetDataQueryServices = $assetDataQueryServices;
+        $this->assetServiceQueryServices = $assetServiceQueryServices;
     }
 
     public function getDataAssetByUser(Request $request)
@@ -44,5 +50,12 @@ class AssetController extends Controller
                 'message' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function detail($id)
+    {
+        $asset_data = $this->assetDataQueryServices->findById($id);
+        $last_service = $this->assetServiceQueryServices->findLastestLogByAssetId($id);
+        return view('pages.user.asset.detail', compact('asset_data', 'last_service'));
     }
 }

@@ -43,9 +43,11 @@ $(".form-submit").submit(function (e) {
         cache: false,
         beforeSend: function () {
             $(".backdrop").show();
+            $(".loadingSpiner").show();
         },
         success: function (response) {
             $(".backdrop").hide();
+            $(".loadingSpiner").hide();
             if (response.success) {
                 // let fileinput = form.find(".fileinput");
                 // console.log(fileinput);
@@ -60,8 +62,8 @@ $(".form-submit").submit(function (e) {
             $("body").trigger("_EventAjaxSuccess", [form, response]);
         },
         error: function (response) {
-            console.log(response);
             $(".backdrop").hide();
+            $(".loadingSpiner").hide();
             let errors;
             if (response.status == 500) {
                 errors = response.responseJSON;
@@ -70,7 +72,6 @@ $(".form-submit").submit(function (e) {
             } else if (response.status == 400) {
                 errors = response.responseJSON.errors;
             }
-
             $("body").trigger("_EventAjaxErrors", [form, errors]);
             // for (let key in errors) {
             //     let element = form.find(`[name=${key}]`);

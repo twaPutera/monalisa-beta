@@ -99,26 +99,27 @@ class PemindahanAssetCommandServices
         return $pemindahan_asset;
     }
 
-    public function changeStatus(PemindahanAssetChangeStatusRequest $request)
+    public function changeStatus(PemindahanAssetChangeStatusRequest $request, string $id)
     {
         $request->validated();
         $user = \Session::get('user');
 
-        $approval_pemindahan_asset = ApprovalPemindahanAsset::query()
-            ->where('id_pemindahan_asset', $request->id_pemindahan_asset)
-            ->where('guid_approver', $user->guid)->where('status', 'pending')
-            ->first();
+        $pemindahan_asset = PemindahanAsset::find($id);
 
-        if (! $approval_pemindahan_asset) {
-            throw new Exception('Anda tidak memiliki akses untuk mengubah status pemindahan asset');
+        if ($pemindahan_asset->status != 'pending') {
+            throw new Exception('Pemindahan asset tidak dapat diubah statusnya');
         }
 
+        if ($user->guid != $pemindahan_asset->guid_penerima_asset) {
+            throw new Exception('Anda tidak dapat mengubah status pemindahan asset ini');
+        }
+
+        $approval_pemindahan_asset = $pemindahan_asset->approval->where('guid_approver', $user->guid)->first();
         $approval_pemindahan_asset->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval_pemindahan_asset->tanggal_approval = date('Y-m-d');
         $approval_pemindahan_asset->keterangan = $request->keterangan;
         $approval_pemindahan_asset->save();
 
-        $pemindahan_asset = PemindahanAsset::find($approval_pemindahan_asset->id_pemindahan_asset);
         $pemindahan_asset->status = $request->status;
         $pemindahan_asset->save();
 
@@ -131,5 +132,7 @@ class PemindahanAssetCommandServices
             $asset->ownership = $pemindahan_asset->guid_penerima_asset;
             $asset->save();
         }
+
+        return $pemindahan_asset;
     }
 }

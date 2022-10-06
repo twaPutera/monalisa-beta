@@ -25,6 +25,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
+use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -235,6 +236,12 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
         Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
         Route::group(['prefix' => 'pemindahan-asset'], function () {
             Route::get('/detail/{id}', [UserPemindahanAssetController::class, 'detail'])->name('user.asset-data.pemindahan.detail');
+            Route::post('/approve/{id}', [UserPemindahanAssetController::class, 'approve'])->name('user.asset-data.pemindahan.approve');
+        });
+        Route::group(['prefix' => 'service'], function () {
+            Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
+            Route::get('/detail/{id}', [UserAssetServicesController::class, 'detail'])->name('user.asset-data.service.detail');
+            Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
     });
     Route::group(['prefix' => 'approval'], function () {
