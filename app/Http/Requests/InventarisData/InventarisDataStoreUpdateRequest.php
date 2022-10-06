@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\InventarisData;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class InventarisDataStoreRequest extends FormRequest
+class InventarisDataStoreUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +22,15 @@ class InventarisDataStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            'id_jenis_penambahan' => 'required|in:baru',
+            'id_jenis_penambahan' => 'required|in:lama',
             'tanggal' => 'required|date',
+            'id_inventaris' => 'required|uuid|exists:inventori_data,id',
             'id_kategori_inventori' => 'required|uuid|exists:kategori_inventories,id',
             'id_satuan_inventori' => 'required|uuid|exists:satuan_inventories,id',
-            'kode_inventori' => 'required|string|max:50|unique:inventori_data,kode_inventori',
+            'kode_inventori' => 'required|string|max:50|unique:inventori_data,kode_inventori,' . $request->id_inventaris,
             'nama_inventori' => 'required|string|max:255',
             'stok' => 'required|numeric|min:0',
             'harga_beli' => 'required|numeric|min:0',

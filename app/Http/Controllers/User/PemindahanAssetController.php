@@ -23,8 +23,7 @@ class PemindahanAssetController extends Controller
         PemindahanAssetCommandServices $pemindahanAssetCommandServices,
         AssetDataQueryServices $assetDataQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices
-    )
-    {
+    ) {
         $this->pemindahanAssetQueryServices = $pemindahanAssetQueryServices;
         $this->pemindahanAssetCommandServices = $pemindahanAssetCommandServices;
         $this->assetDataQueryServices = $assetDataQueryServices;

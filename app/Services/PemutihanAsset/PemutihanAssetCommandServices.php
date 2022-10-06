@@ -32,11 +32,11 @@ class PemutihanAssetCommandServices
             $detail_pemutihan->id_asset_data = $id_checkbox;
             $detail_pemutihan->save();
 
-            if ($request->status_pemutihan == 'Publish') {
-                $asset_data = AssetData::findOrFail($id_checkbox);
-                $asset_data->is_pemutihan = 1;
-                $asset_data->save();
-            }
+            // if ($request->status_pemutihan == 'Publish') {
+            //     $asset_data = AssetData::findOrFail($id_checkbox);
+            //     $asset_data->is_pemutihan = 1;
+            //     $asset_data->save();
+            // }
         }
 
         return $pemutihan;
@@ -78,11 +78,11 @@ class PemutihanAssetCommandServices
             $detail_pemutihan->id_asset_data = $id_checkbox;
             $detail_pemutihan->save();
 
-            if ($request->status_pemutihan == 'Publish') {
-                $asset_data = AssetData::findOrFail($id_checkbox);
-                $asset_data->is_pemutihan = 1;
-                $asset_data->save();
-            }
+            // if ($request->status_pemutihan == 'Publish') {
+            //     $asset_data = AssetData::findOrFail($id_checkbox);
+            //     $asset_data->is_pemutihan = 1;
+            //     $asset_data->save();
+            // }
         }
 
         return $pemutihan;

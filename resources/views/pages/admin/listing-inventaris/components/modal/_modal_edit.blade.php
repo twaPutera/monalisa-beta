@@ -46,10 +46,6 @@
                             <label for="">Jumlah Saat Ini</label>
                             <input type="number" min="0" class="form-control" disabled name="stok_saat_ini">
                         </div>
-                        <div class="form-group">
-                            <label for="">Harga Beli</label>
-                            <input type="number" min="0" class="form-control" name="harga_beli">
-                        </div>
                     </div>
                     <div class="col-6 col-md-6">
                         <div class="form-group">

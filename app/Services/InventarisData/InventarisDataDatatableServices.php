@@ -5,7 +5,8 @@ namespace App\Services\InventarisData;
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
 use Yajra\DataTables\DataTables;
-use App\Models\DetailInventoriData;
+use App\Models\LogPenambahanInventori;
+use App\Models\LogPenguranganInventori;
 
 class InventarisDataDatatableServices
 {
@@ -42,9 +43,9 @@ class InventarisDataDatatableServices
             ->make(true);
     }
 
-    public function datatableStok(Request $request)
+    public function datatablePenambahan(Request $request)
     {
-        $query = DetailInventoriData::query();
+        $query = LogPenambahanInventori::query();
         $query->with(['inventori_data']);
         $query->where('id_inventori', $request->id_inventaris);
         $query->orderBy('created_at', 'ASC');
@@ -53,8 +54,19 @@ class InventarisDataDatatableServices
             ->addColumn('jumlah', function ($item) {
                 return $item->jumlah . ' ' . $item->inventori_data->satuan_inventori->nama_satuan;
             })
-            ->addColumn('status', function ($item) {
-                return ucWords($item->status);
+            ->make(true);
+    }
+
+    public function datatablePengurangan(Request $request)
+    {
+        $query = LogPenguranganInventori::query();
+        $query->with(['inventori_data']);
+        $query->where('id_inventori', $request->id_inventaris);
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('jumlah', function ($item) {
+                return $item->jumlah . ' ' . $item->inventori_data->satuan_inventori->nama_satuan;
             })
             ->make(true);
     }

@@ -54,6 +54,26 @@
                 ],
                 columnDefs: [
                     //Custom template data
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "Draft") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Draft</span>`;
+                            } else if (data == "Publish") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Publish</span>`;
+                            } else if (data == "Accept") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
+                            } else if (data == "Reject") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
+                            }
+                            return element;
+                        },
+                    }
                 ],
             });
 
@@ -105,6 +125,9 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -290,7 +313,7 @@
                                     <th>No Memo</th>
                                     <th>Keterangan Pemutihan</th>
                                     <th>Status Pemutihan</th>
-                                    <th>Diputihkan Oleh</th>
+                                    <th>Diajukan Oleh</th>
                                 </tr>
                             </thead>
                             <tbody>

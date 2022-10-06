@@ -93,10 +93,10 @@
                             let element = "";
                             if (data == "on progress") {
                                 element +=
-                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Progress</span>`;
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Proses</span>`;
                             } else if (data == "backlog") {
                                 element +=
-                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Backlog</span>`;
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Tertunda</span>`;
                             } else if (data == "selesai") {
                                 element +=
                                     `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
@@ -172,7 +172,7 @@
         const chartServices = new Chart(ctxChartServices, {
             type: 'pie',
             data: {
-                labels: ['ON PROGRESS', 'BACKLOG', 'SELESAI'],
+                labels: ['PROSES', 'TERTUNDA', 'SELESAI'],
                 datasets: [{
                     label: '# of Votes',
                     data: [50, 20, 30],
@@ -207,7 +207,7 @@
                             size: '10',
                         },
                         formatter: function(value, context) {
-                            return context.chart.data.labels[context.dataIndex] + `\n (${value}%)`;
+                            return context.chart.data.labels[context.dataIndex] + `\n (${value.toFixed(2)}%)`;
                         }
                     }
                 }
@@ -415,7 +415,7 @@
                     <h6 class="text-primary mb-0"><strong>{{ $data['namaLokasi'] }} ({{ $data['totalLokasi'] }})</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                    <h6 class="mb-0">Sedang on Progress</h6>
+                    <h6 class="mb-0">Sedang di proses</h6>
                     <h6 class="text-primary mb-0"><strong>{{ $data['onProgress'] }}</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
@@ -423,7 +423,7 @@
                     <h6 class="text-primary mb-0"><strong>{{ $data['selesai'] }}</strong></h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                    <h6 class="mb-0">Mengalami Backlog</h6>
+                    <h6 class="mb-0">Sedang tertunda</h6>
                     <h6 class="text-primary mb-0"><strong>{{ $data['backlog'] }}</strong></h6>
                 </div>
             </div>
@@ -462,13 +462,12 @@
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> On
-                        Progress
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> Proses
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
                         <input type="radio" onchange="filterTableService()" name="status_services" value="backlog">
-                        Backlog
+                        Tertunda
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">

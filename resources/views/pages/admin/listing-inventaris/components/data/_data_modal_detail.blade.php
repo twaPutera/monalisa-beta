@@ -26,25 +26,41 @@
                         {{ $listing_inventaris->satuan_inventori->nama_satuan }}</strong></td>
             </tr>
             <tr>
-                <td width="40%">Harga Beli</td>
-                <td><strong>{{ $listing_inventaris->harga_beli }}</strong></td>
-            </tr>
-            <tr>
                 <td width="40%">Deskripsi Inventaris</td>
                 <td><strong>{{ $listing_inventaris->deskripsi_inventori }}</strong></td>
             </tr>
         </table>
     </div>
 </div>
-<div class="col-12 col-md-8">
+<div class="col-12 col-md-4">
+    <label for="">Log Inventaris Masuk</label>
     <div class="table-responsive">
         <table class="table table-striped mb-0" id="datatableLogService">
             <thead>
                 <tr>
                     <th>Tanggal</th>
+                    <th>Jumlah Masuk</th>
+                    <th>Harga Beli</th>
+                    <th>Created By</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="col-12 col-md-4">
+    <label for="">Log Inventaris Keluar</label>
+    <div class="table-responsive">
+        <table class="table table-striped mb-0" id="datatableLogPengurangan">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
                     <th>No Memo</th>
-                    <th>Jumlah Inventaris</th>
-                    <th>Status</th>
+                    <th>Jumlah Keluar</th>
+                    <th>Created By</th>
                 </tr>
             </thead>
             <tbody>

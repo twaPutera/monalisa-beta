@@ -8,7 +8,7 @@ class PemutihanAssetQueryServices
 {
     public function findAll()
     {
-        return PemutihanAsset::where('status', 'Publish')->get();
+        return PemutihanAsset::all();
     }
     public function findById(string $id)
     {

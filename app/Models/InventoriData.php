@@ -20,8 +20,13 @@ class InventoriData extends Model
         return $this->belongsTo(SatuanInventori::class, 'id_satuan_inventori', 'id');
     }
 
-    public function detail_inventori_data()
+    public function log_penambahan_inventori()
     {
-        return $this->hasMany(DetailInventoriData::class, 'id_inventori', 'id');
+        return $this->hasMany(LogPenambahanInventori::class, 'id_inventori', 'id');
+    }
+
+    public function log_pengurangan_inventori()
+    {
+        return $this->hasMany(LogPenguranganInventori::class, 'id_inventori', 'id');
     }
 }

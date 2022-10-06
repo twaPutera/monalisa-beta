@@ -53,13 +53,6 @@
                         data: 'saat_ini'
                     },
                     {
-                        name: 'harga_beli',
-                        data: 'harga_beli',
-                        render: function(o) {
-                            return "Rp. " + o;
-                        }
-                    },
-                    {
                         data: 'deskripsi_inventori'
                     },
 
@@ -78,12 +71,16 @@
                     modal.modal('hide');
                     generateKategoriSelect();
                     generateSatuanSelect();
+                    generateInventarisSelect();
                     table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -93,13 +90,22 @@
 
             generateKategoriSelect();
             generateSatuanSelect();
+            generateInventarisSelect();
 
             $('.modalCreateInventarisData').on('shown.bs.modal', function(e) {
                 generateKategoriSelect();
                 generateSatuanSelect();
+                generateInventarisSelect();
                 $('.selectKategoriData').select2({
                     width: '100%',
                     placeholder: 'Pilih Kategori Inventaris',
+                    allowClear: true,
+                    parent: $(this)
+                });
+
+                $('.selectInventarisData').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Inventaris',
                     allowClear: true,
                     parent: $(this)
                 });
@@ -111,6 +117,10 @@
                     parent: $(this)
                 });
             })
+
+            $('.modalCreateInventarisData').on('hidden.bs.modal', function(e) {
+                $(this).find('form').trigger('reset');
+            });
         });
 
         const detail = (button) => {
@@ -144,7 +154,6 @@
                     form.find('input[name=nama_inventori]').val(response.data.nama_inventori);
                     form.find('input[name=stok_sebelumnya]').val(response.data.jumlah_sebelumnya);
                     form.find('input[name=stok_saat_ini]').val(response.data.jumlah_saat_ini);
-                    form.find('input[name=harga_beli]').val(response.data.harga_beli);
                     form.find('textarea[name=deskripsi_inventori]').val(response.data.deskripsi_inventori);
                     modal.on('shown.bs.modal', function(e) {
                         // generateKategoriSelect();
@@ -182,13 +191,49 @@
                 success: function(response) {
                     const modal = $('.modalEditStokData');
                     const form = modal.find('form');
+                    const table = modal.find('table');
                     form.attr('action', url_update);
-                    form.find('input[name=jumlah_sebelumnya]').val(response.data.jumlah_sebelumnya);
-                    form.find('input[name=jumlah_saat_ini]').val(response.data.jumlah_saat_ini);
+                    table.find('strong[class=kode_inventori]').empty();
+                    table.find('strong[class=nama_kategori]').empty();
+                    table.find('strong[class=merk_inventaris]').empty();
+                    table.find('strong[class=jumlah_sebelumnya]').empty();
+                    table.find('strong[class=jumlah_saat_ini]').empty();
+                    table.find('strong[class=deskripsi_inventaris]').empty();
+
+                    table.find('strong[class=kode_inventori]').append(response.data.kode_inventori);
+                    table.find('strong[class=nama_kategori]').append(response.data.kategori_inventori
+                        .nama_kategori);
+                    table.find('strong[class=merk_inventaris]').append(response.data.nama_inventori);
+                    table.find('strong[class=jumlah_sebelumnya]').append(response.data.jumlah_sebelumnya +
+                        " " + response.data.satuan_inventori.nama_satuan);
+                    table.find('strong[class=jumlah_saat_ini]').append(response.data.jumlah_saat_ini +
+                        " " + response.data.satuan_inventori.nama_satuan);
+                    table.find('strong[class=deskripsi_inventaris]').append(response.data
+                        .deskripsi_inventori);
                     modal.modal('show');
                 }
             })
         }
+
+        const generateInventarisSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.listing-inventaris.get-data-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectInventarisData');
+                        select.empty();
+                        select.append(`<option value="">Pilih Inventaris</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
         const generateKategoriSelect = () => {
             $.ajax({
                 url: "{{ route('admin.setting.kategori-inventori.get-data-select2') }}",
@@ -227,6 +272,55 @@
             })
         }
 
+        const jenisPenambahan = (val) => {
+            const modal = $('.modalCreateInventarisData');
+            const form = modal.find('form');
+            const form_inventaris = modal.find('#form-inventaris');
+            if (val == "baru") {
+                form.attr('action', "{{ route('admin.listing-inventaris.store') }}");
+                form_inventaris.addClass('d-none');
+            } else {
+                form.attr('action', "{{ route('admin.listing-inventaris.store.update') }}");
+                form_inventaris.removeClass('d-none');
+                form_inventaris.find('select[name=id_inventaris]').on('change', function() {
+                    $.ajax({
+                        url: "{{ route('admin.listing-inventaris.get.one') }}",
+                        type: 'GET',
+                        data: {
+                            id_inventori: this.value
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            const form = modal.find('form');
+                            form.find('input[name=kode_inventori]').val(response.data
+                                .kode_inventori);
+                            form.find('input[name=nama_inventori]').val(response.data
+                                .nama_inventori);
+                            form.find('textarea[name=deskripsi_inventori]').val(response.data
+                                .deskripsi_inventori);
+                            $('#selectKategoriDataCreate option[value="' + response.data
+                                .id_kategori_inventori + '"]').attr('selected', 'selected');
+                            $('#selectKategoriDataCreate').select2({
+                                width: '100%',
+                                placeholder: 'Pilih Kategori Inventaris',
+                                allowClear: true,
+                                parent: $(this)
+                            });
+                            // $('.selectGroupEdit').select2('val', response.data.id_group_kategori_asset);
+                            $('#selectSatuanDataCreate option[value="' + response.data
+                                .id_satuan_inventori + '"]').attr('selected', 'selected');
+                            $('#selectSatuanDataCreate').select2({
+                                width: '100%',
+                                placeholder: 'Pilih Satuan Inventaris',
+                                allowClear: true,
+                                parent: $(this)
+                            });
+                        }
+                    })
+                });
+            }
+        }
+
         $('.datepickerCreate').datepicker({
             todayHighlight: true,
             width: '100%',
@@ -250,7 +344,7 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
                                 <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
                             </div>
                         </div>
                     </div>
@@ -267,7 +361,6 @@
                                     <th>Merk Inventaris</th>
                                     <th>Jumlah Inventaris Sebelumnya</th>
                                     <th>Jumlah Inventaris Saat Ini</th>
-                                    <th>Harga Beli</th>
                                     <th>Deskripsi Inventaris</th>
                                 </tr>
                             </thead>

@@ -117,14 +117,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     # Inventaris
     Route::group(['prefix' => 'listing-inventaris'], function () {
         Route::get('/', [MasterInventarisController::class, 'index'])->name('admin.listing-inventaris.index');
+        Route::get('/get-one-inventaris', [MasterInventarisController::class, 'getOne'])->name('admin.listing-inventaris.get.one');
         Route::get('/datatable', [MasterInventarisController::class, 'datatable'])->name('admin.listing-inventaris.datatable');
         Route::post('/store', [MasterInventarisController::class, 'store'])->name('admin.listing-inventaris.store');
+        Route::post('/store-and-update', [MasterInventarisController::class, 'storeUpdate'])->name('admin.listing-inventaris.store.update');
         Route::get('/edit/{id}', [MasterInventarisController::class, 'edit'])->name('admin.listing-inventaris.edit');
         Route::post('/update/{id}', [MasterInventarisController::class, 'update'])->name('admin.listing-inventaris.update');
         Route::get('/detail/{id}', [MasterInventarisController::class, 'detail'])->name('admin.listing-inventaris.detail');
         Route::post('/update-stok/{id}', [MasterInventarisController::class, 'updateStok'])->name('admin.listing-inventaris.update.stok');
         Route::get('/edit-stok/{id}', [MasterInventarisController::class, 'editStok'])->name('admin.listing-inventaris.edit.stok');
-        Route::get('/datatable-stok', [MasterInventarisController::class, 'datatableStok'])->name('admin.listing-inventaris.datatable.stok');
+        Route::get('/datatable-penambahan', [MasterInventarisController::class, 'datatablePenambahan'])->name('admin.listing-inventaris.datatable.penambahan');
+        Route::get('/datatable-pengurangan', [MasterInventarisController::class, 'datatablePengurangan'])->name('admin.listing-inventaris.datatable.pengurangan');
+        Route::get('/get-data-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('admin.listing-inventaris.get-data-select2');
     });
 
     # Setting
