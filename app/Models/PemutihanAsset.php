@@ -10,6 +10,11 @@ class PemutihanAsset extends Model
 {
     use HasFactory, Uuid;
 
+    public function approval()
+    {
+        return $this->morphOne(Approval::class, 'approvable');
+    }
+
     public function detail_pemutihan_asset()
     {
         return $this->hasMany(DetailPemutihanAsset::class, 'id_pemutihan_asset', 'id');

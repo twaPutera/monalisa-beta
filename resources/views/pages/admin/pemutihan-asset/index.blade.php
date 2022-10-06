@@ -82,10 +82,19 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.pemutihan-asset.datatable.asset') }}",
-                columns: [{
-                        name: 'id',
-                        data: 'id',
+                orderings: false,
+                autoWidth: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.datatable') }}",
+                    data: function(d) {
+                        d.is_pemutihan = 0;
+                    }
+                },
+                columns: [
+                    {
+                        name: 'checkbox',
+                        data: 'checkbox',
+                        class: 'text-center',
                         orderable: false,
                         searchable: false,
                     },
@@ -93,20 +102,24 @@
                         data: 'kode_asset'
                     },
                     {
-                        name: 'jenis_asset',
-                        data: 'jenis_asset'
+                        name: 'nama_kategori',
+                        data: 'nama_kategori'
                     },
                     {
-                        name: 'lokasi_asset',
-                        data: 'lokasi_asset'
+                        name: 'nama_lokasi',
+                        data: 'nama_lokasi'
                     },
                     {
-                        name: 'kondisi_asset',
-                        data: 'kondisi_asset'
+                        name: 'status_kondisi',
+                        data: 'status_kondisi'
                     },
 
                 ],
                 columnDefs: [
+                    {
+                        targets: [0],
+                        orderable: false,
+                    }
                     //Custom template data
                 ],
             });

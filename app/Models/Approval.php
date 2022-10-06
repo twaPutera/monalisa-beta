@@ -24,4 +24,16 @@ class Approval extends Model
             // return route('pemutihan_asset.show', $this->approvable->id);
         }
     }
+
+    public function approvalType()
+    {
+        if ($this->approvable instanceof PemindahanAsset) {
+            return "Pemindahan Asset";
+        } else if ($this->approvable instanceof PemutihanAsset) {
+            return "Pemutihan Asset";
+            // return route('pemutihan_asset.show', $this->approvable->id);
+        }
+
+        return "Tipe Tidak Terdaftar";
+    }
 }

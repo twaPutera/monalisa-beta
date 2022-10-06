@@ -7,6 +7,7 @@ use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
+use App\Models\Approval;
 
 class PemutihanAssetCommandServices
 {
@@ -17,11 +18,11 @@ class PemutihanAssetCommandServices
 
         $pemutihan = new PemutihanAsset();
         $pemutihan->guid_manager = $user->guid;
-        $pemutihan->json_manager = 'Example Json';
+        $pemutihan->json_manager = json_encode($user);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_memo;
         $pemutihan->status = $request->status_pemutihan;
-        $pemutihan->created_by = $user->name;
+        $pemutihan->created_by = $user->guid;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();
 
@@ -38,6 +39,13 @@ class PemutihanAssetCommandServices
             //     $asset_data->save();
             // }
         }
+
+        $approval = new Approval();
+        // ! nanti ubah guid_approver nya dengan guid dari manager
+        $approval->guid_approver = $user->guid;
+        $approval->approvable_type = get_class($pemutihan);
+        $approval->approvable_id = $pemutihan->id;
+        $approval->save();
 
         return $pemutihan;
     }

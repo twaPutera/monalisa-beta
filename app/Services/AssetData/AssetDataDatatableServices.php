@@ -57,6 +57,11 @@ class AssetDataDatatableServices
         if (isset($request->is_sparepart)) {
             $query->where('is_sparepart', $request->is_sparepart);
         }
+
+        if (isset($request->is_pemutihan)) {
+            $query->where('is_pemutihan', $request->is_pemutihan);
+        }
+
         $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
@@ -87,11 +92,16 @@ class AssetDataDatatableServices
                             </button>';
                 return $element;
             })
+            ->addColumn('checkbox', function ($item) {
+                $element = '';
+                $element .= '<input type="checkbox" name="id_checkbox[]" value="' . $item->id . '">';
+                return $element;
+            })
             ->addColumn('register_oleh', function ($item) {
                 $user = $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
                 return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'checkbox'])
             ->make(true);
     }
 

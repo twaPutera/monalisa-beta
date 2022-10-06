@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
+use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,13 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
+    # Approval
+    Route::group(['prefix' => 'approval'], function () {
+        Route::get('/', [AdminApprovalController::class, 'index'])->name('admin.approval.index');
+        Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');
+        Route::get('/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
+        Route::post('/{id}', [AdminApprovalController::class, 'update'])->name('admin.approval.update');
+    });
     # Listing Asset
     Route::group(['prefix' => 'listing-asset'], function () {
         Route::get('/', [MasterAssetController::class, 'index'])->name('admin.listing-asset.index');
