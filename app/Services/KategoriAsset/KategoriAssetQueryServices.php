@@ -14,7 +14,7 @@ class KategoriAssetQueryServices
 
     public function findById(string $id)
     {
-        return KategoriAsset::findOrFail($id);
+        return KategoriAsset::query()->with(['group_kategori_asset'])->findOrFail($id);
     }
 
     public function getDataSelect2(Request $request)

@@ -270,6 +270,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
         Route::group(['prefix' => 'peminjaman'], function () {
+            Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');
+            Route::get('/detail/{id}', [UserPeminjamanAssetController::class, 'detail'])->name('user.asset-data.peminjaman.detail');
+            Route::get('/get-all-data', [UserPeminjamanAssetController::class, 'getAllData'])->name('user.asset-data.peminjaman.get-all-data');
             Route::get('/create', [UserPeminjamanAssetController::class, 'create'])->name('user.asset-data.peminjaman.create');
             Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
         });
