@@ -4,6 +4,7 @@ namespace App\Services\AssetData;
 
 use App\Models\LogAsset;
 use App\Models\AssetData;
+use App\Models\LogAssetOpname;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -115,6 +116,28 @@ class AssetDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->rawColumns([])
+            ->make(true);
+    }
+
+    public function log_opname_dt(Request $request)
+    {
+        $query = LogAssetOpname::query();
+        if (isset($request->asset_id)) {
+            $query->where('id_asset_data', $request->asset_id);
+        }
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('created_by', function ($item) {
+                $user = $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+            })
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<button type="button" onclick="showOpname(this)" data-url_detail="' . route('admin.listing-asset.log-opname.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
+                return $element;
+            })
+            ->rawColumns(['action'])
             ->make(true);
     }
 }

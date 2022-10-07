@@ -37,6 +37,10 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+
+        const submitForm = () => {
+            $('.form-submit').submit();
+        }
     </script>
 @endsection
 @section('back-button')
@@ -44,11 +48,10 @@
         <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
     </a>
 @endsection
-@section('isFormStart')
-    <form action="{{ route('user.asset-data.opname.store', $asset_data->id) }}" method="POST">
+@section('content')
+    <form action="{{ route('user.asset-data.opname.store', $asset_data->id) }}" class="form-submit
+        " method="POST">
         @csrf
-    @endsection
-    @section('content')
         <div class="section mt-2">
             <h2>{{ $asset_data->deskripsi }}</h2>
 
@@ -60,19 +63,18 @@
                     </div>
                 </div>
                 <div class="form-group boxed">
-
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <span>Status Terakhir </span> <br>
+                            <span>Status Kondisi Terakhir </span> <br>
                         </div>
                         @if ($asset_data->status_kondisi == 'bagus')
-                            <button disabled class="btn btn-success">Bagus</button>
+                            <button class="btn btn-success">Bagus</button>
                         @elseif($asset_data->status_kondisi == 'rusak')
-                            <button disabled class="btn btn-danger">Rusak</button>
+                            <button class="btn btn-danger">Rusak</button>
                         @elseif($asset_data->status_kondisi == 'maintenance')
-                            <button disabled class="btn btn-info">Maintenance</button>
+                            <button class="btn btn-info">Maintenance</button>
                         @else
-                            <button disabled class="btn btn-warning">Tidak Lengkap</button>
+                            <button class="btn btn-warning">Tidak Lengkap</button>
                         @endif
                     </div>
                 </div>
@@ -87,7 +89,7 @@
                         </select>
                     </div>
                 </div>
-                {{-- <div class="form-group boxed">
+                <div class="form-group boxed">
                     <div class="input-wrapper">
                         <label class="label" for="">Status Akunting Aset</label>
                         <select name="status_akunting" class="form-control mr-3" id="">
@@ -96,7 +98,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div> --}}
+                </div>
                 <div class="form-group boxed">
 
                     <label class="label" for="">Gambar Hasil Service</label>
@@ -120,17 +122,15 @@
                 </div>
             </div>
         </div>
-    @endsection
-    @section('button-menu')
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-danger border-radius-sm px-3 me-2" type="button">
-                <span class="">Batal</span>
-            </button>
-            <button class="btn btn-success border-radius-sm px-3" type="submit">
-                <span class="">Simpan</span>
-            </button>
-        </div>
-    @endsection
-    @section('isFormEnd')
     </form>
+@endsection
+@section('button-menu')
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-danger border-radius-sm px-3 me-2" type="button">
+            <span class="">Batal</span>
+        </button>
+        <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="submit">
+            <span class="">Simpan</span>
+        </button>
+    </div>
 @endsection

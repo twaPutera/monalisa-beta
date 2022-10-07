@@ -34,7 +34,6 @@ class AssetOpnameController extends Controller
         try {
             DB::beginTransaction();
             $data =  $this->assetOpnameCommandServices->store($request, $id);
-            dd($data);
             DB::commit();
             return response()->json([
                 'success' => true,

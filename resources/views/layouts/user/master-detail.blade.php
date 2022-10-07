@@ -32,7 +32,6 @@
     </div>
     <!-- * App Header -->
 
-    @yield('isFormStart')
     <!-- App Capsule -->
     <div id="appCapsule">
         @yield('content')
@@ -54,7 +53,6 @@
         @yield('button-menu')
     </div>
     <!-- * App Bottom Menu -->
-    @yield('isFormEnd')
     <div id="toastDanger" class="toast-box toast-bottom bg-danger">
         <div class="in">
             <div class="text toastText">

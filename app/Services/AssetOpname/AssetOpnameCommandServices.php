@@ -13,17 +13,21 @@ class AssetOpnameCommandServices
     public function store(AssetOpnameStoreRequest $request, string $id)
     {
         $request->validated();
-
+        $user = \Session::get('user');
         $asset_data = AssetData::findOrFail($id);
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
         $opname_log->tanggal_opname = $request->tanggal_opname;
         $opname_log->status_awal = $asset_data->status_kondisi;
         $opname_log->status_akhir = $request->status_kondisi;
+        $opname_log->akuntan_awal = $asset_data->status_akunting;
+        $opname_log->akuntan_akhir = $request->status_akunting;
         $opname_log->keterangan = $request->catatan;
+        $opname_log->created_by = $user->guid;
         $opname_log->save();
 
         $asset_data->status_kondisi = $request->status_kondisi;
+        $asset_data->status_akunting = $request->status_akunting;
         $asset_data->save();
         if ($request->hasFile('gambar_asset')) {
             $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
