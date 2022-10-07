@@ -57,7 +57,7 @@
         <div class="balance">
             <div class="left">
                 <span class="title text-primary">Selamat Datang</span>
-                <h1 class="text-muted" style="font-size: 20px;">Rika Candra</h1>
+                <h1 class="text-muted" style="font-size: 20px;">{{ $user->name }}</h1>
                 <span class="text-muted">Jenis Role</span>
             </div>
             <div class="right">

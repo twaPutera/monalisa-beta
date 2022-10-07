@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
 use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
+use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,7 +83,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/download-qr', [MasterAssetController::class, 'downloadQr'])->name('admin.listing-asset.download-qr');
 
         # Asset Image
-        Route::group(['asset-image'], function () {
+        Route::group(['prefix' => 'asset-image'], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
             Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
         });
@@ -285,6 +286,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
         Route::get('/', [UserApprovalController::class, 'index'])->name('user.approval.index');
         Route::get('/detail/{id}', [UserApprovalController::class, 'detail'])->name('user.approval.detail');
         Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');
+    });
+    Route::group(['prefix' => 'pengaduan'], function () {
+        Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
     });
 });
 

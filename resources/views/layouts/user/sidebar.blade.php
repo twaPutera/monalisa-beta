@@ -24,7 +24,7 @@
 
                 <!-- action group -->
                 <div class="action-group justify-content-start">
-                    <a href="index.html" class="action-button">
+                    <a href="{{ route('user.pengaduan.create') }}" class="action-button">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="document-outline"></ion-icon>

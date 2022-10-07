@@ -151,6 +151,6 @@
     @if ($pemindahan_asset->status == "pending")
         <button type="button" data-bs-toggle="modal" data-bs-target="#dialogApprove" class="btn btn-primary border-radius-sm px-5">Terima</button>
     @elseif($pemindahan_asset->status == "disetujui")
-        <button type="button" class="btn btn-success border-radius-sm px-5">Download BAST</button>
+        <a target="_blank" href="{{ route('admin.listing-asset.pemindahan-asset.print-bast', $pemindahan_asset->id) }}" class="btn btn-success border-radius-sm px-5">Download BAST</a>
     @endif
 @endsection
