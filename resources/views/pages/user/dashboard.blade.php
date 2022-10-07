@@ -33,7 +33,7 @@
                         </div>
                         <div class="ms-1" style="width: calc(100% - 50px);">
                             <p class="text-dark mb-0 asset-deskripsi">${data.deskripsi}</p>
-                            <p class="text-primary mb-0 asset-deskripsi"><i>Vechicle, Mobil</i></p>
+                            <p class="text-primary mb-0 asset-deskripsi"><i>${data.kategori_asset ? data.kategori_asset.group_kategori_asset.nama_group : 'Not Found'}, ${data.kategori_asset ? data.kategori_asset.nama_kategori : "Not Found"}</i></p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
