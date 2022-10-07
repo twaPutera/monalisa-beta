@@ -27,6 +27,7 @@ use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalControl
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
+use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
 use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\User\ScanQrCodeController;
@@ -271,6 +272,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'peminjaman'], function () {
             Route::get('/create', [UserPeminjamanAssetController::class, 'create'])->name('user.asset-data.peminjaman.create');
             Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
+        });
+        Route::group(['prefix' => 'opname'], function () {
+            Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');
+            Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('user.asset-data.opname.store');
         });
     });
     Route::group(['prefix' => 'approval'], function () {
