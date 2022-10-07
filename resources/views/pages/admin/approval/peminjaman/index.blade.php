@@ -23,7 +23,8 @@
                 ajax: {
                     url: "{{ route('admin.approval.datatable') }}",
                     data: function(d) {
-                        d.is_approve = '1';
+                        // d.is_approve = null;
+                        d.approvable_type = 'App\\Models\\PeminjamanAsset';
                     }
                 },
                 columns: [
@@ -81,16 +82,11 @@
 @endsection
 @section('main-content')
     <div class="row">
-        <div class="col-md-2 col-12">
-            @include('pages.admin.approval.menu')
-        </div>
-        <div class="col-md-10 col-10">
+        <div class="col-md-12 col-12">
             <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
+                <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            History Approval
-                        </h3>
+                        <h4>Approval Task (<strong style="text-primary">24 Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
@@ -101,6 +97,9 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
+                    <div>
+                        @include('pages.admin.approval.tab-header')
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped dt_table" id="datatableExample">
                             <thead>
