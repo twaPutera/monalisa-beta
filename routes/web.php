@@ -31,6 +31,7 @@ use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
 use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\User\ScanQrCodeController;
+use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -265,6 +266,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'asset-data'], function () {
         Route::get('/get-all-data-asset-by-user', [UserAssetController::class, 'getDataAssetByUser'])->name('user.asset-data.get-all-data-asset-by-user');
         Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
+        Route::get('/get-data-select2', [UserAssetController::class, 'getDataAssetSelect2'])->name('user.asset-data.get-data-select2');
         Route::group(['prefix' => 'pemindahan-asset'], function () {
             Route::get('/detail/{id}', [UserPemindahanAssetController::class, 'detail'])->name('user.asset-data.pemindahan.detail');
             Route::post('/approve/{id}', [UserPemindahanAssetController::class, 'approve'])->name('user.asset-data.pemindahan.approve');
@@ -273,6 +275,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::get('/detail/{id}', [UserAssetServicesController::class, 'detail'])->name('user.asset-data.service.detail');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
+        });
+        Route::group(['prefix' => 'peminjaman'], function () {
+            Route::get('/create', [UserPeminjamanAssetController::class, 'create'])->name('user.asset-data.peminjaman.create');
+            Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
         });
         Route::group(['prefix' => 'opname'], function () {
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');

@@ -58,4 +58,23 @@ class AssetController extends Controller
         $last_service = $this->assetServiceQueryServices->findLastestLogByAssetId($id);
         return view('pages.user.asset.detail', compact('asset_data', 'last_service'));
     }
+
+    public function getDataAssetSelect2(Request $request)
+    {
+        try {
+            $asset = $this->assetDataQueryServices->getDataAssetSelect2($request);
+
+            return response()->json([
+                'success' => true,
+                'data' => $asset,
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
 }

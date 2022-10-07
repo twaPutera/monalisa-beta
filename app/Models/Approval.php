@@ -10,13 +10,6 @@ class Approval extends Model
 {
     use HasFactory, Uuid;
 
-    protected $userSsoQueryServices;
-
-    public function __construct()
-    {
-        $this->userSsoQueryServices = new UserSsoQueryServices();
-    }
-
     public function approvable()
     {
         return $this->morphTo();
@@ -38,7 +31,8 @@ class Approval extends Model
             return "Pemindahan Asset";
         } else if ($this->approvable instanceof PemutihanAsset) {
             return "Pemutihan Asset";
-            // return route('pemutihan_asset.show', $this->approvable->id);
+        } else if ($this->approvable instanceof PeminjamanAsset) {
+            return "Peminjaman Asset";
         }
 
         return "Tipe Tidak Terdaftar";
@@ -46,16 +40,12 @@ class Approval extends Model
 
     public function getPembuatApproval()
     {
-        $guid = null;
-        if ($this->approvable instanceof PemindahanAsset) {
-            $guid = $this->approvable->created_by;
-        } else if ($this->approvable instanceof PemutihanAsset) {
-            $guid = $this->approvable->created_by;
-        }
+        $userSso = new UserSsoQueryServices();
+        $guid = $this->approvable->created_by;
         $name = 'Tidak Terdaftar di Siska';
         if (isset($guid)) {
-            $user_sso = $this->userSsoQueryServices->getUserByGuid($guid);
-            $name = isset($user_sso[0]) ? $user_sso[0]['nama'] : 'Not Found';
+            $user_sso = $userSso->getUserByGuid($guid);
+            $name = isset($user_sso[0]) ? $user_sso[0]['nama'] : 'User Not Found';
         }
 
         return $name;

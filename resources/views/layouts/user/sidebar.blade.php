@@ -32,7 +32,7 @@
                             Adukan
                         </div>
                     </a>
-                    <a href="index.html" class="action-button mx-4">
+                    <a href="{{ route('user.asset-data.peminjaman.create') }}" class="action-button mx-4">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="add-circle-outline"></ion-icon>
