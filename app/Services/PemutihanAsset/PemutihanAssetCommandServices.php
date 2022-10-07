@@ -7,7 +7,9 @@ use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Models\Approval;
+use Exception;
 
 class PemutihanAssetCommandServices
 {
@@ -91,6 +93,45 @@ class PemutihanAssetCommandServices
             //     $asset_data->is_pemutihan = 1;
             //     $asset_data->save();
             // }
+        }
+
+        return $pemutihan;
+    }
+
+    public function changeStatusApproval(PemutihanAssetChangeStatusRequest $request, string $id)
+    {
+        $request->validated();
+        $user = \Session::get('user');
+
+        $pemutihan = PemutihanAsset::findOrFail($id);
+
+        if ($pemutihan->status != 'pending') {
+            throw new Exception('Pemutihan asset tidak dapat diubah statusnya');
+        }
+
+        if ($user->guid != $pemutihan->approval->guid_approver) {
+            throw new Exception('Anda tidak dapat mengubah status pemindahan asset ini');
+        }
+
+        $pemutihan->status = $request->status;
+        $pemutihan->save();
+
+        $approval = Approval::where('approvable_type', get_class($pemutihan))
+            ->where('guid_approver', $user->guid)
+            ->where('approvable_id', $pemutihan->id)
+            ->first();
+
+        $approval->status = $request->status == 'disetujui' ? '1' : '0';
+        $approval->tanggal_approval = date('Y-m-d');
+        $approval->keterangan = $request->keterangan;
+        $approval->save();
+
+        if ($request->status == 'disetujui') {
+            foreach($pemutihan->detail_pemutihan_asset as $item) {
+                $asset_data = AssetData::findOrFail($item->id_asset_data);
+                $asset_data->is_pemutihan = 1;
+                $asset_data->save();
+            }
         }
 
         return $pemutihan;

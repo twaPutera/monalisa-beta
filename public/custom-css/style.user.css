@@ -24,3 +24,13 @@
 .text-green {
     color: #878787 !important;
 }
+
+.select2-selection.select2-selection--single {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 45px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 43px;
+}
