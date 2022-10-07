@@ -86,6 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'asset-image'], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
             Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
+            Route::get('/preview-opname', [MasterAssetController::class, 'previewImageOpname'])->name('admin.listing-asset.opname.image.preview');
         });
 
         # Service Asset
@@ -106,6 +107,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         # Log Asset
         Route::group(['prefix' => 'log-asset'], function () {
             Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
+        });
+
+        # Log Opname
+        Route::group(['prefix' => 'log-opname'], function () {
+            Route::get('/datatable', [MasterAssetController::class, 'log_opname_dt'])->name('admin.listing-asset.log-opname.datatable');
+            Route::get('/show/{id}', [MasterAssetController::class, 'log_opname_show'])->name('admin.listing-asset.log-opname.show');
         });
     });
 

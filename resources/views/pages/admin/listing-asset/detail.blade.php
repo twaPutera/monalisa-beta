@@ -41,6 +41,7 @@
             var tableServices = $('#datatableLogService');
             var tableLogAsset = $('#logDataTable');
             var tableLogPemindahan = $('#tableLogPemindahan');
+            var tableLogOpname = $('#tableLogOpname');
             tableServices.DataTable({
                 responsive: true,
                 processing: true,
@@ -135,6 +136,56 @@
                 ],
             });
 
+            tableLogOpname.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                ordering: false,
+                serverSide: true,
+                bLengthChange: false,
+                autoWidth: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.log-opname.datatable') }}",
+                    data: function(d) {
+                        d.asset_id = "{{ $asset->id }}"
+                    }
+                },
+                columns: [{
+                        name: 'created_at',
+                        data: 'created_at',
+                        width: '150px'
+                    },
+                    {
+                        data: 'status_awal',
+                    },
+                    {
+                        data: 'status_akhir',
+                    },
+                    {
+                        data: 'keterangan',
+                    },
+                    {
+                        name: 'created_by',
+                        data: 'created_by',
+                        width: '100px'
+                    },
+                    {
+                        name: 'action',
+                        data: 'action'
+                    }
+                ],
+                columnDefs: [{
+                        targets: 0,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        },
+                    }
+                    //Custom template data
+                ],
+            });
+
             tableLogPemindahan.DataTable({
                 responsive: true,
                 processing: true,
@@ -151,8 +202,7 @@
                         d.id_asset = "{{ $asset->id }}"
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         name: 'created_at',
                         data: 'created_at',
                         width: '100px'
@@ -182,8 +232,7 @@
                         width: '100px'
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 0,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
@@ -194,11 +243,14 @@
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "pending") {
-                                element += `<span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span>`;
                             } else if (data == "ditolak") {
-                                element += `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
                             } else if (data == "disetujui") {
-                                element += `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
                             }
                             return element;
                         },
@@ -221,6 +273,7 @@
                     tableServices.DataTable().ajax.reload();
                     tableLogPemindahan.DataTable().ajax.reload();
                     tableLogAsset.DataTable().ajax.reload();
+                    tableLogOpname.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.form == 'editAsset') {
                         $('#modalEdit').modal('hide');
@@ -283,10 +336,10 @@
 
         const generateOptionUnit = () => {
             $.ajax({
-                url: '{{ route("sso-api.get-data-unit") }}',
+                url: '{{ route('sso-api.get-data-unit') }}',
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         let option = '';
@@ -301,10 +354,10 @@
 
         const generateOptionPosition = () => {
             $.ajax({
-                url: '{{ route("sso-api.get-data-position") }}',
+                url: '{{ route('sso-api.get-data-position') }}',
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         let option = '';
@@ -375,6 +428,28 @@
             })
         }
 
+        const showOpname = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const data = response.data;
+                    const modal = $('.modalPreviewOpname');
+                    if (response.success) {
+                        if (data.image.length > 0) {
+                            $('#imgPreviewOpname').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewOpname').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        modal.modal('show');
+                    }
+                },
+            })
+        }
+
         $('#file_asset_service').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
@@ -389,7 +464,7 @@
                 },
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         $(`#positionPenyerahSelect`).html('<option value="0">Pilih Jabatan</option>');
@@ -412,7 +487,7 @@
                 },
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         $(`#${idElement}`).html('<option value="0">Pilih Jabatan</option>');
@@ -440,7 +515,7 @@
                 },
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         $(`#${idElement}`).html('<option value="0">Pilih Unit</option>');
@@ -476,7 +551,9 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button onclick="openModalByClass('modalCreatePemindahan')" class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan" type="button">
+                    <button onclick="openModalByClass('modalCreatePemindahan')"
+                        class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan"
+                        type="button">
                         <i class="fas fa-sync-alt"></i>
                         Pindahkan Asset</button>
                     <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;" id="create-service"
@@ -530,7 +607,8 @@
                                     class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
                                         class="fa fa-edit"></i></button>
                             </div>
-                            <div class="pt-3 pb-1 scroll-bar assetProperti" style="border-radius: 9px; background: #E5F3FD;">
+                            <div class="pt-3 pb-1 scroll-bar assetProperti"
+                                style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
                                         <td width="40%">Kelompok</td>
@@ -539,7 +617,8 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Jenis</td>
-                                        <td><strong>{{ $asset->kategori_asset->nama_kategori ?? 'Jenis Tidak Ada' }}</strong></td>
+                                        <td><strong>{{ $asset->kategori_asset->nama_kategori ?? 'Jenis Tidak Ada' }}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Nilai perolehan</td>
@@ -567,11 +646,13 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Satuan</td>
-                                        <td><strong>{{ $asset->satuan_asset->nama_satuan ?? 'Satuan Tidak Ada' }}</strong></td>
+                                        <td><strong>{{ $asset->satuan_asset->nama_satuan ?? 'Satuan Tidak Ada' }}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Vendor</td>
-                                        <td><strong>{{ $asset->vendor->nama_vendor ?? 'Tidak Memiliki Vendor' }}</strong></td>
+                                        <td><strong>{{ $asset->vendor->nama_vendor ?? 'Tidak Memiliki Vendor' }}</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td width="40%">No. Surat / Memo</td>
@@ -647,7 +728,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
                             <div class="table-responsive">
-                                <table class="table table-striped mb-0">
+                                <table class="table table-striped mb-0" id="tableLogOpname">
                                     <thead>
                                         <tr>
                                             <th>Tanggal</th>
@@ -656,34 +737,9 @@
                                             <th>Catatan</th>
                                             <th>User</th>
                                             <th>#</th>
-                                            <th>Log</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>12 Januari 2022</td>
-                                            <td>Baik</td>
-                                            <td>Baik</td>
-                                            <td>Asset Masih Aman</td>
-                                            <td>User</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-icon"><i
-                                                        class="fa fa-image"></i></a>
-                                            </td>
-                                            <td>12 Jan 2022, 12:45 Update</td>
-                                        </tr>
-                                        <tr>
-                                            <td>12 Januari 2022</td>
-                                            <td>Baik</td>
-                                            <td>Baik</td>
-                                            <td>Asset Masih Aman</td>
-                                            <td>User</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-icon"><i
-                                                        class="fa fa-image"></i></a>
-                                            </td>
-                                            <td>12 Jan 2022, 12:45 Update</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -785,5 +841,6 @@
     @include('pages.admin.listing-asset.components.modal._modal_edit')
     @include('pages.admin.listing-asset.components.modal._modal_create_service')
     @include('pages.admin.listing-asset.components.modal._modal_preview_service')
+    @include('pages.admin.listing-asset.components.modal._modal_preview_opname')
     @include('pages.admin.listing-asset.components.modal._modal_create_pemindahan')
 @endsection

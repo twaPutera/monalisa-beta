@@ -17,6 +17,7 @@ use App\Http\Requests\AssetData\AssetImportRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
+use App\Services\AssetOpname\assetOpnameQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller
@@ -26,19 +27,21 @@ class MasterAssetController extends Controller
     protected $assetDataQueryServices;
     protected $userSsoQueryServices;
     protected $assetServiceQueryServices;
-
+    protected $assetOpnameQueryServices;
     public function __construct(
         AssetDataCommandServices $assetDataCommandServices,
         AssetDataDatatableServices $assetDataDatatableServices,
         AssetDataQueryServices $assetDataQueryServices,
         UserSsoQueryServices $userSsoQueryServices,
-        AssetServiceQueryServices $assetServiceQueryServices
+        AssetServiceQueryServices $assetServiceQueryServices,
+        assetOpnameQueryServices $assetOpnameQueryServices
     ) {
         $this->assetDataCommandServices = $assetDataCommandServices;
         $this->assetDataDatatableServices = $assetDataDatatableServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->userSsoQueryServices = $userSsoQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
+        $this->assetOpnameQueryServices = $assetOpnameQueryServices;
     }
 
     public function index()
@@ -268,5 +271,48 @@ class MasterAssetController extends Controller
     {
         $response = $this->assetDataDatatableServices->log_asset_dt($request);
         return $response;
+    }
+
+    public function log_opname_dt(Request $request)
+    {
+        $response = $this->assetDataDatatableServices->log_opname_dt($request);
+        return $response;
+    }
+
+    public function log_opname_show($id)
+    {
+        try {
+            $data = $this->assetOpnameQueryServices->findById($id);
+            //code...
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data image',
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function previewImageOpname(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/asset-opname/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 }
