@@ -77,7 +77,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-list"></i>
             </span>
-            <span class="kt-nav__link-text">Kategori Inventaris</span> </a>
+            <span class="kt-nav__link-text">Kategori Bahan Habis Pakai</span> </a>
     </li>
     <li class="kt-nav__item">
         <a
@@ -87,7 +87,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-box"></i>
             </span>
-            <span class="kt-nav__link-text">Satuan Inventaris</span> </a>
+            <span class="kt-nav__link-text">Satuan Bahan Habis Pakai</span> </a>
     </li>
     <li class="kt-nav__item">
         <a

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Pengurangan Stok Inventaris</h5>
+                <h5 class="modal-title" id="">Pengurangan Stok Bahan Habis Pakai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -14,29 +14,29 @@
                         <div class="pt-3 pb-1" style="border-radius: 9px; background: #E5F3FD;">
                             <table id="tablePropertiEditStok" class="table table-striped">
                                 <tr>
-                                    <td width="40%">Jenis Inventaris</td>
+                                    <td width="40%">Jenis Bahan Habis Pakai</td>
                                     <td><strong class="kode_inventori"></strong>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="40%">Kategori Inventaris</td>
+                                    <td width="40%">Kategori Bahan Habis Pakai</td>
                                     <td><strong class="nama_kategori"></strong>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="40%">Merk Inventaris</td>
+                                    <td width="40%">Merk Bahan Habis Pakai</td>
                                     <td><strong class="merk_inventaris"></strong></td>
                                 </tr>
                                 <tr>
-                                    <td width="40%">Jumlah Inventaris Sebelumnya</td>
+                                    <td width="40%">Jumlah Bahan Habis Pakai Sebelumnya</td>
                                     <td><strong class="jumlah_sebelumnya"></strong></td>
                                 </tr>
                                 <tr>
-                                    <td width="40%">Jumlah Inventaris Saat Ini</td>
+                                    <td width="40%">Jumlah Bahan Habis Pakai Saat Ini</td>
                                     <td><strong class="jumlah_saat_ini"></strong></td>
                                 </tr>
                                 <tr>
-                                    <td width="40%">Deskripsi Inventaris</td>
+                                    <td width="40%">Deskripsi Bahan Habis Pakai</td>
                                     <td><strong class="deskripsi_inventaris"></strong></td>
                                 </tr>
                             </table>
@@ -52,7 +52,7 @@
                             <input type="text" class="form-control datepickerCreate" readonly name="tanggal">
                         </div>
                         <div class="form-group">
-                            <label for="">Jumlah Inventaris Keluar</label>
+                            <label for="">Jumlah Bahan Habis Pakai Keluar</label>
                             <input type="number" min="0" class="form-control" name="jumlah_keluar">
                         </div>
                     </div>

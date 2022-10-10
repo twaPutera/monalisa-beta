@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Tambah Inventaris</h5>
+                <h5 class="modal-title" id="">Tambah Bahan Habis Pakai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -18,14 +18,14 @@
                             <div class="input-group mb-2">
                                 <select name="id_jenis_penambahan" class="form-control"
                                     onchange="jenisPenambahan(this.value)" id="">
-                                    <option value="">Pilih Jenis Penambahan Inventaris</option>
+                                    <option value="">Pilih Jenis Penambahan Bahan Habis Pakai</option>
                                     <option value="baru">Tambah Inventaris Baru</option>
                                     <option value="lama">Gunakan Yang Sudah Ada</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group d-none" id="form-inventaris">
-                            <label for="">Daftar Inventaris</label>
+                            <label for="">Daftar Bahan Habis Pakai</label>
                             <div class="input-group mb-2">
                                 <select name="id_inventaris" class="form-control selectInventarisData" id="">
 
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Kategori Inventaris</label>
+                            <label for="">Kategori Bahan Habis Pakai</label>
                             <div class="input-group mb-2">
                                 <select name="id_kategori_inventori" class="form-control selectKategoriData"
                                     id="selectKategoriDataCreate">
@@ -42,11 +42,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Jenis Inventaris</label>
+                            <label for="">Jenis Bahan Habis Pakai</label>
                             <input type="text" class="form-control" name="kode_inventori">
                         </div>
                         <div class="form-group">
-                            <label for="">Satuan Inventaris</label>
+                            <label for="">Satuan Bahan Habis Pakai</label>
                             <div class="input-group mb-2">
                                 <select name="id_satuan_inventori" class="form-control selectSatuanData"
                                     id="selectSatuanDataCreate">
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Merk Inventaris</label>
+                            <label for="">Merk Bahan Habis Pakai</label>
                             <input type="text" class="form-control" name="nama_inventori">
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                             <input type="number" min="0" class="form-control" name="harga_beli">
                         </div>
                         <div class="form-group">
-                            <label for="">Deskripsi Inventaris</label>
+                            <label for="">Deskripsi Bahan Habis Pakai</label>
                             <textarea cols="30" rows="15" class="form-control" name="deskripsi_inventori"></textarea>
                         </div>
                     </div>
