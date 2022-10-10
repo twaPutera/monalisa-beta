@@ -29,7 +29,17 @@ class PeminjamanAssetStoreRequest extends FormRequest
             'alasan_peminjaman' => 'required|string',
             'id_jenis_asset' => 'required|array',
             'id_jenis_asset.*' => 'required|uuid',
-            'jumlah.*' => 'required|numeric|min:1',
+            'data_jenis_asset' => 'required|array',
+            'data_jenis_asset.*.jumlah' => 'required|numeric|min:1',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'data_jenis_asset.*.jumlah.required' => 'This value must not be empty',
+            'data_jenis_asset.*.jumlah.numeric' => 'This value must be numeric',
+            'data_jenis_asset.*.jumlah.min' => 'This value must be greater than 0',
         ];
     }
 }

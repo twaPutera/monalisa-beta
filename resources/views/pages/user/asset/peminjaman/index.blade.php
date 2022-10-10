@@ -13,8 +13,8 @@
             $.ajax({
                 url: '{{ route("user.asset-data.peminjaman.get-all-data") }}',
                 data: {
-                    guid_penerima_asset: "{{ $user->guid }}",
-                    with: ['detail_peminjaman_asset'],
+                    guid_peminjam_asset: "{{ $user->guid }}",
+                    with: ['request_peminjaman_asset.kategori_asset'],
                     status: status
                 },
                 type: 'GET',
@@ -39,20 +39,23 @@
 
         const generateTemplateApproval = (data) => {
             return `
-                <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
-                    <div class="d-flex align-items-center" style="width: 60%;">
-                        <div class="ms-1" style="">
-                            <p class="text-dark mb-0 asset-deskripsi">${data.asset_data.deskripsi}</p>
-                            <p class="text-primary mb-0 asset-deskripsi"><i>${data.asset_data.kategori_asset ? data.asset_data.kategori_asset.group_kategori_asset.nama_group : 'Not Found'}, ${data.asset_data.kategori_asset ? data.asset_data.kategori_asset.nama_kategori : "Not Found"}</i></p>
+                <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                    <p class="text-dark mb-0 asset-deskripsi">${data.request_peminjaman_asset.map((item) => (
+                        ' ' + item.kategori_asset.nama_kategori
+                    ))}</p>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" style="width: 60%;">
+                            <div class="" style="">
+                                <p class="text-primary mb-0 asset-deskripsi"><i>${data.status === 'pending' ? "Menunggu" : data.status ? 'dipinjam' === "Due Date" : "Selesai"}</i></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
-                        <div class="me-1 text-end">
-                            <p class="text-grey mb-0 text-end">${data.status === 'pending' ? "Menunggu" : data.status ? 'dipinjam' === "Due Date" : "Selesai"}</p>
-                            <span class="text-grey text-end">${data.tanggal_peminjaman}</span>
-                        </div>
-                        <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
-                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                        <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
+                            <div class="me-1 text-end">
+                                <span class="text-grey text-end">${data.tanggal_peminjaman}</span>
+                            </div>
+                            <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
+                                <ion-icon name="chevron-forward-outline"></ion-icon>
+                            </div>
                         </div>
                     </div>
                 </a>

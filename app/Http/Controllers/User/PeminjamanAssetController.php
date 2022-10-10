@@ -70,8 +70,8 @@ class PeminjamanAssetController extends Controller
                 $item->link_detail = route('user.asset-data.peminjaman.detail', $item->id);
                 $item->tanggal_peminjaman = date('d/m/Y', strtotime($item->tanggal_peminjaman));
                 $item->tanggal_pengembalian = date('d/m/Y', strtotime($item->tanggal_pengembalian));
-                $item->asset_data = json_decode($item->detail_peminjaman_asset->json_asset_data);
-                $item->asset_data->kategori_asset = $this->kategoriAssetQueryServices->findById($item->asset_data->id_kategori_asset);
+                // $item->asset_data = json_decode($item->detail_peminjaman_asset->json_asset_data);
+                // $item->asset_data->kategori_asset = $this->kategoriAssetQueryServices->findById($item->asset_data->id_kategori_asset);
                 return $item;
             });
 

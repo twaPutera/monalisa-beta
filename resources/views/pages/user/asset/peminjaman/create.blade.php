@@ -19,15 +19,27 @@
                 toastbox('toastSuccess', 2000);
 
                 setTimeout(() => {
-                    window.location.href = '{{ route("user.dashboard.index") }}';
+                    window.location.href = '{{ route("user.asset-data.peminjaman.index") }}';
                 }, 2000);
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+            if (!errors.success) {
+                changeTextToast('toastDanger', errors.message);
+                toastbox('toastDanger', 2000)
+            }
             for (let key in errors) {
-                let element = formElement.find(`[name=${key}]`);
-                clearValidation(element);
-                showValidation(element, errors[key][0]);
+                let array_error_key = key.split('.');
+                if (array_error_key.length < 2) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                } else {
+                    let new_key = `${array_error_key[0]}[${array_error_key[1]}][${array_error_key[2]}]`;
+                    let element = formElement.find(`[name="${new_key}"]`);
+                    $(element).addClass('is-invalid');
+                    $(`#errorJumlah-${array_error_key[1]}`).text(errors[key][0]).show();
+                }
             }
         });
 
@@ -81,29 +93,24 @@
                 }
             }).on('select2:selecting', function(e) {
                 let data = e.params.args.data;
-                console.log(data);
                 $('#detailPeminjamanContainer').append(generateTemplateDetailPeminjaman(data));
-                // $('#idKategoriAsset').val(data.id);
             }).on('select2:unselecting', function(e) {
                 let data = e.params.args.data;
-                console.log(data);
                 $(`#${data.id}`).remove();
             });
         }
 
-        // $('#jenisAsset').on('change', function (event) {
-        //     console.log(event);
-        //     $('#detailPeminjamanContainer').append(generateTemplateDetailPeminjaman());
-        // });
-
         const generateTemplateDetailPeminjaman = (item) => {
             return `
-                <div class="row" id="${item.id}">
+                <div class="row mb-2" id="${item.id}">
                     <div class="col-8">
-                        <input type="text" value="${item.text}" readonly name="data_jenis_asset[${item.id}]" class="form-control py-3">
+                        <input type="text" value="${item.text}" readonly name="data_jenis_asset[${item.id}][nama_jenis]" class="form-control py-3">
                     </div>
                     <div class="col-4">
-                        <input type="number" value="1" name="jumlah[${item.id}]" class="form-control py-3">
+                        <input type="number" value="1" name="data_jenis_asset[${item.id}][jumlah]" class="form-control py-3">
+                    </div>
+                    <div class="col-12">
+                        <div class="invalid-feedback" id="errorJumlah-${item.id}"></div>
                     </div>
                 </div>
             `;

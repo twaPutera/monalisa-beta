@@ -7,14 +7,28 @@ use App\Models\AssetData;
 use Exception;
 use App\Models\PeminjamanAsset;
 use App\Models\DetailPeminjamanAsset;
+use App\Models\RequestPeminjamanAsset;
 use App\Models\Approval;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PeminjamanAssetCommandServices
 {
+    protected $userSsoQueryServices;
+
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+    }
+
     public function store(PeminjamanAssetStoreRequest $request)
     {
         $request->validated();
         $user = \Session::get('user');
+        $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
+
+        if (!isset($approver[0])) {
+            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        }
 
         $peminjaman = new PeminjamanAsset();
         $peminjaman->guid_peminjam_asset = $user->guid;
@@ -26,17 +40,17 @@ class PeminjamanAssetCommandServices
         $peminjaman->created_by = $user->guid;
         $peminjaman->save();
 
-        // ! kemungkinan ada update untuk store detail asset menggunakan multi store
-        $asset_data = AssetData::findOrFail($request->id_asset);
-        $detail_peminjaman = new DetailPeminjamanAsset();
-        $detail_peminjaman->id_peminjaman_asset = $peminjaman->id;
-        $detail_peminjaman->id_asset = $request->id_asset;
-        $detail_peminjaman->json_asset_data = json_encode($asset_data);
-        $detail_peminjaman->save();
+        foreach($request->id_jenis_asset as $id_jenis_asset) {
+            $request_kategori_detail = $request->data_jenis_asset[$id_jenis_asset];
+            $request_peminjaman = new RequestPeminjamanAsset();
+            $request_peminjaman->id_peminjaman_asset = $peminjaman->id;
+            $request_peminjaman->id_kategori_asset = $id_jenis_asset;
+            $request_peminjaman->jumlah = $request_kategori_detail['jumlah'];
+            $request_peminjaman->save();
+        }
 
-        // ! guid approver ganti dengan guid dari manager
         $approval = new Approval();
-        $approval->guid_approver = '4fda8944-535f-103c-9a64-bfc54612c8d8';
+        $approval->guid_approver = $approver[0]['guid'];
         $approval->approvable_type = get_class($peminjaman);
         $approval->approvable_id = $peminjaman->id;
         $approval->save();

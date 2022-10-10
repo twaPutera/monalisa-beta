@@ -16,6 +16,7 @@ class AssetServiceDatatableServices
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
     }
+
     public function datatable(Request $request)
     {
         $query = Service::query()
@@ -65,9 +66,9 @@ class AssetServiceDatatableServices
                 $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
                 return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             })
-           
+
             ->addColumn('deskripsi_service', function ($item) {
-                return $item->detail_service->catatan;
+                return $item->detail_service->catatan ?? "no data";
             })
             ->addColumn('btn_show_service', function ($item) {
                 $element = '';
@@ -90,8 +91,7 @@ class AssetServiceDatatableServices
                         'group_kategori_assets.nama_group',
                     ])->where('asset_data.id', $item->detail_service->id_asset_data)
                     ->first();
-
-                return $asset->toArray();
+                return isset($asset) ? $asset->toArray() : [];
             })
             ->addColumn('checkbox', function ($item) {
                 $element = '';
