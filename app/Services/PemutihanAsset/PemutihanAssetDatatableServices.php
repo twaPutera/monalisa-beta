@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\PemutihanAsset;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPemutihanAsset;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetDatatableServices
 {
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+    }
     public $assetInPemutihan = [];
     public function datatable(Request $request)
     {
@@ -28,6 +33,13 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('status', function ($item) {
                 return empty($item->status) ? 'Tidak Ada' : $item->status;
+            })
+            ->addColumn('created_by', function ($item) {
+                $user = null;
+                if (isset($item->created_by)) {
+                    $user = $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                }
+                return $user == null ? 'Tidak ada' : $user[0]['nama'];
             })
             ->addColumn('action', function ($item) {
                 $element = '';

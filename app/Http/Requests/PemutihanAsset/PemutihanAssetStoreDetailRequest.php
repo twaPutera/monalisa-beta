@@ -4,7 +4,7 @@ namespace App\Http\Requests\PemutihanAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PemutihanAssetStoreRequest extends FormRequest
+class PemutihanAssetStoreDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,13 @@ class PemutihanAssetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_checkbox.*' => 'required',
-            'id_checkbox' => 'required|min:1',
-            'tanggal' => 'required|date',
-            'no_memo' => 'nullable|string|max:50',
-            'keterangan_pemutihan' => 'required|string|max:255',
-            'file_berita_acara' => 'required|mimes:pdf,docx,doc|max:4048',
+            'status_pemutihan' => 'required|in:Draft,Publish',
+            'id_asset.*' => 'required',
+            'id_asset' => 'required|min:1',
+            'keterangan_pemutihan_asset.*' => 'required',
+            'keterangan_pemutihan_asset' => 'required|min:1',
+            'gambar_asset.*' => 'required',
+            'gambar_asset' => 'required|min:1',
         ];
     }
 }

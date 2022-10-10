@@ -18,7 +18,7 @@
                             <input type="text" class="form-control datepickerCreate" readonly name="tanggal">
                         </div>
                         <div class="form-group">
-                            <label for="">No Memo</label>
+                            <label for="">No Berita Acara</label>
                             <input type="text" class="form-control" name="no_memo">
                         </div>
                         <div class="form-group">

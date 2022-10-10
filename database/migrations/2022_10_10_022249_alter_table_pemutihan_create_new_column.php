@@ -13,7 +13,9 @@ class AlterTablePemutihanCreateNewColumn extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('pemutihan_assets', function (Blueprint $table) {
+            $table->text('file_bast')->nullable();
+        });
     }
 
     /**

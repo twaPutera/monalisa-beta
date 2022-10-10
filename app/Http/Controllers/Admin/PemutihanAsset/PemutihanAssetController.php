@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin\PemutihanAsset;
 
+use App\Helpers\FileHelpers;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
@@ -32,7 +34,7 @@ class PemutihanAssetController extends Controller
     }
     public function index()
     {
-        $total_asset = $this->pemutihanAssetQueryServices->findAll()->where('status', 'Accept')->count();
+        $total_asset = $this->pemutihanAssetQueryServices->findAll()->count();
         return view('pages.admin.pemutihan-asset.index', compact('total_asset'));
     }
 
@@ -58,11 +60,11 @@ class PemutihanAssetController extends Controller
                 $id_checkbox = $request->id_checkbox[$i];
                 $findAssetWhere = $this->assetDataQueryServices->findById($id_checkbox);
                 if ($findAssetWhere->is_pemutihan == 1) {
-                    break;
                     return response()->json([
                         'success' => false,
                         'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
                     ], 500);
+                    break;
                 }
             }
             DB::beginTransaction();
@@ -72,6 +74,7 @@ class PemutihanAssetController extends Controller
                 'success' => true,
                 'message' => 'Berhasil menambahkan data pemutihan asset',
                 'data' => $pemutihan,
+                'redirect' => true,
             ], 200);
         } catch (Throwable $th) {
             DB::rollBack();
@@ -82,6 +85,78 @@ class PemutihanAssetController extends Controller
         }
     }
 
+    public function storeDetailUpdate(PemutihanAssetStoreDetailRequest $request, string $id)
+    {
+        try {
+            if ($request->hasFile('gambar_asset')) {
+                foreach ($request->file('gambar_asset') as $file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
+                    if (!in_array($extension, $allowedfileExtension)) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Terdapat file yang tidak sesuai dengan format',
+                        ], 500);
+                        break;
+                    }
+                }
+            }
+            DB::beginTransaction();
+            $pemutihan = $this->pemutihanAssetCommandServices->storeDetailUpdate($request, $id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menambahkan data pemutihan asset',
+                'data' => $pemutihan,
+                'redirect' => true,
+            ], 200);
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function downloadBeritaAcara(Request $request)
+    {
+        try {
+            $path = storage_path('app/file/pemutihan/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::downloadFile($path, $filename);
+            return $response;
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function storeDetail(string $id)
+    {
+        try {
+            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+            return view('pages.admin.pemutihan-asset.components.page.detail', compact('pemutihan_asset'));
+        } catch (Throwable $th) {
+            return redirect()->route('admin.pemutihan-asset.index');
+        }
+    }
+
+    public function storeDetailCancel(string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $pemutihan = $this->pemutihanAssetCommandServices->destroy($id);
+            DB::commit();
+            return redirect()->route('admin.pemutihan-asset.index');
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('admin.pemutihan-asset.index');
+        }
+    }
     public function destroy(string $id)
     {
         try {
@@ -93,6 +168,7 @@ class PemutihanAssetController extends Controller
                     'success' => true,
                     'message' => 'Berhasil menghapus data pemutihan asset',
                     'data' => $pemutihan,
+                    'redirect' => true
                 ], 200);
             }
             return response()->json([

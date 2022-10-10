@@ -527,7 +527,7 @@
                         <li class="kt-menu__item @if (\Request::segment(2) == 'listing-inventaris') kt-menu__item--active @endif"
                             aria-haspopup="true"><a href="{{ route('admin.listing-inventaris.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
-                                        class="kt-menu__link-icon"><i class="fas fa-cog"></i></span>
+                                        class="kt-menu__link-icon"><i class="fas fa-book"></i></span>
                                     Bahan Habis Pakai</span></a></li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
                             class="kt-menu__link "><span class="kt-menu__link-text"><span

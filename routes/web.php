@@ -124,9 +124,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/detail/{id}', [PemutihanAssetController::class, 'detail'])->name('admin.pemutihan-asset.detail');
         Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
         Route::post('/delete/{id}', [PemutihanAssetController::class, 'destroy'])->name('admin.pemutihan-asset.delete');
-        Route::post('/store', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
         Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
         Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');
+
+        # Store Pemutihan Asset
+        Route::group(['prefix' => 'store'], function () {
+            Route::post('/', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
+            Route::get('/detail/{id}', [PemutihanAssetController::class, 'storeDetail'])->name('admin.pemutihan-asset.store.detail');
+            Route::post('/detail/{id}', [PemutihanAssetController::class, 'storeDetailUpdate'])->name('admin.pemutihan-asset.store.detail.update');
+            Route::get('/download-berita-acara', [PemutihanAssetController::class, 'downloadBeritaAcara'])->name('admin.pemutihan-asset.store.detail.download');
+            Route::post('/detail/cancel/{id}', [PemutihanAssetController::class, 'storeDetailCancel'])->name('admin.pemutihan-asset.store.detail.cancel');
+        });
     });
 
     # Services
