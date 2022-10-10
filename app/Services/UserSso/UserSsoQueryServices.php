@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Http;
 
 class UserSsoQueryServices
 {
+    // ? List Role User Asset (Sementara) :
+    // ? Staff Asset => id_role = 33
+    // ? Direktur Asset => id_role = 34
+    // ? User Asset => id_role = 35
+
     public function getUserSso(Request $request)
     {
         $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
@@ -20,6 +25,25 @@ class UserSsoQueryServices
             'fields' => 'name,guid,email',
             'search' => 'name:' . $request->keyword,
             'roles' => [33, 34, 36],
+            'page' => 1,
+            'perPage' => 20,
+        ]);
+
+        return $response_sso_siska['data']['nodes'];
+    }
+
+    public function getDataUserByRoleId(Request $request, int $id_role) {
+        $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
+
+        $sso_siska_url = config('app.sso_siska_url') . '/api/users';
+
+        $response_sso_siska = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $jwt_token,
+        ])->get($sso_siska_url, [
+            'fields' => 'name,guid,email',
+            'search' => 'name:' . $request->keyword,
+            'roles' => [$id_role],
             'page' => 1,
             'perPage' => 20,
         ]);

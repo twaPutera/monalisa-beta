@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
 use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
+use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,8 +61,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'approval'], function () {
         Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');
         Route::get('/detail/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
-        Route::group(['prefix' => 'daftar'], function () {
-            Route::get('/', [DaftarApprovalController::class, 'index'])->name('admin.approval.daftar.index');
+        Route::group(['prefix' => 'peminjaman'], function () {
+            Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
@@ -304,6 +305,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     });
     Route::group(['prefix' => 'pengaduan'], function () {
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
+    });
+    Route::group(['prefix' => 'api-master'], function () {
+        Route::get('/group-kategori-asset/get-data-select2', [GroupKategoriAssetController::class, 'getDataSelect2'])->name('user.api-master.group-kategori-asset.get-data-select2');
+        Route::get('/kategori-asset/get-data-select2', [KategoriAssetController::class, 'getDataSelect2'])->name('user.api-master.kategori-asset.get-data-select2');
     });
 });
 

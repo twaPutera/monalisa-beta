@@ -22,7 +22,7 @@
             <!-- begin:: Header Topbar -->
             <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid">
                 <div class="kt-header__topbar-item mr-3 d-flex align-items-center">
-                    <a class="kt-header__topbar-wrapper" href="{{ route('admin.approval.daftar.index') }}">
+                    <a class="kt-header__topbar-wrapper" href="{{ route('admin.approval.peminjaman.index') }}">
                         <u>Daftar Approval (10)</u>
                     </a>
                 </div>
