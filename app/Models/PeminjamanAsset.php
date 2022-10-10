@@ -17,6 +17,16 @@ class PeminjamanAsset extends Model
 
     public function detail_peminjaman_asset()
     {
-        return $this->hasOne(DetailPeminjamanAsset::class, 'id_peminjaman_asset', 'id');
+        return $this->hasMany(DetailPeminjamanAsset::class, 'id_peminjaman_asset', 'id');
+    }
+
+    public function perpanjangan_peminjaman_asset()
+    {
+        return $this->hasMany(PerpanjanganPeminjamanAsset::class, 'id_peminjaman_asset', 'id');
+    }
+
+    public function request_peminjaman_asset()
+    {
+        return $this->hasMany(RequestPeminjamanAsset::class, 'id_peminjaman_asset', 'id');
     }
 }

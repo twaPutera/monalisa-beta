@@ -27,7 +27,9 @@ class PeminjamanAssetStoreRequest extends FormRequest
             'tanggal_peminjaman' => 'required|date',
             'tanggal_pengembalian' => 'required|date',
             'alasan_peminjaman' => 'required|string',
-            'id_asset' => 'required|uuid',
+            'id_jenis_asset' => 'required|array',
+            'id_jenis_asset.*' => 'required|uuid',
+            'jumlah.*' => 'required|numeric|min:1',
         ];
     }
 }

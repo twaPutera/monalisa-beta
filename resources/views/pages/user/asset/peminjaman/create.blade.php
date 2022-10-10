@@ -32,56 +32,22 @@
         });
 
         $(document).ready(function() {
-            getDataOptionSelect();
-
-            setTimeout(() => {
-                generateSelect2Lokasi();
-                generateSelect2Asset();
-            }, 200);
+            generateSelect2GroupKategori();
+            generateSelect2Kategori();
         });
     </script>
     <script>
-        const getDataOptionSelect = () => {
-            $.ajax({
-                url: "{{ route('admin.setting.lokasi.get-select2') }}",
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    const select = $('.select2Lokasi');
-                    select.empty();
-                    response.data.forEach(element => {
-                        let selected = '';
-                        if (element.id == $('#lokasiParentId').val()) {
-                            selected = 'selected';
-                        }
-                        select.append(
-                            `<option ${selected} value="${element.id}">${element.text}</option>`
-                        );
-                    });
-                }
-            })
-        }
-
-        const generateSelect2Lokasi = () => {
-            $('.select2Lokasi').select2({
-                'placeholder': 'Pilih Lokasi',
-                'allowClear': true,
-                'width': '100%'
-            })
-        }
-
-        const generateSelect2Asset = () => {
-            $('.selectAsset').select2({
-                'placeholder': 'Pilih Asset',
+        const generateSelect2GroupKategori = () => {
+            $('#kelompokAsset').select2({
+                'placeholder': 'Pilih Kelompok Asset',
                 'allowClear': true,
                 'width': '100%',
                 'ajax': {
-                    'url': "{{ route('user.asset-data.get-data-select2') }}",
+                    'url': "{{ route('user.api-master.group-kategori-asset.get-data-select2') }}",
                     'dataType': 'json',
                     'data': function(params) {
                         return {
                             'keyword': params.term,
-                            'id_lokasi': $('.select2Lokasi').val()
                         }
                     },
                     'processResults': function(response) {
@@ -91,6 +57,56 @@
                     }
                 }
             })
+        }
+
+        const generateSelect2Kategori = () => {
+            $('#jenisAsset').select2({
+                'placeholder': 'Pilih Asset',
+                'allowClear': true,
+                'width': '100%',
+                'ajax': {
+                    'url': "{{ route('user.api-master.kategori-asset.get-data-select2') }}",
+                    'dataType': 'json',
+                    'data': function(params) {
+                        return {
+                            'keyword': params.term,
+                            'id_group_kategori_asset': $('#kelompokAsset').val()
+                        }
+                    },
+                    'processResults': function(response) {
+                        return {
+                            'results': response.data
+                        }
+                    }
+                }
+            }).on('select2:selecting', function(e) {
+                let data = e.params.args.data;
+                console.log(data);
+                $('#detailPeminjamanContainer').append(generateTemplateDetailPeminjaman(data));
+                // $('#idKategoriAsset').val(data.id);
+            }).on('select2:unselecting', function(e) {
+                let data = e.params.args.data;
+                console.log(data);
+                $(`#${data.id}`).remove();
+            });
+        }
+
+        // $('#jenisAsset').on('change', function (event) {
+        //     console.log(event);
+        //     $('#detailPeminjamanContainer').append(generateTemplateDetailPeminjaman());
+        // });
+
+        const generateTemplateDetailPeminjaman = (item) => {
+            return `
+                <div class="row" id="${item.id}">
+                    <div class="col-8">
+                        <input type="text" value="${item.text}" readonly name="data_jenis_asset[${item.id}]" class="form-control py-3">
+                    </div>
+                    <div class="col-4">
+                        <input type="number" value="1" name="jumlah[${item.id}]" class="form-control py-3">
+                    </div>
+                </div>
+            `;
         }
 
         const submitForm = () => {
@@ -109,8 +125,8 @@
         @csrf
         <div class="form-group boxed">
             <div class="input-wrapper">
-                <label class="text-dark" for="lokasi-select"><strong>Lokasi</strong></label>
-                <select name="" class="form-control py-3 select2Lokasi" id="lokasi-select">
+                <label class="text-dark" for="kelompokAsset"><strong>Kelompok Asset</strong></label>
+                <select name="" class="form-control py-3" id="kelompokAsset">
 
                 </select>
             </div>
@@ -118,10 +134,19 @@
 
         <div class="form-group boxed">
             <div class="input-wrapper">
-                <label class="text-dark" for="asset-select"><strong>Asset</strong></label>
-                <select name="id_asset" class="form-control py-3 selectAsset" id="asset-select">
+                <label class="text-dark" for="jenisAsset"><strong>Jenis Asset</strong></label>
+                <select name="id_jenis_asset[]" class="form-control py-3" multiple id="jenisAsset">
 
                 </select>
+            </div>
+        </div>
+
+        <div class="form-group boxed">
+            <div class="input-wrapper p-1 border border-primary border-radius-sm">
+                <label class="text-dark" for="jenisAsset"><strong>Detail Peminjaman</strong></label>
+                <div id="detailPeminjamanContainer">
+
+                </div>
             </div>
         </div>
 

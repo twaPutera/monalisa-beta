@@ -298,6 +298,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'pengaduan'], function () {
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
     });
+    Route::group(['prefix' => 'api-master'], function () {
+        Route::get('/group-kategori-asset/get-data-select2', [GroupKategoriAssetController::class, 'getDataSelect2'])->name('user.api-master.group-kategori-asset.get-data-select2');
+        Route::get('/kategori-asset/get-data-select2', [KategoriAssetController::class, 'getDataSelect2'])->name('user.api-master.kategori-asset.get-data-select2');
+    });
 });
 
 Route::group(['prefix' => 'sso-api'], function () {
