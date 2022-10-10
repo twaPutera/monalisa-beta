@@ -337,7 +337,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Listing Inventaris
+                            Data Listing Bahan Habis Pakai
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -356,12 +356,12 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Jenis Inventaris</th>
-                                    <th>Kategori Inventaris</th>
-                                    <th>Merk Inventaris</th>
-                                    <th>Jumlah Inventaris Sebelumnya</th>
-                                    <th>Jumlah Inventaris Saat Ini</th>
-                                    <th>Deskripsi Inventaris</th>
+                                    <th>Jenis Bahan Habis Pakai</th>
+                                    <th>Kategori Bahan Habis Pakai</th>
+                                    <th>Merk Bahan Habis Pakai</th>
+                                    <th>Jumlah Bahan Habis Pakai Sebelumnya</th>
+                                    <th>Jumlah Bahan Habis Pakai Saat Ini</th>
+                                    <th>Deskripsi Bahan Habis Pakai</th>
                                 </tr>
                             </thead>
                             <tbody>

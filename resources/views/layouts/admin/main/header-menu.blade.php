@@ -528,7 +528,7 @@
                             aria-haspopup="true"><a href="{{ route('admin.listing-inventaris.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-cog"></i></span>
-                                    Inventaris</span></a></li>
+                                    Bahan Habis Pakai</span></a></li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
                             class="kt-menu__link "><span class="kt-menu__link-text"><span
                                     class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report</span></a></li>
