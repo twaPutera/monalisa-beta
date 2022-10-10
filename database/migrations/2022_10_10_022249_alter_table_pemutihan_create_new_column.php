@@ -14,6 +14,7 @@ class AlterTablePemutihanCreateNewColumn extends Migration
     public function up()
     {
         Schema::table('pemutihan_assets', function (Blueprint $table) {
+            $table->tinyInteger('is_store')->default(0);
             $table->text('file_bast')->nullable();
         });
     }

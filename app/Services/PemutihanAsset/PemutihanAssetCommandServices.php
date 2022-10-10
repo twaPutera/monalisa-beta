@@ -29,6 +29,7 @@ class PemutihanAssetCommandServices
         $pemutihan->no_memo = $request->no_memo;
         $pemutihan->status = 'Draft';
         $pemutihan->created_by = $user->guid;
+        $pemutihan->is_store = 0;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();
 
@@ -86,6 +87,7 @@ class PemutihanAssetCommandServices
             }
         }
         $pemutihan->status = $request->status_pemutihan;
+        $pemutihan->is_store = 1;
         $pemutihan->save();
         return $pemutihan;
     }

@@ -92,7 +92,7 @@ class PemutihanAssetController extends Controller
                 foreach ($request->file('gambar_asset') as $file) {
                     $extension = $file->getClientOriginalExtension();
                     $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                    if (! in_array($extension, $allowedfileExtension)) {
+                    if (!in_array($extension, $allowedfileExtension)) {
                         return response()->json([
                             'success' => false,
                             'message' => 'Terdapat file yang tidak sesuai dengan format',
@@ -137,12 +137,11 @@ class PemutihanAssetController extends Controller
 
     public function storeDetail(string $id)
     {
-        try {
-            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+        $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+        if ($pemutihan_asset->is_store == 0) {
             return view('pages.admin.pemutihan-asset.components.page.detail', compact('pemutihan_asset'));
-        } catch (Throwable $th) {
-            return redirect()->route('admin.pemutihan-asset.index');
         }
+        return abort(404);
     }
 
     public function storeDetailCancel(string $id)
@@ -186,6 +185,12 @@ class PemutihanAssetController extends Controller
 
     public function edit(string $id)
     {
+        $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+        return view('pages.admin.pemutihan-asset.components.page.edit', compact('pemutihan_asset'));
+    }
+
+    public function editListingAsset(string $id)
+    {
         try {
             $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
             return response()->json([
@@ -199,6 +204,43 @@ class PemutihanAssetController extends Controller
                 'success' => false,
                 'message' => $th->getMessage(),
             ], 500);
+        }
+    }
+
+    public function editListingAssetGetImg(string $id)
+    {
+        try {
+            $pemutihan_asset = $this->pemutihanAssetQueryServices->findDetailById($id);
+            //code...
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data image',
+                'data' => $pemutihan_asset,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function editListingAssetShowImg(Request $request)
+    {
+        try {
+            $path = storage_path('app/images/asset-pemutihan/' . $request->filename);
+            $filename = $request->filename;
+            $response = FileHelpers::viewFile($path, $filename);
+
+            return $response;
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
         }
     }
 

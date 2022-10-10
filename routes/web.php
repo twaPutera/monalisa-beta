@@ -87,6 +87,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
             Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
             Route::get('/preview-opname', [MasterAssetController::class, 'previewImageOpname'])->name('admin.listing-asset.opname.image.preview');
+            Route::get('/preview-pemutihan', [PemutihanAssetController::class, 'editListingAssetShowImg'])->name('admin.listing-asset.pemutihan.image.preview');
         });
 
         # Service Asset
@@ -120,9 +121,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'pemutihan-asset'], function () {
         Route::get('/', [PemutihanAssetController::class, 'index'])->name('admin.pemutihan-asset.index');
         Route::get('/datatable', [PemutihanAssetController::class, 'datatable'])->name('admin.pemutihan-asset.datatable');
-        Route::get('/edit/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
         Route::get('/detail/{id}', [PemutihanAssetController::class, 'detail'])->name('admin.pemutihan-asset.detail');
-        Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
         Route::post('/delete/{id}', [PemutihanAssetController::class, 'destroy'])->name('admin.pemutihan-asset.delete');
         Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
         Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');
@@ -134,6 +133,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::post('/detail/{id}', [PemutihanAssetController::class, 'storeDetailUpdate'])->name('admin.pemutihan-asset.store.detail.update');
             Route::get('/download-berita-acara', [PemutihanAssetController::class, 'downloadBeritaAcara'])->name('admin.pemutihan-asset.store.detail.download');
             Route::post('/detail/cancel/{id}', [PemutihanAssetController::class, 'storeDetailCancel'])->name('admin.pemutihan-asset.store.detail.cancel');
+        });
+
+        # Edit Pemutihan Asset
+        Route::group(['prefix' => 'edit'], function () {
+            Route::get('/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
+            Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
+            Route::get('/listing-asset/{id}', [PemutihanAssetController::class, 'editListingAsset'])->name('admin.pemutihan-asset.edit.listing-asset');
+            Route::post('/listing-asset/update/{id}', [PemutihanAssetController::class, 'editListingAssetUpdate'])->name('admin.pemutihan-asset.edit.listing-asset.update');
+            Route::get('/listing-asset/get-image/{id}', [PemutihanAssetController::class, 'editListingAssetGetImg'])->name('admin.pemutihan-asset.edit.listing-asset.get-image');
         });
     });
 

@@ -19,4 +19,10 @@ class DetailPemutihanAsset extends Model
     {
         return $this->belongsTo(AssetData::class, 'id_asset_data', 'id');
     }
+
+    public function image()
+    {
+        return $this->morphMany(AssetImage::class, 'imageable');
+    }
+
 }

@@ -62,6 +62,8 @@
         @csrf
         <div class="row">
             <div class="col-md-4 col-12">
+                <h5 class="mb-3"><strong class="text-primary">Pemutihan Asset</strong> <span class="text-gray"> -
+                        Tambah Data Pemutihan Asset</span></h5>
                 <div class="pt-3 pb-1" style="border-radius: 9px; background: #E5F3FD;">
                     <table id="tableProperti" class="table table-striped">
                         <tr>
@@ -72,6 +74,11 @@
                         <tr>
                             <td width="40%">No Berita Acara</td>
                             <td><strong>{{ $pemutihan_asset->no_memo }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Keterangan Umum</td>
+                            <td><strong>{{ $pemutihan_asset->keterangan }}</strong>
                             </td>
                         </tr>
                         <tr>

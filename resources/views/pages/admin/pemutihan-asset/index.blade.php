@@ -243,71 +243,7 @@
                 }
             })
         }
-        const edit = (button) => {
-            const url_edit = $(button).data('url_edit');
-            const url_update = $(button).data('url_update');
-            $.ajax({
-                url: url_edit,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    const modal = $('.modalEditInventarisData');
-                    const form = modal.find('form');
-                    form.attr('action', url_update);
-                    form.find('input[name=tanggal]').val(response.data.tanggal);
-                    form.find('input[name=no_memo]').val(response.data.no_memo);
-                    form.find('textarea[name=keterangan_pemutihan]').val(response.data.keterangan);
-                    var table3 = $('.editAssetData');
-                    modal.on('shown.bs.modal', function(e) {
-                        $('#status_pemutihan option[value="' + response.data
-                            .status + '"]').attr('selected', 'selected');
-                        table3.DataTable({
-                            responsive: true,
-                            processing: true,
-                            serverSide: true,
-                            destroy: true,
-                            ajax: {
-                                url: "{{ route('admin.pemutihan-asset.datatable.asset') }}",
-                                data: function(d) {
-                                    d.id_pemutihan = response.data.id
-                                }
-                            },
-                            columns: [{
-                                    name: 'id',
-                                    data: 'id',
-                                    orderable: false,
-                                    searchable: false,
-                                },
-                                {
-                                    data: 'kode_asset'
-                                },
-                                {
-                                    name: 'jenis_asset',
-                                    data: 'jenis_asset'
-                                },
-                                {
-                                    name: 'lokasi_asset',
-                                    data: 'lokasi_asset'
-                                },
-                                {
-                                    name: 'kondisi_asset',
-                                    data: 'kondisi_asset'
-                                },
-
-                            ],
-                            columnDefs: [
-                                //Custom template data
-                            ],
-                        });
-                    })
-                    modal.on('hidden.bs.modal', function() {
-                        table3.dataTable().fnDestroy();
-                    })
-                    modal.modal('show');
-                }
-            })
-        }
-
+       
         $('#file_asset_service').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
