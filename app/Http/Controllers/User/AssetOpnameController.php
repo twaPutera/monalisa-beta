@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Helpers\StatusAssetDataHelpers;
+use Throwable;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
+use App\Helpers\StatusAssetDataHelpers;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetOpname\AssetOpnameCommandServices;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Throwable;
+use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
 
 class AssetOpnameController extends Controller
 {

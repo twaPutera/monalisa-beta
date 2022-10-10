@@ -25,7 +25,7 @@ class PemindahanAssetChangeStatusRequest extends FormRequest
     {
         return [
             'status' => 'required|in:disetujui,ditolak',
-            'keterangan' => 'required_if:status,ditolak'
+            'keterangan' => 'required_if:status,ditolak',
         ];
     }
 }

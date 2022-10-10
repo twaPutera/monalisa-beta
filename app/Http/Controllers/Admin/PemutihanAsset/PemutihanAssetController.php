@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Admin\PemutihanAsset;
 
-use App\Helpers\FileHelpers;
 use Throwable;
+use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Services\PemutihanAsset\PemutihanAssetDatatableServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 
 class PemutihanAssetController extends Controller
 {
@@ -92,7 +92,7 @@ class PemutihanAssetController extends Controller
                 foreach ($request->file('gambar_asset') as $file) {
                     $extension = $file->getClientOriginalExtension();
                     $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                    if (!in_array($extension, $allowedfileExtension)) {
+                    if (! in_array($extension, $allowedfileExtension)) {
                         return response()->json([
                             'success' => false,
                             'message' => 'Terdapat file yang tidak sesuai dengan format',
@@ -168,7 +168,7 @@ class PemutihanAssetController extends Controller
                     'success' => true,
                     'message' => 'Berhasil menghapus data pemutihan asset',
                     'data' => $pemutihan,
-                    'redirect' => true
+                    'redirect' => true,
                 ], 200);
             }
             return response()->json([

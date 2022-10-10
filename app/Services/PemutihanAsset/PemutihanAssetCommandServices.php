@@ -2,17 +2,17 @@
 
 namespace App\Services\PemutihanAsset;
 
-use App\Helpers\FileHelpers;
+use Exception;
+use App\Models\Approval;
 use App\Models\AssetData;
+use App\Models\AssetImage;
+use App\Helpers\FileHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
-use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
-use App\Models\Approval;
-use App\Models\AssetImage;
-use Exception;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 
 class PemutihanAssetCommandServices
 {
@@ -27,7 +27,7 @@ class PemutihanAssetCommandServices
         $pemutihan->json_manager = json_encode($user);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_memo;
-        $pemutihan->status = "Draft";
+        $pemutihan->status = 'Draft';
         $pemutihan->created_by = $user->guid;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();

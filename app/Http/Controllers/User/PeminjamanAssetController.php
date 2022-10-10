@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
-use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
-use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\KategoriAsset\KategoriAssetQueryServices;
-use Illuminate\Support\Facades\DB;
+use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
+use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 
 class PeminjamanAssetController extends Controller
 {
@@ -49,7 +49,7 @@ class PeminjamanAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Peminjaman asset berhasil dibuat',
-                'data' => $peminjaman
+                'data' => $peminjaman,
             ], 200);
             //code...
         } catch (\Throwable $th) {
@@ -58,7 +58,7 @@ class PeminjamanAssetController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Peminjaman asset gagal dibuat',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 500);
         }
     }
@@ -78,7 +78,7 @@ class PeminjamanAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Data peminjaman asset berhasil didapatkan',
-                'data' => $peminjaman
+                'data' => $peminjaman,
             ], 200);
             //code...
         } catch (\Throwable $th) {
@@ -86,7 +86,7 @@ class PeminjamanAssetController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Data peminjaman asset gagal didapatkan',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 500);
         }
     }

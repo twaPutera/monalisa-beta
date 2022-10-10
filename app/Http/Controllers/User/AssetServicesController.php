@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\AssetData\AssetDataQueryServices;
 
 class AssetServicesController extends Controller
@@ -12,8 +11,7 @@ class AssetServicesController extends Controller
 
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices
-    )
-    {
+    ) {
         $this->assetDataQueryServices = $assetDataQueryServices;
     }
 

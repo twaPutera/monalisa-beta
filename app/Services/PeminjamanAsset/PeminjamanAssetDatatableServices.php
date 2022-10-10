@@ -2,8 +2,6 @@
 
 namespace App\Services\PeminjamanAsset;
 
-use Exception;
-
 class PeminjamanAssetDatatableServices
 {
     protected $property1;

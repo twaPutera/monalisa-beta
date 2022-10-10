@@ -28,7 +28,7 @@ class AssetOpnameStoreRequest extends FormRequest
             'status_kondisi' => 'required|string|max:50',
             'status_akunting' => 'required|string|max:100',
             'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'catatan' => 'nullable|string|max:255'
+            'catatan' => 'nullable|string|max:255',
         ];
     }
 }

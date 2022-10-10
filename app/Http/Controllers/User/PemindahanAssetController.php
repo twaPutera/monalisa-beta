@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
-use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
+use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
-use Illuminate\Support\Facades\DB;
 
 class PemindahanAssetController extends Controller
 {
@@ -50,7 +49,7 @@ class PemindahanAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengubah status',
-                'data' => $pemindahan_asset
+                'data' => $pemindahan_asset,
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;

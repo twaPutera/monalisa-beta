@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Sso\SsoDataController;
+use App\Http\Controllers\User\ScanQrCodeController;
+use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
+use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
@@ -22,17 +25,13 @@ use App\Http\Controllers\User\AssetController as UserAssetController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
 use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
-use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
-use App\Http\Controllers\User\AssetOpnameController;
-use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
-use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
-use App\Http\Controllers\User\ScanQrCodeController;
+use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
-use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 
 /*

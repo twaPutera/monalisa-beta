@@ -2,9 +2,9 @@
 
 namespace App\Services\Approval;
 
+use App\Models\Approval;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\Approval;
 
 class ApprovalDatatableServices
 {

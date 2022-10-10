@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\Approval\ApprovalQueryServices;
 use App\Services\Approval\ApprovalCommandServices;
 use App\Services\Approval\ApprovalDatatableServices;
-use App\Services\Approval\ApprovalQueryServices;
-use Illuminate\Support\Facades\DB;
 
 class ApprovalController extends Controller
 {
