@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
-                            <label for="">Item Asset Yang Di Putihkan</label>
+                            <label for="">List Asset Yang Diputihkan</label>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="addAssetData">
                                     <thead>

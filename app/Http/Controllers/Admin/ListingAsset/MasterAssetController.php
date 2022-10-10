@@ -17,7 +17,7 @@ use App\Http\Requests\AssetData\AssetImportRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
-use App\Services\AssetOpname\assetOpnameQueryServices;
+use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller
