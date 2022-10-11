@@ -10,6 +10,7 @@ use App\Models\DetailPeminjamanAsset;
 use App\Models\RequestPeminjamanAsset;
 use App\Models\Approval;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
 
 class PeminjamanAssetCommandServices
 {
@@ -53,6 +54,23 @@ class PeminjamanAssetCommandServices
         $approval->guid_approver = $approver[0]['guid'];
         $approval->approvable_type = get_class($peminjaman);
         $approval->approvable_id = $peminjaman->id;
+        $approval->save();
+
+        return $peminjaman;
+    }
+
+    public function changeApprovalStatus(PeminjamanApprovalUpdate $request, $id)
+    {
+        $request->validated();
+
+        $peminjaman = PeminjamanAsset::findOrFail($id);
+        $peminjaman->status = $request->status;
+        $peminjaman->save();
+
+        $approval = $peminjaman->approval;
+        $approval->tanggal_approval = date('Y-m-d H:i:s');
+        $approval->is_approve = $request->status == 'disetujui' ? 1 : 0;
+        $approval->keterangan = $request->keterangan;
         $approval->save();
 
         return $peminjaman;

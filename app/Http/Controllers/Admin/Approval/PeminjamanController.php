@@ -4,11 +4,44 @@ namespace App\Http\Controllers\Admin\Approval;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
+use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
+use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
+    protected $peminjamanAssetCommandServices;
+
+    public function __construct(PeminjamanAssetCommandServices $peminjamanAssetCommandServices)
+    {
+        $this->peminjamanAssetCommandServices = $peminjamanAssetCommandServices;
+    }
+
     public function index()
     {
         return view('pages.admin.approval.peminjaman.index');
+    }
+
+    public function changeStatusApproval(PeminjamanApprovalUpdate $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->peminjamanAssetCommandServices->changeApprovalStatus($request, $id);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah status approval',
+                'data' => $data
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

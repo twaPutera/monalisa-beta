@@ -36,7 +36,7 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "action",
+                        data: "link_detail",
                         class: "text-center",
                         orderable: false,
                         searchable: false,
@@ -55,6 +55,16 @@
                 columnDefs: [
                     //Custom template data
                     {
+                        targets: [1],
+                        render: function(data, type, full, meta) {
+                            return `
+                                <button onclick="showDetail(this)" data-url_detail="`+data+`" data-url_update="`+full.link_update+`" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
+                                    <i class="la la-eye"></i>
+                                </button>
+                            `;
+                        },
+                    },
+                    {
                         targets: [3],
                         render: function(data, type, full, meta) {
                             let element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
@@ -71,13 +81,62 @@
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
-                    //
+                    $(formElement).trigger('reset');
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
+                    table.DataTable().ajax.reload();
+                    showToastSuccess('Sukses', data.message);
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
             });
         });
+
+        const showDetail = (button) => {
+            const url = $(button).data('url_detail');
+            const url_update = $(button).data('url_update');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let user_peminjam = JSON.parse(data.json_peminjam_asset);
+                        let modal = $('#modalDetailPeminjaman');
+                        let form = modal.find('form');
+                        form.attr('action', url_update);
+                        $('#namaPeminjam').val(user_peminjam.name);
+                        $('#tanggalPeminjam').val(data.tanggal_peminjaman);
+                        $('#tanggalPengembalian').val(data.tanggal_pengembalian);
+                        $('#alasanPeminjaman').val(data.alasan_peminjaman);
+                        $('#tableBodyDetailPeminjaman').html('');
+                        $(data.request_peminjaman_asset).each(function(index, value) {
+                            let element = `
+                                <tr>
+                                    <td>`+(index+1)+`</td>
+                                    <td>`+value.kategori_asset.nama_kategori+`</td>
+                                    <td>`+value.jumlah+`</td>
+                                </tr>
+                            `;
+                            $('#tableBodyDetailPeminjaman').append(element);
+                        });
+
+                        $('#modalDetailPeminjaman').modal('show');
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
     </script>
 @endsection
 @section('main-content')
@@ -120,4 +179,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.approval.peminjaman._modal_detail')
 @endsection

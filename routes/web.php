@@ -34,6 +34,7 @@ use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
 use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
+use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/detail/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
         Route::group(['prefix' => 'peminjaman'], function () {
             Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
+            Route::post('/change-status/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApproval'])->name('admin.approval.peminjaman.change-status');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
@@ -138,6 +140,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('admin.services.edit');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
+    });
+
+    # Peminjaman
+    Route::group(['prefix' => 'peminjaman'], function () {
+        Route::get('/show/{id}', [AdminPeminjamanAssetController::class, 'show'])->name('admin.peminjaman.show');
     });
 
     # Inventaris

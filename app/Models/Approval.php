@@ -21,7 +21,19 @@ class Approval extends Model
             return route('user.asset-data.pemindahan.approve', $this->approvable_id);
         } else if ($this->approvable instanceof PemutihanAsset) {
             return '#';
-            // return route('pemutihan_asset.show', $this->approvable->id);
+        } else if ($this->approvable instanceof PeminjamanAsset) {
+            return route('admin.peminjaman.show', $this->approvable_id);
+        }
+    }
+
+    public function linkUpdateApproval()
+    {
+        if ($this->approvable instanceof PemindahanAsset) {
+            return '#';
+        } else if ($this->approvable instanceof PemutihanAsset) {
+            return '#';
+        } else if ($this->approvable instanceof PeminjamanAsset) {
+            return route('admin.approval.peminjaman.change-status', $this->approvable_id);
         }
     }
 

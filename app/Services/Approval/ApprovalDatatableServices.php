@@ -34,14 +34,13 @@ class ApprovalDatatableServices
             ->addColumn('pembuat_approval', function ($row) {
                 return $row->getPembuatApproval();
             })
-            ->addColumn('action', function ($item) {
-                $element = '';
-                $element .= '<a href="#" onclick="edit(this)" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
-                                <i class="fa fa-eye"></i>
-                            </a>';
-                return $element;
+            ->addColumn('link_detail', function ($item) {
+                return $item->linkApproval();
             })
-            ->rawColumns(['action'])
+            ->addColumn('link_update', function ($item) {
+                return $item->linkUpdateApproval();
+            })
+            ->rawColumns([])
             ->make(true);
     }
 }
