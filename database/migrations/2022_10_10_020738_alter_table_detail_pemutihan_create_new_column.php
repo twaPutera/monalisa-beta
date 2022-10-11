@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AlterTableDetailPemutihanCreateNewColumn extends Migration
 {
@@ -14,7 +14,7 @@ class AlterTableDetailPemutihanCreateNewColumn extends Migration
     public function up()
     {
         Schema::table('detail_pemutihan_assets', function (Blueprint $table) {
-            
+            $table->text('keterangan_pemutihan')->nullable();
         });
     }
 

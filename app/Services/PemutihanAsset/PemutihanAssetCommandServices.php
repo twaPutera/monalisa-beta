@@ -2,20 +2,24 @@
 
 namespace App\Services\PemutihanAsset;
 
+use Exception;
+use App\Models\Approval;
 use App\Models\AssetData;
+use App\Models\AssetImage;
+use App\Helpers\FileHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
-use App\Models\Approval;
-use Exception;
 
 class PemutihanAssetCommandServices
 {
     public function store(PemutihanAssetStoreRequest $request)
     {
         $request->validated();
+
         $user = \Session::get('user');
 
         $pemutihan = new PemutihanAsset();
@@ -23,8 +27,9 @@ class PemutihanAssetCommandServices
         $pemutihan->json_manager = json_encode($user);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_memo;
-        $pemutihan->status = $request->status_pemutihan;
+        $pemutihan->status = 'Draft';
         $pemutihan->created_by = $user->guid;
+        $pemutihan->is_store = 0;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();
 
@@ -42,6 +47,14 @@ class PemutihanAssetCommandServices
             // }
         }
 
+        if ($request->hasFile('file_berita_acara')) {
+            $filename = self::generateNameFile($request->file('file_berita_acara')->getClientOriginalExtension(), $pemutihan->id);
+            $path = storage_path('app/file/pemutihan');
+            $filenamesave = FileHelpers::saveFile($request->file('file_berita_acara'), $path, $filename);
+            $pemutihan->file_bast = $filenamesave;
+            $pemutihan->save();
+        }
+
         $approval = new Approval();
         // ! nanti ubah guid_approver nya dengan guid dari manager
         $approval->guid_approver = $user->guid;
@@ -52,10 +65,42 @@ class PemutihanAssetCommandServices
         return $pemutihan;
     }
 
+    public function storeDetailUpdate(PemutihanAssetStoreDetailRequest $request, $id)
+    {
+        $request->validated();
+        $pemutihan = PemutihanAsset::findOrFail($id);
+        if ($request->hasFile('gambar_asset')) {
+            foreach ($request->file('gambar_asset') as $i => $file) {
+                $detail_pemutihan = DetailPemutihanAsset::findOrFail($request->id_asset[$i]);
+                $filename = self::generateNameImage($file->getClientOriginalExtension(), $detail_pemutihan->id);
+                $path = storage_path('app/images/asset-pemutihan');
+                $filenamesave = FileHelpers::saveFile($file, $path, $filename);
+
+                $asset_images = new AssetImage();
+                $asset_images->imageable_type = get_class($detail_pemutihan);
+                $asset_images->imageable_id = $detail_pemutihan->id;
+                $asset_images->path = $filenamesave;
+                $asset_images->save();
+
+                $detail_pemutihan->keterangan_pemutihan = $request->keterangan_pemutihan_asset[$i];
+                $detail_pemutihan->save();
+            }
+        }
+        $pemutihan->status = $request->status_pemutihan;
+        $pemutihan->is_store = 1;
+        $pemutihan->save();
+        return $pemutihan;
+    }
+
     public function destroy(string $id)
     {
         $pemutihan = PemutihanAsset::findOrFail($id);
         if ($pemutihan->status == 'Draft') {
+            if (isset($pemutihan->file_bast)) {
+                $path = storage_path('app/file/pemutihan');
+                $pathOld = $path . '/' . $pemutihan->file_bast;
+                FileHelpers::removeFile($pathOld);
+            }
             $detail_pemutihan = DetailPemutihanAsset::where('id_pemutihan_asset', $pemutihan->id)->get();
             foreach ($detail_pemutihan as $item) {
                 $item->delete();
@@ -127,7 +172,7 @@ class PemutihanAssetCommandServices
         $approval->save();
 
         if ($request->status == 'disetujui') {
-            foreach($pemutihan->detail_pemutihan_asset as $item) {
+            foreach ($pemutihan->detail_pemutihan_asset as $item) {
                 $asset_data = AssetData::findOrFail($item->id_asset_data);
                 $asset_data->is_pemutihan = 1;
                 $asset_data->save();
@@ -135,5 +180,16 @@ class PemutihanAssetCommandServices
         }
 
         return $pemutihan;
+    }
+
+    protected static function generateNameFile($extension, $kodeasset)
+    {
+        $name = 'berita-acara-' . $kodeasset . '-' . time() . '.' . $extension;
+        return $name;
+    }
+    protected static function generateNameImage($extension, $kodeasset)
+    {
+        $name = 'asset-pemutihan-' . $kodeasset . '-' . time() . '.' . $extension;
+        return $name;
     }
 }

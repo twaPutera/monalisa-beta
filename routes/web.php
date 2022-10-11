@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Sso\SsoDataController;
+use App\Http\Controllers\User\ScanQrCodeController;
+use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
 use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
+use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
@@ -22,17 +25,13 @@ use App\Http\Controllers\User\AssetController as UserAssetController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
 use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\Approval\ApprovalController as UserApprovalController;
-use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\AssetServicesController as UserAssetServicesController;
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
-use App\Http\Controllers\User\AssetOpnameController;
-use App\Http\Controllers\Admin\Approval\DaftarApprovalController;
-use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
-use App\Http\Controllers\User\ScanQrCodeController;
+use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
-use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 
@@ -90,6 +89,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/preview', [MasterAssetController::class, 'previewImage'])->name('admin.listing-asset.image.preview');
             Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
             Route::get('/preview-opname', [MasterAssetController::class, 'previewImageOpname'])->name('admin.listing-asset.opname.image.preview');
+            Route::get('/preview-pemutihan', [PemutihanAssetController::class, 'editListingAssetShowImg'])->name('admin.listing-asset.pemutihan.image.preview');
         });
 
         # Service Asset
@@ -123,13 +123,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::group(['prefix' => 'pemutihan-asset'], function () {
         Route::get('/', [PemutihanAssetController::class, 'index'])->name('admin.pemutihan-asset.index');
         Route::get('/datatable', [PemutihanAssetController::class, 'datatable'])->name('admin.pemutihan-asset.datatable');
-        Route::get('/edit/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
         Route::get('/detail/{id}', [PemutihanAssetController::class, 'detail'])->name('admin.pemutihan-asset.detail');
-        Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
         Route::post('/delete/{id}', [PemutihanAssetController::class, 'destroy'])->name('admin.pemutihan-asset.delete');
-        Route::post('/store', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
         Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
         Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');
+
+        # Store Pemutihan Asset
+        Route::group(['prefix' => 'store'], function () {
+            Route::post('/', [PemutihanAssetController::class, 'store'])->name('admin.pemutihan-asset.store');
+            Route::get('/detail/{id}', [PemutihanAssetController::class, 'storeDetail'])->name('admin.pemutihan-asset.store.detail');
+            Route::post('/detail/{id}', [PemutihanAssetController::class, 'storeDetailUpdate'])->name('admin.pemutihan-asset.store.detail.update');
+            Route::get('/download-berita-acara', [PemutihanAssetController::class, 'downloadBeritaAcara'])->name('admin.pemutihan-asset.store.detail.download');
+            Route::post('/detail/cancel/{id}', [PemutihanAssetController::class, 'storeDetailCancel'])->name('admin.pemutihan-asset.store.detail.cancel');
+        });
+
+        # Edit Pemutihan Asset
+        Route::group(['prefix' => 'edit'], function () {
+            Route::get('/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
+            Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
+            Route::get('/listing-asset/{id}', [PemutihanAssetController::class, 'editListingAsset'])->name('admin.pemutihan-asset.edit.listing-asset');
+            Route::post('/listing-asset/update/{id}', [PemutihanAssetController::class, 'editListingAssetUpdate'])->name('admin.pemutihan-asset.edit.listing-asset.update');
+            Route::get('/listing-asset/get-image/{id}', [PemutihanAssetController::class, 'editListingAssetGetImg'])->name('admin.pemutihan-asset.edit.listing-asset.get-image');
+        });
     });
 
     # Services

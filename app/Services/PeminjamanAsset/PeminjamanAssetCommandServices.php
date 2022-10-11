@@ -2,15 +2,13 @@
 
 namespace App\Services\PeminjamanAsset;
 
-use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
-use App\Models\AssetData;
 use Exception;
-use App\Models\PeminjamanAsset;
-use App\Models\DetailPeminjamanAsset;
-use App\Models\RequestPeminjamanAsset;
 use App\Models\Approval;
+use App\Models\PeminjamanAsset;
+use App\Models\RequestPeminjamanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
+use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 
 class PeminjamanAssetCommandServices
 {
@@ -27,7 +25,7 @@ class PeminjamanAssetCommandServices
         $user = \Session::get('user');
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
 
-        if (!isset($approver[0])) {
+        if (! isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
 
@@ -41,7 +39,7 @@ class PeminjamanAssetCommandServices
         $peminjaman->created_by = $user->guid;
         $peminjaman->save();
 
-        foreach($request->id_jenis_asset as $id_jenis_asset) {
+        foreach ($request->id_jenis_asset as $id_jenis_asset) {
             $request_kategori_detail = $request->data_jenis_asset[$id_jenis_asset];
             $request_peminjaman = new RequestPeminjamanAsset();
             $request_peminjaman->id_peminjaman_asset = $peminjaman->id;

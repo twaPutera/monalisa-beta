@@ -4,8 +4,8 @@ namespace App\Services\AssetData;
 
 use App\Models\LogAsset;
 use App\Models\AssetData;
-use App\Models\LogAssetOpname;
 use Illuminate\Http\Request;
+use App\Models\LogAssetOpname;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
 

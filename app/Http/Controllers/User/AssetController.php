@@ -15,8 +15,7 @@ class AssetController extends Controller
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices
-    )
-    {
+    ) {
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
     }

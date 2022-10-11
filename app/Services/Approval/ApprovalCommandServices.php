@@ -2,8 +2,6 @@
 
 namespace App\Services\Approval;
 
-use Exception;
-
 class ApprovalCommandServices
 {
     protected $property1;

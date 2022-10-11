@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Services\UserSso\UserSsoQueryServices;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Approval extends Model
 {
     use HasFactory, Uuid;
@@ -19,7 +20,7 @@ class Approval extends Model
     {
         if ($this->approvable instanceof PemindahanAsset) {
             return route('user.asset-data.pemindahan.approve', $this->approvable_id);
-        } else if ($this->approvable instanceof PemutihanAsset) {
+        } elseif ($this->approvable instanceof PemutihanAsset) {
             return '#';
         } else if ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.peminjaman.show', $this->approvable_id);
@@ -40,14 +41,14 @@ class Approval extends Model
     public function approvalType()
     {
         if ($this->approvable instanceof PemindahanAsset) {
-            return "Pemindahan Asset";
-        } else if ($this->approvable instanceof PemutihanAsset) {
-            return "Pemutihan Asset";
-        } else if ($this->approvable instanceof PeminjamanAsset) {
-            return "Peminjaman Asset";
+            return 'Pemindahan Asset';
+        } elseif ($this->approvable instanceof PemutihanAsset) {
+            return 'Pemutihan Asset';
+        } elseif ($this->approvable instanceof PeminjamanAsset) {
+            return 'Peminjaman Asset';
         }
 
-        return "Tipe Tidak Terdaftar";
+        return 'Tipe Tidak Terdaftar';
     }
 
     public function getPembuatApproval()

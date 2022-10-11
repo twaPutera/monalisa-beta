@@ -18,7 +18,7 @@
                             <input type="text" class="form-control datepickerCreate" readonly name="tanggal">
                         </div>
                         <div class="form-group">
-                            <label for="">No Memo</label>
+                            <label for="">No Berita Acara</label>
                             <input type="text" class="form-control" name="no_memo">
                         </div>
                         <div class="form-group">
@@ -26,16 +26,23 @@
                             <textarea cols="30" rows="10" class="form-control" name="keterangan_pemutihan"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="">Status Pemutihan</label>
-                            <select name="status_pemutihan" class="form-control">
-                                <option value="Draft" selected>Draft</option>
-                                <option value="Publish">Publish</option>
-                            </select>
+                            <label for="">File Berita Acara</label>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span id="preview-file-image-text">No File Choosen</span> <br>
+                                    <span id="preview-file-image-error" class="text-danger"></span>
+                                </div>
+                                <label for="file_asset_service" class="btn btn-primary">
+                                    Upload
+                                    <input type="file" id="file_asset_service" accept=".pdf,.docx,.doc"
+                                        class="d-none" name="file_berita_acara">
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
-                            <label for="">List Asset Yang Diputihkan</label>
+                            <label for="">List Asset Yang Akan Diputihkan</label>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="addAssetData">
                                     <thead>

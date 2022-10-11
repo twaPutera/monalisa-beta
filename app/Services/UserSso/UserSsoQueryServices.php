@@ -32,7 +32,8 @@ class UserSsoQueryServices
         return $response_sso_siska['data']['nodes'];
     }
 
-    public function getDataUserByRoleId(Request $request, int $id_role) {
+    public function getDataUserByRoleId(Request $request, int $id_role)
+    {
         $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
 
         $sso_siska_url = config('app.sso_siska_url') . '/api/users';

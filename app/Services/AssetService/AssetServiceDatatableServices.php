@@ -68,7 +68,7 @@ class AssetServiceDatatableServices
             })
 
             ->addColumn('deskripsi_service', function ($item) {
-                return $item->detail_service->catatan ?? "no data";
+                return $item->detail_service->catatan ?? 'no data';
             })
             ->addColumn('btn_show_service', function ($item) {
                 $element = '';
