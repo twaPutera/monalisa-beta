@@ -6,9 +6,12 @@ use Exception;
 use App\Models\Approval;
 use App\Models\PeminjamanAsset;
 use App\Models\RequestPeminjamanAsset;
+use App\Models\DetailPeminjamanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
+use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
+use App\Models\AssetData;
 
 class PeminjamanAssetCommandServices
 {
@@ -72,5 +75,48 @@ class PeminjamanAssetCommandServices
         $approval->save();
 
         return $peminjaman;
+    }
+
+    public function storeManyDetailPeminjaman(DetailPeminjamanAssetStoreRequest $request)
+    {
+        $request->validated();
+
+        $peminjaman = PeminjamanAsset::findOrFail($request->id_peminjaman_asset);
+
+        foreach ($request->id_asset as $id_asset) {
+            $asset_data = AssetData::find($id_asset);
+            $detail_peminjaman = new DetailPeminjamanAsset();
+            $detail_peminjaman->id_peminjaman_asset = $peminjaman->id;
+            $detail_peminjaman->json_asset_data = json_encode($asset_data);
+            $detail_peminjaman->id_asset = $id_asset;
+            $detail_peminjaman->save();
+        }
+
+        $request = self::getRequestQuota($peminjaman->id);
+
+        return $request;
+    }
+
+    public function deleteDetailPeminjaman(string $id)
+    {
+        $detail_peminjaman = DetailPeminjamanAsset::findOrFail($id);
+        $detail_peminjaman->delete();
+
+        $request = self::getRequestQuota($detail_peminjaman->id_peminjaman_asset);
+
+        return $request;
+    }
+
+    private static function getRequestQuota(string $id)
+    {
+        $request = RequestPeminjamanAsset::where('id_peminjaman_asset', $id)
+                    ->join('kategori_assets', 'kategori_assets.id', '=', 'request_peminjaman_assets.id_kategori_asset')
+                    ->select(
+                        'id_kategori_asset as id',
+                        'nama_kategori',
+                        'jumlah'
+                    )
+                    ->get();
+        return $request;
     }
 }

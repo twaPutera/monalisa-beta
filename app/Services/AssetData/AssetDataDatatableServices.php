@@ -31,6 +31,19 @@ class AssetDataDatatableServices
             });
         }
 
+        if ($request->has('list_peminjaman')) {
+            $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use($request) {
+                $query->whereHas('peminjaman_asset', function ($query) use($request) {
+                    $query->where(function ($query) use($request) {
+                        $query->where('status', 'dipinjam');
+                        if (isset($request->id_peminjaman)) {
+                            $query->orWhere('id', '=', $request->id_peminjaman);
+                        }
+                    });
+                });
+            });
+        }
+
         if (isset($request->id_satuan_asset)) {
             $query->where('id_satuan_asset', $request->id_satuan_asset);
         }

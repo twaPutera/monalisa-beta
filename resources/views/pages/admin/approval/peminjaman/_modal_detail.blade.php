@@ -55,21 +55,25 @@
                             <h5>Status Approval Peminjaman</h5>
                         </div>
                         <div class="form-group">
+                            <label for="nama">Tanggal Approval</label>
+                            <input type="text" class="form-control" id="tanggalApproval" disabled value="">
+                        </div>
+                        <div class="form-group">
                             <label for="">Status</label>
-                            <select name="status" class="form-control custom-select" id="">
+                            <select name="status" class="form-control custom-select isDisabled" id="statusApproval">
                                 <option value="disetujui">Disetujui</option>
                                 <option value="ditolak">Ditolak</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan</label>
-                            <textarea name="keterangan" class="form-control" id="" cols="30" rows="10"></textarea>
+                            <textarea name="keterangan" class="form-control isDisabled" id="keteranganApproval" cols="30" rows="10"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Approve</button>
+                    <button type="submit" class="btn btn-primary isDisabled">Approve</button>
                 </div>
             </form>
         </div>

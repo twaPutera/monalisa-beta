@@ -112,7 +112,16 @@
                         let user_peminjam = JSON.parse(data.json_peminjam_asset);
                         let modal = $('#modalDetailPeminjaman');
                         let form = modal.find('form');
+                        $('#tanggalApproval').hide();
                         form.attr('action', url_update);
+                        if (data.approval.is_approve) {
+                            console.log(data.approval.is_approve);
+                            $('.isDisabled').attr('disabled', true);
+                            $('#tanggalApproval').val(data.approval.tanggal_approval).show();
+                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' : 'ditolak';
+                            $('#statusApproval option[value='+status_approval+']').attr('selected', true);
+                            $('#keteranganApproval').val(data.approval.keterangan);
+                        }
                         $('#namaPeminjam').val(user_peminjam.name);
                         $('#tanggalPeminjam').val(data.tanggal_peminjaman);
                         $('#tanggalPengembalian').val(data.tanggal_pengembalian);

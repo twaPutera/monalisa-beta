@@ -14,4 +14,9 @@ class DetailPeminjamanAsset extends Model
     {
         return $this->belongsTo(PeminjamanAsset::class, 'id_peminjaman_asset');
     }
+
+    public function asset()
+    {
+        return $this->belongsTo(AssetData::class, 'id_asset');
+    }
 }

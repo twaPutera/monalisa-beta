@@ -521,7 +521,7 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-clipboard-check"></i></span>
                                     Keluhan</span></a></li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'peminjaman') kt-menu__item--active @endif" aria-haspopup="true"><a href="{{ route('admin.peminjaman.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Peminjaman</span></a></li>
                         <li class="kt-menu__item @if (\Request::segment(2) == 'listing-inventaris') kt-menu__item--active @endif"

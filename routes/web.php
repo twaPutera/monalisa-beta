@@ -159,7 +159,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
 
     # Peminjaman
     Route::group(['prefix' => 'peminjaman'], function () {
+        Route::get('/', [AdminPeminjamanAssetController::class, 'index'])->name('admin.peminjaman.index');
+        Route::get('/datatable', [AdminPeminjamanAssetController::class, 'datatable'])->name('admin.peminjaman.datatable');
         Route::get('/show/{id}', [AdminPeminjamanAssetController::class, 'show'])->name('admin.peminjaman.show');
+        Route::get('/detail/{id}', [AdminPeminjamanAssetController::class, 'detail'])->name('admin.peminjaman.detail');
+        Route::group(['prefix' => 'detail-asset'], function () {
+            Route::get('/datatable', [AdminPeminjamanAssetController::class, 'detailPeminjamanDatatable'])->name('admin.peminjaman.detail-asset.datatable');
+            Route::post('/delete/{id}', [AdminPeminjamanAssetController::class, 'deleteDetailPeminjaman'])->name('admin.peminjaman.detail-asset.delete');
+            Route::post('/store-many', [AdminPeminjamanAssetController::class, 'storeManyDetailPeminjaman'])->name('admin.peminjaman.detail-asset.store-many');
+        });
     });
 
     # Inventaris

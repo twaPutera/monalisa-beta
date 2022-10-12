@@ -2,22 +2,75 @@
 
 namespace App\Services\PeminjamanAsset;
 
+use App\Models\PeminjamanAsset;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Models\DetailPeminjamanAsset;
+
 class PeminjamanAssetDatatableServices
 {
-    protected $property1;
-
-    public function __construct($property1 = null)
+    public function datatable(Request $request)
     {
-        $this->property1 = $property1;
+        $query = PeminjamanAsset::query()
+            ->with(['approval']);
+
+        if (isset($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        if (isset($request->guid_peminjam_asset)) {
+            $query->where('guid_peminjam_asset', $request->guid_peminjam_asset);
+        }
+
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('nama_peminjam', function ($row) {
+                $peminjam = json_decode($row->json_peminjam_asset);
+                return $peminjam->name;
+            })
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<a href="'. route('admin.peminjaman.detail', $item->id) .'" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                <i class="fa fa-eye"></i>
+                            </a>';
+                return $element;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
-    public function getProperty1()
+    public function detailPeminjamanDatatable(Request $request)
     {
-        return $this->property1;
-    }
+        $query = DetailPeminjamanAsset::query();
 
-    public function setProperty1($property1)
-    {
-        $this->property1 = $property1;
+        if (isset($request->id_peminjaman_asset)) {
+            $query->where('id_peminjaman_asset', $request->id_peminjaman_asset);
+        }
+
+        if (isset($request->id_asset)) {
+            $query->where('id_asset', $request->id_asset);
+        }
+
+        $query->orderBy('created_at', 'ASC');
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('asset_data', function ($row) {
+                $asset_data = json_decode($row->json_asset_data, true);
+                return $asset_data;
+            })
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<form action="' . route('admin.peminjaman.detail-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
+                $element .= csrf_field();
+                $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
+                                <i class="fa fa-trash"></i>
+                            </button>';
+                $element .= '</form>';
+                return $element;
+            })
+            ->rawColumns(['action', 'asset_data'])
+            ->make(true);
     }
 }

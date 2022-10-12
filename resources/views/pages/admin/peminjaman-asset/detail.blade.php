@@ -1,0 +1,373 @@
+@extends('layouts.admin.main.master')
+@section('plugin_css')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+@endsection
+@section('custom_js')
+    <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
+    <script>
+        let arrayKategori = [];
+        let isTableDetailDraw = false;
+        var table = $('#tableDetailPeminjaman');
+        var table2 = $('#addDetailPeminjaman');
+        $(document).ready(function() {
+            @foreach ($peminjaman->request_peminjaman_asset as $item)
+                arrayKategori.push({
+                    "id": "{{ $item->id_kategori_asset }}",
+                    "nama_kategori": "{{ $item->kategori_asset->nama_kategori }}",
+                    "jumlah": "{{ $item->jumlah }}",
+                });
+            @endforeach
+            table.DataTable({
+                responsive: true,
+                // searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.peminjaman.detail-asset.datatable') }}",
+                    data: function(d) {
+                        d.id_peminjaman_asset = "{{ $peminjaman->id }}";
+                    }
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                    {
+                        data: 'asset_data.deskripsi'
+                    },
+                    {
+                        data: 'asset_data.id_kategori_asset',
+                    },
+                    {
+                        data: 'asset_data.kode_asset'
+                    },
+                    {
+                        data: 'asset_data.no_seri'
+                    }
+                ],
+                columnDefs: [
+                    //Custom template data
+                    {
+                        targets: [3],
+                        render: function(data, type, full, meta) {
+                            const kategori = arrayKategori.find(item => item.id == data);
+                            return kategori.nama_kategori;
+                        }
+                    }
+                ],
+                rowCallback: function(row, data, index) {
+                    arrayKategori = arrayKategori.map((item) => {
+                        return {
+                            id: item.id,
+                            nama_kategori: item.nama_kategori,
+                            jumlah: item.id == data.asset_data.id_kategori_asset ? (parseInt(item.jumlah) - 1) : item.jumlah,
+                        };
+                    });
+                }
+            });
+
+            table2.DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                orderings: false,
+                searching: false,
+                bLengthChange: false,
+                paging: false,
+                autoWidth: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.datatable') }}",
+                    data: function(d) {
+                        d.is_pemutihan = 0;
+                        d.id_kategori_asset = $('#kategoriAssetFilter').val();
+                        d.searchKeyword = $('#searchAsset').val();
+                        d.list_peminjaman = true;
+                        d.id_peminjaman = "{{ $peminjaman->id }}";
+                    }
+                },
+                columns: [
+                    {
+                        name: 'id',
+                        data: 'id',
+                        class: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        name: 'kode_asset',
+                        data: 'kode_asset'
+                    },
+                    {
+                        name: 'nama_kategori',
+                        data: 'nama_kategori'
+                    },
+                    {
+                        name: 'nama_lokasi',
+                        data: 'nama_lokasi'
+                    },
+                    {
+                        name: 'no_seri',
+                        data: 'no_seri'
+                    },
+                    {
+                        name: 'status_kondisi',
+                        data: 'status_kondisi'
+                    },
+
+                ],
+                columnDefs: [
+                    {
+                        targets: [0],
+                        render: function(data, type, full, meta) {
+                            return `<input type="checkbox" class="check-item" data-id_kategori_asset="${full.id_kategori_asset}" onclick="checkIfQuotaExists(this)" onchange="checklistAsset(this)" name="id_asset[]" value="${data}">`;
+                        },
+                        orderable: false,
+                    },
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            if (data == 'bagus') {
+                                element = `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                            } else if (data == 'rusak') {
+                                element = `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                            } else if (data == 'maintenance') {
+                                element = `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                            } else if (data == 'tidak-lengkap') {
+                                element = `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            }
+
+                            return element;
+                        }
+                    }
+                    //Custom template data
+                ],
+                "drawCallback": function (settings) {
+                    console.log('drawCallback:');
+
+                    setTimeout(function () {
+                        rerenderCheckbox();
+                    }, 100);
+                },
+            });
+
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    if (data.data.command == 'storeManyDetailPeminjaman' || data.data.command == 'deleteDetailPeminjaman') {
+                        arrayKategori = data.data.quota;
+                    }
+                    $(formElement).trigger('reset');
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
+                    table.DataTable().ajax.reload();
+                    table2.DataTable().ajax.reload();
+                    showToastSuccess('Sukses', data.message);
+                }
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
+            });
+        });
+
+        const checkIfQuotaExists = (element) => {
+            const id_kategori_asset = $(element).data('id_kategori_asset');
+            const kategori = arrayKategori.find(item => item.id == id_kategori_asset);
+            if (kategori.jumlah == 0 && $(element).is(':checked')) {
+                showToastError('Gagal', 'Kuota untuk kategori ini sudah habis');
+                $(element).prop('checked', false);
+            } else {
+                if ($(element).is(':checked')) {
+                    arrayKategori = arrayKategori.map((item) => {
+                        return {
+                            id: item.id,
+                            nama_kategori: item.nama_kategori,
+                            jumlah: item.id == id_kategori_asset ? (parseInt(item.jumlah) - 1) : item.jumlah,
+                        };
+                    });
+                } else {
+                    arrayKategori = arrayKategori.map((item) => {
+                        return {
+                            id: item.id,
+                            nama_kategori: item.nama_kategori,
+                            jumlah: item.id == id_kategori_asset ? (parseInt(item.jumlah) + 1) : item.jumlah,
+                        };
+                    });
+                }
+            }
+        }
+
+        const checklistAsset = (element) => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val())
+            if ($(element).is(':checked')) {
+                jsonTempAsset.push($(element).val());
+            } else {
+                jsonTempAsset = jsonTempAsset.filter(item => item != $(element).val());
+            }
+            $('#jsonTempAsset').val(JSON.stringify(jsonTempAsset));
+        }
+
+        const rerenderCheckbox = () => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val());
+            if (jsonTempAsset.length > 0) {
+                jsonTempAsset.forEach(function (user_id) {
+                    $(`input[name="id_asset[]"][value="${user_id}"]`).prop('checked', true);
+                })
+            }
+        }
+
+        const filterTableAsset = () => {
+            table2.DataTable().ajax.reload();
+        }
+    </script>
+@endsection
+@section('main-content')
+    <input type="hidden" id="jsonTempAsset" value="[]">
+    <div class="row">
+        <div class="col-md-12 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Detail Peminjaman
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                            <div class="kt-portlet__head-actions">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="row">
+                        <div class="col-md-4 col-12">
+                            <div class="kt-portlet shadow-custom">
+                                <div class="kt-portlet__head px-4">
+                                    <div class="kt-portlet__head-label">
+                                        <h3 class="kt-portlet__head-title">
+                                            Deskripsi Peminjaman
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__body">
+                                    <div class="form-group">
+                                        <label for="nama">Nama Peminjam</label>
+                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama" placeholder="Nama" value="{{ $peminjam->name }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Tanggal Peminjaman</label>
+                                        <input type="date" value="{{ $peminjaman->tanggal_peminjaman }}" class="form-control" id="tanggalPeminjam" readonly name="kode_satuan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Tanggal Pengembalian</label>
+                                        <input type="date" value="{{ $peminjaman->tanggal_pengembalian }}" class="form-control" id="tanggalPengembalian" readonly name="nama_satuan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Alasan Peminjaman</label>
+                                        <textarea name="" class="form-control" readonly id="alasanPeminjaman" cols="30" rows="10">{{ $peminjaman->alasan_peminjaman }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12">
+                            <div class="kt-portlet shadow-custom">
+                                <div class="kt-portlet__head px-4">
+                                    <div class="kt-portlet__head-label">
+                                        <h3 class="kt-portlet__head-title">
+                                            Request Peminjaman
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50px">No</th>
+                                                    <th>Nama Kategori</th>
+                                                    <th width="50px">Jumlah</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableBodyDetailPeminjaman">
+                                                @foreach ($peminjaman->request_peminjaman_asset as $item)
+                                                    <tr>
+                                                        <td>
+                                                            {{ $loop->iteration }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->kategori_asset->nama_kategori }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $item->jumlah }}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kt-portlet shadow-custom">
+                                <div class="kt-portlet__head px-4">
+                                    <div class="kt-portlet__head-label">
+                                        <h3 class="kt-portlet__head-title">
+                                            Realisasi Peminjaman
+                                        </h3>
+                                    </div>
+                                    <div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">
+                                                <button type="button" onclick="openModalByClass('modalCreateDetailPeminjaman')"
+                                                    class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__body">
+                                    <div class="table-responsive">
+                                        <table class="table dt_table table-striped table-bordered" id="tableDetailPeminjaman">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50px">No</th>
+                                                    <th width="50px">#</th>
+                                                    <th>Nama Aset</th>
+                                                    <th>Nama Kategori</th>
+                                                    <th>Kode Aset</th>
+                                                    <th>No Seri</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @include('pages.admin.peminjaman-asset._modal_create_detail_peminjaman')
+@endsection
