@@ -14,18 +14,29 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetCommandServices
 {
+    protected $userSsoQueryServices;
+
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+    }
+    
     public function store(PemutihanAssetStoreRequest $request)
     {
         $request->validated();
 
         $user = \Session::get('user');
-
+        $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
+        if (!isset($approver[0])) {
+            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        }
         $pemutihan = new PemutihanAsset();
-        $pemutihan->guid_manager = $user->guid;
-        $pemutihan->json_manager = json_encode($user);
+        $pemutihan->guid_manager = $approver[0]['guid'];
+        $pemutihan->json_manager = json_encode($approver[0]);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->status = 'Draft';
@@ -58,7 +69,7 @@ class PemutihanAssetCommandServices
 
         $approval = new Approval();
         // ! nanti ubah guid_approver nya dengan guid dari manager
-        $approval->guid_approver = $user->guid;
+        $approval->guid_approver = $approver[0]['guid'];
         $approval->approvable_type = get_class($pemutihan);
         $approval->approvable_id = $pemutihan->id;
         $approval->save();
@@ -131,7 +142,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;

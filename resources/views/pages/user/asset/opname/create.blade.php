@@ -13,12 +13,31 @@
             console.log(data);
             if (data.success) {
                 $('#preview-file-error').html('');
+                changeTextToast('toastSuccess', data.message);
+                toastbox('toastSuccess', 2000);
 
+                setTimeout(() => {
+                    window.location.href = '{{ route('user.asset-data.detail', $asset_data->id) }}';
+                }, 2000);
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-            console.log(errors);
+            if (!errors.success) {
+                changeTextToast('toastDanger', errors.message);
+                toastbox('toastDanger', 2000)
+            }
             for (let key in errors) {
+                let array_error_key = key.split('.');
+                if (array_error_key.length < 2) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                } else {
+                    let new_key = `${array_error_key[0]}[${array_error_key[1]}][${array_error_key[2]}]`;
+                    let element = formElement.find(`[name="${new_key}"]`);
+                    $(element).addClass('is-invalid');
+                    $(`#errorJumlah-${array_error_key[1]}`).text(errors[key][0]).show();
+                }
                 let element = formElement.find(`[name=${key}]`);
                 clearValidation(element);
                 showValidation(element, errors[key][0]);
@@ -126,9 +145,9 @@
 @endsection
 @section('button-menu')
     <div class="d-flex justify-content-center">
-        <button class="btn btn-danger border-radius-sm px-3 me-2" type="button">
+        <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="btn btn-danger border-radius-sm px-3 me-2">
             <span class="">Batal</span>
-        </button>
+        </a>
         <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="submit">
             <span class="">Simpan</span>
         </button>

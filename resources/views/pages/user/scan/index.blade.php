@@ -42,7 +42,9 @@
                     } else {
                         success.addClass('d-none');
                         error.removeClass('d-none');
-                        error.append('<span class="result">' + errorMessage + '</span>');
+                        document.getElementById('resultError').innerHTML = '<span class="result">' +
+                            result.message + '</span>';
+
                     }
                 },
                 error: function(result) {

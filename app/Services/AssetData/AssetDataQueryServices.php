@@ -51,7 +51,7 @@ class AssetDataQueryServices
         $data =  AssetData::query()
             ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image'])
             ->where('kode_asset', $request->kode_asset)
-            ->firstOrFail();
+            ->first();
         return $data;
     }
 

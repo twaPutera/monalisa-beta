@@ -305,7 +305,6 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
         });
         Route::group(['prefix' => 'service'], function () {
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
-            Route::get('/detail/{id}', [UserAssetServicesController::class, 'detail'])->name('user.asset-data.service.detail');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
         Route::group(['prefix' => 'peminjaman'], function () {
