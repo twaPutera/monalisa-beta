@@ -22,7 +22,7 @@ class Approval extends Model
             return route('user.asset-data.pemindahan.approve', $this->approvable_id);
         } elseif ($this->approvable instanceof PemutihanAsset) {
             return '#';
-        } else if ($this->approvable instanceof PeminjamanAsset) {
+        } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.peminjaman.show', $this->approvable_id);
         }
     }
@@ -31,9 +31,9 @@ class Approval extends Model
     {
         if ($this->approvable instanceof PemindahanAsset) {
             return '#';
-        } else if ($this->approvable instanceof PemutihanAsset) {
+        } elseif ($this->approvable instanceof PemutihanAsset) {
             return '#';
-        } else if ($this->approvable instanceof PeminjamanAsset) {
+        } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.approval.peminjaman.change-status', $this->approvable_id);
         }
     }

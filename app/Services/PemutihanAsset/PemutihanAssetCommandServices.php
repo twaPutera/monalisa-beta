@@ -14,7 +14,6 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
-use App\Models\DetailPemindahanAsset;
 
 class PemutihanAssetCommandServices
 {
@@ -132,7 +131,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;

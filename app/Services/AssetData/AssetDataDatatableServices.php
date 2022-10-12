@@ -32,9 +32,9 @@ class AssetDataDatatableServices
         }
 
         if ($request->has('list_peminjaman')) {
-            $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use($request) {
-                $query->whereHas('peminjaman_asset', function ($query) use($request) {
-                    $query->where(function ($query) use($request) {
+            $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use ($request) {
+                $query->whereHas('peminjaman_asset', function ($query) use ($request) {
+                    $query->where(function ($query) use ($request) {
                         $query->where('status', 'dipinjam');
                         if (isset($request->id_peminjaman)) {
                             $query->orWhere('id', '=', $request->id_peminjaman);

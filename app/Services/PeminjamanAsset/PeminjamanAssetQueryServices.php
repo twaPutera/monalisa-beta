@@ -32,7 +32,7 @@ class PeminjamanAssetQueryServices
     {
         $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval'])->find($id);
 
-        if (!isset($peminjaman)) {
+        if (! isset($peminjaman)) {
             throw new Exception('Peminjaman Asset tidak ditemukan');
         }
 

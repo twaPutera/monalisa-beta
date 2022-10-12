@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
 use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
-use Illuminate\Support\Facades\DB;
 
 class PeminjamanController extends Controller
 {
@@ -32,7 +31,7 @@ class PeminjamanController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengubah status approval',
-                'data' => $data
+                'data' => $data,
             ]);
             //code...
         } catch (\Throwable $th) {
@@ -40,7 +39,7 @@ class PeminjamanController extends Controller
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
