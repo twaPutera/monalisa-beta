@@ -76,6 +76,10 @@ class AssetDataDatatableServices
             $query->where('is_pemutihan', $request->is_pemutihan);
         }
 
+        if (isset($request->status_kondisi)) {
+            $query->where('status_kondisi', $request->status_kondisi);
+        }
+
         $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)

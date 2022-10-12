@@ -95,6 +95,7 @@
                         d.searchKeyword = $('#searchAsset').val();
                         d.list_peminjaman = true;
                         d.id_peminjaman = "{{ $peminjaman->id }}";
+                        d.status_kondisi = 'bagus';
                     }
                 },
                 columns: [
