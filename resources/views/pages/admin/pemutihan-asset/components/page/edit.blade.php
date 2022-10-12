@@ -21,12 +21,16 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
-                    table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.redirect && data.redirect != null) {
                         setTimeout(function() {
                             var redirect = "{{ route('admin.pemutihan-asset.index') }}"
                             location.assign(redirect);
+                        }, 1000);
+                    }
+                    if (data.reload && data.reload != null) {
+                        setTimeout(function() {
+                            location.reload(true);
                         }, 1000);
                     }
                 }
@@ -164,7 +168,7 @@
                             <td width="40%">No Berita Acara</td>
                             <td>
                                 <input type="text" class="form-control" value="{{ $pemutihan_asset->no_memo }}"
-                                    name="no_memo">
+                                    name="no_berita_acara">
                             </td>
                         </tr>
                         <tr>

@@ -16,7 +16,7 @@
                             <input type="text" class="form-control" disabled name="tanggal">
                         </div>
                         <div class="form-group">
-                            <label for="">No Memo</label>
+                            <label for="">No Berita Acara</label>
                             <input type="text" class="form-control" disabled name="no_memo">
                         </div>
                         <div class="form-group">
@@ -27,6 +27,14 @@
                             <label for="">Status Pemutihan</label>
                             <input type="text" class="form-control" disabled name="status_pemutihan">
                         </div>
+                        <div class="form-group">
+                            <label for="">File Berita Acara</label>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="" download class="btn btn-primary shadow-custom btn-sm btn-download"><i
+                                        class="fa fa-download"></i>
+                                    Unduh</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
@@ -35,10 +43,12 @@
                                 <table class="table table-striped mb-0 detailAssetData" id="detailAssetData">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">#</th>
                                             <th class="text-center">Kode Asset</th>
                                             <th>Jenis Asset</th>
                                             <th>Lokasi Asset</th>
                                             <th>Kondisi Asset</th>
+                                            <th>Keterangan Pemutihan</th>
                                         </tr>
                                     </thead>
                                     <tbody>

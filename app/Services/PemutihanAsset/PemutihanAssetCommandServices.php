@@ -13,6 +13,8 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
+use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
+use App\Models\DetailPemindahanAsset;
 
 class PemutihanAssetCommandServices
 {
@@ -26,7 +28,7 @@ class PemutihanAssetCommandServices
         $pemutihan->guid_manager = $user->guid;
         $pemutihan->json_manager = json_encode($user);
         $pemutihan->tanggal = $request->tanggal;
-        $pemutihan->no_memo = $request->no_memo;
+        $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->status = 'Draft';
         $pemutihan->created_by = $user->guid;
         $pemutihan->is_store = 0;
@@ -110,36 +112,87 @@ class PemutihanAssetCommandServices
         return false;
     }
 
-    public function update(PemutihanAssetUpdateRequest $request, string $id)
+    public function updateListingPemutihan(PemutihanAssetUpdateListingRequest $request, string $id)
     {
         $request->validated();
-        $user = \Session::get('user');
-
         $pemutihan = PemutihanAsset::findOrFail($id);
-        $pemutihan->tanggal = $request->tanggal;
-        $pemutihan->no_memo = $request->no_memo;
-        $pemutihan->status = $request->status_pemutihan;
-        $pemutihan->keterangan = $request->keterangan_pemutihan;
-        $pemutihan->save();
-
-        foreach ($pemutihan->detail_pemutihan_asset as $item) {
-            $item->delete();
-        }
+        $detail_pemutihan = DetailPemutihanAsset::with(['image'])->where('id_pemutihan_asset', $pemutihan->id)->get();
+        $request_checkbox = [];
 
         for ($i = 0; $i < count($request->id_checkbox); $i++) {
             $id_checkbox = $request->id_checkbox[$i];
-            $detail_pemutihan = new DetailPemutihanAsset();
-            $detail_pemutihan->id_pemutihan_asset = $pemutihan->id;
-            $detail_pemutihan->id_asset_data = $id_checkbox;
-            $detail_pemutihan->save();
-
-            // if ($request->status_pemutihan == 'Publish') {
-            //     $asset_data = AssetData::findOrFail($id_checkbox);
-            //     $asset_data->is_pemutihan = 1;
-            //     $asset_data->save();
-            // }
+            array_push($request_checkbox, $id_checkbox);
+            $cek_detail_pemutihan = DetailPemutihanAsset::where('id_asset_data', $id_checkbox)->where('id_pemutihan_asset', $id)->first();
+            if ($cek_detail_pemutihan == null) {
+                $detail_pemutihan_create = new DetailPemutihanAsset();
+                $detail_pemutihan_create->id_pemutihan_asset = $id;
+                $detail_pemutihan_create->id_asset_data = $id_checkbox;
+                $detail_pemutihan_create->save();
+            }
         }
 
+        foreach ($detail_pemutihan as $item_pemutihan) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+                $path = storage_path('app/images/asset-pemutihan');
+                if (isset($item_pemutihan->image[0])) {
+                    $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
+                    FileHelpers::removeFile($pathOld);
+                    $item_pemutihan->image[0]->delete();
+                }
+                $item_pemutihan->delete();
+            }
+        }
+
+        return $detail_pemutihan;
+    }
+
+    public function update(PemutihanAssetUpdateRequest $request, $id)
+    {
+        $request->validated();
+        $pemutihan = PemutihanAsset::findOrFail($id);
+        if ($request->hasFile('file_berita_acara')) {
+            if (isset($pemutihan->file_bast)) {
+                $path = storage_path('app/file/pemutihan');
+                $pathOld = $path . '/' . $pemutihan->file_bast;
+                FileHelpers::removeFile($pathOld);
+            }
+            $filename = self::generateNameFile($request->file('file_berita_acara')->getClientOriginalExtension(), $pemutihan->id);
+            $path = storage_path('app/file/pemutihan');
+            $filenamesave = FileHelpers::saveFile($request->file('file_berita_acara'), $path, $filename);
+            $pemutihan->file_bast = $filenamesave;
+            $pemutihan->save();
+        }
+
+        if ($request->hasFile('gambar_asset')) {
+            foreach ($request->file('gambar_asset') as $i => $file) {
+                $detail_pemutihan = DetailPemutihanAsset::with(['image'])->where('id', $request->id_asset[$i])->first();
+                $path = storage_path('app/images/asset-pemutihan');
+                if (isset($detail_pemutihan->image[0])) {
+                    $pathOld = $path . '/' . $detail_pemutihan->image[0]->path;
+                    FileHelpers::removeFile($pathOld);
+                    $detail_pemutihan->image[0]->delete();
+                }
+                $filename = self::generateNameImage($file->getClientOriginalExtension(), $detail_pemutihan->id);
+                $filenamesave = FileHelpers::saveFile($file, $path, $filename);
+
+                $asset_images = new AssetImage();
+                $asset_images->imageable_type = get_class($detail_pemutihan);
+                $asset_images->imageable_id = $detail_pemutihan->id;
+                $asset_images->path = $filenamesave;
+                $asset_images->save();
+            }
+        }
+        for ($i = 0; $i < count($request->keterangan_pemutihan_asset); $i++) {
+            $detail_pemutihan = DetailPemutihanAsset::with(['image'])->where('id', $request->id_asset[$i])->first();
+            $detail_pemutihan->keterangan_pemutihan = $request->keterangan_pemutihan_asset[$i];
+            $detail_pemutihan->save();
+        }
+
+        $pemutihan->tanggal = $request->tanggal;
+        $pemutihan->no_memo = $request->no_berita_acara;
+        $pemutihan->keterangan = $request->keterangan_pemutihan;
+        $pemutihan->status = $request->status_pemutihan;
+        $pemutihan->save();
         return $pemutihan;
     }
 

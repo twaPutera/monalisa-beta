@@ -9,7 +9,7 @@
                 </button>
             </div>
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.pemutihan-asset.store') }}" method="POST">
+                action="#" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -18,11 +18,7 @@
                                 <thead>
                                     <tr>
                                         <th width="50px" class="text-center pl-5">
-                                            <div class="form-check form-check-inline ms-1">
-                                                <input type="checkbox" class="form-check-input check-all"
-                                                    id=" exampleCheck1">
-                                                <label class="form-check-label" for="exampleCheck1"></label>
-                                            </div>
+                                            #
                                         </th>
                                         <th class="text-center">Kode Asset</th>
                                         <th>Jenis Asset</th>

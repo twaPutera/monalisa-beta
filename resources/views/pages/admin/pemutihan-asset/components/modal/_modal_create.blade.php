@@ -19,7 +19,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">No Berita Acara</label>
-                            <input type="text" class="form-control" name="no_memo">
+                            <input type="text" class="form-control" name="no_berita_acara">
                         </div>
                         <div class="form-group">
                             <label for="">Keterangan Pemutihan</label>
@@ -48,11 +48,7 @@
                                     <thead>
                                         <tr>
                                             <th width="50px" class="text-center pl-5">
-                                                <div class="form-check form-check-inline ms-1">
-                                                    <input type="checkbox" class="form-check-input check-all"
-                                                        id=" exampleCheck1">
-                                                    <label class="form-check-label" for="exampleCheck1"></label>
-                                                </div>
+                                              #
                                             </th>
                                             <th class="text-center">Kode Asset</th>
                                             <th>Jenis Asset</th>

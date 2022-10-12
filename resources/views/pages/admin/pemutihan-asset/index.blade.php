@@ -200,6 +200,9 @@
                     form.find('input[name=no_memo]').val(response.data.no_memo);
                     form.find('input[name=status_pemutihan]').val(response.data.status);
                     form.find('textarea[name=keterangan_pemutihan]').val(response.data.keterangan);
+                    form.find('.btn-download').attr('href',
+                        "{{ route('admin.pemutihan-asset.store.detail.download') . '?filename=' . '' }}" +
+                        response.data.file_bast)
                     var table4 = $('.detailAssetData');
                     modal.on('shown.bs.modal', function(e) {
                         table4.DataTable({
@@ -214,6 +217,10 @@
                                 }
                             },
                             columns: [{
+                                    name: 'file_gambar',
+                                    data: 'file_gambar'
+                                },
+                                {
                                     name: 'kode_asset',
                                     data: 'kode_asset'
                                 },
@@ -229,6 +236,10 @@
                                     name: 'kondisi_asset',
                                     data: 'kondisi_asset'
                                 },
+                                {
+                                    name: 'keterangan_pemutihan',
+                                    data: 'keterangan_pemutihan'
+                                },
 
                             ],
                             columnDefs: [
@@ -243,11 +254,33 @@
                 }
             })
         }
-       
+
         $('#file_asset_service').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
         });
+
+        const showPemutihanAsset = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const data = response.data;
+                    const modal = $('.modalPreviewAsset');
+                    if (response.success) {
+                        if (data.image.length > 0) {
+                            $('#imgPreviewAsset').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        modal.modal('show');
+                    }
+                },
+            })
+        }
     </script>
 @endsection
 @section('main-content')
@@ -297,4 +330,5 @@
     @include('pages.admin.pemutihan-asset.components.modal._modal_create')
     @include('pages.admin.pemutihan-asset.components.modal._modal_edit')
     @include('pages.admin.pemutihan-asset.components.modal._modal_detail')
+    @include('pages.admin.pemutihan-asset.components.modal._modal_preview')
 @endsection
