@@ -29,12 +29,11 @@ class ScanQrCodeController extends Controller
                     'message' => 'Berhasil mendapatkan data asset, halaman akan dialihkan',
                     'data' => $asset,
                 ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data asset tidak ditemukan',
-                ]);
             }
+            return response()->json([
+                'success' => false,
+                'message' => 'Data asset tidak ditemukan',
+            ]);
         } catch (\Throwable $th) {
             //throw $th;
             dd($th);

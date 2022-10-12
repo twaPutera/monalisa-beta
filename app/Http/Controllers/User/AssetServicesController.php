@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
 
 class AssetServicesController extends Controller
 {

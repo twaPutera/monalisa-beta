@@ -9,12 +9,12 @@ use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
+use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
-use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetCommandServices
 {
@@ -31,7 +31,7 @@ class PemutihanAssetCommandServices
 
         $user = \Session::get('user');
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (!isset($approver[0])) {
+        if (! isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -142,7 +142,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
