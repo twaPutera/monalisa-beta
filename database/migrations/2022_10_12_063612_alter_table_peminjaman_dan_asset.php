@@ -13,7 +13,7 @@ class AlterTablePeminjamanDanAsset extends Migration
      */
     public function up()
     {
-        Schema::table('peminjaman_asset', function (Blueprint $table) {
+        Schema::table('peminjaman_assets', function (Blueprint $table) {
             $table->string('no_memo')->nullable();
             $table->time('jam_mulai')->nullable();
             $table->time('jam_selesai')->nullable();
