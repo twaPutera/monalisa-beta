@@ -62,12 +62,14 @@ class PeminjamanAssetDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<form action="' . route('admin.peminjaman.detail-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
-                $element .= csrf_field();
-                $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
-                                <i class="fa fa-trash"></i>
-                            </button>';
-                $element .= '</form>';
+                if ($item->peminjaman_asset->status == 'diproses') {
+                    $element .= '<form action="' . route('admin.peminjaman.detail-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
+                    $element .= csrf_field();
+                    $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
+                                    <i class="fa fa-trash"></i>
+                                </button>';
+                    $element .= '</form>';
+                }
                 return $element;
             })
             ->rawColumns(['action', 'asset_data'])

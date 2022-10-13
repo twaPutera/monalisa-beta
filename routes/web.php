@@ -166,6 +166,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'detail-asset'], function () {
             Route::get('/datatable', [AdminPeminjamanAssetController::class, 'detailPeminjamanDatatable'])->name('admin.peminjaman.detail-asset.datatable');
             Route::post('/delete/{id}', [AdminPeminjamanAssetController::class, 'deleteDetailPeminjaman'])->name('admin.peminjaman.detail-asset.delete');
+            Route::post('/change-status/{id}', [AdminPeminjamanAssetController::class, 'changeStatus'])->name('admin.peminjaman.detail-asset.change-status');
             Route::post('/store-many', [AdminPeminjamanAssetController::class, 'storeManyDetailPeminjaman'])->name('admin.peminjaman.detail-asset.store-many');
         });
     });

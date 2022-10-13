@@ -96,6 +96,7 @@
                         d.list_peminjaman = true;
                         d.id_peminjaman = "{{ $peminjaman->id }}";
                         d.status_kondisi = 'bagus';
+                        d.is_pinjam = '1';
                     }
                 },
                 columns: [
@@ -168,6 +169,9 @@
                 if (data.success) {
                     if (data.data.command == 'storeManyDetailPeminjaman' || data.data.command == 'deleteDetailPeminjaman') {
                         arrayKategori = data.data.quota;
+                    }
+                    if (data.data.command == 'changeStatus') {
+                        window.location.reload();
                     }
                     $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
@@ -254,7 +258,21 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-
+                                @if($peminjaman->status == 'diproses')
+                                    <form action="{{ route('admin.peminjaman.detail-asset.change-status', $peminjaman->id) }}" class="form-confirm d-inline" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="dipinjam">
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-check mr-2"></i> Proses</button>
+                                    </form>
+                                @elseif($peminjaman->status == 'ditolak')
+                                    <button class="btn btn-sm btn-danger" style="pointer-events: none;"><i class="fas fa-times mr-2"></i> Ditolak</button>
+                                @elseif($peminjaman->status == 'disetujui')
+                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Disetujui</button>
+                                @elseif($peminjaman->status == 'dipinjam')
+                                    <button class="btn btn-sm btn-info" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Dipinjam</button>
+                                @elseif($peminjaman->status == 'terlambat')
+                                    <button class="btn btn-sm btn-warning" style="pointer-events: none;"><i class="fas fa-calendar-times mr-2"></i> Terlambat</button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -338,8 +356,10 @@
                                     <div class="kt-portlet__head-toolbar">
                                         <div class="kt-portlet__head-wrapper">
                                             <div class="kt-portlet__head-actions">
-                                                <button type="button" onclick="openModalByClass('modalCreateDetailPeminjaman')"
-                                                    class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                                @if($peminjaman->status == 'diproses')
+                                                    <button type="button" onclick="openModalByClass('modalCreateDetailPeminjaman')"
+                                                        class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

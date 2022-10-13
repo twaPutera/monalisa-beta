@@ -80,6 +80,10 @@ class AssetDataDatatableServices
             $query->where('status_kondisi', $request->status_kondisi);
         }
 
+        if (isset($request->is_pinjam)) {
+            $query->where('is_pinjam', $request->is_pinjam);
+        }
+
         $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
