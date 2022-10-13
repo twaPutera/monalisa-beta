@@ -93,7 +93,8 @@ const formConfirmSubmit = () => {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Ya",
+            cancelButtonText: "Tidak",
         }).then((result) => {
             if (result.value) {
                 let formData = new FormData(form[0]);

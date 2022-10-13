@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\PeminjamanAsset;
 
+use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -52,6 +53,30 @@ class PeminjamanAssetController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function changeStatus(PeminjamanAssetChangeStatusRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $this->peminjamanAssetCommandServices->changeStatus($request, $id);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah status peminjaman asset',
+                'data' => [
+                    'command' => 'changeStatus',
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
             ]);
         }
     }

@@ -12,6 +12,7 @@ use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
+use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 
 class PeminjamanAssetCommandServices
 {
@@ -65,11 +66,12 @@ class PeminjamanAssetCommandServices
         $request->validated();
 
         $peminjaman = PeminjamanAsset::findOrFail($id);
-        $peminjaman->status = $request->status;
+        $peminjaman->status = $request->status == 'disetujui' ? 'diproses' : 'ditolak';
         $peminjaman->save();
 
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
+        $approval->guid_approver = \Session::get('user')->guid;
         $approval->is_approve = $request->status == 'disetujui' ? 1 : 0;
         $approval->keterangan = $request->keterangan;
         $approval->save();
@@ -105,6 +107,15 @@ class PeminjamanAssetCommandServices
         $request = self::getRequestQuota($detail_peminjaman->id_peminjaman_asset);
 
         return $request;
+    }
+
+    public function changeStatus(PeminjamanAssetChangeStatusRequest $request, $id)
+    {
+        $peminjaman = PeminjamanAsset::findOrFail($id);
+        $peminjaman->status = $request->status;
+        $peminjaman->save();
+
+        return $peminjaman;
     }
 
     private static function getRequestQuota(string $id)
