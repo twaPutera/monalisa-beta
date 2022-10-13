@@ -34,6 +34,7 @@ use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetCo
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'peminjaman'], function () {
             Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
             Route::post('/change-status/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApproval'])->name('admin.approval.peminjaman.change-status');
+        });
+        Route::group(['prefix' => 'pemutihan'], function () {
+            Route::get('/', [AdminPemutihanAssetController::class, 'index'])->name('admin.approval.pemutihan.index');
+            Route::post('/change-status/{id}', [AdminPemutihanAssetController::class, 'changeStatusApproval'])->name('admin.approval.pemutihan.change-status');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
@@ -124,6 +129,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/', [PemutihanAssetController::class, 'index'])->name('admin.pemutihan-asset.index');
         Route::get('/datatable', [PemutihanAssetController::class, 'datatable'])->name('admin.pemutihan-asset.datatable');
         Route::get('/detail/{id}', [PemutihanAssetController::class, 'detail'])->name('admin.pemutihan-asset.detail');
+        Route::get('/show/{id}', [PemutihanAssetController::class, 'show'])->name('admin.pemutihan-asset.show');
         Route::post('/delete/{id}', [PemutihanAssetController::class, 'destroy'])->name('admin.pemutihan-asset.delete');
         Route::get('/datatable-asset', [PemutihanAssetController::class, 'datatableAsset'])->name('admin.pemutihan-asset.datatable.asset');
         Route::get('/datatable-detail', [PemutihanAssetController::class, 'datatableDetail'])->name('admin.pemutihan-asset.datatable.detail');

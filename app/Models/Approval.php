@@ -21,7 +21,7 @@ class Approval extends Model
         if ($this->approvable instanceof PemindahanAsset) {
             return route('user.asset-data.pemindahan.approve', $this->approvable_id);
         } elseif ($this->approvable instanceof PemutihanAsset) {
-            return '#';
+            return route('admin.pemutihan-asset.show', $this->approvable_id);
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.peminjaman.show', $this->approvable_id);
         }
@@ -32,7 +32,7 @@ class Approval extends Model
         if ($this->approvable instanceof PemindahanAsset) {
             return '#';
         } elseif ($this->approvable instanceof PemutihanAsset) {
-            return '#';
+            return route('admin.approval.pemutihan.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.approval.peminjaman.change-status', $this->approvable_id);
         }

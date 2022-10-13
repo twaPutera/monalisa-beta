@@ -68,10 +68,10 @@
                             } else if (data == "Publish") {
                                 element +=
                                     `<span class="kt-badge kt-badge--info kt-badge--inline">Publish</span>`;
-                            } else if (data == "Accept") {
+                            } else if (data == "Diproses") {
                                 element +=
                                     `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
-                            } else if (data == "Reject") {
+                            } else if (data == "Ditolak") {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
                             }

@@ -44,6 +44,23 @@ class PemutihanAssetController extends Controller
         return $this->pemutihanAssetDatatableServices->datatable($request);
     }
 
+    public function show($id)
+    {
+        try {
+            $data = $this->pemutihanAssetQueryServices->findById($id);
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            dd($th);
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
     public function datatableAsset(Request $request)
     {
         return $this->pemutihanAssetDatatableServices->datatableAsset($request);
@@ -93,7 +110,7 @@ class PemutihanAssetController extends Controller
                 foreach ($request->file('gambar_asset') as $file) {
                     $extension = $file->getClientOriginalExtension();
                     $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                    if (! in_array($extension, $allowedfileExtension)) {
+                    if (!in_array($extension, $allowedfileExtension)) {
                         return response()->json([
                             'success' => false,
                             'message' => 'Terdapat file yang tidak sesuai dengan format',
@@ -138,7 +155,7 @@ class PemutihanAssetController extends Controller
 
     public function storeDetail(string $id)
     {
-        $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+        $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id, "Draft");
         if ($pemutihan_asset->is_store == 0) {
             return view('pages.admin.pemutihan-asset.components.page.detail', compact('pemutihan_asset'));
         }
@@ -168,7 +185,6 @@ class PemutihanAssetController extends Controller
                     'success' => true,
                     'message' => 'Berhasil menghapus data pemutihan asset',
                     'data' => $pemutihan,
-                    'redirect' => true,
                 ], 200);
             }
             return response()->json([
@@ -187,7 +203,7 @@ class PemutihanAssetController extends Controller
     public function edit(string $id)
     {
         try {
-            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id, "Draft");
             return view('pages.admin.pemutihan-asset.components.page.edit', compact('pemutihan_asset'));
         } catch (Throwable $th) {
             return redirect()->route('admin.pemutihan-asset.index');
@@ -197,7 +213,7 @@ class PemutihanAssetController extends Controller
     public function editListingAsset(string $id)
     {
         try {
-            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
+            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id, "Draft");
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengambil data pemutihan asset',
@@ -252,7 +268,7 @@ class PemutihanAssetController extends Controller
     public function detail(string $id)
     {
         try {
-            $pemutihan_asset = $this->pemutihanAssetQueryServices->findByIdDetail($id);
+            $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengambil data detail pemutihan asset',
