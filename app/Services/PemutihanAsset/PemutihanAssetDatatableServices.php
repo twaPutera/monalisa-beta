@@ -77,7 +77,15 @@ class PemutihanAssetDatatableServices
         } else {
             $this->assetInPemutihan = [];
         }
+        if (isset($request->status_kondisi)) {
+            if ($request->status_kondisi != "semua") {
+                $query->where('status_kondisi', $request->status_kondisi);
+            }
+        }
 
+        if (isset($request->jenis)) {
+            $query->where('id_kategori_asset', $request->jenis);
+        }
         $query->where('is_pemutihan', 0);
         return DataTables::of($query)
             ->addColumn('id', function ($item) {

@@ -41,6 +41,22 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-8">
+                        <div class="row">
+                            <div class="form-group col-12 col-md-6">
+                                <label for="">Jenis Asset</label>
+                                <select name="" onchange="filterTableService()" id="groupAssetCreate" class="form-control jenispicker mr-2">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-12 col-md-6">
+                                <label for="">Status Kondisi</label>
+                                <select name="" onchange="filterTableService()" class="form-control kondisipicker mr-2">
+                                    <option value="semua">Semua</option>
+                                    <option value="bagus">Bagus</option>
+                                    <option value="rusak">Rusak</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="">List Asset Yang Akan Diputihkan</label>
                             <div class="table-responsive">
@@ -48,7 +64,7 @@
                                     <thead>
                                         <tr>
                                             <th width="50px" class="text-center pl-5">
-                                              #
+                                                #
                                             </th>
                                             <th class="text-center">Kode Asset</th>
                                             <th>Jenis Asset</th>

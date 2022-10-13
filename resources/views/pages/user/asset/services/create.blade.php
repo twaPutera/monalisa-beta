@@ -149,7 +149,7 @@
                     <div class="input-wrapper">
                         <label class="label" for="">Status Kondisi Aset</label>
                         <select name="status_kondisi" class="form-control mr-3" id="">
-                            <option value="baik">Bagus</option>
+                            <option value="bagus">Bagus</option>
                             <option value="rusak">Rusak</option>
 
                         </select>

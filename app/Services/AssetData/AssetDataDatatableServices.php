@@ -77,9 +77,14 @@ class AssetDataDatatableServices
         }
 
         if (isset($request->status_kondisi)) {
-            $query->where('status_kondisi', $request->status_kondisi);
+            if ($request->status_kondisi != "semua") {
+                $query->where('status_kondisi', $request->status_kondisi);
+            }
         }
 
+        if (isset($request->jenis)) {
+            $query->where('id_kategori_asset', $request->jenis);
+        }
         $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)

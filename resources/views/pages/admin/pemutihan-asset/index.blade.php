@@ -12,8 +12,9 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
+        var table = $('#datatableExample');
+        var table2 = $('#addAssetData');
         $(document).ready(function() {
-            var table = $('#datatableExample');
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
@@ -80,7 +81,6 @@
                 ],
             });
 
-            var table2 = $('#addAssetData');
             table2.DataTable({
                 responsive: true,
                 processing: true,
@@ -91,6 +91,8 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.is_pemutihan = 0;
+                        d.jenis = $('.jenispicker').val();
+                        d.status_kondisi = $('.kondisipicker').val();
                     }
                 },
                 columns: [{
@@ -163,6 +165,9 @@
             });
         });
 
+        const filterTableService = () => {
+            table2.DataTable().ajax.reload();
+        }
 
         $('.datepickerCreate').datepicker({
             todayHighlight: true,
@@ -281,6 +286,38 @@
                 },
             })
         }
+
+        const generateKategoriSelect2Create = (idElement) => {
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Jenis',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        $('.modalCreateInventarisData').on('shown.bs.modal', function() {
+            setTimeout(() => {
+                generateKategoriSelect2Create('groupAssetCreate');
+            }, 2000);
+        });
+
     </script>
 @endsection
 @section('main-content')
