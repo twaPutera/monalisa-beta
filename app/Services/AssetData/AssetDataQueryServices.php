@@ -19,7 +19,7 @@ class AssetDataQueryServices
     public function findById(string $id)
     {
         $data =  AssetData::query()
-            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image'])
+            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image', 'detail_service'])
             ->where('id', $id)
             ->firstOrFail();
         if (is_null($data->qr_code)) {

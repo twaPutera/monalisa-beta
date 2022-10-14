@@ -573,19 +573,23 @@
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Status saat ini</h6>
                                     <span
-                                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
+                                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">{{ ucWords($asset->status_kondisi) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6 class="">Catatan</h6>
-                                    <h6 class="text-right">Perlu Pergantian Oli dan pergantian berbagai macam sparepart</h6>
+                                    <h6 class="text-right">
+                                        {{ !empty($asset->detail_service) ? $asset->detail_service->sortByDesc('created_at')->first()->catatan : '-' }}
+                                    </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Log Terakhir</h6>
-                                    <h6 class="text-right">18 Agustus 2020</h6>
+                                    <h6 class="text-right">
+                                        {{ !empty($asset->detail_service) ? \Carbon\Carbon::parse($asset->detail_service->sortByDesc('created_at')->first()->created_at)->format('d F Y') : '-' }}
+                                    </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Dicek Oleh</h6>
-                                    <h6 class="text-right"><strong>Rizal</strong></h6>
+                                    <h6 class="text-right"><strong>Not Found</strong></h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
