@@ -55,7 +55,7 @@
                 <div class="listview-title mt-1">Menu</div>
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
-                        <a href="index.html" class="item">
+                        <a href="{{ route('user.pengaduan.index') }}" class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="pencil-outline"></ion-icon>
                             </div>

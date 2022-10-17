@@ -1,5 +1,5 @@
 @extends('layouts.user.master-detail')
-@section('page-title', 'Ajukan Aduan')
+@section('page-title', 'Ubah Aduan')
 @section('pluggin-css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
 @endsection
@@ -19,7 +19,7 @@
                 toastbox('toastSuccess', 2000);
 
                 setTimeout(() => {
-                    window.location.href = '{{ route('user.dashboard.index') }}';
+                    window.location.href = '{{ route('user.pengaduan.index') }}';
                 }, 2000);
             }
         });
@@ -60,6 +60,10 @@
                     response.data.forEach(element => {
                         let selected = '';
                         if (element.id == $('#lokasiParentId').val()) {
+                            selected = 'selected';
+                        }
+
+                        if (element.id == "{{ $pengaduan->asset_data->lokasi->id }}") {
                             selected = 'selected';
                         }
                         select.append(
@@ -116,7 +120,7 @@
 @endsection
 @section('content')
     <div class="section mt-2">
-        <form action="{{ route('user.pengaduan.store') }}" method="POST" class="mt-2 form-submit">
+        <form action="{{ route('user.pengaduan.update', $pengaduan->id) }}" method="POST" class="mt-2 form-submit">
             @csrf
             <div class="form-group boxed">
                 <div class="input-wrapper">
@@ -131,7 +135,7 @@
                 <div class="input-wrapper">
                     <label class="text-dark" for="asset-select"><strong>Asset</strong></label>
                     <select name="id_asset" class="form-control py-3 selectAsset" id="asset-select">
-
+                        <option value="{{ $pengaduan->id_asset_data }}">{{ $pengaduan->asset_data->deskripsi }}</option>
                     </select>
                 </div>
             </div>
@@ -139,8 +143,8 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Tanggal</strong></label>
-                    <input type="date" name="tanggal_pengaduan" class="form-control" id=""
-                        placeholder="Text Input">
+                    <input type="date" name="tanggal_pengaduan" value="{{ $pengaduan->tanggal_pengaduan }}"
+                        class="form-control" id="" placeholder="Text Input">
                     <i class="clear-input">
                         <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
                         </ion-icon>
@@ -151,7 +155,7 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Catatan Aduan</strong></label>
-                    <textarea name="alasan_pengaduan" class="form-control" id="" cols="30" rows="10"></textarea>
+                    <textarea name="alasan_pengaduan" class="form-control" id="" cols="30" rows="10">{{ $pengaduan->catatan_pengaduan }}</textarea>
                 </div>
             </div>
 

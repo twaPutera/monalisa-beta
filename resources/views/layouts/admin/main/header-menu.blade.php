@@ -453,7 +453,8 @@
                             alt="Profile" class="kt-hidden-">
                         <span class="kt-header__topbar-icon kt-header__topbar-icon--brand kt-hidden"><b>S</b></span>
                     </div>
-                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                    <div
+                        class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
 
                         <!--begin: Head -->
                         <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
@@ -513,25 +514,29 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fa fa-list"></i></span> Listing
                                     Asset</span></a></li>
-                        <li class="kt-menu__item @if (\Request::segment(2) == 'services') kt-menu__item--active @endif" aria-haspopup="true"><a href="{{ route('admin.services.index') }}"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'services') kt-menu__item--active @endif"
+                            aria-haspopup="true"><a href="{{ route('admin.services.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fa fa-list"></i></span>
                                     Services</span></a></li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'keluhan') kt-menu__item--active @endif" aria-haspopup="true"><a href="{{ route('admin.keluhan.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-clipboard-check"></i></span>
                                     Keluhan</span></a></li>
-                        <li class="kt-menu__item @if (\Request::segment(2) == 'peminjaman') kt-menu__item--active @endif" aria-haspopup="true"><a href="{{ route('admin.peminjaman.index') }}"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'peminjaman') kt-menu__item--active @endif"
+                            aria-haspopup="true"><a href="{{ route('admin.peminjaman.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
-                                        class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Peminjaman</span></a></li>
+                                        class="kt-menu__link-icon"><i class="fas fa-print"></i></span>
+                                    Peminjaman</span></a></li>
                         <li class="kt-menu__item @if (\Request::segment(2) == 'listing-inventaris') kt-menu__item--active @endif"
                             aria-haspopup="true"><a href="{{ route('admin.listing-inventaris.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-book"></i></span>
                                     Bahan Habis Pakai</span></a></li>
                         <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
-                            class="kt-menu__link "><span class="kt-menu__link-text"><span
-                                    class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report</span></a></li>
+                                class="kt-menu__link "><span class="kt-menu__link-text"><span
+                                        class="kt-menu__link-icon"><i class="fas fa-print"></i></span>
+                                    Report</span></a></li>
                     </ul>
                 </div>
             </div>

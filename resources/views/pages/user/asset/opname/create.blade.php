@@ -77,8 +77,13 @@
             <div class="mt-2">
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="label" for="text4b">Tanggal Opname</label>
-                        <input type="text" class="form-control datepickerCreate" readonly name="tanggal_opname">
+                        <label class="text-dark" for=""><strong>Tanggal Opname</strong></label>
+                        <input type="date" name="tanggal_opname" class="form-control" id=""
+                            placeholder="Text Input">
+                        <i class="clear-input">
+                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
+                            </ion-icon>
+                        </i>
                     </div>
                 </div>
                 <div class="form-group boxed">
@@ -99,7 +104,7 @@
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="label" for="">Status Kondisi Aset</label>
+                        <label class="text-dark" for=""><strong>Status Kondisi Aset</strong></label>
                         <select name="status_kondisi" class="form-control mr-3" id="">
                             <option value="bagus">Bagus</option>
                             <option value="rusak">Rusak</option>
@@ -110,7 +115,7 @@
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="label" for="">Status Akunting Aset</label>
+                        <label class="text-dark" for=""><strong>Status Akunting Aset</strong></label>
                         <select name="status_akunting" class="form-control mr-3" id="">
                             @foreach ($list_status as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
@@ -119,23 +124,24 @@
                     </div>
                 </div>
                 <div class="form-group boxed">
-
-                    <label class="label" for="">Gambar Hasil Service</label>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span id="preview-file-text">No File Choosen</span> <br>
-                            <span id="preview-file-error" class="text-danger"></span>
+                    <div class="input-wrapper">
+                        <label class="text-dark" for=""><strong>Gambar Pengaduan</strong></label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span id="preview-file-text">No File Choosen</span> <br>
+                                <span id="preview-file-error" class="text-danger"></span>
+                            </div>
+                            <label for="gambar_asset" class="btn btn-primary">
+                                Upload
+                                <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none"
+                                    name="gambar_asset">
+                            </label>
                         </div>
-                        <label for="gambar_asset" class="btn btn-primary">
-                            Upload
-                            <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none"
-                                name="gambar_asset">
-                        </label>
                     </div>
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="label" for="">Catatan</label>
+                        <label class="text-dark" for=""><strong>Catatan</strong></label>
                         <textarea name="catatan" class="form-control" id="" cols="30" rows="5"></textarea>
                     </div>
                 </div>

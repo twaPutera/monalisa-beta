@@ -578,13 +578,13 @@
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6 class="">Catatan</h6>
                                     <h6 class="text-right">
-                                        {{ !empty($asset->detail_service) ? $asset->detail_service->sortByDesc('created_at')->first()->catatan : '-' }}
+                                        {{ $asset->detail_service->count() > 0 ? $asset->detail_service->sortByDesc('created_at')->first()->catatan : '-' }}
                                     </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Log Terakhir</h6>
                                     <h6 class="text-right">
-                                        {{ !empty($asset->detail_service) ? \Carbon\Carbon::parse($asset->detail_service->sortByDesc('created_at')->first()->created_at)->format('d F Y') : '-' }}
+                                        {{ $asset->detail_service->count() > 0 ? \Carbon\Carbon::parse($asset->detail_service->sortByDesc('created_at')->first()->created_at)->format('d F Y') : '-' }}
                                     </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">

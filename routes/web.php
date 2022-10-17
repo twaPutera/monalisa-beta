@@ -35,6 +35,7 @@ use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetCo
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
+use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
             Route::get('/preview-service', [AssetServiceController::class, 'previewImage'])->name('admin.listing-asset.service.image.preview');
             Route::get('/preview-opname', [MasterAssetController::class, 'previewImageOpname'])->name('admin.listing-asset.opname.image.preview');
             Route::get('/preview-pemutihan', [PemutihanAssetController::class, 'editListingAssetShowImg'])->name('admin.listing-asset.pemutihan.image.preview');
+            Route::get('/preview-pengaduan', [KeluhanController::class, 'previewImg'])->name('admin.keluhan.image.preview');
         });
 
         # Service Asset
@@ -163,6 +165,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
     });
 
+    # Keluhan
+    Route::group(['prefix' => 'keluhan'], function () {
+        Route::get('/', [KeluhanController::class, 'index'])->name('admin.keluhan.index');
+        Route::get('/edit/{id}', [KeluhanController::class, 'edit'])->name('admin.keluhan.edit');
+        Route::post('/update/{id}', [KeluhanController::class, 'update'])->name('admin.keluhan.update');
+        Route::get('/image/{id}', [KeluhanController::class, 'getImg'])->name('admin.keluhan.get-image');
+        Route::get('/datatable', [KeluhanController::class, 'datatable'])->name('admin.keluhan.datatable');
+    });
     # Peminjaman
     Route::group(['prefix' => 'peminjaman'], function () {
         Route::get('/', [AdminPeminjamanAssetController::class, 'index'])->name('admin.peminjaman.index');
@@ -332,7 +342,15 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
         Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');
     });
     Route::group(['prefix' => 'pengaduan'], function () {
+        Route::get('/', [UserPengaduanController::class, 'index'])->name('user.pengaduan.index');
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
+        Route::get('/edit/{id}', [UserPengaduanController::class, 'edit'])->name('user.pengaduan.edit');
+        Route::post('/update/{id}', [UserPengaduanController::class, 'update'])->name('user.pengaduan.update');
+        Route::post('/store', [UserPengaduanController::class, 'store'])->name('user.pengaduan.store');
+        Route::post('/destroy/{id}', [UserPengaduanController::class, 'destroy'])->name('user.pengaduan.destroy');
+        Route::get('/get-all-data', [UserPengaduanController::class, 'getAllData'])->name('user.pengaduan.get-all-data');
+        Route::get('/detail/{id}', [UserPengaduanController::class, 'detail'])->name('user.pengaduan.detail');
+        Route::get('/download-gambar', [UserPengaduanController::class, 'download'])->name('user.pengaduan.download-gambar');
     });
     Route::group(['prefix' => 'api-master'], function () {
         Route::get('/group-kategori-asset/get-data-select2', [GroupKategoriAssetController::class, 'getDataSelect2'])->name('user.api-master.group-kategori-asset.get-data-select2');

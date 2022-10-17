@@ -24,7 +24,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Group</p>
+                        <p class="mb-0 text-green">Kelompok Asset</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
@@ -35,7 +35,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Kategori</p>
+                        <p class="mb-0 text-green">Jenis Asset</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
@@ -140,7 +140,7 @@
                     <div class="col">
                         <p class="mb-0 text-green">Status Service</p>
                     </div>
-                    <div class="col">
+                    <div class="col text-end">
                         Tidak Ada
                     </div>
                 </div>

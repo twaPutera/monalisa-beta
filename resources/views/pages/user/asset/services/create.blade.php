@@ -2,16 +2,14 @@
 @section('page-title', 'Add Service')
 @section('pluggin-css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+<link rel="stylesheet" @endsection
+    @section('pluggin-js') <script
+    src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}">
+</script>
 @endsection
-@section('pluggin-js')
-    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
-@endsection
-@section('custom-js')
-    <script>
-        $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+    @section('custom-js')
+<script>
+    $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
             if (data.success) {
                 changeTextToast('toastSuccess', data.message);
                 toastbox('toastSuccess', 2000);
@@ -72,92 +70,93 @@
             const file = $(this)[0].files[0];
             $('#preview-file-text').text(file.name);
         });
-        $('.datepickerCreate').datepicker({
-            todayHighlight: true,
-            width: '100%',
-            format: 'yyyy-mm-dd',
-            autoclose: true,
-        });
         const submitForm = () => {
             $('.form-submit').submit();
         }
-    </script>
+</script>
 @endsection
-@section('back-button')
-    <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="headerButton">
-        <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
-    </a>
+    @section('back-button')
+<a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="headerButton">
+    <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
+</a>
 @endsection
-@section('content')
-    <form action="{{ route('user.asset-data.service.store', $asset_data->id) }}" class="form-submit
-        "
-        method="POST">
-        @csrf
-        <div class="section mt-2">
-            <h2>{{ $asset_data->deskripsi }}</h2>
+    @section('content')
+<form action="{{ route('user.asset-data.service.store', $asset_data->id) }}" class="form-submit" method="POST">
+    @csrf
+    <div class="section mt-2">
+        <h2>{{ $asset_data->deskripsi }}</h2>
 
-            <div class="mt-2">
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="text4b">Tanggal Service</label>
-                        <input type="text" class="form-control datepickerCreate" readonly name="tanggal_mulai_service">
-                    </div>
+        <div class="mt-2">
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Tanggal Service</strong></label>
+                    <input type="date" name="tanggal_mulai_service" class="form-control" id="" placeholder="Text Input">
+                    <i class="clear-input">
+                        <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
+                        </ion-icon>
+                    </i>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="text4b">Tanggal Selesai</label>
-                        <input type="text" class="form-control datepickerCreate" readonly name="tanggal_selesai_service">
-                    </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Tanggal Selesai</strong></label>
+                    <input type="date" name="tanggal_selesai_service" class="form-control" id=""
+                        placeholder="Text Input">
+                    <i class="clear-input">
+                        <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
+                        </ion-icon>
+                    </i>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="">Permasalahan</label>
-                        <textarea name="permasalahan" class="form-control" id="" cols="30" rows="5"></textarea>
-                    </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Permasalahan</strong></label>
+                    <textarea name="permasalahan" class="form-control" id="" cols="30" rows="5"></textarea>
                 </div>
-                <div class="form-group">
-                    <div class="input-wrapper">
-                        <label for="" class="label">Kategori Service</label>
-                        <select name="id_kategori_service" class="form-control" id="kategoriServiceCreate">
+            </div>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <label for="" class="text-dark"><strong>Kategori Service</strong></label>
+                    <select name="id_kategori_service" class="form-control" id="kategoriServiceCreate">
 
-                        </select>
-                    </div>
+                    </select>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="">Tindakan</label>
-                        <textarea name="tindakan" class="form-control" id="" cols="30" rows="5"></textarea>
-                    </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Tindakan</strong></label>
+                    <textarea name="tindakan" class="form-control" id="" cols="30" rows="5"></textarea>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="">Catatan</label>
-                        <textarea name="catatan" class="form-control" id="" cols="30" rows="5"></textarea>
-                    </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Catatan</strong></label>
+                    <textarea name="catatan" class="form-control" id="" cols="30" rows="5"></textarea>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="">Status Servis</label>
-                        <select name="status_service" class="form-control mr-3" id="">
-                            <option value="onprogress">Proses</option>
-                            <option value="backlog">Tertunda</option>
-                            <option value="selesai">Selesai</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Status Servis</strong></label>
+                    <select name="status_service" class="form-control mr-3" id="">
+                        <option value="onprogress">Proses</option>
+                        <option value="backlog">Tertunda</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
                 </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="label" for="">Status Kondisi Aset</label>
-                        <select name="status_kondisi" class="form-control mr-3" id="">
-                            <option value="bagus">Bagus</option>
-                            <option value="rusak">Rusak</option>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Status Kondisi Aset</strong></label>
+                    <select name="status_kondisi" class="form-control mr-3" id="">
+                        <option value="bagus">Bagus</option>
+                        <option value="rusak">Rusak</option>
 
-                        </select>
-                    </div>
+                    </select>
                 </div>
-                <div class="form-group boxed">
-
-                    <label class="label" for="">Gambar Hasil Service</label>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Gambar Pengaduan</strong></label>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <span id="preview-file-text">No File Choosen</span> <br>
@@ -172,15 +171,15 @@
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 @endsection
-@section('button-menu')
-    <div class="d-flex justify-content-center">
-        <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="btn btn-danger border-radius-sm px-3 me-2">
-            <span class="">Batal</span>
-        </a>
-        <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="button">
-            <span class="">Simpan</span>
-        </button>
+    @section('button-menu') <div class="d-flex justify-content-center">
+    <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="btn btn-danger border-radius-sm px-3 me-2">
+        <span class="">Batal</span>
+    </a>
+    <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="button">
+        <span class="">Simpan</span>
+    </button>
     </div>
 @endsection

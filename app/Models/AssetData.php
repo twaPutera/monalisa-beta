@@ -64,4 +64,9 @@ class AssetData extends Model
     {
         return $this->hasMany(DetailPeminjamanAsset::class, 'id_asset', 'id');
     }
+
+    public function pengaduan()
+    {
+        return $this->hasMany(Pengaduan::class, 'id_asset_data', 'id');
+    }
 }
