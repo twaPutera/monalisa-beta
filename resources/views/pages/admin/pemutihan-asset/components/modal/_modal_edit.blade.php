@@ -8,21 +8,34 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.pemutihan-asset.store') }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="#" method="POST">
                 @csrf
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6">
+                            <label for="">Jenis Asset</label>
+                            <select name="" onchange="filterTableService()" id="groupAssetCreate"
+                                class="form-control jenispicker mr-2">
+
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="">Status Kondisi</label>
+                            <select name="" onchange="filterTableService()"
+                                class="form-control kondisipicker mr-2">
+                                <option value="semua">Semua</option>
+                                <option value="bagus">Bagus</option>
+                                <option value="rusak">Rusak</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="table-responsive">
                             <table class="table table-striped mb-0 editAssetData" id="editAssetData">
                                 <thead>
                                     <tr>
                                         <th width="50px" class="text-center pl-5">
-                                            <div class="form-check form-check-inline ms-1">
-                                                <input type="checkbox" class="form-check-input check-all"
-                                                    id=" exampleCheck1">
-                                                <label class="form-check-label" for="exampleCheck1"></label>
-                                            </div>
+                                            #
                                         </th>
                                         <th class="text-center">Kode Asset</th>
                                         <th>Jenis Asset</th>

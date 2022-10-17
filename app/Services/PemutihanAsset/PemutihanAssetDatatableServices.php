@@ -77,7 +77,15 @@ class PemutihanAssetDatatableServices
         } else {
             $this->assetInPemutihan = [];
         }
+        if (isset($request->status_kondisi)) {
+            if ($request->status_kondisi != "semua") {
+                $query->where('status_kondisi', $request->status_kondisi);
+            }
+        }
 
+        if (isset($request->jenis)) {
+            $query->where('id_kategori_asset', $request->jenis);
+        }
         $query->where('is_pemutihan', 0);
         return DataTables::of($query)
             ->addColumn('id', function ($item) {
@@ -116,6 +124,13 @@ class PemutihanAssetDatatableServices
         $query->where('id_pemutihan_asset', $request->id_pemutihan_detail);
         $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
+            ->addColumn('file_gambar', function ($item) {
+                $data = '';
+                $data .= '<button type="button" onclick="showPemutihanAsset(this)"';
+                $data .= 'data-url_detail="' . route('admin.pemutihan-asset.edit.listing-asset.get-image', $item->id) . '"';
+                $data .= 'class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
+                return $data;
+            })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;
             })
@@ -128,6 +143,10 @@ class PemutihanAssetDatatableServices
             ->addColumn('kondisi_asset', function ($item) {
                 return empty($item->asset_data->status_kondisi) ? 'Tidak Ada' : $item->asset_data->status_kondisi;
             })
+            ->addColumn('keterangan_pemutihan', function ($item) {
+                return empty($item->keterangan_pemutihan) ? 'Tidak Ada' : $item->keterangan_pemutihan;
+            })
+            ->rawColumns(['file_gambar'])
             ->make(true);
     }
 }

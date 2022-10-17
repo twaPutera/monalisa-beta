@@ -2,30 +2,31 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
-use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
+use App\Http\Requests\Approval\PemutihanApprovalUpdate;
+use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class PeminjamanController extends Controller
+class PemutihanController extends Controller
 {
-    protected $peminjamanAssetCommandServices;
+    protected $pemutihanAssetCommandServices;
 
-    public function __construct(PeminjamanAssetCommandServices $peminjamanAssetCommandServices)
+    public function __construct(PemutihanAssetCommandServices $pemutihanAssetCommandServices)
     {
-        $this->peminjamanAssetCommandServices = $peminjamanAssetCommandServices;
+        $this->pemutihanAssetCommandServices = $pemutihanAssetCommandServices;
     }
 
     public function index()
     {
-        return view('pages.admin.approval.peminjaman.index');
+        return view('pages.admin.approval.pemutihan.index');
     }
 
-    public function changeStatusApproval(PeminjamanApprovalUpdate $request, $id)
+    public function changeStatusApproval(PemutihanApprovalUpdate $request, $id)
     {
         try {
             DB::beginTransaction();
-            $data = $this->peminjamanAssetCommandServices->changeApprovalStatus($request, $id);
+            $data = $this->pemutihanAssetCommandServices->changeApprovalStatus($request, $id);
             DB::commit();
 
             return response()->json([

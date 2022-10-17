@@ -24,5 +24,4 @@ class DetailPemutihanAsset extends Model
     {
         return $this->morphMany(AssetImage::class, 'imageable');
     }
-
 }

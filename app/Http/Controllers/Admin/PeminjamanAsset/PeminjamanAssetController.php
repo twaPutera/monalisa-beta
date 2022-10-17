@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin\PeminjamanAsset;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use Illuminate\Http\Request;
-use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
-use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
-use App\Services\PeminjamanAsset\PeminjamanAssetDatatableServices;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
+use App\Services\PeminjamanAsset\PeminjamanAssetDatatableServices;
+use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 
 class PeminjamanAssetController extends Controller
 {
@@ -46,13 +46,13 @@ class PeminjamanAssetController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -103,15 +103,15 @@ class PeminjamanAssetController extends Controller
                 'message' => 'Berhasil menambahkan data',
                 'data' => [
                     'command' => 'storeManyDetailPeminjaman',
-                    'quota' => $data
-                ]
+                    'quota' => $data,
+                ],
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -126,15 +126,15 @@ class PeminjamanAssetController extends Controller
                 'message' => 'Berhasil menghapus data',
                 'data' => [
                     'command' => 'deleteDetailPeminjaman',
-                    'quota' => $data
-                ]
+                    'quota' => $data,
+                ],
             ]);
             //code...
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

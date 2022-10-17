@@ -12,8 +12,9 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
+        var table = $('#datatableExample');
+        var table2 = $('#addAssetData');
         $(document).ready(function() {
-            var table = $('#datatableExample');
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
@@ -67,10 +68,10 @@
                             } else if (data == "Publish") {
                                 element +=
                                     `<span class="kt-badge kt-badge--info kt-badge--inline">Publish</span>`;
-                            } else if (data == "Accept") {
+                            } else if (data == "Diproses") {
                                 element +=
                                     `<span class="kt-badge kt-badge--success kt-badge--inline">Disetujui</span>`;
-                            } else if (data == "Reject") {
+                            } else if (data == "Ditolak") {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
                             }
@@ -80,7 +81,6 @@
                 ],
             });
 
-            var table2 = $('#addAssetData');
             table2.DataTable({
                 responsive: true,
                 processing: true,
@@ -91,6 +91,8 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.is_pemutihan = 0;
+                        d.jenis = $('.jenispicker').val();
+                        d.status_kondisi = $('.kondisipicker').val();
                     }
                 },
                 columns: [{
@@ -163,6 +165,9 @@
             });
         });
 
+        const filterTableService = () => {
+            table2.DataTable().ajax.reload();
+        }
 
         $('.datepickerCreate').datepicker({
             todayHighlight: true,
@@ -200,6 +205,9 @@
                     form.find('input[name=no_memo]').val(response.data.no_memo);
                     form.find('input[name=status_pemutihan]').val(response.data.status);
                     form.find('textarea[name=keterangan_pemutihan]').val(response.data.keterangan);
+                    form.find('.btn-download').attr('href',
+                        "{{ route('admin.pemutihan-asset.store.detail.download') . '?filename=' . '' }}" +
+                        response.data.file_bast)
                     var table4 = $('.detailAssetData');
                     modal.on('shown.bs.modal', function(e) {
                         table4.DataTable({
@@ -214,6 +222,10 @@
                                 }
                             },
                             columns: [{
+                                    name: 'file_gambar',
+                                    data: 'file_gambar'
+                                },
+                                {
                                     name: 'kode_asset',
                                     data: 'kode_asset'
                                 },
@@ -229,6 +241,10 @@
                                     name: 'kondisi_asset',
                                     data: 'kondisi_asset'
                                 },
+                                {
+                                    name: 'keterangan_pemutihan',
+                                    data: 'keterangan_pemutihan'
+                                },
 
                             ],
                             columnDefs: [
@@ -243,11 +259,65 @@
                 }
             })
         }
-       
+
         $('#file_asset_service').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
         });
+
+        const showPemutihanAsset = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const data = response.data;
+                    const modal = $('.modalPreviewAsset');
+                    if (response.success) {
+                        if (data.image.length > 0) {
+                            $('#imgPreviewAsset').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        modal.modal('show');
+                    }
+                },
+            })
+        }
+
+        const generateKategoriSelect2Create = (idElement) => {
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Jenis',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        $('.modalCreateInventarisData').on('shown.bs.modal', function() {
+            setTimeout(() => {
+                generateKategoriSelect2Create('groupAssetCreate');
+            }, 2000);
+        });
+
     </script>
 @endsection
 @section('main-content')
@@ -297,4 +367,5 @@
     @include('pages.admin.pemutihan-asset.components.modal._modal_create')
     @include('pages.admin.pemutihan-asset.components.modal._modal_edit')
     @include('pages.admin.pemutihan-asset.components.modal._modal_detail')
+    @include('pages.admin.pemutihan-asset.components.modal._modal_preview')
 @endsection

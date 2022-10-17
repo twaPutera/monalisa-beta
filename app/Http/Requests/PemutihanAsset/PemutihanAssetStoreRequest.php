@@ -27,7 +27,7 @@ class PemutihanAssetStoreRequest extends FormRequest
             'id_checkbox.*' => 'required',
             'id_checkbox' => 'required|min:1',
             'tanggal' => 'required|date',
-            'no_memo' => 'nullable|string|max:50',
+            'no_berita_acara' => 'nullable|string|max:50',
             'keterangan_pemutihan' => 'required|string|max:255',
             'file_berita_acara' => 'required|mimes:pdf,docx,doc|max:4048',
         ];

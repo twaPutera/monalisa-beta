@@ -12,6 +12,7 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
+        var table3 = $('.editAssetData');
         $(document).ready(function() {
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -21,12 +22,16 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
-                    table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.redirect && data.redirect != null) {
                         setTimeout(function() {
                             var redirect = "{{ route('admin.pemutihan-asset.index') }}"
                             location.assign(redirect);
+                        }, 1000);
+                    }
+                    if (data.reload && data.reload != null) {
+                        setTimeout(function() {
+                            location.reload(true);
                         }, 1000);
                     }
                 }
@@ -46,6 +51,47 @@
                         $('#preview-file-image-error-update').html(errors[key][0]);
                     }
                 }
+            });
+
+            table3.DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                destroy: true,
+                ajax: {
+                    url: "{{ route('admin.pemutihan-asset.datatable.asset') }}",
+                    data: function(d) {
+                        d.id_pemutihan = "{{ $pemutihan_asset->id }}"
+                        d.jenis = $('.jenispicker').val();
+                        d.status_kondisi = $('.kondisipicker').val();
+                    }
+                },
+                columns: [{
+                        name: 'id',
+                        data: 'id',
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
+                        data: 'kode_asset'
+                    },
+                    {
+                        name: 'jenis_asset',
+                        data: 'jenis_asset'
+                    },
+                    {
+                        name: 'lokasi_asset',
+                        data: 'lokasi_asset'
+                    },
+                    {
+                        name: 'kondisi_asset',
+                        data: 'kondisi_asset'
+                    },
+
+                ],
+                columnDefs: [
+                    //Custom template data
+                ],
             });
         });
         $('.datepickerCreate').datepicker({
@@ -80,6 +126,9 @@
                 },
             })
         }
+
+
+
         const editListAsset = (button) => {
             const url_edit = $(button).data('url_edit');
             const url_update = $(button).data('url_update');
@@ -91,48 +140,10 @@
                     const modal = $('.modalEditInventarisData');
                     const form = modal.find('form');
                     form.attr('action', url_update);
-                    var table3 = $('.editAssetData');
                     modal.on('shown.bs.modal', function(e) {
                         $('#status_pemutihan option[value="' + response.data
                             .status + '"]').attr('selected', 'selected');
-                        table3.DataTable({
-                            responsive: true,
-                            processing: true,
-                            serverSide: true,
-                            destroy: true,
-                            ajax: {
-                                url: "{{ route('admin.pemutihan-asset.datatable.asset') }}",
-                                data: function(d) {
-                                    d.id_pemutihan = response.data.id
-                                }
-                            },
-                            columns: [{
-                                    name: 'id',
-                                    data: 'id',
-                                    orderable: false,
-                                    searchable: false,
-                                },
-                                {
-                                    data: 'kode_asset'
-                                },
-                                {
-                                    name: 'jenis_asset',
-                                    data: 'jenis_asset'
-                                },
-                                {
-                                    name: 'lokasi_asset',
-                                    data: 'lokasi_asset'
-                                },
-                                {
-                                    name: 'kondisi_asset',
-                                    data: 'kondisi_asset'
-                                },
-
-                            ],
-                            columnDefs: [
-                                //Custom template data
-                            ],
-                        });
+                        table3.DataTable().ajax.reload();
                     })
                     modal.on('hidden.bs.modal', function() {
                         table3.dataTable().fnDestroy();
@@ -141,6 +152,40 @@
                 }
             })
         }
+        const filterTableService = () => {
+            table3.DataTable().ajax.reload();
+        }
+
+        const generateKategoriSelect2Create = (idElement) => {
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Jenis',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        $('.modalEditInventarisData').on('shown.bs.modal', function() {
+            setTimeout(() => {
+                generateKategoriSelect2Create('groupAssetCreate');
+            }, 2000);
+        });
     </script>
 @endsection
 @section('main-content')
@@ -164,7 +209,7 @@
                             <td width="40%">No Berita Acara</td>
                             <td>
                                 <input type="text" class="form-control" value="{{ $pemutihan_asset->no_memo }}"
-                                    name="no_memo">
+                                    name="no_berita_acara">
                             </td>
                         </tr>
                         <tr>

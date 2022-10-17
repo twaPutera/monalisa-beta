@@ -4,7 +4,7 @@ namespace App\Http\Requests\Approval;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PeminjamanApprovalUpdate extends FormRequest
+class PemutihanApprovalUpdate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

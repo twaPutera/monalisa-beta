@@ -24,12 +24,16 @@ class PemutihanAssetUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id_checkbox.*' => 'required',
-            'id_checkbox' => 'required|min:1',
+            'id_asset.*' => 'required',
+            'id_asset' => 'required|min:1',
+            'keterangan_pemutihan_asset.*' => 'required',
+            'keterangan_pemutihan_asset' => 'required|min:1',
+            'gambar_asset.*' => 'nullable',
+            'gambar_asset' => 'nullable|min:1',
             'tanggal' => 'required|date',
-            'no_memo' => 'nullable|string|max:50',
+            'no_berita_acara' => 'nullable|string|max:50',
             'keterangan_pemutihan' => 'required|string|max:255',
-            'status_pemutihan' => 'required|in:Draft,Publish',
+            'file_berita_acara' => 'nullable|mimes:pdf,docx,doc|max:4048',
         ];
     }
 }

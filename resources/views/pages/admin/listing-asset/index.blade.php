@@ -125,8 +125,7 @@
                         d.is_sparepart = $('#isSparepartFilter').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -156,6 +155,9 @@
                         data: 'status_kondisi'
                     },
                     {
+                        data: 'is_pemutihan'
+                    },
+                    {
                         data: 'tanggal_perolehan'
                     },
                     {
@@ -177,9 +179,8 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [
-                    {
-                        targets: 7,
+                columnDefs: [{
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
@@ -189,13 +190,32 @@
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'bagus') {
-                                element = `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
                             } else if (data == 'rusak') {
-                                element = `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
                             } else if (data == 'maintenance') {
-                                element = `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
                             } else if (data == 'tidak-lengkap') {
-                                element = `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            }
+
+                            return element;
+                        }
+                    },
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            if (data == 0) {
+                                element =
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Tidah Diputihkan</span>`;
+                            } else if (data == 1) {
+                                element =
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>`;
                             }
 
                             return element;
@@ -245,7 +265,8 @@
                         if (asset.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
-                            $('#imgPreviewAsset').attr('src', 'https://via.placeholder.com/400x250?text=Preview Image');
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
                         }
                         $('#linkDetailAsset').attr('href', asset.link_detail);
                     }
@@ -343,7 +364,8 @@
                                     <th width="200px">Deskripsi</th>
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Kategori</th>
-                                    <th width="180px">Status</th>
+                                    <th width="180px">Status Kondisi</th>
+                                    <th width="180px">Status Pemutihan</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
                                     <th width="150px">Lokasi</th>

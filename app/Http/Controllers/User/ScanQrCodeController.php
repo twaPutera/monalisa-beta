@@ -23,13 +23,20 @@ class ScanQrCodeController extends Controller
     {
         try {
             $asset = $this->assetDataQueryServices->findBykode($request);
+            if ($asset) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil mendapatkan data asset, halaman akan dialihkan',
+                    'data' => $asset,
+                ]);
+            }
             return response()->json([
-                'success' => true,
-                'message' => 'Berhasil mendapatkan data asset',
-                'data' => $asset,
+                'success' => false,
+                'message' => 'Data asset tidak ditemukan',
             ]);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th);
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),

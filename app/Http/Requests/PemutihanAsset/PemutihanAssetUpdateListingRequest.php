@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Approval;
+namespace App\Http\Requests\PemutihanAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PeminjamanApprovalUpdate extends FormRequest
+class PemutihanAssetUpdateListingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class PeminjamanApprovalUpdate extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:disetujui,ditolak',
-            'keterangan' => 'required_if:status,ditolak',
+            'id_checkbox.*' => 'required',
+            'id_checkbox' => 'required|min:1',
         ];
     }
 }

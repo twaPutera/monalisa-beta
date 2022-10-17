@@ -32,9 +32,9 @@ class AssetDataDatatableServices
         }
 
         if ($request->has('list_peminjaman')) {
-            $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use($request) {
-                $query->whereHas('peminjaman_asset', function ($query) use($request) {
-                    $query->where(function ($query) use($request) {
+            $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use ($request) {
+                $query->whereHas('peminjaman_asset', function ($query) use ($request) {
+                    $query->where(function ($query) use ($request) {
                         $query->where('status', 'dipinjam');
                         if (isset($request->id_peminjaman)) {
                             $query->orWhere('id', '=', $request->id_peminjaman);
@@ -77,14 +77,20 @@ class AssetDataDatatableServices
         }
 
         if (isset($request->status_kondisi)) {
-            $query->where('status_kondisi', $request->status_kondisi);
+            if ($request->status_kondisi != "semua") {
+                $query->where('status_kondisi', $request->status_kondisi);
+            }
         }
 
+        if (isset($request->jenis)) {
+            $query->where('id_kategori_asset', $request->jenis);
+        }
+        
         if (isset($request->is_pinjam)) {
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        $query->where('is_pemutihan', 0);
+        // $query->where('is_pemutihan', 0);
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
