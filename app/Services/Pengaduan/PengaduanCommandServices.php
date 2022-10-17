@@ -2,12 +2,11 @@
 
 namespace App\Services\Pengaduan;
 
+use App\Models\Pengaduan;
+use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
 use App\Http\Requests\Pengaduan\PengaduanStoreRequest;
 use App\Http\Requests\Pengaduan\PengaduanUpdateRequest;
-use App\Models\AssetImage;
-use App\Models\Pengaduan;
-use Exception;
 
 class PengaduanCommandServices
 {
@@ -20,7 +19,7 @@ class PengaduanCommandServices
         $asset_pengaduan->id_asset_data = $request->id_asset;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
-        $asset_pengaduan->status_pengaduan = "dilaporkan";
+        $asset_pengaduan->status_pengaduan = 'dilaporkan';
         $asset_pengaduan->created_by = $user->guid;
         $asset_pengaduan->save();
 
@@ -45,7 +44,7 @@ class PengaduanCommandServices
         $asset_pengaduan->id_asset_data = $request->id_asset;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
-        $asset_pengaduan->status_pengaduan = "dilaporkan";
+        $asset_pengaduan->status_pengaduan = 'dilaporkan';
         $asset_pengaduan->save();
 
         if ($request->hasFile('file_asset_service')) {

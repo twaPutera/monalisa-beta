@@ -2,9 +2,8 @@
 
 namespace App\Services\Keluhan;
 
-use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 use App\Models\Pengaduan;
-use Exception;
+use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 
 class KeluhanCommandServices
 {

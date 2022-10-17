@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin\Keluhan;
 
 use App\Helpers\FileHelpers;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
+use App\Services\Keluhan\KeluhanQueryServices;
 use App\Services\Keluhan\KeluhanCommandServices;
 use App\Services\Keluhan\KeluhanDatatableServices;
-use App\Services\Keluhan\KeluhanQueryServices;
-use Illuminate\Http\Request;
+use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 
 class KeluhanController extends Controller
 {

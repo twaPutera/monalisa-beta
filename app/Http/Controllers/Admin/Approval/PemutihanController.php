@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\PemutihanApprovalUpdate;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PemutihanController extends Controller
 {

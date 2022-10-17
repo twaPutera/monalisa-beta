@@ -4,7 +4,6 @@ namespace App\Services\Keluhan;
 
 use App\Models\Pengaduan;
 use App\Services\UserSso\UserSsoQueryServices;
-use Exception;
 
 class KeluhanQueryServices
 {

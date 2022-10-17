@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\PeminjamanAsset;
 
-use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -10,6 +9,7 @@ use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetDatatableServices;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
+use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 
 class PeminjamanAssetController extends Controller
 {
@@ -69,14 +69,14 @@ class PeminjamanAssetController extends Controller
                 'message' => 'Berhasil mengubah status peminjaman asset',
                 'data' => [
                     'command' => 'changeStatus',
-                ]
+                ],
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

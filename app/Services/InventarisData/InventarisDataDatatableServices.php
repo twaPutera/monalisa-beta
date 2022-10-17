@@ -18,13 +18,13 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kategori', function ($item) {
-                return !empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : "Tidak Ada";
+                return ! empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
             })
             ->addColumn('sebelumnya', function ($item) {
-                return !empty($item->jumlah_sebelumnya) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : "Tidak Ada";
+                return ! empty($item->jumlah_sebelumnya) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('saat_ini', function ($item) {
-                return !empty($item->jumlah_saat_ini) || !empty($item->satuan_inventori->nama_satuan) ?  $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : "Tidak Ada";
+                return ! empty($item->jumlah_saat_ini) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('action', function ($item) {
                 $element = '';

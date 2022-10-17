@@ -25,7 +25,7 @@ class KeluhanUpdateRequest extends FormRequest
     {
         return [
             'status_pengaduan' => 'required|in:diproses,selesai',
-            'catatan_admin' => 'required|string|max:255'
+            'catatan_admin' => 'required|string|max:255',
         ];
     }
 }

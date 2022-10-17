@@ -8,6 +8,7 @@ use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
+use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 use App\Http\Controllers\Admin\Services\ServicesController;
 use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
@@ -32,10 +33,9 @@ use App\Http\Controllers\User\AssetServicesController as UserAssetServicesContro
 use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalController;
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
+use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
-use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 
 /*
 |--------------------------------------------------------------------------

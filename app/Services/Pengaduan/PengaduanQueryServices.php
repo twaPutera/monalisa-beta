@@ -3,7 +3,6 @@
 namespace App\Services\Pengaduan;
 
 use App\Models\Pengaduan;
-use Exception;
 use Illuminate\Http\Request;
 
 class PengaduanQueryServices

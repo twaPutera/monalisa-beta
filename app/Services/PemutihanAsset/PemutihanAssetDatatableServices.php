@@ -78,7 +78,7 @@ class PemutihanAssetDatatableServices
             $this->assetInPemutihan = [];
         }
         if (isset($request->status_kondisi)) {
-            if ($request->status_kondisi != "semua") {
+            if ($request->status_kondisi != 'semua') {
                 $query->where('status_kondisi', $request->status_kondisi);
             }
         }

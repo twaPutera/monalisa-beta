@@ -7,10 +7,10 @@ use App\Models\Approval;
 use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
-use App\Http\Requests\Approval\PemutihanApprovalUpdate;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Http\Requests\Approval\PemutihanApprovalUpdate;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
@@ -32,7 +32,7 @@ class PemutihanAssetCommandServices
 
         $user = \Session::get('user');
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (!isset($approver[0])) {
+        if (! isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -74,7 +74,7 @@ class PemutihanAssetCommandServices
         $pemutihan->save();
 
         foreach ($pemutihan->detail_pemutihan_asset as $item) {
-            if ($request->status == "disetujui") {
+            if ($request->status == 'disetujui') {
                 $asset_data = AssetData::findOrFail($item->id_asset_data);
                 $asset_data->is_pemutihan = 1;
                 $asset_data->save();
@@ -95,7 +95,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (!isset($approver[0])) {
+        if (! isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -120,7 +120,7 @@ class PemutihanAssetCommandServices
         $pemutihan->is_store = 1;
         $pemutihan->save();
 
-        if ($request->status_pemutihan == "Publish") {
+        if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
             $approval->guid_approver = $approver[0]['guid'];
             $approval->approvable_type = get_class($pemutihan);
@@ -168,7 +168,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -187,7 +187,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (!isset($approver[0])) {
+        if (! isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -228,14 +228,13 @@ class PemutihanAssetCommandServices
             $detail_pemutihan->save();
         }
 
-
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->status = $request->status_pemutihan;
         $pemutihan->save();
 
-        if ($request->status_pemutihan == "Publish") {
+        if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
             $approval->guid_approver = $approver[0]['guid'];
             $approval->approvable_type = get_class($pemutihan);
