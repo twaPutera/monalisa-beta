@@ -24,7 +24,7 @@
                     url: "{{ route('admin.approval.datatable') }}",
                     data: function(d) {
                         // d.is_approve = null;
-                        d.approvable_type = 'App\\Models\\PeminjamanAsset';
+                        d.approvable_type = 'App\\Models\\PemindahanAsset';
                     }
                 },
                 columns: [
@@ -36,23 +36,26 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "link_detail",
+                        data: "data_detail_approval.link_detail",
                         class: "text-center",
                         orderable: false,
                         searchable: false,
                         name: 'action'
                     },
                     {
-                        data: 'approvable.tanggal_peminjaman'
+                        data: 'approvable.tanggal_pemindahan'
+                    },
+                    {
+                        data: 'data_detail_approval.nama_asset'
                     },
                     {
                         data: 'pembuat_approval'
                     },
                     {
-                        data: 'pembuat_approval'
+                        data: 'data_detail_approval.jenis_asset'
                     },
                     {
-                        data: 'approvable.tanggal_pengembalian'
+                        data: 'data_detail_approval.penerima_asset'
                     },
                     {
                         data: 'is_approve'
@@ -63,27 +66,24 @@
                     {
                         targets: [1],
                         render: function(data, type, full, meta) {
-                            return `
-                                <button onclick="showDetail(this)" data-url_detail="`+data+`" data-url_update="`+full.link_update+`" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
-                                    <i class="la la-eye"></i>
-                                </button>
-                            `;
+                            let element = ` <button onclick="showDetail(this)" data-url_detail="`+data+`" data-url_update="`+full.link_update+`" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
+                                                <i class="la la-eye"></i>
+                                            </button>`;
+                            if (full.is_approve == '1') {
+                                element += `<a href="${full.data_detail_approval.link_stream_bast}" class="btn ml-1 btn-sm btn-icon btn-success" target="_blank"><i class="fa fa-file"><i/></a>`
+                            }
+
+                            return element;
                         },
                     },
                     {
-                        targets: [2, 5],
+                        targets: [2],
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         },
                     },
                     {
-                        targets: [4],
-                        render: function(data, type, full, meta) {
-                            return sumDiffFromTwoDate(new Date(full.approvable.tanggal_pengembalian), new Date(full.approvable.tanggal_peminjaman)) + " Hari";
-                        },
-                    },
-                    {
-                        targets: [6],
+                        targets: [7],
                         render: function(data, type, full, meta) {
                             let element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
                             if (data == '1') {
@@ -126,35 +126,42 @@
                 type: 'GET',
                 success: function(response) {
                     if (response.success) {
-                        let data = response.data;
-                        let user_peminjam = JSON.parse(data.json_peminjam_asset);
+                        let data = response.data.pemindahan;
+                        let kategori = response.data.kategori;
                         let modal = $('#modalDetailPeminjaman');
                         let form = modal.find('form');
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
-                        if (data.approval.is_approve) {
-                            console.log(data.approval.is_approve);
+                        const penerima = JSON.parse(data.json_penerima_asset);
+                        const penyerah = JSON.parse(data.json_penyerah_asset);
+                        const asset = JSON.parse(data.detail_pemindahan_asset.json_asset_data);
+                        if (data.approval[0].is_approve == '1') {
                             $('.isDisabled').attr('disabled', true);
-                            $('#tanggalApproval').val(data.approval.tanggal_approval).show();
-                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' : 'ditolak';
+                            $('#tanggalApproval').val(data.approval[0].tanggal_approval).show();
+                            const status_approval = data.approval[0].is_approve == '1' ? 'disetujui' : 'ditolak';
                             $('#statusApproval option[value='+status_approval+']').attr('selected', true);
-                            $('#keteranganApproval').val(data.approval.keterangan);
+                            $('#keteranganApproval').val(data.approval[0].keterangan);
                         }
-                        $('#namaPeminjam').val(user_peminjam.name);
-                        $('#tanggalPeminjam').val(data.tanggal_peminjaman);
-                        $('#tanggalPengembalian').val(data.tanggal_pengembalian);
-                        $('#alasanPeminjaman').val(data.alasan_peminjaman);
-                        $('#tableBodyDetailPeminjaman').html('');
-                        $(data.request_peminjaman_asset).each(function(index, value) {
-                            let element = `
-                                <tr>
-                                    <td>`+(index+1)+`</td>
-                                    <td>`+value.kategori_asset.nama_kategori+`</td>
-                                    <td>`+value.jumlah+`</td>
-                                </tr>
-                            `;
-                            $('#tableBodyDetailPeminjaman').append(element);
-                        });
+                        const kategori_name = kategori ? kategori.nama_kategori : '-';
+                        const group_name = kategori ? kategori.group_kategori_asset.nama_group : '-';
+
+                        $('#groupAsset').text(group_name);
+                        $('#kategoriAsset').text(kategori_name);
+
+                        $('#deskripsiAsset').text(asset.deskripsi);
+                        $('#nilaiPerolehanAsset').text(asset.nilai_perolehan);
+                        $('#noSeriAsset').text(asset.no_seri);
+
+                        $('#noBast').val(data.no_surat);
+                        $('#tanggalPemindahan').val(formatDateIntoIndonesia(data.tanggal_pemindahan));
+
+                        $('#namaPenerima').val(penerima.nama);
+                        $('#jabatanPenerima').val(penerima.jabatan);
+                        $('#unitPenerima').val(penerima.unit_kerja);
+
+                        $('#namaPenyerah').val(penyerah.nama);
+                        $('#jabatanPenyerah').val(penyerah.jabatan);
+                        $('#unitPenyerah').val(penyerah.unit_kerja);
 
                         $('#modalDetailPeminjaman').modal('show');
                     }
@@ -193,9 +200,10 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>Tanggal</th>
-                                    <th>Nama Peminjam</th>
-                                    <th>Durasi Peminjaman</th>
-                                    <th>Tanggal Selesai</th>
+                                    <th>Nama Asset</th>
+                                    <th>Dibuat Oleh</th>
+                                    <th>Jenis Asset</th>
+                                    <th>Diterima Oleh</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -208,5 +216,5 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.approval.peminjaman._modal_detail')
+    @include('pages.admin.approval.pemindahan._modal_detail')
 @endsection

@@ -110,11 +110,11 @@ class PemindahanAssetCommandServices
             throw new Exception('Pemindahan asset tidak dapat diubah statusnya');
         }
 
-        if ($user->guid != $pemindahan_asset->guid_penerima_asset) {
-            throw new Exception('Anda tidak dapat mengubah status pemindahan asset ini');
-        }
+        // if ($user->guid != $pemindahan_asset->guid_penerima_asset) {
+        //     throw new Exception('Anda tidak dapat mengubah status pemindahan asset ini');
+        // }
 
-        $approval_pemindahan_asset = $pemindahan_asset->approval->where('guid_approver', $user->guid)->first();
+        $approval_pemindahan_asset = $pemindahan_asset->approval->first();
         $approval_pemindahan_asset->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval_pemindahan_asset->tanggal_approval = date('Y-m-d');
         $approval_pemindahan_asset->keterangan = $request->keterangan;

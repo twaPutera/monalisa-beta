@@ -35,6 +35,7 @@ use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetCo
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
+use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::group(['prefix' => 'pemutihan'], function () {
             Route::get('/', [AdminPemutihanAssetController::class, 'index'])->name('admin.approval.pemutihan.index');
             Route::post('/change-status/{id}', [AdminPemutihanAssetController::class, 'changeStatusApproval'])->name('admin.approval.pemutihan.change-status');
+        });
+        Route::group(['prefix' => 'pemindahan'], function () {
+            Route::get('/', [AdminApprovalPemindahanController::class, 'index'])->name('admin.approval.pemindahan.index');
+            Route::post('/change-status/{id}', [AdminApprovalPemindahanController::class, 'changeStatusApproval'])->name('admin.approval.pemindahan.change-status');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
