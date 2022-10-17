@@ -25,7 +25,11 @@ class AssetOpnameController extends Controller
     {
         $list_status = StatusAssetDataHelpers::listStatusAssetData();
         $asset_data = $this->assetDataQueryServices->findById($id);
-        return view('pages.user.asset.opname.create', compact('asset_data', 'list_status'));
+        if ($asset_data->is_pemutihan != 1) {
+            return view('pages.user.asset.opname.create', compact('asset_data', 'list_status'));
+        } else {
+            abort(404);
+        }
     }
 
     public function store(AssetOpnameStoreRequest $request, string $id)

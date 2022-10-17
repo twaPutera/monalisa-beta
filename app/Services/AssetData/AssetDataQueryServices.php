@@ -19,7 +19,7 @@ class AssetDataQueryServices
     public function findById(string $id)
     {
         $data =  AssetData::query()
-            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image', 'detail_service'])
+            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image', 'detail_service', 'log_asset_opname'])
             ->where('id', $id)
             ->firstOrFail();
         if (is_null($data->qr_code)) {
@@ -30,11 +30,13 @@ class AssetDataQueryServices
             $data->save();
         }
         $user = null;
-
+        $created_by = null;
         if (isset($data->ownership)) {
             $user = $this->userSsoQueryServices->getUserByGuid($data->ownership);
         }
-
+        if ($data->log_asset_opname->count() > 0) {
+            $created_by = $this->userSsoQueryServices->getUserByGuid($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
+        }
         $data->image = $data->image->map(function ($item) {
             $item->link = route('admin.listing-asset.image.preview') . '?filename=' . $item->path;
             return $item;
@@ -42,7 +44,7 @@ class AssetDataQueryServices
 
         $data->link_detail = route('admin.listing-asset.detail', $data->id);
         $data->owner_name = $user == null ? 'Tidak ada' : $user[0]['nama'];
-
+        $data->created_by_opname = $created_by == null ? 'Tidak Ada' : $created_by[0]['nama'];
         return $data;
     }
 
@@ -83,6 +85,7 @@ class AssetDataQueryServices
             }
         }
 
+        $data->where('is_pemutihan', 0); //To get all data asset is not pemutihan
         $data = $data->orderby('deskripsi', 'asc')
             ->get();
 

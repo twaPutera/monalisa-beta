@@ -159,16 +159,17 @@
     </div>
 @endsection
 @section('button-menu')
-    <div class="d-flex justify-content-center">
-        <a class="btn btn-primary border-radius-sm px-3 me-2"
-            href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
-            <ion-icon name="add-outline"></ion-icon>
-            <span class="">Service</span>
-        </a>
-        <a class="btn btn-success border-radius-sm px-3"
-            href="{{ route('user.asset-data.opname.create', $asset_data->id) }}">
-            <ion-icon name="add-outline"></ion-icon>
-            <span class="">Opname</span>
-        </a>
-    </div>
-@endsection
+    @if ($asset_data->is_pemutihan != 1)
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-primary border-radius-sm px-3 me-2"
+                href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
+                <ion-icon name="add-outline"></ion-icon>
+                <span class="">Service</span>
+            </a>
+            <a class="btn btn-success border-radius-sm px-3"
+                href="{{ route('user.asset-data.opname.create', $asset_data->id) }}">
+                <ion-icon name="add-outline"></ion-icon>
+                <span class="">Opname</span>
+            </a>
+    </div @else @include('layouts.user.bottom-menu') @endif
+    @endsection

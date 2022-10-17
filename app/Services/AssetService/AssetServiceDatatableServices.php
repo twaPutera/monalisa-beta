@@ -60,7 +60,7 @@ class AssetServiceDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_service', function ($item) {
-                return $item->kategori_service->nama_service ?? 'no data';
+                return $item->kategori_service->nama_service ?? 'Tidak Ada';
             })
             ->addColumn('user', function ($item) {
                 $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
@@ -68,7 +68,7 @@ class AssetServiceDatatableServices
             })
 
             ->addColumn('deskripsi_service', function ($item) {
-                return $item->detail_service->catatan ?? 'no data';
+                return $item->detail_service->catatan ?? 'Tidak Ada';
             })
             ->addColumn('btn_show_service', function ($item) {
                 $element = '';

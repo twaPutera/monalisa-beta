@@ -24,7 +24,11 @@ class AssetServicesController extends Controller
     public function create($id)
     {
         $asset_data = $this->assetDataQueryServices->findById($id);
-        return view('pages.user.asset.services.create', compact('asset_data'));
+        if ($asset_data->is_pemutihan != 1) {
+            return view('pages.user.asset.services.create', compact('asset_data'));
+        } else {
+            abort(404);
+        }
     }
 
     public function store(UserAssetServiceStoreRequest $request, string $id)

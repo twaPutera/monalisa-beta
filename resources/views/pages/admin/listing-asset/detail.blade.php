@@ -551,14 +551,17 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button onclick="openModalByClass('modalCreatePemindahan')"
-                        class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan"
-                        type="button">
-                        <i class="fas fa-sync-alt"></i>
-                        Pindahkan Asset</button>
-                    <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;" id="create-service"
-                        class="btn btn-primary shadow-custom btn-sm btn-log" type="button"><i class="fa fa-plus"></i>
-                        Service</button>
+                    @if ($asset->is_pemutihan != 1)
+                        <button onclick="openModalByClass('modalCreatePemindahan')"
+                            class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan"
+                            type="button">
+                            <i class="fas fa-sync-alt"></i>
+                            Pindahkan Asset</button>
+                        <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;"
+                            id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log" type="button"><i
+                                class="fa fa-plus"></i>
+                            Service</button>
+                    @endif
                 </div>
             </div>
             <div class="row">
@@ -571,25 +574,48 @@
                                     src="{{ isset($asset->image[0]) ? $asset->image[0]->link : 'https://via.placeholder.com/400x250?text=No Image' }}"
                                     alt="">
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                                    <h6>Status saat ini</h6>
-                                    <span
-                                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">{{ ucWords($asset->status_kondisi) }}</span>
+                                    <h6>Status Kondisi Asset</h6>
+                                    @php
+                                        if ($asset->status_kondisi == 'bagus') {
+                                            $kondisi = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>';
+                                        } elseif ($asset->status_kondisi == 'rusak') {
+                                            $kondisi = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>';
+                                        } elseif ($asset->status_kondisi == 'maintenance') {
+                                            $kondisi = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>';
+                                        } elseif ($asset->status_kondisi == 'tidak-lengkap') {
+                                            $kondisi = '<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>';
+                                        }
+                                    @endphp
+                                    {!! $kondisi !!}
+                                </div>
+                                  <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                    <h6>Status Pemutihan</h6>
+                                    @php
+                                        if ($asset->is_pemutihan == 0) {
+                                            $pemutihan = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>';
+                                        } elseif ($asset->is_pemutihan == 1) {
+                                            $pemutihan = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>';
+                                        } 
+                                    @endphp
+                                    {!! $pemutihan !!}
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6 class="">Catatan</h6>
                                     <h6 class="text-right">
-                                        {{ $asset->detail_service->count() > 0 ? $asset->detail_service->sortByDesc('created_at')->first()->catatan : '-' }}
+                                        {{ $asset->log_asset_opname->count() > 0 ? $asset->log_asset_opname->sortByDesc('created_at')->first()->keterangan : 'Tidak Ada' }}
                                     </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Log Terakhir</h6>
                                     <h6 class="text-right">
-                                        {{ $asset->detail_service->count() > 0 ? \Carbon\Carbon::parse($asset->detail_service->sortByDesc('created_at')->first()->created_at)->format('d F Y') : '-' }}
+                                        {{ $asset->log_asset_opname->count() > 0 ? \Carbon\Carbon::parse($asset->log_asset_opname->sortByDesc('created_at')->first()->tanggal_opname)->format('d F Y') : 'Tidak Ada' }}
                                     </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Dicek Oleh</h6>
-                                    <h6 class="text-right"><strong>Not Found</strong></h6>
+                                    <h6 class="text-right">
+                                        {{ $asset->created_by_opname }}
+                                    </h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
@@ -607,9 +633,11 @@
                         <div class="col-md-6 col-12">
                             <div class="d-flex assetPropertuTitle justify-content-between align-items-center mb-3">
                                 <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
-                                <button onclick="openModalByClass('modalCreateAsset')"
-                                    class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
-                                        class="fa fa-edit"></i></button>
+                                @if ($asset->is_pemutihan != 1)
+                                    <button onclick="openModalByClass('modalCreateAsset')"
+                                        class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                            class="fa fa-edit"></i></button>
+                                @endif
                             </div>
                             <div class="pt-3 pb-1 scroll-bar assetProperti"
                                 style="border-radius: 9px; background: #E5F3FD;">

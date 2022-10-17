@@ -212,7 +212,7 @@
                             let element = '';
                             if (data == 0) {
                                 element =
-                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Tidah Diputihkan</span>`;
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>`;
                             } else if (data == 1) {
                                 element =
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>`;
@@ -257,11 +257,38 @@
                     $(".backdrop").hide();
                     if (response.success) {
                         const asset = response.data.asset;
-                        const service = response.data.service;
+                        const opname = response.data.asset.log_asset_opname[0];
+                        if (asset.status_kondisi == 'bagus') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                        } else if (asset.status_kondisi == 'rusak') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                        } else if (asset.status_kondisi == 'maintenance') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                        } else if (asset.status_kondisi == 'tidak-lengkap') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                        }
+
+                        if (asset.is_pemutihan == 0) {
+                            var pemutihan =
+                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>`;
+                        } else if (asset.is_pemutihan == 1) {
+                            var pemutihan =
+                                `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>`;
+                        }
                         $('#assetNamePreview').text(asset.deskripsi);
-                        $('#catatanService').text(service ? service.deskripsi_service : '-');
-                        $('#lastLogServiceDate').text(service ? formatDateIntoIndonesia(service
-                            .tanggal_service) : '-');
+                        $('#assetKondisi').empty();
+                        $('#assetKondisi').append(kondisi);
+                        $('#assetPemutihan').empty();
+                        $('#assetPemutihan').append(pemutihan);
+                        $('#opnameCekBy').empty();
+                        $('#opnameCekBy').append(asset.created_by_opname);
+                        $('#catatanOpname').text(opname ? opname.keterangan : '-');
+                        $('#lastLogOpnameDate').text(opname ? formatDateIntoIndonesia(opname
+                            .tanggal_opname) : '-');
                         if (asset.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
@@ -388,21 +415,28 @@
                         <img id="imgPreviewAsset" src="https://via.placeholder.com/400x250?text=Preview Image"
                             alt="">
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Status saat ini</h6>
-                            <span
-                                class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Baik</span>
+                            <h6>Status Kondisi Asset</h6>
+                            <div id="assetKondisi">
+                                <h6 class="text-right">No Item Selected</h6>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                            <h6>Status Pemutihan</h6>
+                            <div id="assetPemutihan">
+                                <h6 class="text-right">No Item Selected</h6>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6 class="">Catatan</h6>
-                            <h6 class="text-right" id="catatanService">No Item Selected</h6>
+                            <h6 class="text-right" id="catatanOpname">No Item Selected</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Log Terakhir</h6>
-                            <h6 class="text-right" id="lastLogServiceDate">No Item Selected</h6>
+                            <h6 class="text-right" id="lastLogOpnameDate">No Item Selected</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Dicek Oleh</h6>
-                            <h6 class="text-right"><strong>No Item Selected</strong></h6>
+                            <h6 class="text-right" id="opnameCekBy">No Item Selected</h6>
                         </div>
                         <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                             <h6 class="mb-0">Status Peminjaman</h6>
