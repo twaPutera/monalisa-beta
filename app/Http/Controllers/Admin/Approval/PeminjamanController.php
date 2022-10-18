@@ -23,7 +23,7 @@ class PeminjamanController extends Controller
     public function index()
     {
         $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
-        $total_approval = $list_approval->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        $total_approval = $list_approval->count();
         return view('pages.admin.approval.peminjaman.index', compact('total_approval'));
     }
 

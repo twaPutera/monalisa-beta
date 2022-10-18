@@ -16,6 +16,13 @@ class ComposerServiceProvider extends ServiceProvider
             ],
             'App\Http\ViewComposer\TabApprovalComposer'
         );
+
+        View::composer(
+            [
+                'layouts.admin.main.header-menu',
+            ],
+            'App\Http\ViewComposer\NavbarAdminComposer'
+        );
     }
 
     /**

@@ -30,9 +30,9 @@ class TabApprovalComposer
         $list_pemindahan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemindahanAsset");
         $list_pemutihan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemutihanAsset");
         $list_peminjaman_asset = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
-        $total_approval_pemindahan = $list_pemindahan_asset->count();
-        $total_approval_pemutihan = $list_pemutihan_asset->count();
-        $total_approval_peminjaman = $list_peminjaman_asset->count();
+        $total_approval_pemindahan = $list_pemindahan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        $total_approval_pemutihan = $list_pemutihan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        $total_approval_peminjaman = $list_peminjaman_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
         $view->with([
             'total_approval_pemindahan' => $total_approval_pemindahan,
             'total_approval_pemutihan' => $total_approval_pemutihan,

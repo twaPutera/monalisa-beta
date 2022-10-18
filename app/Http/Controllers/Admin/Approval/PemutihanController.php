@@ -24,7 +24,7 @@ class PemutihanController extends Controller
     public function index()
     {
         $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PemutihanAsset");
-        $total_approval = $list_approval->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        $total_approval = $list_approval->count();
         return view('pages.admin.approval.pemutihan.index', compact('total_approval'));
     }
 
