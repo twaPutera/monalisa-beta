@@ -30,7 +30,7 @@ class Approval extends Model
     public function linkUpdateApproval()
     {
         if ($this->approvable instanceof PemindahanAsset) {
-            return '#';
+            return route('admin.approval.pemindahan.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PemutihanAsset) {
             return route('admin.approval.pemutihan.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PeminjamanAsset) {

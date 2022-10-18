@@ -50,12 +50,17 @@
                     {
                         targets: [5],
                         render: function(data, type, full, meta) {
+                            let element = '';
                             if (data == 'disetujui') {
                                 element = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
                             } else if (data == 'ditolak') {
                                 element = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
                             } else if (data == 'pending') {
                                 element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
+                            } else if (data == 'dipinjam') {
+                                element = '<span class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill kt-badge--rounded">Sedang Dipinjam</span>';
+                            } else if (data == 'terlambat') {
+                                element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Terlambat</span>';
                             }
                             return element;
                         },

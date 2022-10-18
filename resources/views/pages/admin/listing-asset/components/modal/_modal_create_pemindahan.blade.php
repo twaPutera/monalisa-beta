@@ -90,7 +90,7 @@
                             </select> --}}
                         </div>
                         <div class="form-group">
-                            <label for="">Unit Kerja Pemilik</label>
+                            <label for="">Unit Kerja Penanggung Jawab Sebelumnya</label>
                             <input type="text" value="" class="form-control" name="unit_kerja_penyerah">
                             {{-- <select name="unit_kerja_penyerah" class="form-control" id="unitKerjaPenyerahSelect">
 

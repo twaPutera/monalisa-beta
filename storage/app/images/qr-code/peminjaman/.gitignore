@@ -2,7 +2,5 @@
 !asset/
 !asset-service/
 !qr-code/
-!pemindahan/
 !peminjaman/
-!pemutihan/
 !.gitignore

@@ -156,4 +156,49 @@ class AssetDataQueryServices
 
         return $asset_from_pemindahan;
     }
+
+    public function countAsset(Request $request)
+    {
+        $data = AssetData::query();
+
+        if (isset($request->id_kategori_asset)) {
+            $data->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+        if (isset($request->id_lokasi)) {
+            if ($request->id_lokasi != 'root') {
+                $data->where('id_lokasi', $request->id_lokasi);
+            }
+        }
+
+        if (isset($request->id_vendor)) {
+            $data->where('id_vendor', $request->id_vendor);
+        }
+
+        if (isset($request->id_kelas_asset)) {
+            $data->where('id_kelas_asset', $request->id_kelas_asset);
+        }
+
+        if (isset($request->id_satuan_asset)) {
+            $data->where('id_satuan_asset', $request->id_satuan_asset);
+        }
+
+        if (isset($request->id_group_kategori_asset)) {
+            $data->whereHas('kategori_asset', function ($query) use ($request) {
+                $query->where('id_group_kategori_asset', $request->id_group_kategori_asset);
+            });
+        }
+
+        if (isset($request->is_pemutihan)) {
+            $data->where('is_pemutihan', $request->is_pemutihan);
+        }
+
+        if (isset($request->status_asset)) {
+            $data->where('status_asset', $request->status_asset);
+        }
+
+        $data = $data->count();
+
+        return $data;
+    }
 }

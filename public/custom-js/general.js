@@ -199,3 +199,8 @@ const formatDateIntoIndonesia = (data) => {
     let year = date.getFullYear();
     return `${day} ${arrayMonth[month]} ${year}`;
 }
+
+const sumDiffFromTwoDate = (date1, date2) => {
+    let diff = date1.getTime() - date2.getTime();
+    return Math.ceil(diff / (1000 * 3600 * 24));
+}
