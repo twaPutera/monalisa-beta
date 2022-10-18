@@ -15,4 +15,9 @@ class Lokasi extends Model
     {
         return $this->hasMany(AssetData::class, 'id_lokasi', 'id');
     }
+
+    public function pengaduan()
+    {
+        return $this->hasMany(Pengaduan::class, 'id_lokasi', 'id');
+    }
 }

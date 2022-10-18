@@ -63,9 +63,10 @@
                             selected = 'selected';
                         }
 
-                        if (element.id == "{{ $pengaduan->asset_data->lokasi->id }}") {
+                        if (element.id == $('#valueLokasiDefault').val()) {
                             selected = 'selected';
                         }
+
                         select.append(
                             `<option ${selected} value="${element.id}">${element.text}</option>`
                         );
@@ -124,9 +125,13 @@
             @csrf
             <div class="form-group boxed">
                 <div class="input-wrapper">
+                    @if ($pengaduan->asset_data != null)
+                        <input type="hidden" id="valueLokasiDefault" value="{{ $pengaduan->asset_data->lokasi->id }}">
+                    @else
+                        <input type="hidden" id="valueLokasiDefault" value="{{ $pengaduan->lokasi->id }}">
+                    @endif
                     <label class="text-dark" for="lokasi-select"><strong>Lokasi</strong></label>
                     <select name="id_lokasi" class="form-control py-3 select2Lokasi" id="lokasi-select">
-
                     </select>
                 </div>
             </div>
@@ -135,7 +140,10 @@
                 <div class="input-wrapper">
                     <label class="text-dark" for="asset-select"><strong>Asset</strong></label>
                     <select name="id_asset" class="form-control py-3 selectAsset" id="asset-select">
-                        <option value="{{ $pengaduan->id_asset_data }}">{{ $pengaduan->asset_data->deskripsi }}</option>
+                        @if ($pengaduan->asset_data != null)
+                            <option value="{{ $pengaduan->id_asset_data }}">{{ $pengaduan->asset_data->deskripsi }}
+                            </option>
+                        @endif
                     </select>
                 </div>
             </div>

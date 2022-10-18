@@ -16,21 +16,24 @@ class KeluhanDatatableServices
     public function datatable(Request $request)
     {
         $query = Pengaduan::query();
-        $query->with(['asset_data', 'asset_data.lokasi', 'image']);
+        $query->with(['asset_data', 'asset_data.lokasi', 'image', 'lokasi']);
         $query->orderBy('tanggal_pengaduan', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return ! empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return ! empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
+                return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return ! empty($item->asset_data->lokasi->nama_lokasi) ? $item->asset_data->lokasi->nama_lokasi : '-';
+                if ($item->asset_data != null) {
+                    return !empty($item->asset_data->lokasi->nama_lokasi) ? $item->asset_data->lokasi->nama_lokasi : '-';
+                }
+                return !empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return ! empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
@@ -44,10 +47,10 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return ! empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
+                return !empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
             })
             ->addColumn('catatan_admin', function ($item) {
-                return ! empty($item->catatan_admin) ? $item->catatan_admin : '-';
+                return !empty($item->catatan_admin) ? $item->catatan_admin : '-';
             })
             ->addColumn('action', function ($item) {
                 $element = '';

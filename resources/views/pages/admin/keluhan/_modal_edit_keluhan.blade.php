@@ -21,7 +21,7 @@
                             <input type="text" class="form-control" disabled name="nama_asset">
                         </div>
                         <div class="form-group">
-                            <label for="">Lokasi Asset</label>
+                            <label for="">Lokasi Keluhan</label>
                             <input type="text" class="form-control" disabled name="lokasi_asset">
                         </div>
                         <div class="form-group">
@@ -49,7 +49,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="">Status Saat Ini</label>
                                 <div id="status_laporan">
-                                    
+
                                 </div>
                             </div>
                         </div>

@@ -37,81 +37,87 @@
 @endsection
 @section('content')
     <div class="section mt-2">
-        <h2 style="color: #6F6F6F;">{{ $pengaduan->asset_data->deskripsi }} </h2>
+        <h2 style="color: #6F6F6F;">
+            {{ $pengaduan->asset_data != null ? $pengaduan->asset_data->deskripsi : 'Laporan Pengaduan' }}
+        </h2>
+        <div class="py-2 border-bottom border-secondary">
+            <div class="row">
+                <div class="col">
+                    <p class="mb-0 text-green">Lokasi</p>
+                </div>
+                <div class="col">
+                    <p class="mb-0 text-green text-end">
+                        {{ $pengaduan->asset_data != null ? $pengaduan->asset_data->lokasi->nama_lokasi : $pengaduan->lokasi->nama_lokasi }}
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="mt-2">
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Kelompok Asset</p>
-                    </div>
-                    <div class="col">
-                        <p class="mb-0 text-green text-end">
-                            {{ $pengaduan->asset_data->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak Ada Group' }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Jenis Asset</p>
-                    </div>
-                    <div class="col">
-                        <p class="mb-0 text-green text-end">
-                            {{ $pengaduan->asset_data->kategori_asset->nama_kategori ?? 'Tidak Ada Kategori' }}</p>
+            @if ($pengaduan->asset_data != null)
+                <div class="py-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-0 text-green">Kelompok Asset</p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0 text-green text-end">
+                                {{ $pengaduan->asset_data->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak Ada Group' }}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Lokasi</p>
-                    </div>
-                    <div class="col">
-                        <p class="mb-0 text-green text-end">
-                            {{ $pengaduan->asset_data->lokasi->nama_lokasi ?? 'Tidak Ada Lokasi' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Status Terakhir</p>
-                    </div>
-                    @php
-                        if ($pengaduan->asset_data->status_kondisi == 'bagus') {
-                            $kondisi = '<span class="badge badge-success px-3">Baik</span>';
-                        } elseif ($pengaduan->asset_data->status_kondisi == 'rusak') {
-                            $kondisi = '<span class="badge badge-danger px-3">Rusak</span>';
-                        } elseif ($pengaduan->asset_data->status_kondisi == 'maintenance') {
-                            $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
-                        } elseif ($pengaduan->asset_data->status_kondisi == 'tidak-lengkap') {
-                            $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
-                        }
-                    @endphp
-                    <div class="col text-end">
-                        {!! $kondisi !!}
+                <div class="py-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-0 text-green">Jenis Asset</p>
+                        </div>
+                        <div class="col">
+                            <p class="mb-0 text-green text-end">
+                                {{ $pengaduan->asset_data->kategori_asset->nama_kategori ?? 'Tidak Ada Kategori' }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Status Pemutihan</p>
-                    </div>
-                    <div class="col text-end">
+                <div class="py-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-0 text-green">Status Terakhir</p>
+                        </div>
                         @php
-                            if ($pengaduan->asset_data->is_pemutihan == 0) {
-                                $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
-                            } elseif ($pengaduan->asset_data->is_pemutihan == 1) {
-                                $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                            if ($pengaduan->asset_data->status_kondisi == 'bagus') {
+                                $kondisi = '<span class="badge badge-success px-3">Baik</span>';
+                            } elseif ($pengaduan->asset_data->status_kondisi == 'rusak') {
+                                $kondisi = '<span class="badge badge-danger px-3">Rusak</span>';
+                            } elseif ($pengaduan->asset_data->status_kondisi == 'maintenance') {
+                                $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
+                            } elseif ($pengaduan->asset_data->status_kondisi == 'tidak-lengkap') {
+                                $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
                             }
                         @endphp
-                        {!! $pemutihan !!}
-
+                        <div class="col text-end">
+                            {!! $kondisi !!}
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="py-2 border-bottom border-secondary">
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-0 text-green">Status Pemutihan</p>
+                        </div>
+                        <div class="col text-end">
+                            @php
+                                if ($pengaduan->asset_data->is_pemutihan == 0) {
+                                    $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
+                                } elseif ($pengaduan->asset_data->is_pemutihan == 1) {
+                                    $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                                }
+                            @endphp
+                            {!! $pemutihan !!}
+
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">

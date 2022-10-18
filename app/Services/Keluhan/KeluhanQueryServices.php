@@ -11,11 +11,11 @@ class KeluhanQueryServices
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
     }
-    
+
     public function findById(string $id)
     {
         $data = Pengaduan::query()
-            ->with(['image', 'asset_data', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])
+            ->with(['image', 'asset_data', 'lokasi', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])
             ->where('id', $id)
             ->firstOrFail();
 

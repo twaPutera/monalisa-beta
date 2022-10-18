@@ -153,13 +153,22 @@
                         var status = '<button class="btn btn-success btn-sm">Selesai</button>';
                     }
                     form.attr('action', url_update);
+                    if (response.data.asset_data != null) {
+                        form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
+                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
+                            .nama_lokasi);
+                        form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
+                            .group_kategori_asset.nama_group);
+                        form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
+                            .nama_kategori);
+                    } else {
+                        form.find('input[name=nama_asset]').val("-");
+                        form.find('input[name=kelompok_asset]').val("-");
+                        form.find('input[name=jenis_asset]').val("-");
+                        form.find('input[name=lokasi_asset]').val(response.data.lokasi
+                            .nama_lokasi);
+                    }
                     form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
-                    form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
-                    form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi.nama_lokasi);
-                    form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
-                        .group_kategori_asset.nama_group);
-                    form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
-                        .nama_kategori);
                     form.find('#status_laporan').empty();
                     form.find('#status_laporan').append(status);
                     form.find('textarea[name=catatan_pengaduan]').val(response.data.catatan_pengaduan);
@@ -185,13 +194,22 @@
                     } else if (response.data.status_pengaduan === "selesai") {
                         var status = '<button class="btn btn-success btn-sm">Selesai</button>';
                     }
+                    if (response.data.asset_data != null) {
+                        form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
+                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
+                            .nama_lokasi);
+                        form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
+                            .group_kategori_asset.nama_group);
+                        form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
+                            .nama_kategori);
+                    } else {
+                        form.find('input[name=nama_asset]').val("-");
+                        form.find('input[name=kelompok_asset]').val("-");
+                        form.find('input[name=jenis_asset]').val("-");
+                        form.find('input[name=lokasi_asset]').val(response.data.lokasi
+                            .nama_lokasi);
+                    }
                     form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
-                    form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
-                    form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi.nama_lokasi);
-                    form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
-                        .group_kategori_asset.nama_group);
-                    form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
-                        .nama_kategori);
                     form.find('#status_laporan').empty();
                     form.find('#status_laporan').append(status);
                     form.find('textarea[name=catatan_pengaduan]').val(response.data.catatan_pengaduan);

@@ -14,7 +14,7 @@
                 url: '{{ route('user.pengaduan.get-all-data') }}',
                 data: {
                     created_by: "{{ $user->guid }}",
-                    with: ['asset_data', 'asset_data.lokasi'],
+                    with: ['asset_data', 'asset_data.lokasi', 'lokasi'],
                     status_pengaduan: status
                 },
                 type: 'GET',
@@ -40,7 +40,7 @@
         const generateTemplateApproval = (data) => {
             return `
             <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
-                <p class="text-dark mb-0 asset-deskripsi">${data.asset_data.deskripsi} - ${data.asset_data.lokasi.nama_lokasi} </p>
+                <p class="text-dark mb-0 asset-deskripsi">${data.asset_data != null ? data.asset_data.deskripsi : 'Pengaduan'} - ${ data.asset_data != null ? data.asset_data.lokasi.nama_lokasi : data.lokasi.nama_lokasi} </p>
                 <div class="d-flex align-items-center">
                     <div class="d-flex align-items-center" style="width: 60%;">
                         <div class="" style="">

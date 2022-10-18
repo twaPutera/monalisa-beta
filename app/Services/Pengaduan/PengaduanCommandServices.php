@@ -18,8 +18,11 @@ class PengaduanCommandServices
         $user = Session::get('user');
 
         $asset_pengaduan = new Pengaduan();
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
-        $asset_pengaduan->id_asset_data = $asset_data->id;
+        if (!empty($request->id_asset)) {
+            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+            $asset_pengaduan->id_asset_data = $asset_data->id;
+        }
+        $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
@@ -44,8 +47,11 @@ class PengaduanCommandServices
         $request->validated();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
-        $asset_pengaduan->id_asset_data = $asset_data->id;
+        if (!empty($request->id_asset)) {
+            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+            $asset_pengaduan->id_asset_data = $asset_data->id;
+        }
+        $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
