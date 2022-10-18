@@ -5,20 +5,27 @@ namespace App\Http\Controllers\Admin\Approval;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\PemutihanApprovalUpdate;
+use App\Services\Approval\ApprovalQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
 
 class PemutihanController extends Controller
 {
     protected $pemutihanAssetCommandServices;
+    protected $approvalQueryServices;
 
-    public function __construct(PemutihanAssetCommandServices $pemutihanAssetCommandServices)
-    {
+    public function __construct(
+        PemutihanAssetCommandServices $pemutihanAssetCommandServices,
+        ApprovalQueryServices $approvalQueryServices
+    ) {
         $this->pemutihanAssetCommandServices = $pemutihanAssetCommandServices;
+        $this->approvalQueryServices = $approvalQueryServices;
     }
 
     public function index()
     {
-        return view('pages.admin.approval.pemutihan.index');
+        $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PemutihanAsset");
+        $total_approval = $list_approval->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        return view('pages.admin.approval.pemutihan.index', compact('total_approval'));
     }
 
     public function changeStatusApproval(PemutihanApprovalUpdate $request, $id)

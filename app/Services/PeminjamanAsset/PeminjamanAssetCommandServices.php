@@ -73,7 +73,7 @@ class PeminjamanAssetCommandServices
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
         $approval->guid_approver = Session::get('user')->guid;
-        $approval->is_approve = $request->status == 'disetujui' ? 1 : 0;
+        $approval->is_approve = $request->status == 'disetujui' ? 1 : 2;
         $approval->keterangan = $request->keterangan;
         $approval->save();
 

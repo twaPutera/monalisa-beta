@@ -5,20 +5,26 @@ namespace App\Http\Controllers\Admin\Approval;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
+use App\Services\Approval\ApprovalQueryServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
 
 class PeminjamanController extends Controller
 {
     protected $peminjamanAssetCommandServices;
-
-    public function __construct(PeminjamanAssetCommandServices $peminjamanAssetCommandServices)
-    {
+    protected $approvalQueryServices;
+    public function __construct(
+        PeminjamanAssetCommandServices $peminjamanAssetCommandServices,
+        ApprovalQueryServices $approvalQueryServices
+    ) {
         $this->peminjamanAssetCommandServices = $peminjamanAssetCommandServices;
+        $this->approvalQueryServices = $approvalQueryServices;
     }
 
     public function index()
     {
-        return view('pages.admin.approval.peminjaman.index');
+        $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
+        $total_approval = $list_approval->where('is_approve', null)->orWhere('is_approve', 0)->count();
+        return view('pages.admin.approval.peminjaman.index', compact('total_approval'));
     }
 
     public function changeStatusApproval(PeminjamanApprovalUpdate $request, $id)

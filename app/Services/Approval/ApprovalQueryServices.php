@@ -2,22 +2,16 @@
 
 namespace App\Services\Approval;
 
+use App\Models\Approval;
+
 class ApprovalQueryServices
 {
-    protected $property1;
-
-    public function __construct($property1 = null)
+    public function findAll(string $approvable_type)
     {
-        $this->property1 = $property1;
-    }
 
-    public function getProperty1()
-    {
-        return $this->property1;
-    }
-
-    public function setProperty1($property1)
-    {
-        $this->property1 = $property1;
+        $query = Approval::query();
+        $query->where('approvable_type', $approvable_type);
+        $query->orderBy('created_at', 'ASC')->get();
+        return $query;
     }
 }

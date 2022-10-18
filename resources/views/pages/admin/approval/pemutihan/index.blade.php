@@ -143,8 +143,7 @@
                         if (data.approval.is_approve == 1) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval.tanggal_approval).show();
-                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' :
-                                'ditolak';
+                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' : 'ditolak';
                             $('#statusApproval option[value=' + status_approval + ']').attr('selected',
                                 true);
                             $('#keteranganApproval').val(data.approval.keterangan);
@@ -195,7 +194,7 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary">24 Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary">{{ $total_approval }} Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
