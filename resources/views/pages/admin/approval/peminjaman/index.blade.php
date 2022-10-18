@@ -2,7 +2,8 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
@@ -27,8 +28,7 @@
                         d.approvable_type = 'App\\Models\\PeminjamanAsset';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -64,7 +64,8 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-url_detail="`+data+`" data-url_update="`+full.link_update+`" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
+                                <button onclick="showDetail(this)" data-url_detail="` + data + `" data-url_update="` +
+                                full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
                             `;
@@ -79,17 +80,22 @@
                     {
                         targets: [4],
                         render: function(data, type, full, meta) {
-                            return sumDiffFromTwoDate(new Date(full.approvable.tanggal_pengembalian), new Date(full.approvable.tanggal_peminjaman)) + " Hari";
+                            return sumDiffFromTwoDate(new Date(full.approvable
+                                .tanggal_pengembalian), new Date(full.approvable
+                                .tanggal_peminjaman)) + " Hari";
                         },
                     },
                     {
                         targets: [6],
                         render: function(data, type, full, meta) {
-                            let element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
+                            let element =
+                                '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
                             if (data == '1') {
-                                element = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
+                                element =
+                                    '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
                             } else if (data == '2') {
-                                element = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
+                                element =
+                                    '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
                             }
                             return element;
                         },
@@ -106,6 +112,12 @@
                     modal.modal('hide');
                     table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
+                    if (data.data.approval.is_approve == 1) {
+                        setTimeout(() => {
+                            window.location.href =
+                                '{{ route('admin.peminjaman.detail', '') }}' + '/' + data.data.id;
+                        }, 2000);
+                    }
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -132,12 +144,15 @@
                         let form = modal.find('form');
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
-                        if (data.approval.is_approve) {
+                        $('.isDisabled').attr('disabled', false);
+                        if (data.approval.is_approve == 1) {
                             console.log(data.approval.is_approve);
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval.tanggal_approval).show();
-                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' : 'ditolak';
-                            $('#statusApproval option[value='+status_approval+']').attr('selected', true);
+                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' :
+                                'ditolak';
+                            $('#statusApproval option[value=' + status_approval + ']').attr('selected',
+                                true);
                             $('#keteranganApproval').val(data.approval.keterangan);
                         }
                         $('#namaPeminjam').val(user_peminjam.name);
@@ -148,9 +163,9 @@
                         $(data.request_peminjaman_asset).each(function(index, value) {
                             let element = `
                                 <tr>
-                                    <td>`+(index+1)+`</td>
-                                    <td>`+value.kategori_asset.nama_kategori+`</td>
-                                    <td>`+value.jumlah+`</td>
+                                    <td>` + (index + 1) + `</td>
+                                    <td>` + value.kategori_asset.nama_kategori + `</td>
+                                    <td>` + value.jumlah + `</td>
                                 </tr>
                             `;
                             $('#tableBodyDetailPeminjaman').append(element);
