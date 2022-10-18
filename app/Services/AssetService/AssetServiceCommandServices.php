@@ -11,13 +11,14 @@ use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
+use Illuminate\Support\Facades\Session;
 
 class AssetServiceCommandServices
 {
     public function store(string $id, AssetServiceStoreRequest $request)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
@@ -28,7 +29,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::findOrFail($id);
+        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -55,7 +56,7 @@ class AssetServiceCommandServices
     public function storeServices(ServicesStoreRequest $request)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
@@ -66,7 +67,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::findOrFail($request->id_asset);
+        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -93,7 +94,7 @@ class AssetServiceCommandServices
     public function storeUserServices(UserAssetServiceStoreRequest $request, string $id)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
@@ -104,7 +105,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::findOrFail($id);
+        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -131,7 +132,7 @@ class AssetServiceCommandServices
     public function updateServices(string $id, ServicesUpdateRequest $request)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $asset_service = Service::findOrFail($id);
         $asset_service->id_kategori_service = $request->id_kategori_service;
@@ -142,7 +143,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::findOrFail($request->id_asset);
+        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
         $detail_asset_service = DetailService::where('id_service', $asset_service->id)->firstOrFail();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;

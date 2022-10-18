@@ -13,6 +13,7 @@ use App\Http\Requests\Approval\PeminjamanApprovalUpdate;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
+use Illuminate\Support\Facades\Session;
 
 class PeminjamanAssetCommandServices
 {
@@ -26,10 +27,10 @@ class PeminjamanAssetCommandServices
     public function store(PeminjamanAssetStoreRequest $request)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
 
-        if (! isset($approver[0])) {
+        if (!isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
 
@@ -71,7 +72,7 @@ class PeminjamanAssetCommandServices
 
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
-        $approval->guid_approver = \Session::get('user')->guid;
+        $approval->guid_approver = Session::get('user')->guid;
         $approval->is_approve = $request->status == 'disetujui' ? 1 : 0;
         $approval->keterangan = $request->keterangan;
         $approval->save();
@@ -86,7 +87,7 @@ class PeminjamanAssetCommandServices
         $peminjaman = PeminjamanAsset::findOrFail($request->id_peminjaman_asset);
 
         foreach ($request->id_asset as $id_asset) {
-            $asset_data = AssetData::find($id_asset);
+            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id_asset)->first();
             $detail_peminjaman = new DetailPeminjamanAsset();
             $detail_peminjaman->id_peminjaman_asset = $peminjaman->id;
             $detail_peminjaman->json_asset_data = json_encode($asset_data);
@@ -121,13 +122,13 @@ class PeminjamanAssetCommandServices
     private static function getRequestQuota(string $id)
     {
         $request = RequestPeminjamanAsset::where('id_peminjaman_asset', $id)
-                    ->join('kategori_assets', 'kategori_assets.id', '=', 'request_peminjaman_assets.id_kategori_asset')
-                    ->select(
-                        'id_kategori_asset as id',
-                        'nama_kategori',
-                        'jumlah'
-                    )
-                    ->get();
+            ->join('kategori_assets', 'kategori_assets.id', '=', 'request_peminjaman_assets.id_kategori_asset')
+            ->select(
+                'id_kategori_asset as id',
+                'nama_kategori',
+                'jumlah'
+            )
+            ->get();
         return $request;
     }
 }

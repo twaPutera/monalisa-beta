@@ -7,14 +7,15 @@ use App\Models\AssetImage;
 use App\Helpers\FileHelpers;
 use App\Models\LogAssetOpname;
 use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
+use Illuminate\Support\Facades\Session;
 
 class AssetOpnameCommandServices
 {
     public function store(AssetOpnameStoreRequest $request, string $id)
     {
         $request->validated();
-        $user = \Session::get('user');
-        $asset_data = AssetData::findOrFail($id);
+        $user = Session::get('user');
+        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
         $opname_log->tanggal_opname = $request->tanggal_opname;

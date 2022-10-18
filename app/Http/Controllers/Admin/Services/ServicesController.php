@@ -46,7 +46,7 @@ class ServicesController extends Controller
         foreach ($allLokasi as $itemLokasi) {
             foreach ($allDetail as $itemServices) {
                 if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {
-                    $data['namaLokasi'] =  $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi;
+                    $data['namaLokasi'] =  !empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : "Tidak Ada";
                     $data['totalLokasi'] = $itemServices->where('id_lokasi', $itemLokasi->id)->count();
                 }
             }

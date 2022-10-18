@@ -69,9 +69,37 @@
                     <div class="col">
                         <p class="mb-0 text-green">Status Terakhir</p>
                     </div>
+                    @php
+                        if ($asset_data->status_kondisi == 'bagus') {
+                            $kondisi = '<span class="badge badge-success px-3">Baik</span>';
+                        } elseif ($asset_data->status_kondisi == 'rusak') {
+                            $kondisi = '<span class="badge badge-danger px-3">Rusak</span>';
+                        } elseif ($asset_data->status_kondisi == 'maintenance') {
+                            $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
+                        } elseif ($asset_data->status_kondisi == 'tidak-lengkap') {
+                            $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                        }
+                    @endphp
                     <div class="col text-end">
-                        <span class="badge badge-success px-3">Baik</span>
-                        {{-- <p class="mb-0 text-green text-end">Baik</p> --}}
+                        {!! $kondisi !!}
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Status Pemutihan</p>
+                    </div>
+                    <div class="col text-end">
+                        @php
+                            if ($asset_data->is_pemutihan == 0) {
+                                $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
+                            } elseif ($asset_data->is_pemutihan == 1) {
+                                $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                            }
+                        @endphp
+                        {!! $pemutihan !!}
+
                     </div>
                 </div>
             </div>

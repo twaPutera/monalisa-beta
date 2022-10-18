@@ -12,6 +12,7 @@ use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
+use Illuminate\Support\Facades\Session;
 
 class PemindahanAssetCommandServices
 {
@@ -38,15 +39,14 @@ class PemindahanAssetCommandServices
             throw new Exception('Asset masih ada dalam pemindahan asset');
         }
 
-        $user = \Session::get('user');
+        $user = Session::get('user');
         $data_penerima = $this->userSsoQueryServices->getUserByGuid($request->penerima_asset);
         $data_penyerah = $this->userSsoQueryServices->getUserByGuid($request->penyerah_asset);
         // $data_jabatan_penyerah = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penyerah);
         // $data_jabatan_penerima = $this->userSsoQueryServices->getDataPositionById($request->jabatan_penerima);
         // $data_unit_kerja_penyerah = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penyerah);
         // $data_unit_kerja_penerima = $this->userSsoQueryServices->getUnitById($request->unit_kerja_penerima);
-        $asset = AssetData::find($request->asset_id);
-
+        $asset = AssetData::where('is_pemutihan', 0)->where('id', $request->asset_id)->first();
         $pemindahan_asset = new PemindahanAsset();
         $pemindahan_asset->no_surat = $request->no_bast;
         $pemindahan_asset->tanggal_pemindahan = $request->tanggal_pemindahan;
@@ -102,7 +102,7 @@ class PemindahanAssetCommandServices
     public function changeStatus(PemindahanAssetChangeStatusRequest $request, string $id)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $pemindahan_asset = PemindahanAsset::find($id);
 

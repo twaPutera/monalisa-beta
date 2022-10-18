@@ -76,6 +76,45 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
+                        <p class="mb-0 text-green">Status Terakhir</p>
+                    </div>
+                    @php
+                        if ($pengaduan->asset_data->status_kondisi == 'bagus') {
+                            $kondisi = '<span class="badge badge-success px-3">Baik</span>';
+                        } elseif ($pengaduan->asset_data->status_kondisi == 'rusak') {
+                            $kondisi = '<span class="badge badge-danger px-3">Rusak</span>';
+                        } elseif ($pengaduan->asset_data->status_kondisi == 'maintenance') {
+                            $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
+                        } elseif ($pengaduan->asset_data->status_kondisi == 'tidak-lengkap') {
+                            $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                        }
+                    @endphp
+                    <div class="col text-end">
+                        {!! $kondisi !!}
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Status Pemutihan</p>
+                    </div>
+                    <div class="col text-end">
+                        @php
+                            if ($pengaduan->asset_data->is_pemutihan == 0) {
+                                $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
+                            } elseif ($pengaduan->asset_data->is_pemutihan == 1) {
+                                $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                            }
+                        @endphp
+                        {!! $pemutihan !!}
+
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
                         <p class="mb-0 text-green">Tanggal Pengaduan</p>
                     </div>
                     <div class="col">

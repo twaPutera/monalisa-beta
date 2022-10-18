@@ -16,6 +16,7 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
+use Illuminate\Support\Facades\Session;
 
 class PemutihanAssetCommandServices
 {
@@ -30,9 +31,9 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
 
-        $user = \Session::get('user');
+        $user = Session::get('user');
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (! isset($approver[0])) {
+        if (!isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -75,7 +76,7 @@ class PemutihanAssetCommandServices
 
         foreach ($pemutihan->detail_pemutihan_asset as $item) {
             if ($request->status == 'disetujui') {
-                $asset_data = AssetData::findOrFail($item->id_asset_data);
+                $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $item->id_asset_data)->first();
                 $asset_data->is_pemutihan = 1;
                 $asset_data->save();
             }
@@ -83,7 +84,7 @@ class PemutihanAssetCommandServices
 
         $approval = $pemutihan->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
-        $approval->guid_approver = \Session::get('user')->guid;
+        $approval->guid_approver = Session::get('user')->guid;
         $approval->is_approve = $request->status == 'disetujui' ? 1 : 0;
         $approval->keterangan = $request->keterangan;
         $approval->save();
@@ -95,7 +96,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (! isset($approver[0])) {
+        if (!isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -168,7 +169,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -187,7 +188,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
-        if (! isset($approver[0])) {
+        if (!isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -247,7 +248,7 @@ class PemutihanAssetCommandServices
     public function changeStatusApproval(PemutihanAssetChangeStatusRequest $request, string $id)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = Session::get('user');
 
         $pemutihan = PemutihanAsset::findOrFail($id);
 
@@ -274,7 +275,7 @@ class PemutihanAssetCommandServices
 
         if ($request->status == 'disetujui') {
             foreach ($pemutihan->detail_pemutihan_asset as $item) {
-                $asset_data = AssetData::findOrFail($item->id_asset_data);
+                $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $item->id_asset_data)->first();
                 $asset_data->is_pemutihan = 1;
                 $asset_data->save();
             }
