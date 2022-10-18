@@ -1,71 +1,184 @@
 @extends('layouts.admin.main.master')
+@section('plugin_js')
+    <script src="{{ asset('assets/vendors/general/echarts/echarts.min.js') }}"></script>
+@endsection
 @section('custom_js')
     <script>
         $(document).ready(function() {
             getSummaryData();
         });
+
         const getSummaryData = () => {
             $.ajax({
                 url: '{{ route("admin.get-summary-dashboard") }}',
                 type: 'GET',
                 dataType: 'json',
+                data: {
+                    'is_pemutihan': '0',
+                },
                 success: function (response) {
+                    console.log(response);
                     if (response.success) {
-                        console.log(response);
+                        $('#totalAssetSummary').text(response.data.countAsset);
+                        $('#lastUpdateAsset').text(formatDateIntoIndonesia(response.data.lastUpdateAsset));
+                        $('#nilaiBeliAsset').text(formatNumberToMilion(response.data.nilaiAsset.nilai_beli_asset));
+                        $('#totalDepresiasiAsset').text(formatNumberToMilion(response.data.nilaiAsset.nilai_depresiasi));
+                        $('#totalValueAsset').text(formatNumberToMilion(response.data.nilaiAsset.nilai_value_asset));
+
+                        const dataSummaryAsset = response.data.dataSummaryChartAsset.map((item) => {
+                            return {
+                                name: item.name,
+                                value: Math.ceil((item.value / response.data.countAsset) * 100),
+                            }
+                        });
+
+                        const dataSummaryKondisi = response.data.dataSummaryChartAssetByKondisi.map((item) => {
+                            return {
+                                name: item.name,
+                                value: Math.ceil((item.value / response.data.countAsset) * 100),
+                            }
+                        });
+
+                        generateChartAssetSummary(dataSummaryAsset);
+
+                        generateChartAssetKondisi(dataSummaryKondisi);
+
+                        generateChartPenerimaanAsset(response.data.dataSummaryChartAssetByMonthRegis);
+
+                        generateChartService(response.data.dataSummaryServiceByStatus);
+
                     }
                 },
             })
         }
-    </script>
-    <script>
-        // const ctxAssetSummary = document.getElementById('chartAssetSummary');
-        // const chartAssetSummary = new Chart(ctxAssetSummary, {
-        //     type: 'doughnut',
-        //     data: {
-        //         labels: ['Structure', 'Electrical', 'Static', 'Piping', 'Rotating'],
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: [10, 5, 35, 30, 20],
-        //             backgroundColor: [
-        //                 '#7C52DC',
-        //                 '#FB9A99',
-        //                 '#1F78B4',
-        //                 '#A6CEE3',
-        //                 '#E6C881'
-        //             ],
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     plugins: [ChartDataLabels],
-        //     options: {
-        //         cutout: '80%',
-        //         maintainAspectRatio: false,
-        //         layout: {
-        //             padding: {
-        //                 left: 30,
-        //                 right: 30,
-        //                 top: 30,
-        //                 bottom: 30
-        //             }
-        //         },
-        //         plugins: {
-        //             legend: {
-        //                 display: false,
-        //             },
-        //             datalabels: {
-        //                 anchor: 'end',
-        //                 align: 'end',
-        //                 color: 'rgba(118, 118, 118, 1)',
-        //                 font: {
-        //                     size: '10',
-        //                 },
-        //                 formatter: function(value, context) {
-        //                     return context.chart.data.labels[context.dataIndex] + `(${value}%)`;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // });
+
+        const formatNumberToMilion = (number) => {
+            number = number / 1000000;
+            return Math.ceil(number) + ' Jt';
+        }
+
+        const generateChartAssetSummary = (data) => {
+            echarts.init(document.querySelector("#chartAssetSummary")).setOption({
+                title: {
+                    show: false,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                },
+                padding: 0,
+                series: [{
+                    name: 'Kelompok Aset',
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    data: data,
+                    // color: ['#45C277', '#FA394C', '#FFC102'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            });
+        }
+
+        const generateChartAssetKondisi = (data) => {
+            echarts.init(document.querySelector("#chartAssetKondisi")).setOption({
+                title: {
+                    show: false,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                },
+                padding: 0,
+                series: [{
+                    name: 'Jumlah Asset',
+                    type: 'pie',
+                    radius: '60%',
+                    data: data,
+                    // color: ['#45C277', '#FA394C', '#FFC102'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            });
+        }
+
+        const generateChartPenerimaanAsset = (data) => {
+            echarts.init(document.querySelector("#chartPenerimaanAsset")).setOption({
+                xAxis: {
+                    type: 'category',
+                    data: data.name,
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                legend: {
+                    show: false,
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                series: [{
+                    name: 'Penerimaan Aset',
+                    data: data.value,
+                    type: 'bar',
+                    color: '#339AF0',
+                }]
+            });
+        }
+
+        const generateChartService = (data) => {
+            echarts.init(document.querySelector("#chartSummaryService")).setOption({
+                xAxis: {
+                    type: 'value',
+                },
+                yAxis: {
+                    type: 'category',
+                    data: data.name,
+                },
+                grid: {
+                    left: '10%',
+                    containLabel: true
+                },
+                legend: {
+                    show: false,
+                },
+                label: {
+                    show: true,
+                    position: 'inside',
+                    fontWeight: 'bold',
+                    color: '#fff',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                series: [{
+                    name: 'Services Aset',
+                    data: data.data,
+                    type: 'bar',
+                }]
+            });
+        }
     </script>
 @endsection
 @section('main-content')
@@ -92,11 +205,11 @@
                     <div class="kt-portlet__body">
                         <div style="height: 115px;">
                             <h6>Total Asset Data</h6>
-                            <h1 class="text-dark text-right"><strong>1.643</strong></h1>
+                            <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
                         </div>
                         <div style="height: 115px;">
                             <h6>Last Change</h6>
-                            <p class="text-primary text-right"><strong>20-Jun-2022</strong></p>
+                            <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
                         </div>
                     </div>
                 </div>
@@ -110,8 +223,8 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="kt-portlet__body">
-                        <canvas id="chartAssetSummary" style="width: 230px; height: 230px;"></canvas>
+                    <div class="kt-portlet__body px-0">
+                        <div id="chartAssetSummary" style="height: 260px; margin-top: -30px;"></div>
                     </div>
                 </div>
             </div>
@@ -132,7 +245,7 @@
                                 </span>
                                 <p class="mb-0 text-dark">Nilai Beli Asset</p>
                             </div>
-                            <h2 class="text-dark mb-0"><strong>120 Jt</strong></h2>
+                            <h2 class="text-dark mb-0"><strong id="nilaiBeliAsset">0 Jt</strong></h2>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center">
@@ -141,7 +254,7 @@
                                 </span>
                                 <p class="mb-0 text-dark">Total Depresiasi</p>
                             </div>
-                            <h2 class="text-dark mb-0"><strong>30 Jt</strong></h2>
+                            <h2 class="text-dark mb-0"><strong id="totalDepresiasiAsset">0 Jt</strong></h2>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center">
@@ -150,7 +263,7 @@
                                 </span>
                                 <p class="mb-0 text-dark">Value Asset</p>
                             </div>
-                            <h2 class="text-dark mb-0"><strong>30 Jt</strong></h2>
+                            <h2 class="text-dark mb-0"><strong id="totalValueAsset">0 Jt</strong></h2>
                         </div>
                     </div>
                 </div>
@@ -164,8 +277,8 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="kt-portlet__body">
-                        <canvas id="chartCertification" style="width: 230px; height: 100px;"></canvas>
+                    <div class="kt-portlet__body px-0">
+                        <div id="chartAssetKondisi" style="height: 180px; margin-top: -30px;"></div>
                     </div>
                 </div>
             </div>
@@ -180,8 +293,8 @@
                     </h3>
                 </div>
             </div>
-            <div class="kt-portlet__body">
-                <canvas id="chartPenerimaanAsset" style="width: 230px; height: 230px;"></canvas>
+            <div class="kt-portlet__body p-0">
+                <div id="chartPenerimaanAsset" style="margin-top: -30px; height: 310px;"></div>
             </div>
         </div>
         <div class="kt-portlet shadow-custom">
@@ -197,7 +310,7 @@
                     <div class="col-4">
                         <div class="d-flex align-items-center border-bottom border-success py-2">
                             <h2 class="text-success mb-0"><strong>27</strong></h2>
-                            <h6 class="text-success ml-2 mb-0"><strong>Total Laporan User</strong></h6>
+                            <h6 class="text-success ml-2 mb-0"><strong>Total Keluhan User</strong></h6>
                         </div>
                         <div class="d-flex align-items-center border-bottom border-success py-2">
                             <h2 class="text-success mb-0"><strong>27</strong></h2>
@@ -208,7 +321,11 @@
                             <h6 class="text-success ml-2 mb-0"><strong>Total Belum Ditangani</strong></h6>
                         </div>
                     </div>
-                    <div class="col-8"></div>
+                    <div class="col-8 p-0 m-0">
+                        <div style="height: 200px;">
+                            <div id="chartSummaryService" style="height: 280px; margin-top: -60px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

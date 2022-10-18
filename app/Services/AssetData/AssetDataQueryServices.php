@@ -6,6 +6,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
+use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -198,6 +199,111 @@ class AssetDataQueryServices
         }
 
         $data = $data->count();
+
+        return $data;
+    }
+
+    public function lastUpdateAsset()
+    {
+        $data = AssetData::query()
+            ->max('updated_at');
+
+        return $data;
+    }
+
+    public function getValueAsset()
+    {
+        $nilai_beli_asset = AssetData::query()
+            ->where('is_pemutihan', '0')
+            ->sum('nilai_perolehan');
+
+        $nilai_value_asset = AssetData::query()
+            ->where('is_pemutihan', '0')
+            ->sum('nilai_buku_asset');
+
+        $nilai_depresiasi = $nilai_beli_asset - $nilai_value_asset;
+
+        return [
+            'nilai_beli_asset' => $nilai_beli_asset,
+            'nilai_value_asset' => $nilai_value_asset,
+            'nilai_depresiasi' => $nilai_depresiasi,
+        ];
+    }
+
+    public function getDataChartSummaryAssetByGroup(Request $request)
+    {
+        $data = [];
+        $group_kategori_asset = GroupKategoriAsset::query()
+            ->select([
+                'id',
+                'nama_group',
+            ])
+            ->get();
+
+        foreach ($group_kategori_asset as $item) {
+            $count_asset = AssetData::query()
+                ->whereHas('kategori_asset', function ($query) use ($item) {
+                    $query->where('id_group_kategori_asset', $item->id);
+                })
+                ->where('is_pemutihan', '0')
+                ->count();
+
+            $data[] = [
+                'name' => $item->nama_group,
+                'value' => $count_asset,
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getDataChartSummaryAssetByStatus(Request $request)
+    {
+        $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap'];
+        $data = [];
+        foreach ($status as $item) {
+            $count_asset = AssetData::query()
+                ->where('status_kondisi', $item)
+                ->where('is_pemutihan', '0')
+                ->count();
+
+            $data[] = [
+                'name' => $item,
+                'value' => $count_asset,
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getDataChartSummaryAssetByMonthRegister(Request $request)
+    {
+        $data = [];
+        $month = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'Mei',
+            'Jun',
+            'Jul',
+            'Ags',
+            'Sep',
+            'Okt',
+            'Nov',
+            'Des',
+        ];
+
+        foreach ($month as $key => $item) {
+            $count_asset = AssetData::query()
+                ->whereMonth('tgl_register', $key + 1)
+                ->whereYear('tgl_register', date('Y'))
+                ->where('is_pemutihan', '0')
+                ->count();
+
+            $data['name'][] = $item;
+            $data['value'][] = $count_asset;
+        }
 
         return $data;
     }

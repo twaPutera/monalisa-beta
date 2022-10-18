@@ -78,4 +78,44 @@ class AssetServiceQueryServices
 
         return $data;
     }
+
+    public function getDataChartByStatus(Request $request)
+    {
+        $status = ['selesai', 'onprogress', 'backlog'];
+        $status_service = ['Done', 'On Progress', 'Backlog', 'Total Services'];
+        $color = ['#469B54', '#F03E3E', '#FFC102', '#339AF0'];
+
+        foreach ($status as $key => $value) {
+            $query = Service::query()
+                ->where('status_service', $value);
+
+            if (isset($request->year)) {
+                $query->whereYear('created_at', $request->year);
+            }
+
+            if (isset($request->month)) {
+                $query->whereMonth('created_at', $request->month);
+            }
+
+            $count = $query->count();
+
+            $data['data'][] = [
+                'value' => $count,
+                'itemStyle' => [
+                    'color' => $color[$key],
+                ]
+            ];
+            $data['name'][] = $status_service[$key];
+        }
+
+        $data['name'][] = 'Total Services';
+        $data['data'][] = [
+            'value' => array_sum(array_column($data['data'], 'value')),
+            'itemStyle' => [
+                'color' => $color[3],
+            ]
+        ];
+
+        return $data;
+    }
 }
