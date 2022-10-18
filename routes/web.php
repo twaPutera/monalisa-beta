@@ -156,6 +156,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         # Edit Pemutihan Asset
         Route::group(['prefix' => 'edit'], function () {
             Route::get('/{id}', [PemutihanAssetController::class, 'edit'])->name('admin.pemutihan-asset.edit');
+            Route::get('/ditolak/{id}', [PemutihanAssetController::class, 'editDitolak'])->name('admin.pemutihan-asset.edit.ditolak');
             Route::post('/update/{id}', [PemutihanAssetController::class, 'update'])->name('admin.pemutihan-asset.update');
             Route::get('/listing-asset/{id}', [PemutihanAssetController::class, 'editListingAsset'])->name('admin.pemutihan-asset.edit.listing-asset');
             Route::post('/listing-asset/update/{id}', [PemutihanAssetController::class, 'editListingAssetUpdate'])->name('admin.pemutihan-asset.edit.listing-asset.update');

@@ -53,6 +53,16 @@ class PemutihanAssetDatatableServices
                                     <i class="fa fa-trash"></i>
                                 </button>';
                     $element .= '</form>';
+                } else if ($item->status == 'Ditolak') {
+                    $element .= '<form action="' . route('admin.pemutihan-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
+                    $element .= csrf_field();
+                    $element .= '<a href="' . route('admin.pemutihan-asset.edit.ditolak', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
+                                    <i class="fa fa-edit"></i>
+                                </a>';
+                    $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
+                                    <i class="fa fa-trash"></i>
+                                </button>';
+                    $element .= '</form>';
                 } else {
                     $element .= '<button type="button" onclick="detail(this)" data-url_detail="' . route('admin.pemutihan-asset.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                     <i class="fa fa-eye"></i>
