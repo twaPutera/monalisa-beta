@@ -139,7 +139,8 @@
                         let form = modal.find('form');
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
-                        if (data.approval.is_approve) {
+                        $('.isDisabled').attr('disabled', false);
+                        if (data.approval.is_approve == 1) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval.tanggal_approval).show();
                             const status_approval = data.approval.is_approve == '1' ? 'disetujui' :
@@ -158,7 +159,8 @@
                             data.file_bast);
                         $('#tableBodyDetailPeminjaman').html('');
                         $(data.detail_pemutihan_asset).each(function(index, value) {
-                            let buttonImage = `
+                            let buttonImage =
+                                `
                                 <a href="#" onclick="showPemutihanAsset(this)"
                                 data-url_detail="{{ route('admin.pemutihan-asset.edit.listing-asset.get-image', '') }}/` +
                                 value.id + `"
