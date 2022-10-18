@@ -58,6 +58,9 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::group(['prefix' => 'summary'], function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'getSummaryDashboard'])->name('admin.get-summary-dashboard');
+    });
     Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
     # Approval
     Route::group(['prefix' => 'approval'], function () {

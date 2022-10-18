@@ -529,9 +529,12 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-book"></i></span>
                                     Bahan Habis Pakai</span></a></li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="./certification.html"
+                        <li class="kt-menu__item" aria-haspopup="true"><a href="#"
                             class="kt-menu__link "><span class="kt-menu__link-text"><span
                                     class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report</span></a></li>
+                        <li class="kt-menu__item" aria-haspopup="true"><a href="#"
+                            class="kt-menu__link "><span class="kt-menu__link-text"><span
+                                    class="kt-menu__link-icon"><i class="fas fa-users"></i></span> User Management</span></a></li>
                     </ul>
                 </div>
             </div>
