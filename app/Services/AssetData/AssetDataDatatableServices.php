@@ -8,14 +8,17 @@ use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class AssetDataDatatableServices
 {
     protected $ssoServices;
+    protected $userServices;
 
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function datatable(Request $request)
@@ -117,8 +120,16 @@ class AssetDataDatatableServices
                 return $item->kategori_asset->nama_kategori ?? 'Tidak ada Kategori';
             })
             ->addColumn('owner_name', function ($item) {
-                $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = "-";
+                if (config('app.sso_siska')) {
+                    $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->ownership == null ? null : $this->userQueryServices->findById($item->ownership);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -133,8 +144,16 @@ class AssetDataDatatableServices
                 return $element;
             })
             ->addColumn('register_oleh', function ($item) {
-                $user = $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = "-";
+                if (config('app.sso_siska')) {
+                    $user = $item->register_oleh == null ? null : $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->register_oleh == null ? null : $this->userQueryServices->findById($item->register_oleh);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
             })
             ->rawColumns(['action', 'checkbox'])
             ->make(true);
@@ -163,8 +182,16 @@ class AssetDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('created_by', function ($item) {
-                $user = $this->userSsoQueryServices->getUserByGuid($item->created_by);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = "-";
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
             })
             ->addColumn('action', function ($item) {
                 $element = '';

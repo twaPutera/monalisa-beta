@@ -9,6 +9,7 @@ use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
+use App\Helpers\SsoHelpers;
 
 class InventarisDataCommandServices
 {
@@ -16,7 +17,7 @@ class InventarisDataCommandServices
     {
         $request->validated();
 
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $inventori_data = new InventoriData();
         $inventori_data->id_kategori_inventori = $request->id_kategori_inventori;
         $inventori_data->id_satuan_inventori = $request->id_satuan_inventori;
@@ -42,7 +43,7 @@ class InventarisDataCommandServices
     {
         $request->validated();
 
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $inventori_data = InventoriData::findOrFail($request->id_inventaris);
         $inventori_data->id_kategori_inventori = $request->id_kategori_inventori;
         $inventori_data->id_satuan_inventori = $request->id_satuan_inventori;
@@ -82,7 +83,7 @@ class InventarisDataCommandServices
     public function updateStok(string $id, InventarisDataUpdateStokRequest $request)
     {
         $request->validated();
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $inventori_data = InventoriData::findOrFail($id);
         $selisih = $inventori_data->jumlah_saat_ini - $request->jumlah_keluar;
         if ($selisih >= 0) {

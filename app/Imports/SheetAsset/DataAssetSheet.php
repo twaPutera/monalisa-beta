@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use App\Helpers\SsoHelpers;
 
 class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 {
@@ -30,7 +31,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $id_kategori = KategoriAsset::where('kode_kategori', $row[12])->first();
         $id_satuan = SatuanAsset::where('kode_satuan', $row[13])->first();
         $id_lokasi = Lokasi::where('kode_lokasi', $row[14])->first();
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $qr_name = 'qr-asset-' . $row[0] . '.png';
         $path = storage_path('app/images/qr-code/' . $qr_name);
@@ -48,7 +49,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'nilai_perolehan' => $row[4],
             'jenis_penerimaan' => $row[5],
             'tgl_register' => $row[2],
-            'register_oleh' => $user->guid,
+            'register_oleh' => config('app.sso_siska') ? $user->guid : $user->id,
             'no_memo_surat' => $row[6],
             'no_po' => $row[7],
             'no_sp3' => $row[8],
@@ -59,7 +60,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'nilai_depresiasi' => DepresiasiHelpers::getNilaiDepresiasi($row[4], $id_kategori->umur_asset),
             // 'umur_manfaat_fisikal' => $row[18],
             'umur_manfaat_komersial' => $id_kategori->umur_asset,
-            'created_by' => $user->guid,
+            'created_by' => config('app.sso_siska') ? $user->guid : $user->id,
             'qr_code' => $qr_name,
         ]);
         return $data_asset;

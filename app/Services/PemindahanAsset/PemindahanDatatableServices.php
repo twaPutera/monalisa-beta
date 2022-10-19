@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\PemindahanAsset;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class PemindahanDatatableServices
 {
     protected $userSsoQueryServices;
+    protected $userQueryServices;
 
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function datatable(Request $request)
@@ -57,8 +60,15 @@ class PemindahanDatatableServices
                 return $asset;
             })
             ->addColumn('pembuat', function ($item) {
-                $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = "Not Found";
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? collect($user[0]) : null;
+                } else {
+                    $user = $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
             })
             ->rawColumns(['btn_download', 'asset'])
             ->make(true);

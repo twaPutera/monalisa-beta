@@ -8,12 +8,14 @@ use App\Models\PemutihanAsset;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPemutihanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class PemutihanAssetDatatableServices
 {
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
     public $assetInPemutihan = [];
     public function datatable(Request $request)
@@ -35,11 +37,15 @@ class PemutihanAssetDatatableServices
                 return empty($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('created_by', function ($item) {
-                $user = null;
-                if (isset($item->created_by)) {
-                    $user = $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                $name = "Not Found";
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? collect($user[0]) : null;
+                } else {
+                    $user = $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
                 }
-                return $user == null ? 'Tidak ada' : $user[0]['nama'];
+                return $name;
             })
             ->addColumn('action', function ($item) {
                 $element = '';

@@ -12,17 +12,18 @@ use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\SsoHelpers;
 
 class AssetServiceCommandServices
 {
     public function store(string $id, AssetServiceStoreRequest $request)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
-        $asset_service->guid_pembuat = $user->guid;
+        $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
@@ -56,11 +57,11 @@ class AssetServiceCommandServices
     public function storeServices(ServicesStoreRequest $request)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
-        $asset_service->guid_pembuat = $user->guid;
+        $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
@@ -94,11 +95,11 @@ class AssetServiceCommandServices
     public function storeUserServices(UserAssetServiceStoreRequest $request, string $id)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
-        $asset_service->guid_pembuat = $user->guid;
+        $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
@@ -132,11 +133,11 @@ class AssetServiceCommandServices
     public function updateServices(string $id, ServicesUpdateRequest $request)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset_service = Service::findOrFail($id);
         $asset_service->id_kategori_service = $request->id_kategori_service;
-        $asset_service->guid_pembuat = $user->guid;
+        $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;

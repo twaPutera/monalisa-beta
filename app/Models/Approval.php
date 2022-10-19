@@ -6,6 +6,7 @@ use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\UserSso\UserSsoQueryServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Services\User\UserQueryServices;
 
 class Approval extends Model
 {
@@ -54,11 +55,17 @@ class Approval extends Model
     public function getPembuatApproval()
     {
         $userSso = new UserSsoQueryServices();
+        $userService = new UserQueryServices();
         $guid = $this->approvable->created_by;
         $name = 'Tidak Terdaftar di Siska';
         if (isset($guid)) {
-            $user_sso = $userSso->getUserByGuid($guid);
-            $name = isset($user_sso[0]) ? $user_sso[0]['nama'] : 'User Not Found';
+            if (config('app.sso_siska')) {
+                $user = $this->created_by == null ? null : $userSso->getUserByGuid($this->created_by);
+                $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+            } else {
+                $user = $this->created_by == null ? null : $userService->findById($this->created_by);
+                $name = isset($user) ? $user->name : 'Not Found';
+            }
         }
 
         return $name;

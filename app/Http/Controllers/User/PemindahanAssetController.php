@@ -31,9 +31,9 @@ class PemindahanAssetController extends Controller
 
     public function detail($id)
     {
-        $user = \Session::get('user');
+        $user = auth()->user();
         $pemindahan_asset = $this->pemindahanAssetQueryServices->findById($id);
-        $approval = $pemindahan_asset->approval->where('guid_approver', $user->guid)->first();
+        $approval = $pemindahan_asset->approval->where('guid_approver', $user->id)->first();
         $asset_data = $this->assetDataQueryServices->findById($pemindahan_asset->detail_pemindahan_asset->id_asset);
         $last_service = $this->assetServiceQueryServices->findLastestLogByAssetId($pemindahan_asset->detail_pemindahan_asset->id_asset);
         return view('pages.user.asset.pemindahan-asset.detail', compact('pemindahan_asset', 'asset_data', 'last_service', 'approval'));

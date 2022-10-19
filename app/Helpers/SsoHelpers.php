@@ -129,4 +129,18 @@ class SsoHelpers
 
         return false;
     }
+
+    public static function getUserLogin()
+    {
+        $sso_login = config('app.sso_login');
+        $user = auth()->user();
+        if ($sso_login) {
+            $sso_siska = config('app.sso_siska');
+            if ($sso_siska) {
+                $user = \Session::get('user', null);
+            }
+        }
+
+        return $user;
+    }
 }

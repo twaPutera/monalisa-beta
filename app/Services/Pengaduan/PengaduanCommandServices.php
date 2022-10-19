@@ -15,7 +15,7 @@ class PengaduanCommandServices
     public function storeUserPengaduan(PengaduanStoreRequest $request)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
         if (!empty($request->id_asset)) {
@@ -26,7 +26,7 @@ class PengaduanCommandServices
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
-        $asset_pengaduan->created_by = $user->guid;
+        $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
 
         if ($request->hasFile('file_asset_service')) {
