@@ -536,7 +536,7 @@
                         <li class="kt-menu__item" aria-haspopup="true"><a href="#"
                             class="kt-menu__link "><span class="kt-menu__link-text"><span
                                     class="kt-menu__link-icon"><i class="fas fa-print"></i></span> Report</span></a></li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="#"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'user-management') kt-menu__item--active @endif" aria-haspopup="true"><a href="{{ route('admin.user-management.user.index') }}"
                             class="kt-menu__link "><span class="kt-menu__link-text"><span
                                     class="kt-menu__link-icon"><i class="fas fa-users"></i></span> User Management</span></a></li>
                     </ul>
