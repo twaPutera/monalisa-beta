@@ -7,14 +7,17 @@ use App\Models\AssetData;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class AssetServiceDatatableServices
 {
     protected $ssoServices;
+    protected $userQueryServices;
 
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function datatable(Request $request)
