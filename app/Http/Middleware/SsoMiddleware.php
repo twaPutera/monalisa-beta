@@ -20,6 +20,11 @@ class SsoMiddleware
     {
         // dd(\Session::get('access_token'));
         // dd(\Session::get('user'));
+        $sso_login = config('app.sso_login');
+        if (!$sso_login) {
+            return $next($request);
+        }
+
         $token = SsoHelpers::checkTokenIsValid($request);
 
         if ($token) {
