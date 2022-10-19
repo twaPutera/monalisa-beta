@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPem
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +59,11 @@ Route::get('/', function () {
     return redirect()->route('sso.redirect');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
+Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->middleware('guest');
+Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware('auth');
+
+Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::group(['prefix' => 'summary'], function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'getSummaryDashboard'])->name('admin.get-summary-dashboard');
@@ -329,7 +334,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
     });
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['sso']], function () {
+Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::group(['prefix' => 'scan-qr'], function () {
         Route::get('/', [ScanQrCodeController::class, 'index'])->name('user.scan-qr.index');

@@ -19,6 +19,7 @@ return [
     'sso_ldap_url' => env('SSO_LDAP_URL', null),
     'sso_siska_url' => env('SSO_SISKA_URL', null),
     'siska_url' => env('SISKA_URL', null),
+    'sso_login' => env('SSO_LOGIN', false),
 
     'jwt_secret' => env('JWT_SECRET', 'example_key'),
 

@@ -23,7 +23,7 @@
             <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid">
                 <div class="kt-header__topbar-item mr-3 d-flex align-items-center">
                     <a class="kt-header__topbar-wrapper" href="{{ route('admin.approval.peminjaman.index') }}">
-                        <u>Daftar Approval ({{ $daftar_approval }})</u>
+                        <u>Daftar Approval ({{ $daftar_approval ?? 0 }})</u>
                     </a>
                 </div>
                 <div class="kt-header__topbar-item d-flex align-items-center mr-3">
@@ -441,7 +441,7 @@
                     </div>
                 </div>
                 <div class="kt-header__topbar-item d-flex align-items-center mr-3">
-                    <div class="badge badge-lg badge-primary"><strong>{{ ucWords($jabatan) }}</strong>
+                    <div class="badge badge-lg badge-primary"><strong>{{ ucWords($jabatan ?? 'No Jabatan') }}</strong>
                     </div>
                 </div>
                 <!--begin: User bar -->
@@ -449,7 +449,7 @@
                     <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                         <span class="kt-hidden kt-header__topbar-welcome">Hi,</span>
                         <span class="kt-hidden kt-header__topbar-username">user</span>
-                        <img src="https://ui-avatars.com/api/?name={{ $nama }}&background=5174ff&color=fff"
+                        <img src="https://ui-avatars.com/api/?name={{ $nama ?? 'No Name' }}&background=5174ff&color=fff"
                             id="userDropdown" alt="Profile" class="kt-hidden-">
                         <span class="kt-header__topbar-icon kt-header__topbar-icon--brand kt-hidden"><b>S</b></span>
                     </div>
@@ -459,14 +459,14 @@
                         <!--begin: Head -->
                         <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
                             <div class="kt-user-card__avatar">
-                                <img src="https://ui-avatars.com/api/?name={{ $nama }}&background=5174ff&color=fff"
+                                <img src="https://ui-avatars.com/api/?name={{ $nama ?? 'No Name' }}&background=5174ff&color=fff"
                                     id="userDropdown" alt="Profile" class="kt-hidden-">
                                 <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
                                 <span
                                     class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold kt-hidden">S</span>
                             </div>
                             <div class="kt-user-card__name">
-                                {{ $nama }}
+                                {{ $nama ?? "No Name" }}
                             </div>
                         </div>
 
