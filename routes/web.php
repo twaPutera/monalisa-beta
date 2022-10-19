@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
+use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -211,6 +212,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso']], function () {
         Route::get('/datatable-penambahan', [MasterInventarisController::class, 'datatablePenambahan'])->name('admin.listing-inventaris.datatable.penambahan');
         Route::get('/datatable-pengurangan', [MasterInventarisController::class, 'datatablePengurangan'])->name('admin.listing-inventaris.datatable.pengurangan');
         Route::get('/get-data-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('admin.listing-inventaris.get-data-select2');
+    });
+
+    # User Management
+    Route::group(['prefix' => 'user-management'], function () {
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/', [AdminUserManagementUserController::class, 'index'])->name('admin.user-management.user.index');
+            Route::post('/store', [AdminUserManagementUserController::class, 'store'])->name('admin.user-management.user.store');
+            Route::get('/show/{id}', [AdminUserManagementUserController::class, 'show'])->name('admin.user-management.user.show');
+            Route::post('/update/{id}', [AdminUserManagementUserController::class, 'update'])->name('admin.user-management.user.update');
+            Route::post('/delete/{id}', [AdminUserManagementUserController::class, 'delete'])->name('admin.user-management.user.delete');
+            Route::post('/change-password/{id}', [AdminUserManagementUserController::class, 'changePassword'])->name('admin.user-management.user.change-password');
+            Route::get('/datatable', [AdminUserManagementUserController::class, 'datatable'])->name('admin.user-management.user.datatable');
+        });
     });
 
     # Setting
