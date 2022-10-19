@@ -72,7 +72,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             'Spesifikasi Asset',
             // 'Umur Manfaat Fisikal',
             // 'Umur Manfaat Komersial',
-            'Status Kondisi Asset (Baik/Rusak)',
+            'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap)',
         ];
     }
 }

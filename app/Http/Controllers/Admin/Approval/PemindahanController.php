@@ -14,22 +14,17 @@ class PemindahanController extends Controller
 {
     protected $pemindahanAssetCommandServices;
     protected $pemindahanAssetQueryServices;
-    protected $approvalQueryServices;
     public function __construct(
         PemindahanAssetCommandServices $pemindahanAssetCommandServices,
-        PemindahanAssetQueryServices $pemindahanAssetQueryServices,
-        ApprovalQueryServices $approvalQueryServices
+        PemindahanAssetQueryServices $pemindahanAssetQueryServices
     ) {
         $this->pemindahanAssetCommandServices = $pemindahanAssetCommandServices;
         $this->pemindahanAssetQueryServices = $pemindahanAssetQueryServices;
-        $this->approvalQueryServices = $approvalQueryServices;
     }
 
     public function index()
     {
-        $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PemindahanAsset");
-        $total_approval = $list_approval->count();
-        return view('pages.admin.approval.pemindahan.index', compact('total_approval'));
+        return view('pages.admin.approval.pemindahan.index');
     }
 
     public function changeStatusApproval(PemindahanAssetChangeStatusRequest $request, $id)

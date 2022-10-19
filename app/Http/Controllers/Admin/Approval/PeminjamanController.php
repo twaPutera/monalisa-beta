@@ -11,20 +11,15 @@ use App\Services\PeminjamanAsset\PeminjamanAssetCommandServices;
 class PeminjamanController extends Controller
 {
     protected $peminjamanAssetCommandServices;
-    protected $approvalQueryServices;
     public function __construct(
-        PeminjamanAssetCommandServices $peminjamanAssetCommandServices,
-        ApprovalQueryServices $approvalQueryServices
+        PeminjamanAssetCommandServices $peminjamanAssetCommandServices
     ) {
         $this->peminjamanAssetCommandServices = $peminjamanAssetCommandServices;
-        $this->approvalQueryServices = $approvalQueryServices;
     }
 
     public function index()
     {
-        $list_approval = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
-        $total_approval = $list_approval->count();
-        return view('pages.admin.approval.peminjaman.index', compact('total_approval'));
+        return view('pages.admin.approval.peminjaman.index');
     }
 
     public function changeStatusApproval(PeminjamanApprovalUpdate $request, $id)

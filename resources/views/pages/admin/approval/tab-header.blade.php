@@ -1,14 +1,19 @@
 <ul class="nav nav-tabs  nav-tabs-line" role="tablist">
     <li class="nav-item">
         <a class="nav-link @if (\Request::segment(3) == 'peminjaman') active @endif"
-            href="{{ route('admin.approval.peminjaman.index') }}">Peminjaman ({{ $total_approval_peminjaman }})</a>
+            href="{{ route('admin.approval.peminjaman.index') }}">Peminjaman (<span
+                id="peminjaman-approval-count">0</span>)</a>
     </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link @if (\Request::segment(3) == 'pemutihan') active @endif"
-            href="{{ route('admin.approval.pemutihan.index') }}">Pemutihan ({{ $total_approval_pemutihan }})</a>
-    </li>
+    @if (Auth::user()->role == 'manager')
+        <li class="nav-item dropdown">
+            <a class="nav-link @if (\Request::segment(3) == 'pemutihan') active @endif"
+                href="{{ route('admin.approval.pemutihan.index') }}">Pemutihan (<span
+                    id="pemutihan-approval-count">0</span>)</a>
+        </li>
+    @endif
     <li class="nav-item">
         <a class="nav-link @if (\Request::segment(3) == 'pemindahan') active @endif"
-            href="{{ route('admin.approval.pemindahan.index') }}">Pemindahan ({{ $total_approval_pemindahan }})</a>
+            href="{{ route('admin.approval.pemindahan.index') }}">Pemindahan (<span
+                id="pemindahan-approval-count">0</span>)</a>
     </li>
 </ul>

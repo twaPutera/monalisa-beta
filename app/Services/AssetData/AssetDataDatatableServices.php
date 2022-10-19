@@ -73,7 +73,12 @@ class AssetDataDatatableServices
         }
 
         if (isset($request->is_pemutihan)) {
-            $query->where('is_pemutihan', $request->is_pemutihan);
+            if ($request->is_pemutihan == "all") {
+                $query->where('is_pemutihan', 0);
+                $query->orWhere('is_pemutihan', 1);
+            } else {
+                $query->where('is_pemutihan', $request->is_pemutihan);
+            }
         }
 
         if (isset($request->status_kondisi)) {
@@ -85,12 +90,14 @@ class AssetDataDatatableServices
         if (isset($request->jenis)) {
             $query->where('id_kategori_asset', $request->jenis);
         }
-        
+
         if (isset($request->is_pinjam)) {
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        // $query->where('is_pemutihan', 0);
+        if (!isset($request->is_pemutihan)) {
+            $query->where('is_pemutihan', 0);
+        }
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()

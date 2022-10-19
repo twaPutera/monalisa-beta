@@ -123,6 +123,7 @@
                         d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
                         d.is_sparepart = $('#isSparepartFilter').val();
+                        d.is_pemutihan = $('#isPemutihanFilter').val();
                     }
                 },
                 columns: [{
@@ -189,10 +190,7 @@
                         targets: 6,
                         render: function(data, type, full, meta) {
                             let element = '';
-                            if (data == 'bagus') {
-                                element =
-                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
-                            } else if (data == 'rusak') {
+                            if (data == 'rusak') {
                                 element =
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
                             } else if (data == 'maintenance') {
@@ -201,6 +199,9 @@
                             } else if (data == 'tidak-lengkap') {
                                 element =
                                     `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            } else {
+                                element =
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
                             }
 
                             return element;
@@ -212,10 +213,12 @@
                             let element = '';
                             if (data == 0) {
                                 element =
-                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>`;
+                                    `<h6 class="text-center text-danger" style="font-size: 20px"><i
+                                    class="fas fa-times-circle"></i></h6>`;
                             } else if (data == 1) {
                                 element =
-                                    `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>`;
+                                    `<h6 class="text-center text-success" style="font-size: 20px"><i
+                                    class="fas fa-check-circle"></i></h6>`;
                             }
 
                             return element;
@@ -258,10 +261,7 @@
                     if (response.success) {
                         const asset = response.data.asset;
                         const opname = response.data.asset.log_asset_opname[0];
-                        if (asset.status_kondisi == 'bagus') {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
-                        } else if (asset.status_kondisi == 'rusak') {
+                        if (asset.status_kondisi == 'rusak') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
                         } else if (asset.status_kondisi == 'maintenance') {
@@ -270,14 +270,20 @@
                         } else if (asset.status_kondisi == 'tidak-lengkap') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                        } else {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
                         }
+
 
                         if (asset.is_pemutihan == 0) {
                             var pemutihan =
-                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>`;
+                                `<h6 class="text-center text-danger" style="font-size: 24px"><i
+                                    class="fas fa-times-circle"></i></h6>`;
                         } else if (asset.is_pemutihan == 1) {
                             var pemutihan =
-                                `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>`;
+                                `<h6 class="text-center text-success" style="font-size: 24px"><i
+                                    class="fas fa-check-circle"></i></h6>`;
                         }
                         $('#assetNamePreview').text(asset.deskripsi);
                         $('#assetKondisi').empty();

@@ -63,8 +63,9 @@ Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->midd
 Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->middleware('guest');
 Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware('auth');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|manager']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/getDaftarApproval', [AdminDashboardController::class, 'getDaftarApproval'])->name('admin.dashboard.approval');
     Route::group(['prefix' => 'summary'], function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'getSummaryDashboard'])->name('admin.get-summary-dashboard');
     });
@@ -77,7 +78,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth']], function ()
             Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
             Route::post('/change-status/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApproval'])->name('admin.approval.peminjaman.change-status');
         });
-        Route::group(['prefix' => 'pemutihan'], function () {
+        Route::group(['prefix' => 'pemutihan', 'middleware' => ['role:manager']], function () {
             Route::get('/', [AdminPemutihanAssetController::class, 'index'])->name('admin.approval.pemutihan.index');
             Route::post('/change-status/{id}', [AdminPemutihanAssetController::class, 'changeStatusApproval'])->name('admin.approval.pemutihan.change-status');
         });
@@ -334,7 +335,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth']], function ()
     });
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth']], function () {
+Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|staff']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::group(['prefix' => 'scan-qr'], function () {
         Route::get('/', [ScanQrCodeController::class, 'index'])->name('user.scan-qr.index');

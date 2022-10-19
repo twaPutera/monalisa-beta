@@ -81,4 +81,36 @@
 </script>
 <script src="{{ asset('custom-js/config.js') }}" type="text/javascript"></script>
 <script src="{{ asset('custom-js/general.js') }}" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{{ route('admin.dashboard.approval') }}",
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                url: "{{ \Request::segment(3) }}"
+            },
+            success: function(response) {
+                const tab_peminjaman = $("#peminjaman-approval-count");
+                const tab_pemindahan = $("#pemindahan-approval-count");
+                const tab_pemutihan = $("#pemutihan-approval-count");
+                const daftar_approval = $("#daftar-approval-count");
+                const approval_task = $(".approval-task-count");
+                if (response.success) {
+                    tab_pemindahan.empty();
+                    tab_pemutihan.empty();
+                    tab_peminjaman.empty();
+                    daftar_approval.empty();
+                    approval_task.empty();
+
+                    tab_pemindahan.append(response.data.total_approval_pemindahan);
+                    tab_pemutihan.append(response.data.total_approval_pemutihan);
+                    tab_peminjaman.append(response.data.total_approval_peminjaman);
+                    daftar_approval.append(response.data.daftar_approval);
+                    approval_task.append(response.data.approval_task);
+                }
+            }
+        })
+    });
+</script>
 @yield('custom_js')

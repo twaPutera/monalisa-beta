@@ -576,26 +576,28 @@
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Status Kondisi Asset</h6>
                                     @php
-                                        if ($asset->status_kondisi == 'bagus') {
-                                            $kondisi = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>';
-                                        } elseif ($asset->status_kondisi == 'rusak') {
+                                        if ($asset->status_kondisi == 'rusak') {
                                             $kondisi = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>';
                                         } elseif ($asset->status_kondisi == 'maintenance') {
                                             $kondisi = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>';
                                         } elseif ($asset->status_kondisi == 'tidak-lengkap') {
                                             $kondisi = '<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>';
+                                        } else {
+                                            $kondisi = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>';
                                         }
                                     @endphp
                                     {!! $kondisi !!}
                                 </div>
-                                  <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                                <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                                     <h6>Status Pemutihan</h6>
                                     @php
                                         if ($asset->is_pemutihan == 0) {
-                                            $pemutihan = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Aktif</span>';
+                                            $pemutihan = '<h6 class="text-center text-danger" style="font-size: 24px"><i
+                                    class="fas fa-times-circle"></i></h6>';
                                         } elseif ($asset->is_pemutihan == 1) {
-                                            $pemutihan = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Diputihkan</span>';
-                                        } 
+                                            $pemutihan = '<h6 class="text-center text-success" style="font-size: 24px"><i
+                                    class="fas fa-check-circle"></i></h6>';
+                                        }
                                     @endphp
                                     {!! $pemutihan !!}
                                 </div>

@@ -194,7 +194,7 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary">{{ $total_approval }} Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">

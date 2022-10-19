@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Approval\ApprovalQueryServices;
 use Illuminate\Http\Request;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class DashboardController extends Controller
 {
     protected $assetDataQueryServices;
     protected $assetServiceQueryServices;
-
+    protected $approvalQueryServices;
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices,
-        AssetServiceQueryServices $assetServiceQueryServices
-    )
-    {
+        AssetServiceQueryServices $assetServiceQueryServices,
+        ApprovalQueryServices $approvalQueryServices
+    ) {
+        $this->approvalQueryServices = $approvalQueryServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
     }
@@ -52,6 +56,55 @@ class DashboardController extends Controller
             //code...
         } catch (\Throwable $th) {
             //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
+
+    public function getDaftarApproval(Request $request)
+    {
+        try {
+            $list_pemindahan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemindahanAsset");
+            $list_pemutihan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemutihanAsset");
+            $list_peminjaman_asset = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
+
+            $total_all_pemindahan = $list_pemindahan_asset->count();
+            $total_all_peminjaman = $list_peminjaman_asset->count();
+            $total_all_pemutihan = $list_pemutihan_asset->count();
+
+            $total_pemindahan = $list_pemindahan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+            $total_pemutihan = $list_pemutihan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+            $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+
+            if (Auth::user()->role == "manager") {
+                $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan;
+            } else {
+                $daftar_approval = $total_pemindahan + $total_peminjaman;
+            }
+
+            if ($request->url == 'peminjaman') {
+                $approval_task = $total_all_peminjaman;
+            } else if ($request->url == 'pemutihan') {
+                $approval_task = $total_all_pemutihan;
+            } else if ($request->url == 'pemindahan') {
+                $approval_task = $total_all_pemindahan;
+            } else {
+                $approval_task = 0;
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'total_approval_pemindahan' => $total_pemindahan,
+                    'total_approval_pemutihan' => $total_pemutihan,
+                    'total_approval_peminjaman' => $total_peminjaman,
+                    'daftar_approval' => $daftar_approval,
+                    'approval_task' => $approval_task
+                ]
+            ]);
+        } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage()

@@ -34,10 +34,20 @@
                         <option value="1">Sparepart</option>
                     </select>
                 </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Pemutihan</label>
+                    <select name="is_pemutihan" class="form-control" id="isPemutihanFilter">
+                        <option value="" selected>Pilih Asset Pemutihan</option>
+                        <option value="all">Semua Asset</option>
+                        <option value="0">Asset Yang Tidak Diputihkan</option>
+                        <option value="1">Asset Yang Diputihkan</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button type="button" onclick="filterTableAsset()" data-dismiss="modal" class="btn btn-primary">Filter</button>
+                <button type="button" onclick="filterTableAsset()" data-dismiss="modal"
+                    class="btn btn-primary">Filter</button>
             </div>
         </div>
     </div>
