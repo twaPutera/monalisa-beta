@@ -56,7 +56,8 @@ Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.re
 Route::get('/callback', [SsoController::class, 'callback']);
 
 Route::get('/', function () {
-    return redirect()->route('sso.redirect');
+    // return redirect()->route('sso.redirect');
+    return redirect()->route('login');
 });
 
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');

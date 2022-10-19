@@ -8,7 +8,8 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="{{ route('admin.listing-asset.update', $asset->id) }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
+                action="{{ route('admin.listing-asset.update', $asset->id) }}" method="POST">
                 @csrf
                 <div class="modal-body row">
                     <div class="form-group col-md-4 col-6">
@@ -19,7 +20,9 @@
                         <label for="">Kelompok Aset</label>
                         <select name="id_group_asset" disabled class="form-control" id="groupAssetCreate">
                             @if (isset($asset->kategori_asset->group_kategori_asset))
-                                <option selected="selected" value="{{ $asset->kategori_asset->group_kategori_asset->id }}">{{ $asset->kategori_asset->group_kategori_asset->nama_group }}</option>
+                                <option selected="selected"
+                                    value="{{ $asset->kategori_asset->group_kategori_asset->id }}">
+                                    {{ $asset->kategori_asset->group_kategori_asset->nama_group }}</option>
                             @endif
                         </select>
                     </div>
@@ -27,36 +30,41 @@
                         <label for="">Jenis Asset</label>
                         <select name="id_kategori_asset" disabled class="form-control" id="kategoriAssetCreate">
                             @if (isset($asset->kategori_asset))
-                                <option selected="selected" value="{{ $asset->kategori_asset->id }}">{{ $asset->kategori_asset->nama_kategori }}</option>
+                                <option selected="selected" value="{{ $asset->kategori_asset->id }}">
+                                    {{ $asset->kategori_asset->nama_kategori }}</option>
                             @endif
                         </select>
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Kode Asset</label>
-                        <input type="text" class="form-control" disabled value="{{ $asset->kode_asset }}" name="kode_asset">
+                        <input type="text" class="form-control" disabled value="{{ $asset->kode_asset }}"
+                            name="kode_asset">
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Tanggal Perolehan</label>
-                        <input type="text" disabled class="form-control" value="{{ $asset->tanggal_perolehan }}" readonly name="tanggal_perolehan">
+                        <input type="text" disabled class="form-control" value="{{ $asset->tanggal_perolehan }}"
+                            readonly name="tanggal_perolehan">
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Nilai Perolehan (Rp)</label>
-                        <input type="number" disabled class="form-control" value="{{ $asset->nilai_perolehan }}" name="nilai_perolehan">
+                        <input type="number" disabled class="form-control" value="{{ $asset->nilai_perolehan }}"
+                            name="nilai_perolehan">
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Jenis Perolehan</label>
                         <select class="form-control" name="jenis_penerimaan">
                             <option>Pilih Jenis Perolehan</option>
                             <option {{ $asset->jenis_penerimaan == 'PO' ? 'selected' : '' }} value="PO">PO</option>
-                            <option {{ $asset->jenis_penerimaan == 'Hibah' ? 'selected' : '' }} value="Hibah">Hibah</option>
-                            <option {{ $asset->jenis_penerimaan == 'Pengadaan' ? 'selected' : '' }} value="Pengadaan">Pengadaan</option>
+                            <option {{ $asset->jenis_penerimaan == 'Hibah' ? 'selected' : '' }} value="Hibah">Hibah
+                            </option>
                         </select>
                     </div>
                     <div class="form-group col-md-4 col-6">
                         <label for="">Lokasi Asset</label>
                         <select name="id_lokasi" class="form-control" id="lokasiAssetCreate">
                             @if (isset($asset->lokasi))
-                                <option selected="selected" value="{{ $asset->lokasi->id }}">{{ $asset->lokasi->nama_lokasi }}</option>
+                                <option selected="selected" value="{{ $asset->lokasi->id }}">
+                                    {{ $asset->lokasi->nama_lokasi }}</option>
                             @endif
                         </select>
                     </div>
@@ -68,7 +76,8 @@
                         <label for="">Satuan</label>
                         <select name="id_satuan_asset" class="form-control" id="satuanAssetCreate">
                             @if (isset($asset->satuan_asset))
-                                <option selected="selected" value="{{ $asset->satuan_asset->id }}">{{ $asset->satuan_asset->nama_satuan }}</option>
+                                <option selected="selected" value="{{ $asset->satuan_asset->id }}">
+                                    {{ $asset->satuan_asset->nama_satuan }}</option>
                             @endif
                         </select>
                     </div>
@@ -76,7 +85,8 @@
                         <label for="">Vendor</label>
                         <select name="id_vendor" class="form-control" id="vendorAssetCreate">
                             @if (isset($asset->vendor))
-                                <option selected="selected" value="{{ $asset->vendor->id }}">{{ $asset->vendor->nama_vendor }}</option>
+                                <option selected="selected" value="{{ $asset->vendor->id }}">
+                                    {{ $asset->vendor->nama_vendor }}</option>
                             @endif
                         </select>
                     </div>
@@ -87,7 +97,8 @@
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <label for="">Nomor Memo / Surat</label>
-                            <input type="text" class="form-control" value="{{ $asset->no_memo_surat }}" name="no_memo_surat">
+                            <input type="text" class="form-control" value="{{ $asset->no_memo_surat }}"
+                                name="no_memo_surat">
                         </div>
                         <div class="form-group">
                             <label for="">Nomor PO</label>
@@ -107,7 +118,8 @@
                             <label for="">Nomor Akun</label>
                             <select name="id_kelas_asset" class="form-control" id="kelasAssetCreate">
                                 @if (isset($asset->kelas_asset))
-                                    <option selected="selected" value="{{ $asset->kelas_asset->id }}">{{ $asset->kelas_asset->nama_kelas }}</option>
+                                    <option selected="selected" value="{{ $asset->kelas_asset->id }}">
+                                        {{ $asset->kelas_asset->nama_kelas }}</option>
                                 @endif
                             </select>
                         </div>
@@ -117,10 +129,30 @@
                                 <div>
                                     <select disabled name="status_kondisi" class="form-control" style="width: 200px"
                                         id="">
-                                        <option {{ $asset->status_kondisi == 'Baik' ? 'selected' : '' }} value="Baik">Baik</option>
-                                        <option {{ $asset->status_kondisi == 'Rusak' ? 'selected' : '' }} value="Rusak">Rusak</option>
+                                        <option {{ $asset->status_kondisi == 'bagus' ? 'selected' : '' }}
+                                            value="bagus">Bagus</option>
+                                        <option {{ $asset->status_kondisi == 'rusak' ? 'selected' : '' }}
+                                            value="rusak">Rusak</option>
+                                        <option {{ $asset->status_kondisi == 'maintenance' ? 'selected' : '' }}
+                                            value="maintenance">Maintenance</option>
+                                        <option {{ $asset->status_kondisi == 'tidak-lengkap' ? 'selected' : '' }}
+                                            value="tidak-lengkap">Tidak Lengkap</option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label for="">Status Akunting Aset</label>
+                                <select name="status_akunting" disabled class="form-control" style="width: 60%;"
+                                    id="">
+                                    @foreach ($list_status as $key => $item)
+                                        <option value="{{ $key }}"
+                                            {{ $key == $asset->status_akunting ? 'selected' : '' }}>
+                                            {{ $item }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

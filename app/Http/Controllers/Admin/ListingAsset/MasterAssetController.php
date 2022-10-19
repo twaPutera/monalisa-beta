@@ -101,7 +101,8 @@ class MasterAssetController extends Controller
     public function detail($id)
     {
         $asset = $this->assetDataQueryServices->findById($id);
-        return view('pages.admin.listing-asset.detail', compact('asset'));
+        $list_status = StatusAssetDataHelpers::listStatusAssetData();
+        return view('pages.admin.listing-asset.detail', compact('asset', 'list_status'));
     }
 
     public function update(AssetUpdateRequest $request, $id)
