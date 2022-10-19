@@ -63,8 +63,15 @@ class AssetServiceDatatableServices
                 return $item->kategori_service->nama_service ?? 'Tidak Ada';
             })
             ->addColumn('user', function ($item) {
-                $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = 'Not Found';
+                if (config('app.sso_siska')) {
+                    $user = $item->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pembuat);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $this->userQueryServices->findById($item->guid_pembuat);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
             })
 
             ->addColumn('deskripsi_service', function ($item) {

@@ -20,6 +20,7 @@ return [
     'sso_siska_url' => env('SSO_SISKA_URL', null),
     'siska_url' => env('SISKA_URL', null),
     'sso_login' => env('SSO_LOGIN', false),
+    'sso_siska' => env('SSO_SISKA', false),
 
     'jwt_secret' => env('JWT_SECRET', 'example_key'),
 

@@ -9,12 +9,14 @@ use App\Helpers\QrCodeHelpers;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class AssetDataQueryServices
 {
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function findById(string $id)
@@ -33,10 +35,19 @@ class AssetDataQueryServices
         $user = null;
         $created_by = null;
         if (isset($data->ownership)) {
-            $user = $this->userSsoQueryServices->getUserByGuid($data->ownership);
+            if (config('app.sso_siska')) {
+                $user = $this->userSsoQueryServices->findById($data->ownership->created_by);
+                $user = isset($user[0]) ? collect($user[0]) : null;
+            } else {
+                $user = $this->userQueryServices->findById($data->ownership);
+            }
         }
         if ($data->log_asset_opname->count() > 0) {
-            $created_by = $this->userSsoQueryServices->getUserByGuid($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
+            if (config('app.sso_siska')) {
+                $created_by = $this->userSsoQueryServices->getUserByGuid($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
+            } else {
+                $created_by = $this->userQueryServices->findById($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
+            }
         }
         $data->image = $data->image->map(function ($item) {
             $item->link = route('admin.listing-asset.image.preview') . '?filename=' . $item->path;

@@ -11,6 +11,7 @@ use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
+use App\Helpers\SsoHelpers;
 
 class AssetDataCommandServices
 {
@@ -18,7 +19,7 @@ class AssetDataCommandServices
     {
         $request->validated();
 
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
         $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, $kategori_asset->umur_asset);
@@ -40,7 +41,7 @@ class AssetDataCommandServices
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
-        $asset->register_oleh = $user->guid;
+        $asset->register_oleh = config('app.sso_siska') ? $user->guid : $user->id;
         $asset->no_memo_surat = $request->no_memo_surat;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
@@ -50,7 +51,7 @@ class AssetDataCommandServices
         $asset->spesifikasi = $request->spesifikasi;
         $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->nilai_depresiasi = $nilai_depresiasi;
-        $asset->created_by = $user->guid;
+        $asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
@@ -96,7 +97,7 @@ class AssetDataCommandServices
     {
         $request->validated();
 
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $asset = AssetData::find($id);
         $asset->deskripsi = $request->deskripsi;
@@ -111,7 +112,6 @@ class AssetDataCommandServices
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         // $asset->ownership = $request->ownership;
         // $asset->tgl_register = date('Y-m-d');
-        // $asset->register_oleh = $user->guid;
         $asset->no_memo_surat = $request->no_memo_surat;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
@@ -144,7 +144,7 @@ class AssetDataCommandServices
 
     public function insertLogAsset($asset_id, $log)
     {
-        $user = \Session::get('user');
+        $user = SsoHelpers::getUserLogin();
 
         $log_asset = new LogAsset();
         $log_asset->asset_id = $asset_id;

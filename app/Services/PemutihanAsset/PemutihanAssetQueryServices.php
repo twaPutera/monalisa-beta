@@ -5,12 +5,14 @@ namespace App\Services\PemutihanAsset;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class PemutihanAssetQueryServices
 {
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
     public function findAll()
     {
@@ -31,9 +33,16 @@ class PemutihanAssetQueryServices
                 ->where('id', $id)->first();
         }
         if (isset($data->created_by)) {
-            $user = $this->userSsoQueryServices->getUserByGuid($data->created_by);
+            $name = "Not Found";
+            if (config('app.sso_siska')) {
+                $user = $data->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($data->created_by);
+                $name = isset($user[0]) ? collect($user[0]) : null;
+            } else {
+                $user = $this->userQueryServices->findById($data->created_by);
+                $name = isset($user) ? $user->name : 'Not Found';
+            }
         }
-        $data->created_by_name = $user == null ? 'Tidak ada' : $user[0]['nama'];
+        $data->created_by_name = $name;
         return $data;
     }
 

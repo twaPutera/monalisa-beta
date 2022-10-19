@@ -8,13 +8,14 @@ use App\Helpers\FileHelpers;
 use App\Models\LogAssetOpname;
 use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\SsoHelpers;
 
 class AssetOpnameCommandServices
 {
     public function store(AssetOpnameStoreRequest $request, string $id)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
@@ -24,7 +25,7 @@ class AssetOpnameCommandServices
         $opname_log->akuntan_awal = $asset_data->status_akunting;
         $opname_log->akuntan_akhir = $request->status_akunting;
         $opname_log->keterangan = $request->catatan;
-        $opname_log->created_by = $user->guid;
+        $opname_log->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $opname_log->save();
 
         $asset_data->status_kondisi = $request->status_kondisi;

@@ -14,6 +14,7 @@ use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\SsoHelpers;
 
 class PeminjamanAssetCommandServices
 {
@@ -27,7 +28,7 @@ class PeminjamanAssetCommandServices
     public function store(PeminjamanAssetStoreRequest $request)
     {
         $request->validated();
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
 
         if (!isset($approver[0])) {
@@ -35,13 +36,13 @@ class PeminjamanAssetCommandServices
         }
 
         $peminjaman = new PeminjamanAsset();
-        $peminjaman->guid_peminjam_asset = $user->guid;
+        $peminjaman->guid_peminjam_asset = config('app.sso_siska') ? $user->guid : $user->id;
         $peminjaman->json_peminjam_asset = json_encode($user);
         $peminjaman->tanggal_peminjaman = $request->tanggal_peminjaman;
         $peminjaman->tanggal_pengembalian = $request->tanggal_pengembalian;
         $peminjaman->alasan_peminjaman = $request->alasan_peminjaman;
         $peminjaman->status = 'pending';
-        $peminjaman->created_by = $user->guid;
+        $peminjaman->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $peminjaman->save();
 
         foreach ($request->id_jenis_asset as $id_jenis_asset) {

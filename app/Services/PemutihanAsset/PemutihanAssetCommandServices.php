@@ -17,6 +17,7 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
 use Illuminate\Support\Facades\Session;
+use App\Helpers\SsoHelpers;
 
 class PemutihanAssetCommandServices
 {
@@ -31,7 +32,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
 
-        $user = Session::get('user');
+        $user = SsoHelpers::getUserLogin();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
         if (!isset($approver[0])) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
@@ -42,7 +43,7 @@ class PemutihanAssetCommandServices
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->status = 'Draft';
-        $pemutihan->created_by = $user->guid;
+        $pemutihan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $pemutihan->is_store = 0;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();

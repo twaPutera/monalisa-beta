@@ -6,12 +6,14 @@ use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\User\UserQueryServices;
 
 class KeluhanDatatableServices
 {
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
     public function datatable(Request $request)
     {
@@ -36,8 +38,15 @@ class KeluhanDatatableServices
                 return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
-                $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
-                return isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                $name = "Not Found";
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? collect($user[0]) : null;
+                } else {
+                    $user = $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
             })
             ->addColumn('gambar_pengaduan', function ($item) {
                 $data = '';
