@@ -621,8 +621,21 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
-                                    <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i
-                                            class="fas fa-check-circle"></i></h6>
+                                    @php
+                                        
+                                        if ($asset->is_pinjam == 0) {
+                                            $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
+                                                                                                                                                                                                    class="fas fa-times-circle"></i></h6>';
+                                        } elseif ($asset->is_pinjam == 1) {
+                                            $pinjam = '<h6 class="text-center text-success" style="font-size: 24px"><i
+                                                                                                                                                                                                    class="fas fa-check-circle"></i></h6>';
+                                        } else {
+                                            $pinjam = '<h6 class="text-center text-secondary" style="font-size: 24px"><i
+                                                                                                                                                                                                    class="fas fa-question-circle"></i></h6>';
+                                        }
+                                    @endphp
+
+                                    {!! $pinjam !!}
                                 </div>
                                 <div class="d-flex justify-content-between mb-3 py-2 border-bottom">
                                     <h6 class="mb-0">Spesifikasi</h6>

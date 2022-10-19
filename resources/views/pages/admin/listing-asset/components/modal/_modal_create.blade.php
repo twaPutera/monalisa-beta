@@ -8,7 +8,8 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="{{ route('admin.listing-asset.store') }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
+                action="{{ route('admin.listing-asset.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="kt-scroll ps ps--active-y" data-scroll="true" style="overflow: hidden; height: 70vh;">
@@ -35,7 +36,8 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Tanggal Perolehan</label>
-                                <input type="text" class="form-control datepickerCreate" readonly name="tanggal_perolehan">
+                                <input type="text" class="form-control datepickerCreate" readonly
+                                    name="tanggal_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Perolehan (Rp)</label>
@@ -83,15 +85,29 @@
                                 <label for="">Nomor Seri</label>
                                 <input type="text" class="form-control" name="no_seri">
                             </div>
-                            <div class="form-group col-md-12 col-12">
-                                <div class="d-flex align-items-center mt-4">
-                                    <span class="kt-switch kt-switch--sm kt-switch--icon">
-                                        <label class="mb-0">
-                                            <input type="checkbox" value="1" name="is_sparepart">
-                                            <span></span>
-                                        </label>
-                                    </span>
-                                    <span class="ml-4">Sparepart</span>
+                            <div class="row">
+
+                                <div class="form-group col-md-6 col-6">
+                                    <div class="d-flex align-items-center mt-4">
+                                        <span class="kt-switch kt-switch--sm kt-switch--icon">
+                                            <label class="mb-0">
+                                                <input type="checkbox" value="1" name="is_sparepart">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                        <span class="ml-4">Sparepart</span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6 col-6">
+                                    <div class="d-flex align-items-center mt-4">
+                                        <span class="kt-switch kt-switch--sm kt-switch--icon">
+                                            <label class="mb-0">
+                                                <input type="checkbox" value="1" name="is_pinjam">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                        <span class="ml-4">Dapat Dipinjam</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +140,8 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Kondisi Aset</label>
-                                        <select name="status_kondisi" class="form-control mr-3" style="width: 60%;" id="">
+                                        <select name="status_kondisi" class="form-control mr-3" style="width: 60%;"
+                                            id="">
                                             <option value="bagus">Bagus</option>
                                             <option value="rusak">Rusak</option>
                                             <option value="maintenance">Maintenance</option>
@@ -135,7 +152,8 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Akunting Aset</label>
-                                        <select name="status_akunting" class="form-control mr-3" style="width: 60%;" id="">
+                                        <select name="status_akunting" class="form-control mr-3" style="width: 60%;"
+                                            id="">
                                             @foreach ($list_status as $key => $item)
                                                 <option value="{{ $key }}">{{ $item }}</option>
                                             @endforeach
@@ -151,8 +169,9 @@
                                         </div>
                                         <label for="gambar_asset" class="btn btn-primary">
                                             Upload
-                                            <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg"
-                                                class="d-none" name="gambar_asset">
+                                            <input type="file" id="gambar_asset"
+                                                accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none"
+                                                name="gambar_asset">
                                         </label>
                                     </div>
                                 </div>

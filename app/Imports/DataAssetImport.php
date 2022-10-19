@@ -10,7 +10,7 @@ class DataAssetImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            'Data Asset' => new DataAssetSheet(),
+            'Data Asset Baru' => new DataAssetSheet(),
         ];
     }
 }

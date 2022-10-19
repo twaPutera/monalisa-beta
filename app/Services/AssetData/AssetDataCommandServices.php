@@ -55,6 +55,7 @@ class AssetDataCommandServices
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
+        $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {
@@ -118,6 +119,8 @@ class AssetDataCommandServices
         // $asset->status_kondisi = $request->status_kondisi;
         $asset->no_seri = $request->no_seri;
         $asset->spesifikasi = $request->spesifikasi;
+        $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
+        $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         // $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->save();
 
@@ -155,7 +158,7 @@ class AssetDataCommandServices
 
     protected static function generateNameImage($extension, $kodeasset)
     {
-        $name = 'asset-'. $kodeasset . '-' . time() . '.' . $extension;
+        $name = 'asset-' . $kodeasset . '-' . time() . '.' . $extension;
         return $name;
     }
 }

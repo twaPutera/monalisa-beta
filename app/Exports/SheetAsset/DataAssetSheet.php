@@ -33,6 +33,8 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             // 'asset_data.umur_manfaat_fisikal',
             // 'asset_data.umur_manfaat_komersial',
             'asset_data.status_kondisi',
+            'asset_data.is_pinjam',
+            'asset_data.is_sparepart'
         )
             ->join('vendors', 'vendors.id', '=', 'asset_data.id_vendor')
             ->join('kelas_assets', 'kelas_assets.id', '=', 'asset_data.id_kelas_asset')
@@ -46,7 +48,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
 
     public function title(): string
     {
-        return 'Data Asset';
+        return 'Data Asset Baru';
     }
 
     public function headings(): array
@@ -73,6 +75,8 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             // 'Umur Manfaat Fisikal',
             // 'Umur Manfaat Komersial',
             'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap)',
+            'Status Peminjaman (iya/tidak)',
+            'Status Sparepart (iya/tidak)',
         ];
     }
 }

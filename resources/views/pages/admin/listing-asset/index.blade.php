@@ -285,16 +285,32 @@
                                 `<h6 class="text-center text-success" style="font-size: 24px"><i
                                     class="fas fa-check-circle"></i></h6>`;
                         }
+
+                        if (asset.is_pinjam == 0) {
+                            var pinjam =
+                                `<h6 class="text-center text-danger" style="font-size: 24px"><i
+                                    class="fas fa-times-circle"></i></h6>`;
+                        } else if (asset.is_pinjam == 1) {
+                            var pinjam =
+                                `<h6 class="text-center text-success" style="font-size: 24px"><i
+                                    class="fas fa-check-circle"></i></h6>`;
+                        } else {
+                            var pinjam =
+                                `<h6 class="text-center text-secondary" style="font-size: 24px"><i
+                                    class="fas fa-question-circle"></i></h6>`;
+                        }
                         $('#assetNamePreview').text(asset.deskripsi);
                         $('#assetKondisi').empty();
                         $('#assetKondisi').append(kondisi);
                         $('#assetPemutihan').empty();
                         $('#assetPemutihan').append(pemutihan);
+                        $('#assetPinjam').empty();
+                        $('#assetPinjam').append(pinjam);
                         $('#opnameCekBy').empty();
                         $('#opnameCekBy').append(asset.created_by_opname);
-                        $('#catatanOpname').text(opname ? opname.keterangan : '-');
+                        $('#catatanOpname').text(opname ? opname.keterangan : 'Tidak Ada');
                         $('#lastLogOpnameDate').text(opname ? formatDateIntoIndonesia(opname
-                            .tanggal_opname) : '-');
+                            .tanggal_opname) : 'Tidak Ada');
                         if (asset.image.length > 0) {
                             $('#imgPreviewAsset').attr('src', asset.image[0].link);
                         } else {
@@ -446,8 +462,9 @@
                         </div>
                         <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                             <h6 class="mb-0">Status Peminjaman</h6>
-                            <h6 class="text-right mb-0 text-success" style="font-size: 24px"><i
-                                    class="fas fa-check-circle"></i></h6>
+                            <div id="assetPinjam">
+                                <h6 class="text-right">No Item Selected</h6>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Peminjam</h6>
