@@ -17,14 +17,17 @@ use Illuminate\Support\Facades\Session;
 use App\Helpers\SsoHelpers;
 use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
 use App\Models\PerpanjanganPeminjamanAsset;
+use App\Services\AssetData\AssetDataCommandServices;
 
 class PeminjamanAssetCommandServices
 {
     protected $userSsoQueryServices;
+    protected $assetDataCommandServices;
 
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->assetDataCommandServices = new AssetDataCommandServices();
     }
 
     public function store(PeminjamanAssetStoreRequest $request)
@@ -120,6 +123,16 @@ class PeminjamanAssetCommandServices
         $peminjaman = PeminjamanAsset::findOrFail($id);
         $peminjaman->status = $request->status;
         $peminjaman->save();
+
+        $peminjam = json_decode($peminjaman->json_peminjam_asset);
+
+        if ($request->status == 'dipinjam') {
+            $detail_peminjaman = DetailPeminjamanAsset::where('id_peminjaman_asset', $peminjaman->id)->get();
+            foreach ($detail_peminjaman as $detail) {
+                $message_log = "Asset Dipinjam pada tanggal " . date('d/m/Y', strtotime($peminjaman->tanggal_peminjaman)) . " oleh " . $peminjam->name;
+                $this->assetDataCommandServices->insertLogAsset($detail->id_asset, $message_log);
+            }
+        }
 
         return $peminjaman;
     }
