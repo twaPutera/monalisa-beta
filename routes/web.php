@@ -63,6 +63,7 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->middleware('guest');
 Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware('auth');
+Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware('auth');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|manager']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -70,7 +71,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     Route::group(['prefix' => 'summary'], function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'getSummaryDashboard'])->name('admin.get-summary-dashboard');
     });
-    Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout');
     # Approval
     Route::group(['prefix' => 'approval'], function () {
         Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');
