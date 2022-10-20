@@ -1,5 +1,5 @@
 @extends('layouts.user.master')
-@section('page-title', 'Daftar Peminjaman')
+@section('page-title', 'Daftar Pengajuan')
 @section('custom-css')
     <style>
         .containerPerpanjangan {

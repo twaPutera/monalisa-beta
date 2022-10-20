@@ -115,6 +115,9 @@
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
+                    if (key == "file_pendukung") {
+                        $('#preview-file-error').html(errors[key][0]);
+                    }
                 }
             });
 
@@ -188,7 +191,10 @@
         const filterTableAsset = () => {
             table.DataTable().ajax.reload();
         }
-
+        $('#file_pendukung').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-text').text(file.name);
+        });
         const detail = (button) => {
             const url_detail = $(button).data('url_detail');
             $.ajax({
@@ -204,7 +210,6 @@
                 }
             })
         }
-
     </script>
     @include('pages.admin.keluhan.components.js._script_modal_create')
 @endsection

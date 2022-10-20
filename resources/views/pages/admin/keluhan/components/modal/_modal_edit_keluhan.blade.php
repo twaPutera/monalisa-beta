@@ -69,6 +69,20 @@
                             <label for="">Catatan Admin</label>
                             <textarea cols="30" rows="10" class="form-control" name="catatan_admin"></textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="">Gambar/File Pendukung</label>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span id="preview-file-text">No File Choosen</span> <br>
+                                    <span id="preview-file-error" class="text-danger"></span>
+                                </div>
+                                <label for="file_pendukung" class="btn btn-primary">
+                                    Upload
+                                    <input type="file" id="file_pendukung" accept=".jpeg,.png,.jpg,.gif,.svg"
+                                        class="d-none" name="file_pendukung">
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

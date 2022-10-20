@@ -164,10 +164,22 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Gambar Pengaduan</p>
+                        <p class="mb-0 text-green">Gambar Pengaduan Saya</p>
                     </div>
                     <div class="col  text-end">
-                        <a href="{{ route('user.pengaduan.download-gambar') . '?filename=' . $pengaduan->image[0]->path }}"
+                        <a href="{{ route('user.pengaduan.download-gambar') . '?filename=' . $pengaduan->image[0]->path . '&status=request' }}"
+                            download class="btn btn-primary shadow-customD btn-sm mb-0"><i class="fa fa-download"></i> Unduh
+                            Gambar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Gambar Respon Pengaduan</p>
+                    </div>
+                    <div class="col  text-end">
+                        <a href="{{ route('user.pengaduan.download-gambar') . '?filename=' . $pengaduan->image[1]->path . '&status=response' }}"
                             download class="btn btn-primary shadow-customD btn-sm mb-0"><i class="fa fa-download"></i> Unduh
                             Gambar</a>
                     </div>

@@ -13,7 +13,7 @@
             $.ajax({
                 url: '{{ route('user.pengaduan.get-all-data') }}',
                 data: {
-                    created_by: "{{ $user->guid }}",
+                    created_by: "{{ $user->guid ?? $user->id }}",
                     with: ['asset_data', 'asset_data.lokasi', 'lokasi'],
                     status_pengaduan: status
                 },

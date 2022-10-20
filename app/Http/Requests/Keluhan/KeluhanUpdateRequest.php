@@ -24,6 +24,7 @@ class KeluhanUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'file_pendukung' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status_pengaduan' => 'required|in:diproses,selesai',
             'catatan_admin' => 'required|string|max:255',
         ];

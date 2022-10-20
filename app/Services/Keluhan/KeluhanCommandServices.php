@@ -2,9 +2,11 @@
 
 namespace App\Services\Keluhan;
 
+use App\Helpers\FileHelpers;
 use App\Helpers\SsoHelpers;
 use App\Models\Pengaduan;
 use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
+use App\Models\AssetImage;
 use App\Models\LogPengaduanAsset;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +22,23 @@ class KeluhanCommandServices
 
         $log = self::storeLog($asset_pengaduan->id, $request->status_pengaduan, $request->catatan_admin);
 
+        if ($request->hasFile('file_pendukung')) {
+            $path = storage_path('app/images/asset-respon-pengaduan');
+            if (isset($asset_pengaduan->image[1])) {
+                $pathOld = $path . '/' . $asset_pengaduan->image[1]->path;
+                FileHelpers::removeFile($pathOld);
+                $asset_pengaduan->image[1]->delete();
+            }
+
+            $filename = self::generateNameImage($request->file('file_pendukung')->getClientOriginalExtension(), $asset_pengaduan->id);
+            $filenamesave = FileHelpers::saveFile($request->file('file_pendukung'), $path, $filename);
+
+            $asset_images = new AssetImage();
+            $asset_images->imageable_type = get_class($asset_pengaduan);
+            $asset_images->imageable_id = $asset_pengaduan->id;
+            $asset_images->path = $filenamesave;
+            $asset_images->save();
+        }
         return $asset_pengaduan;
     }
 
@@ -34,5 +53,11 @@ class KeluhanCommandServices
         $log_asset->save();
 
         return $log_asset;
+    }
+
+    protected static function generateNameImage($extension, $kodeasset)
+    {
+        $name = 'asset-respon-pengaduan-' . $kodeasset . '-' . time() . '.' . $extension;
+        return $name;
     }
 }
