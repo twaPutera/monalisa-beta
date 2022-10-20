@@ -76,6 +76,10 @@
                         data: 'kode_asset'
                     },
                     {
+                        name: 'deskripsi',
+                        data: 'deskripsi'
+                    },
+                    {
                         name: 'jenis_asset',
                         data: 'jenis_asset'
                     },
@@ -302,6 +306,7 @@
                                         <th width="50px">No</th>
                                         <th>#</th>
                                         <th>Kode Asset</th>
+                                        <th>Deskripsi Asset</th>
                                         <th>Jenis Asset</th>
                                         <th>Lokasi Asset</th>
                                         <th>Keterangan Pemutihan</th>
@@ -315,7 +320,8 @@
                                             <td><button type="button" onclick="showPemutihanAsset(this)"
                                                     data-url_detail="{{ route('admin.pemutihan-asset.edit.listing-asset.get-image', $item->id) }}"
                                                     class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button></td>
-                                            <td>{{ $item->asset_data->kode_asset }}</td>
+                                            <td>{{ $item->asset_data->kode_asset ?? 'Tidak Ada' }}</td>
+                                            <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
                                             </td>
                                             <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}

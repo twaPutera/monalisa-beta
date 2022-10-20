@@ -187,6 +187,7 @@
                 success: function(response) {
                     const modal = $('.modalDetailKeluhanData');
                     const form = modal.find('form');
+                    console.log(response.data);
                     if (response.data.status_pengaduan === "dilaporkan") {
                         var status = '<button class="btn btn-warning btn-sm">Laporan Masuk</button>';
                     } else if (response.data.status_pengaduan === "diproses") {
@@ -206,8 +207,7 @@
                         form.find('input[name=nama_asset]').val("-");
                         form.find('input[name=kelompok_asset]').val("-");
                         form.find('input[name=jenis_asset]').val("-");
-                        form.find('input[name=lokasi_asset]').val(response.data.lokasi
-                            .nama_lokasi);
+                        form.find('input[name=lokasi_asset]').val(response.data.lokasi.nama_lokasi);
                     }
                     form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
                     form.find('#status_laporan').empty();
@@ -228,7 +228,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Keluhan
+                            Data Pengaduan
                         </h3>
                     </div>
                 </div>
