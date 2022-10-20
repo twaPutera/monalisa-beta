@@ -25,7 +25,7 @@
                     url: "{{ route('admin.approval.datatable') }}",
                     data: function(d) {
                         // d.is_approve = null;
-                        d.approvable_type = 'App\\Models\\PeminjamanAsset';
+                        d.approvable_types = ['App\\Models\\PeminjamanAsset', 'App\\Models\\PerpanjanganPeminjamanAsset'];
                     }
                 },
                 columns: [{
@@ -41,6 +41,9 @@
                         orderable: false,
                         searchable: false,
                         name: 'action'
+                    },
+                    {
+                        data: 'approvable_type'
                     },
                     {
                         data: 'approvable.tanggal_peminjaman'
@@ -64,7 +67,7 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-url_detail="` + data + `" data-url_update="` +
+                                <button onclick="showDetail(this)" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-is_approve="${full.is_approve}" data-url_detail="` + data + `" data-url_update="` +
                                 full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
@@ -72,21 +75,54 @@
                         },
                     },
                     {
-                        targets: [2, 5],
+                        targets: [2],
                         render: function(data, type, full, meta) {
-                            return formatDateIntoIndonesia(data);
+                            if (data === 'App\\Models\\PeminjamanAsset') return 'Peminjaman Asset';
+                            else if (data === 'App\\Models\\PerpanjanganPeminjamanAsset') return 'Perpanjangan Peminjaman Asset';
                         },
                     },
                     {
-                        targets: [4],
+                        targets: [3],
                         render: function(data, type, full, meta) {
-                            return sumDiffFromTwoDate(new Date(full.approvable
-                                .tanggal_pengembalian), new Date(full.approvable
-                                .tanggal_peminjaman)) + " Hari";
+                            let date;
+                            if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
+                                date = full.approvable.tanggal_peminjaman;
+                            } else {
+                                date = full.approvable.tanggal_expired_sebelumnya;
+                            }
+
+                            return formatDateIntoIndonesia(date);
                         },
                     },
                     {
                         targets: [6],
+                        render: function(data, type, full, meta) {
+                            let date;
+                            if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
+                                date = full.approvable.tanggal_pengembalian;
+                            } else {
+                                date = full.approvable.tanggal_expired_perpanjangan;
+                            }
+                            return formatDateIntoIndonesia(date);
+                        },
+                    },
+                    {
+                        targets: [5],
+                        render: function(data, type, full, meta) {
+                            let start;
+                            let end;
+                            if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
+                                start = new Date(full.approvable.tanggal_pengembalian);
+                                end = new Date(full.approvable.tanggal_peminjaman);
+                            } else {
+                                start = new Date(full.approvable.tanggal_expired_perpanjangan);
+                                end = new Date(full.approvable.tanggal_expired_sebelumnya);
+                            }
+                            return sumDiffFromTwoDate(start, end) + " Hari";
+                        },
+                    },
+                    {
+                        targets: [7],
                         render: function(data, type, full, meta) {
                             let element =
                                 '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
@@ -133,6 +169,9 @@
         const showDetail = (button) => {
             const url = $(button).data('url_detail');
             const url_update = $(button).data('url_update');
+            const is_approve = $(button).data('is_approve');
+            const tanggal_approval = $(button).data('tanggal_approval');
+            const keterangan = $(button).data('keterangan');
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -145,15 +184,14 @@
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
                         $('.isDisabled').attr('disabled', false);
-                        if (data.approval.is_approve == 1) {
-                            console.log(data.approval.is_approve);
+                        if (is_approve) {
                             $('.isDisabled').attr('disabled', true);
-                            $('#tanggalApproval').val(data.approval.tanggal_approval).show();
-                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' :
+                            $('#tanggalApproval').val(tanggal_approval).show();
+                            const status_approval = is_approve == '1' ? 'disetujui' :
                                 'ditolak';
                             $('#statusApproval option[value=' + status_approval + ']').attr('selected',
                                 true);
-                            $('#keteranganApproval').val(data.approval.keterangan);
+                            $('#keteranganApproval').val(keterangan);
                         }
                         $('#namaPeminjam').val(user_peminjam.name);
                         $('#tanggalPeminjam').val(data.tanggal_peminjaman);
@@ -207,6 +245,7 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
+                                    <th>Jenis Approval</th>
                                     <th>Tanggal</th>
                                     <th>Nama Peminjam</th>
                                     <th>Durasi Peminjaman</th>

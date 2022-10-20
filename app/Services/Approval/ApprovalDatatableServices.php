@@ -23,6 +23,10 @@ class ApprovalDatatableServices
             $query->where('approvable_type', $request->approvable_type);
         }
 
+        if (isset($request->approvable_types)) {
+            $query->whereIn('approvable_type', $request->approvable_types);
+        }
+
         if ($request->has('is_approve')) {
             $query->where('is_approve', $request->is_approve);
         }

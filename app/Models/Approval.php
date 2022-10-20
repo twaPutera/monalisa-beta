@@ -25,6 +25,8 @@ class Approval extends Model
             return route('admin.pemutihan-asset.show', $this->approvable_id);
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.peminjaman.show', $this->approvable_id);
+        } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
+            return route('admin.peminjaman.show', $this->approvable->id_peminjaman_asset);
         }
     }
 
@@ -36,6 +38,8 @@ class Approval extends Model
             return route('admin.approval.pemutihan.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.approval.peminjaman.change-status', $this->approvable_id);
+        } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
+            return route('admin.pemutihan-asset.show', $this->approvable->id_peminjaman_asset);
         }
     }
 
@@ -47,6 +51,8 @@ class Approval extends Model
             return 'Pemutihan Asset';
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return 'Peminjaman Asset';
+        } else if ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
+            return 'Perpanjangan Peminjaman Asset';
         }
 
         return 'Tipe Tidak Terdaftar';
@@ -60,10 +66,10 @@ class Approval extends Model
         $name = 'Tidak Terdaftar di Siska';
         if (isset($guid)) {
             if (config('app.sso_siska')) {
-                $user = $this->created_by == null ? null : $userSso->getUserByGuid($this->created_by);
+                $user = $guid == null ? null : $userSso->getUserByGuid($guid);
                 $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
             } else {
-                $user = $this->created_by == null ? null : $userService->findById($this->created_by);
+                $user = $guid == null ? null : $userService->findById($guid);
                 $name = isset($user) ? $user->name : 'Not Found';
             }
         }

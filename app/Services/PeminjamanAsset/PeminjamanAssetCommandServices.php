@@ -128,6 +128,8 @@ class PeminjamanAssetCommandServices
     {
         $peminjaman = PeminjamanAsset::findOrFail($id_peminjaman);
 
+        $user = SsoHelpers::getUserLogin();
+
         if ($peminjaman->tanggal_pengembalian > $request->tanggal_expired_perpanjangan) {
             throw new Exception('Tanggal perpanjangan tidak boleh kurang dari tanggal pengembalian');
         }
@@ -143,9 +145,15 @@ class PeminjamanAssetCommandServices
         $approval = new Approval();
         $approval->approvable_type = get_class($perpanjangan);
         $approval->approvable_id = $perpanjangan->id;
+        $peminjaman->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $approval->save();
 
         return $perpanjangan;
+    }
+
+    public function changeApprovalStatusPerpanjangan()
+    {
+
     }
 
     private static function getRequestQuota(string $id)
