@@ -78,6 +78,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
         Route::group(['prefix' => 'peminjaman'], function () {
             Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
             Route::post('/change-status/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApproval'])->name('admin.approval.peminjaman.change-status');
+            Route::post('/change-status-perpanjangan/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApprovaPerpanjangan'])->name('admin.approval.peminjaman.change-status-perpanjangan');
         });
         Route::group(['prefix' => 'pemutihan', 'middleware' => ['role:manager']], function () {
             Route::get('/', [AdminPemutihanAssetController::class, 'index'])->name('admin.approval.pemutihan.index');

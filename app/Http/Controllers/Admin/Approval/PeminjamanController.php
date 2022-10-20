@@ -32,7 +32,36 @@ class PeminjamanController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mengubah status approval',
-                'data' => $data,
+                'data' => [
+                    'peminjaman' => $data,
+                    'url' => route('admin.peminjaman.detail', $data->id_peminjaman_asset),
+                ],
+            ]);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function changeStatusApprovaPerpanjangan(PeminjamanApprovalUpdate $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->peminjamanAssetCommandServices->changeApprovalStatusPerpanjangan($request, $id);
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah status approval',
+                'data' => [
+                    'peminjaman' => $data,
+                    'url' => route('admin.peminjaman.detail', $data->id_peminjaman_asset),
+                ],
             ]);
             //code...
         } catch (\Throwable $th) {

@@ -67,7 +67,7 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-is_approve="${full.is_approve}" data-url_detail="` + data + `" data-url_update="` +
+                                <button onclick="showDetail(this)" data-approvable_id="${full.approvable_id}" data-approvable_type="${full.approvable_type}" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-is_approve="${full.is_approve}" data-url_detail="` + data + `" data-url_update="` +
                                 full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
@@ -148,10 +148,9 @@
                     modal.modal('hide');
                     table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
-                    if (data.data.approval.is_approve == 1) {
+                    if (data.data.peminjaman.status == 'disetujui') {
                         setTimeout(() => {
-                            window.location.href =
-                                '{{ route('admin.peminjaman.detail', '') }}' + '/' + data.data.id;
+                            window.location.href = data.data.url
                         }, 2000);
                     }
                 }
@@ -172,6 +171,10 @@
             const is_approve = $(button).data('is_approve');
             const tanggal_approval = $(button).data('tanggal_approval');
             const keterangan = $(button).data('keterangan');
+            const approvable_type = $(button).data('approvable_type');
+            const approvable_id = $(button).data('approvable_id');
+            $('.perpanjanganDeskripsi').hide();
+            $('.deskripsiPeminjaman').hide();
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -193,10 +196,7 @@
                                 true);
                             $('#keteranganApproval').val(keterangan);
                         }
-                        $('#namaPeminjam').val(user_peminjam.name);
-                        $('#tanggalPeminjam').val(data.tanggal_peminjaman);
-                        $('#tanggalPengembalian').val(data.tanggal_pengembalian);
-                        $('#alasanPeminjaman').val(data.alasan_peminjaman);
+                        $('.namaPeminjam').val(user_peminjam.name);
                         $('#tableBodyDetailPeminjaman').html('');
                         $(data.request_peminjaman_asset).each(function(index, value) {
                             let element = `
@@ -208,6 +208,24 @@
                             `;
                             $('#tableBodyDetailPeminjaman').append(element);
                         });
+
+                        if (approvable_type == 'App\\Models\\PerpanjanganPeminjamanAsset') {
+                            const perpanjangan = data.perpanjangan_peminjaman_asset.filter((item) => {
+                                return item.id == approvable_id;
+                            });
+
+                            $('#tanggalPengembalianSebelumnya').val(perpanjangan[0].tanggal_expired_sebelumnya);
+                            $('#tanggalPerpanjangan').val(perpanjangan[0].tanggal_expired_perpanjangan);
+                            $('#alasanPerpanjangan').val(perpanjangan[0].alasan_perpanjangan);
+
+                            $('.perpanjanganDeskripsi').show();
+                        } else {
+                            $('#tanggalPeminjam').val(data.tanggal_peminjaman);
+                            $('#tanggalPengembalian').val(data.tanggal_pengembalian);
+                            $('#alasanPeminjaman').val(data.alasan_peminjaman);
+
+                            $('.deskripsiPeminjaman').show();
+                        }
 
                         $('#modalDetailPeminjaman').modal('show');
                     }

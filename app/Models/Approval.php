@@ -39,7 +39,7 @@ class Approval extends Model
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return route('admin.approval.peminjaman.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
-            return route('admin.pemutihan-asset.show', $this->approvable->id_peminjaman_asset);
+            return route('admin.approval.peminjaman.change-status-perpanjangan', $this->approvable_id);
         }
     }
 
