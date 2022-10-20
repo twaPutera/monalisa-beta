@@ -7,6 +7,7 @@ use App\Services\Approval\ApprovalQueryServices;
 use Illuminate\Http\Request;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\Pengaduan\PengaduanQueryServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,14 +16,17 @@ class DashboardController extends Controller
     protected $assetDataQueryServices;
     protected $assetServiceQueryServices;
     protected $approvalQueryServices;
+    protected $pengaduanQueryServices;
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices,
-        ApprovalQueryServices $approvalQueryServices
+        ApprovalQueryServices $approvalQueryServices,
+        PengaduanQueryServices $pengaduanQueryServices
     ) {
         $this->approvalQueryServices = $approvalQueryServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
+        $this->pengaduanQueryServices = $pengaduanQueryServices;
     }
 
     public function index()
@@ -40,7 +44,10 @@ class DashboardController extends Controller
             $data_summary_chart_asset_by_kondisi = $this->assetDataQueryServices->getDataChartSummaryAssetByStatus($request);
             $data_summary_chart_asset_by_month_regis = $this->assetDataQueryServices->getDataChartSummaryAssetByMonthRegister($request);
             $data_summary_service_by_status = $this->assetServiceQueryServices->getDataChartByStatus($request);
-
+            $data_pengaduan = $this->pengaduanQueryServices->findAll($request);
+            $data_belum_ditangani = $data_pengaduan->where('status_pengaduan', "dilaporkan")->count();
+            $data_sudah_ditangani = $data_pengaduan->where('status_pengaduan', '!=', "dilaporkan")->count();
+            $data_total_pengaduan = $data_pengaduan->count();
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -50,7 +57,10 @@ class DashboardController extends Controller
                     'dataSummaryChartAsset' => $data_summary_chart_asset,
                     'dataSummaryChartAssetByKondisi' => $data_summary_chart_asset_by_kondisi,
                     'dataSummaryChartAssetByMonthRegis' => $data_summary_chart_asset_by_month_regis,
-                    'dataSummaryServiceByStatus' => $data_summary_service_by_status
+                    'dataSummaryServiceByStatus' => $data_summary_service_by_status,
+                    'dataTotalPengaduan' => $data_total_pengaduan,
+                    'dataBelumDitangani' => $data_belum_ditangani,
+                    'dataSudahDitangani' => $data_sudah_ditangani
                 ]
             ]);
             //code...
