@@ -117,6 +117,9 @@ class PemutihanAssetDatatableServices
                          </div>';
                 return $data;
             })
+            ->addColumn('deskripsi', function ($item) {
+                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
+            })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->kode_asset) ? 'Tidak Ada' : $item->kode_asset;
             })
@@ -146,6 +149,9 @@ class PemutihanAssetDatatableServices
                 $data .= 'data-url_detail="' . route('admin.pemutihan-asset.edit.listing-asset.get-image', $item->id) . '"';
                 $data .= 'class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $data;
+            })
+            ->addColumn('deskripsi', function ($item) {
+                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
             })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;

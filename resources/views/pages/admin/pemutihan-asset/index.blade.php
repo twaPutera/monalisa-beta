@@ -103,6 +103,10 @@
                         searchable: false,
                     },
                     {
+                        name: 'deskripsi',
+                        data: 'deskripsi'
+                    },
+                    {
                         name: 'kode_asset',
                         data: 'kode_asset'
                     },
@@ -226,6 +230,10 @@
                                     data: 'file_gambar'
                                 },
                                 {
+                                    name: 'deskripsi',
+                                    data: 'deskripsi'
+                                },
+                                {
                                     name: 'kode_asset',
                                     data: 'kode_asset'
                                 },
@@ -317,7 +325,6 @@
                 generateKategoriSelect2Create('groupAssetCreate');
             }, 2000);
         });
-
     </script>
 @endsection
 @section('main-content')

@@ -138,6 +138,7 @@
                                         <th width="50px">No</th>
                                         {{-- <th width="100px">#</th> --}}
                                         <th>Kode Asset</th>
+                                        <th>Deskripsi Asset</th>
                                         <th>Jenis Asset</th>
                                         <th>Lokasi Asset</th>
                                         <th>Keterangan Pemutihan</th>
@@ -148,7 +149,8 @@
                                     @foreach ($pemutihan_asset->detail_pemutihan_asset as $index => $item)
                                         <tr>
                                             <td class="text-center">{{ $index + 1 }}</td>
-                                            <td>{{ $item->asset_data->kode_asset }}</td>
+                                            <td>{{ $item->asset_data->kode_asset ?? 'Tidak Ada' }}</td>
+                                            <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
                                             </td>
                                             <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}

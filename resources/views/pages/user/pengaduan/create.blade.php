@@ -51,7 +51,7 @@
     <script>
         const getDataOptionSelect = () => {
             $.ajax({
-                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                url: "{{ route('user.pengaduan.lokasi.get-select2') }}",
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {

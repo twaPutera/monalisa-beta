@@ -347,10 +347,12 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
         Route::get('/detail/{id}', [UserAssetController::class, 'detail'])->name('user.asset-data.detail');
         Route::get('/get-data-select2', [UserAssetController::class, 'getDataAssetSelect2'])->name('user.asset-data.get-data-select2');
         Route::group(['prefix' => 'pemindahan-asset'], function () {
+            Route::get('/print-bast/{id}', [PemindahanAssetController::class, 'printBast'])->name('user.listing-asset.pemindahan-asset.print-bast');
             Route::get('/detail/{id}', [UserPemindahanAssetController::class, 'detail'])->name('user.asset-data.pemindahan.detail');
             Route::post('/approve/{id}', [UserPemindahanAssetController::class, 'approve'])->name('user.asset-data.pemindahan.approve');
         });
         Route::group(['prefix' => 'service'], function () {
+            Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('user.asset-data.service.getDataSelect2');
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
@@ -372,7 +374,12 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
         Route::get('/detail/{id}', [UserApprovalController::class, 'detail'])->name('user.approval.detail');
         Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');
     });
+
     Route::group(['prefix' => 'pengaduan'], function () {
+        Route::group(['prefix' => 'get-data'], function () {
+            Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('user.pengaduan.lokasi.get-select2');
+        });
+
         Route::get('/', [UserPengaduanController::class, 'index'])->name('user.pengaduan.index');
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
         Route::get('/edit/{id}', [UserPengaduanController::class, 'edit'])->name('user.pengaduan.edit');

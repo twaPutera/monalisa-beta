@@ -47,7 +47,7 @@
                 width: '100%',
                 placeholder: 'Pilih Kategori Service',
                 ajax: {
-                    url: '{{ route('admin.setting.kategori-service.get-data-select2') }}',
+                    url: '{{ route('user.asset-data.service.getDataSelect2') }}',
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
