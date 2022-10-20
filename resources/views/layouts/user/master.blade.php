@@ -34,6 +34,43 @@
             </a>
         </div>
     </div>
+
+    <div id="toastDanger" class="toast-box toast-bottom bg-danger">
+        <div class="in">
+            <div class="text toastText">
+                Auto close in 2 seconds
+            </div>
+        </div>
+    </div>
+
+    <div id="toastSuccess" class="toast-box toast-bottom bg-success">
+        <div class="in">
+            <div class="text toastText">
+                Auto close in 2 seconds
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-icon text-danger">
+                    <ion-icon name="close-circle"></ion-icon>
+                </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertDangerTitle">Error</h5>
+                </div>
+                <div class="modal-body" id="alertDangerBody">
+                    There is something wrong.
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn" data-bs-dismiss="modal">CLOSE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- * App Header -->
 
 

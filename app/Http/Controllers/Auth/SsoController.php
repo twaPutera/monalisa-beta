@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Services\SSO\SSOServices;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SsoController extends Controller
 {
@@ -29,7 +30,7 @@ class SsoController extends Controller
                 return redirect()->route('admin.dashboard');
             }
             return redirect()->route('sso.redirect');
-            
+
             //code...
         } catch (\Throwable $th) {
             // throw $th;
@@ -42,11 +43,19 @@ class SsoController extends Controller
 
     public function logoutSso(Request $request)
     {
-        $response = $this->ssoServices->logoutSso($request);
+        if (config('app.sso_login') && config('app.sso_siska')) {
+            $response = $this->ssoServices->logoutSso($request);
 
-        if ($response) {
-            return redirect()->route('sso.redirect');
+            if ($response) {
+                return redirect()->route('sso.redirect');
+            }
+        } else {
+            Auth::logout();
+            $request->session()->flush();
+            $request->session()->regenerate();
+            return redirect()->route('login');
         }
+
         return redirect()->route('admin.dashboard');
     }
 }

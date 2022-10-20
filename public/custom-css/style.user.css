@@ -34,3 +34,11 @@
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 43px;
 }
+
+.dialogbox {
+    z-index: 999999999;
+}
+
+.dialogbox .modal-content {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}

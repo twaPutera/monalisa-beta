@@ -11,11 +11,11 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Password</label>
+                        <label for="">Password Baru</label>
                         <input type="password" class="form-control" name="password">
                     </div>
                     <div class="form-group">
-                        <label for="">Password</label>
+                        <label for="">Konfirmasi Password Baru</label>
                         <input type="password" class="form-control" name="password_confirmation">
                     </div>
                 </div>

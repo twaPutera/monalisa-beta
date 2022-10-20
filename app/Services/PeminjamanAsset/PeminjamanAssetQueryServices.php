@@ -30,7 +30,7 @@ class PeminjamanAssetQueryServices
 
     public function findById(string $id)
     {
-        $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval'])->find($id);
+        $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval', 'perpanjangan_peminjaman_asset'])->find($id);
 
         if (! isset($peminjaman)) {
             throw new Exception('Peminjaman Asset tidak ditemukan');

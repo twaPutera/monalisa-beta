@@ -15,6 +15,8 @@ use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use Illuminate\Support\Facades\Session;
 use App\Helpers\SsoHelpers;
+use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
+use App\Models\PerpanjanganPeminjamanAsset;
 
 class PeminjamanAssetCommandServices
 {
@@ -29,11 +31,11 @@ class PeminjamanAssetCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
+        // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 34);
 
-        if (!isset($approver[0])) {
-            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
-        }
+        // if (!isset($approver[0])) {
+        //     throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        // }
 
         $peminjaman = new PeminjamanAsset();
         $peminjaman->guid_peminjam_asset = config('app.sso_siska') ? $user->guid : $user->id;
@@ -55,7 +57,7 @@ class PeminjamanAssetCommandServices
         }
 
         $approval = new Approval();
-        $approval->guid_approver = $approver[0]['guid'];
+        // $approval->guid_approver = $approver[0]['guid'];
         $approval->approvable_type = get_class($peminjaman);
         $approval->approvable_id = $peminjaman->id;
         $approval->save();
@@ -67,13 +69,15 @@ class PeminjamanAssetCommandServices
     {
         $request->validated();
 
+        $user = SsoHelpers::getUserLogin();
+
         $peminjaman = PeminjamanAsset::findOrFail($id);
         $peminjaman->status = $request->status == 'disetujui' ? 'diproses' : 'ditolak';
         $peminjaman->save();
 
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
-        $approval->guid_approver = Session::get('user')->guid;
+        $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
         $approval->is_approve = $request->status == 'disetujui' ? 1 : 2;
         $approval->keterangan = $request->keterangan;
         $approval->save();
@@ -118,6 +122,30 @@ class PeminjamanAssetCommandServices
         $peminjaman->save();
 
         return $peminjaman;
+    }
+
+    public function storeRequestPerpanjangan(PerpanjanganPeminjamanStoreRequest $request, $id_peminjaman)
+    {
+        $peminjaman = PeminjamanAsset::findOrFail($id_peminjaman);
+
+        if ($peminjaman->tanggal_pengembalian > $request->tanggal_expired_perpanjangan) {
+            throw new Exception('Tanggal perpanjangan tidak boleh kurang dari tanggal pengembalian');
+        }
+
+        $perpanjangan = new PerpanjanganPeminjamanAsset();
+        $perpanjangan->id_peminjaman_asset = $peminjaman->id;
+        $perpanjangan->tanggal_expired_sebelumnya = $request->tanggal_pengembalian;
+        $perpanjangan->tanggal_expired_perpanjangan = $request->tanggal_expired_perpanjangan;
+        $perpanjangan->alasan_perpanjangan = $request->alasan_perpanjangan;
+        $perpanjangan->status = 'pending';
+        $perpanjangan->save();
+
+        $approval = new Approval();
+        $approval->approvable_type = get_class($perpanjangan);
+        $approval->approvable_id = $perpanjangan->id;
+        $approval->save();
+
+        return $perpanjangan;
     }
 
     private static function getRequestQuota(string $id)

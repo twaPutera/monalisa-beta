@@ -360,6 +360,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
             Route::get('/get-all-data', [UserPeminjamanAssetController::class, 'getAllData'])->name('user.asset-data.peminjaman.get-all-data');
             Route::get('/create', [UserPeminjamanAssetController::class, 'create'])->name('user.asset-data.peminjaman.create');
             Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
+            Route::post('/perpanjangan/{id}/store', [UserPeminjamanAssetController::class, 'storePerpanjangan'])->name('user.asset-data.peminjaman.perpanjangan.store');
         });
         Route::group(['prefix' => 'opname'], function () {
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');

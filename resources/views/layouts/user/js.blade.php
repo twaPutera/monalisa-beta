@@ -17,6 +17,12 @@
     const changeTextToast = (id, text) => {
         $('#'+id).find('.toastText').text(text);
     }
+
+    const dialogDanger = (title, body) => {
+        $('#alertDangerTitle').text(title);
+        $('#alertDangerBody').text(body);
+        $('#DialogIconedDanger').modal('show');
+    }
 </script>
 
 @yield('custom-js')

@@ -14,4 +14,9 @@ class PerpanjanganPeminjamanAsset extends Model
     {
         return $this->belongsTo(PeminjamanAsset::class, 'id_peminjaman_asset', 'id');
     }
+
+    public function approval()
+    {
+        return $this->morphOne(Approval::class, 'approvable');
+    }
 }

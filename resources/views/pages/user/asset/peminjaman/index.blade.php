@@ -1,5 +1,13 @@
 @extends('layouts.user.master')
 @section('page-title', 'Daftar Peminjaman')
+@section('custom-css')
+    <style>
+        .containerPerpanjangan {
+            /* transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94); */
+        }
+    </style>
+
+@endsection
 @section('custom-js')
     <script>
         $(document).ready(function() {
@@ -13,7 +21,7 @@
             $.ajax({
                 url: '{{ route("user.asset-data.peminjaman.get-all-data") }}',
                 data: {
-                    guid_peminjam_asset: "{{ $user->guid }}",
+                    guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
                     with: ['request_peminjaman_asset.kategori_asset'],
                     status: status
                 },
@@ -39,7 +47,7 @@
 
         const generateTemplateApproval = (data) => {
             return `
-                <a href="#" data-link_detail="${data.link_detail}" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                <a href="#" data-link_detail="${data.link_detail}" data-link_perpanjangan="${data.link_perpanjangan}" onclick="showDetailPeminjaman(this)" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
                     <p class="text-dark mb-0 asset-deskripsi">${data.request_peminjaman_asset.map((item) => (
                         ' ' + item.kategori_asset.nama_kategori
                     ))}</p>
@@ -61,6 +69,137 @@
                 </a>
             `;
         }
+
+        const showDetailPeminjaman = (element) => {
+            const url_detail = $(element).data('link_detail');
+            const url_perpanjangan = $(element).data('link_perpanjangan');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function () {
+                    $(".loadingSpiner").show();
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const data = response.data;
+                        const array_asset = data.detail_peminjaman_asset.map((item) => (
+                            JSON.parse(item.json_asset_data)
+                        ));
+                        $('#tanggalPeminjaman').val(data.tanggal_peminjaman);
+                        $('.tanggalPengembalian').val(data.tanggal_pengembalian);
+                        $('#statusPeminjaman').html(generateStatusPeminjaman(data.status));
+                        $('.containerDetailPeminjaman').empty();
+                        $(data.request_peminjaman_asset).each(function (index, value) {
+                            const array_asset_item = array_asset.filter((item) => (
+                                item.id_kategori_asset === value.id_kategori_asset
+                            ));
+                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value.kategori_asset.nama_kategori, array_asset_item));
+                        })
+                        $('#alasanPeminjaman').text(data.alasan_peminjaman);
+
+                        if (data.status == 'dipinjam' || data.status == 'duedate') {
+                            const data_perpanjangan = data.perpanjangan_peminjaman_asset.filter((item) => (
+                                item.status === 'pending'
+                            ));
+                            if (data_perpanjangan.length < 1) {
+                                $('#formPerpanjangan').attr('action', url_perpanjangan);
+                                $('#btnShowPerpanjangan').show();
+                            }
+                        } else {
+                            $('#formPerpanjangan').attr('action', "");
+                            $('#btnShowPerpanjangan').hide();
+                        }
+
+                        $(".loadingSpiner").hide();
+                        $('#modalDetailPeminjaman').modal('show');
+                    }
+                }
+            })
+        }
+
+        const generateStatusPeminjaman = (status) => {
+            let template = '';
+            if (status == 'pending') {
+                template = '<span class="badge badge-warning">Menunggu Approval</span>';
+            } else if (status == 'dipinjam') {
+                template = '<span class="badge badge-primary">Sedang Dipinjam</span>';
+            } else if (status == 'duedate') {
+                template = '<span class="badge badge-warning">Due Date</span>';
+            } else if (status == 'selesai') {
+                template = '<span class="badge badge-success">Selesai</span>';
+            }
+
+            return template;
+        }
+
+        const generateDetailPeminjaman = (nama_kategori, data_asset) => {
+            return `
+                    <div class="mt-2 border-radius-sm border p-1">
+                        <p class="text-dark"><strong>${nama_kategori}</strong></p>
+                        <ul class="listview simple-listview px-0">
+                            ${generateListDetailPeminjaman(data_asset)}
+                        </ul>
+                    </div>
+            `;
+        }
+
+        const generateListDetailPeminjaman = (data_asset) => {
+            let element = '';
+            $(data_asset).each(function (index, value) {
+                element += `<li>${value.deskripsi}</li>`;
+            })
+            return element;
+        }
+
+        let showPerpanjangan = true;
+
+        const showHideFormPerpanjangan = (element) => {
+            if (showPerpanjangan) {
+                $(element).text('Batal').removeClass('btn-warning').addClass('btn-danger');
+                $('.containerPerpanjangan').show();
+                $('#btnSubmitPerpanjangan').show();
+                showPerpanjangan = false;
+            } else {
+                $(element).text('Ajukan Perpanjangan').removeClass('btn-danger').addClass('btn-warning');
+                $('.containerPerpanjangan').hide();
+                $('#btnSubmitPerpanjangan').hide();
+                showPerpanjangan = true;
+            }
+        }
+
+        $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+            if (data.success) {
+                changeTextToast('toastSuccess', data.message);
+                toastbox('toastSuccess', 2000);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+        $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+            if (!errors.success) {
+                dialogDanger(errors.message, errors.error);
+            }
+            for (let key in errors) {
+                let array_error_key = key.split('.');
+                if (array_error_key.length < 2) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                } else {
+                    let new_key = `${array_error_key[0]}[${array_error_key[1]}][${array_error_key[2]}]`;
+                    let element = formElement.find(`[name="${new_key}"]`);
+                    $(element).addClass('is-invalid');
+                    $(`#errorJumlah-${array_error_key[1]}`).text(errors[key][0]).show();
+                }
+            }
+        });
+
+        const submitForm = () => {
+            $('.form-submit').submit();
+        }
     </script>
 @endsection
 @section('content')
@@ -72,12 +211,12 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#cards2" role="tab" aria-selected="false">
-            Sedang Dipinjam
+            Status
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#cards3" role="tab" aria-selected="false">
-            Selesai Dipinjam
+            Selesai
         </a>
     </li>
 </ul>
@@ -98,57 +237,5 @@
         </div>
     </div>
 </div>
-<div class="modal fade modalbox" id="ModalBasic" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detail Peminjaman</h5>
-                <a href="#" data-bs-dismiss="modal">Tutup</a>
-            </div>
-            <div class="modal-body">
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Tanggal Peminjaman</strong></label>
-                        <input type="text" name="" readonly value="2022/01/01" class="form-control" id="" placeholder="">
-                        <i class="clear-input">
-                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle"></ion-icon>
-                        </i>
-                    </div>
-                </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Tanggal Pengembalian</strong></label>
-                        <input type="text" name="" readonly value="2022/01/01" class="form-control" id="" placeholder="">
-                        <i class="clear-input">
-                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle"></ion-icon>
-                        </i>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <span class="badge badge-success">Sedang Dipinjam</span>
-                </div>
-                <div class="mt-2 border-radius-sm border p-1">
-                    <p class="text-dark"><strong>Kategori Asset 2</strong></p>
-                    <ul class="listview simple-listview px-0">
-                        <li>Asset 1</li>
-                        <li>Asset 2</li>
-                        <li>Asset 3</li>
-                    </ul>
-                </div>
-                <div class="mt-2 border-radius-sm border p-1">
-                    <p class="text-dark"><strong>Kategori Asset 2</strong></p>
-                    <ul class="listview simple-listview">
-                        <li>Asset 1</li>
-                        <li>Asset 2</li>
-                        <li>Asset 3</li>
-                    </ul>
-                </div>
-                <div class="mt-2">
-                    <p class="text-dark mb-1"><strong>Alasan Peminjaman</strong></p>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi, aperiam! Illum nobis ad sapiente debitis id? Non officia mollitia eum, cupiditate nemo unde, odio aliquam voluptatibus qui magni, fugiat harum?</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@include('pages.user.asset.peminjaman._modal_detail')
 @endsection

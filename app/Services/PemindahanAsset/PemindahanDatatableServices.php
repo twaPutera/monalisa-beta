@@ -22,7 +22,7 @@ class PemindahanDatatableServices
     public function datatable(Request $request)
     {
         $query = PemindahanAsset::query()
-            ->with(['detail_pemindahan_asset', 'approval_pemindahan_asset']);
+            ->with(['detail_pemindahan_asset']);
 
         if (isset($request->status)) {
             $query->where('status', $request->status);
@@ -35,7 +35,7 @@ class PemindahanDatatableServices
         }
 
         if (isset($request->guid_approver)) {
-            $query->whereHas('approval_pemindahan_asset', function ($q) use ($request) {
+            $query->whereHas('approval', function ($q) use ($request) {
                 $q->where('guid_approver', $request->guid_approver);
             });
         }
