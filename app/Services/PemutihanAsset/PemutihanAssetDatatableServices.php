@@ -117,11 +117,11 @@ class PemutihanAssetDatatableServices
                          </div>';
                 return $data;
             })
-            ->addColumn('deskripsi', function ($item) {
-                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
-            })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->kode_asset) ? 'Tidak Ada' : $item->kode_asset;
+            })
+            ->addColumn('deskripsi', function ($item) {
+                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
             })
             ->addColumn('jenis_asset', function ($item) {
                 return empty($item->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->kategori_asset->nama_kategori;
@@ -150,11 +150,11 @@ class PemutihanAssetDatatableServices
                 $data .= 'class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $data;
             })
-            ->addColumn('deskripsi', function ($item) {
-                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
-            })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;
+            })
+            ->addColumn('deskripsi', function ($item) {
+                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
             })
             ->addColumn('jenis_asset', function ($item) {
                 return empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori;

@@ -523,7 +523,7 @@
                             aria-haspopup="true"><a href="{{ route('admin.keluhan.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-clipboard-check"></i></span>
-                                    Keluhan</span></a></li>
+                                    Pengaduan</span></a></li>
                         <li class="kt-menu__item @if (\Request::segment(2) == 'peminjaman') kt-menu__item--active @endif"
                             aria-haspopup="true"><a href="{{ route('admin.peminjaman.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span

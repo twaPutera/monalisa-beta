@@ -34,12 +34,12 @@ class PemutihanAssetCommandServices
 
         $user = SsoHelpers::getUserLogin();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver[0])) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
-        $pemutihan->guid_manager = config('app.sso_siska') ? $approver[0]['guid'] : $approver[0]->id;
-        $pemutihan->json_manager = json_encode($approver[0]);
+        $pemutihan->guid_manager = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
+        $pemutihan->json_manager = config('app.sso_siska') ? json_encode($approver[0]) : json_encode($approver);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->status = 'Draft';

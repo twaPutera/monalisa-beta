@@ -29,7 +29,6 @@ class KeluhanQueryServices
                 $user = $this->userQueryServices->findById($data->created_by);
                 $name = isset($user) ? $user->name : 'Not Found';
             }
-            return $name;
         }
         $data->created_by_name = $name;
 
