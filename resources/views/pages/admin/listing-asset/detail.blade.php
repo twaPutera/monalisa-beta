@@ -42,6 +42,82 @@
             var tableLogAsset = $('#logDataTable');
             var tableLogPemindahan = $('#tableLogPemindahan');
             var tableLogOpname = $('#tableLogOpname');
+            var tableLogPeminjaman = $('#tableLogPeminjaman');
+
+            tableLogPeminjaman.DataTable({
+                responsive: true,
+                // searchDelay: 500,
+                bLengthChange: false,
+                paging: false,
+                info: false,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.peminjaman.datatable') }}",
+                    data: function(d) {
+                        d.id_asset_data = '{{ $asset->id }}';
+                    }
+                },
+                columns: [
+                    {
+                        data: 'tanggal_peminjaman'
+                    },
+                    {
+                        data: 'tanggal_pengembalian'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'nama_peminjam'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                ],
+                columnDefs: [
+                    //Custom template data
+                    {
+                        targets: [0, 1],
+                        render: function (data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        }
+                    },
+                    {
+                        targets: [2],
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            if (data == 'disetujui') {
+                                element =
+                                    '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
+                            } else if (data == 'ditolak') {
+                                element =
+                                    '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
+                            } else if (data == 'pending') {
+                                element =
+                                    '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
+                            } else if (data == 'dipinjam') {
+                                element =
+                                    '<span class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill kt-badge--rounded">Dipinjam</span>';
+                            } else if (data == 'terlambat') {
+                                element =
+                                    '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Terlambat</span>';
+                            } else if (data == 'diproses') {
+                                element =
+                                    '<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Diproses</span>';
+                            }
+                            return element;
+                        },
+                    },
+                ],
+            });
+
             tableServices.DataTable({
                 responsive: true,
                 processing: true,
@@ -622,7 +698,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-                                        
+
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
@@ -828,41 +904,18 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_4" role="tabpanel">
-                            <table class="table table-striped mb-0">
+                            <table class="table table-striped mb-0" id="tableLogPeminjaman">
                                 <thead>
                                     <tr>
-                                        <th>Tanggal</th>
-                                        <th>Status Awal</th>
-                                        <th>Status Akhir</th>
-                                        <th>Catatan</th>
-                                        <th>User</th>
+                                        <th>Tgl Peminjaman</th>
+                                        <th>Tgl Pengembalian</th>
+                                        <th>Status</th>
+                                        <th>Peminjam</th>
                                         <th>#</th>
-                                        <th>Log</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12 Januari 2022</td>
-                                        <td>Baik</td>
-                                        <td>Baik</td>
-                                        <td>Asset Masih Aman</td>
-                                        <td>User</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
-                                        </td>
-                                        <td>12 Jan 2022, 12:45 Update</td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>

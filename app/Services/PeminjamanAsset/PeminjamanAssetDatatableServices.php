@@ -22,6 +22,12 @@ class PeminjamanAssetDatatableServices
             $query->where('guid_peminjam_asset', $request->guid_peminjam_asset);
         }
 
+        if (isset($request->id_asset_data)) {
+            $query->whereHas('detail_peminjaman_asset', function ($query) use ($request) {
+                $query->where('id_asset', $request->id_asset_data);
+            });
+        }
+
         $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
