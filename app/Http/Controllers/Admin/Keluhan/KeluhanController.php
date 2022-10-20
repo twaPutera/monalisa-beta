@@ -9,6 +9,7 @@ use App\Services\Keluhan\KeluhanQueryServices;
 use App\Services\Keluhan\KeluhanCommandServices;
 use App\Services\Keluhan\KeluhanDatatableServices;
 use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
+use Throwable;
 
 class KeluhanController extends Controller
 {
@@ -34,6 +35,23 @@ class KeluhanController extends Controller
         return $this->keluhanDatatableServices->datatable($request);
     }
 
+    public function datatableLog(Request $request)
+    {
+        return $this->keluhanDatatableServices->datatableLog($request);
+    }
+
+    public function detail(string $id)
+    {
+        try {
+            $listing_keluhan = $this->keluhanQueryServices->findById($id);
+            return view('pages.admin.keluhan.components.data._data_modal_detail', compact('listing_keluhan'));
+        } catch (Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
     public function getImg(string $id)
     {
         try {

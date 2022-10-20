@@ -4,10 +4,13 @@ namespace App\Services\AssetService;
 
 use App\Models\Service;
 use App\Models\AssetData;
+use App\Models\LogServiceAsset;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use Carbon\Carbon;
+use Yajra\DataTables\Contracts\DataTable;
 
 class AssetServiceDatatableServices
 {
@@ -18,6 +21,32 @@ class AssetServiceDatatableServices
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
+    }
+
+    public function datatableLog(Request $request)
+    {
+        $query = LogServiceAsset::query();
+        $query->where('id_service', $request->id_service);
+        $query->orderBy('created_at', 'DESC');
+        return DataTables::of($query)
+            ->addColumn('tanggal', function ($item) {
+                return Carbon::parse($item->created_at)->format('Y-m-d') ?? 'Tidak Ada';
+            })
+            ->addColumn('message_log', function ($item) {
+                return $item->message_log ?? "Tidak Ada";
+            })
+            ->addColumn('created_by', function ($item) {
+                $name = "-";
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
+            })
+            ->make(true);
     }
 
     public function datatable(Request $request)
@@ -87,7 +116,8 @@ class AssetServiceDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-primary btn-icon"><i class="fa fa-edit"></i></button>';
+                $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
+                $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
                 return $element;
             })
             ->addColumn('asset_data', function ($item) {

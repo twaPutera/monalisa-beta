@@ -12,6 +12,7 @@ use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
+use Throwable;
 
 class ServicesController extends Controller
 {
@@ -59,6 +60,11 @@ class ServicesController extends Controller
         return $this->assetServiceDatatableServices->datatable($request);
     }
 
+    public function datatableLog(Request $request)
+    {
+        return $this->assetServiceDatatableServices->datatableLog($request);
+    }
+
     public function store(ServicesStoreRequest $request)
     {
         try {
@@ -80,6 +86,18 @@ class ServicesController extends Controller
         }
     }
 
+    public function detail(string $id)
+    {
+        try {
+            $listing_asset_service = $this->assetServiceQueryServices->findById($id);
+            return view('pages.admin.services.components.data._data_modal_detail', compact('listing_asset_service'));
+        } catch (Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
     public function edit(string $id)
     {
         try {

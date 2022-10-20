@@ -24,4 +24,9 @@ class Service extends Model
     {
         return $this->morphMany(AssetImage::class, 'imageable');
     }
+
+    public function log_service()
+    {
+        return $this->hasMany(LogServiceAsset::class, 'id_service', 'id');
+    }
 }

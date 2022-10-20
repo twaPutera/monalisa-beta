@@ -24,4 +24,9 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(Lokasi::class, 'id_lokasi', 'id');
     }
+
+    public function log_pengaduan()
+    {
+        return $this->hasMany(LogPengaduanAsset::class, 'id_pengaduan', 'id');
+    }
 }

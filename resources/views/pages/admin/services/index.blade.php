@@ -360,7 +360,21 @@
                 }
             })
         }
-
+        const detailService = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailInventarisData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
         const generateAssetServiceSelect = () => {
             $.ajax({
                 url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
@@ -380,7 +394,7 @@
             })
         }
     </script>
-    @include('pages.admin.services._script_modal_create')
+    @include('pages.admin.services.components.js._script_modal_create')
 @endsection
 @section('main-content')
     <input type="hidden" value="" id="lokasiParentId">
@@ -412,7 +426,8 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Lokasi terbanyak</h6>
-                    <h6 class="text-primary mb-0"><strong>{{ $data['namaLokasi'] }} ({{ $data['totalLokasi'] }})</strong></h6>
+                    <h6 class="text-primary mb-0"><strong>{{ $data['namaLokasi'] }} ({{ $data['totalLokasi'] }})</strong>
+                    </h6>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <h6 class="mb-0">Sedang di proses</h6>
@@ -462,7 +477,8 @@
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
-                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress"> Proses
+                        <input type="radio" onchange="filterTableService()" name="status_services" value="on progress">
+                        Proses
                         <span></span>
                     </label>
                     <label class="kt-radio kt-radio--bold kt-radio--brand">
@@ -485,7 +501,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>#</th>
-                                    <th>Tanggal</th>
+                                    <th>Tgl. Mulai</th>
                                     <th>Asset</th>
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
@@ -502,6 +518,7 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.services._modal_create_service')
-    @include('pages.admin.services._modal_edit_service')
+    @include('pages.admin.services.components.modal._modal_create_service')
+    @include('pages.admin.services.components.modal._modal_edit_service')
+    @include('pages.admin.services.components.modal._modal_detail_service')
 @endsection

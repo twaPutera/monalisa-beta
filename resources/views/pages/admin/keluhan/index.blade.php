@@ -12,14 +12,22 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
+        var table = $('#datatableExample');
         $(document).ready(function() {
-            var table = $('#datatableExample');
+
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.keluhan.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.keluhan.datatable') }}",
+                    data: function(d) {
+                        d.id_lokasi = $('#lokasiAssetCreateService').val();
+                        d.id_asset = $('#listAssetLocation').val();
+                        d.status_pengaduan = $("#statusPengaduanFilter").val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -177,49 +185,28 @@
                 }
             })
         }
+        const filterTableAsset = () => {
+            table.DataTable().ajax.reload();
+        }
 
         const detail = (button) => {
             const url_detail = $(button).data('url_detail');
             $.ajax({
                 url: url_detail,
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'html',
                 success: function(response) {
-                    const modal = $('.modalDetailKeluhanData');
-                    const form = modal.find('form');
-                    console.log(response.data);
-                    if (response.data.status_pengaduan === "dilaporkan") {
-                        var status = '<button class="btn btn-warning btn-sm">Laporan Masuk</button>';
-                    } else if (response.data.status_pengaduan === "diproses") {
-                        var status = '<button class="btn btn-info btn-sm">Diproses</button>';
-                    } else if (response.data.status_pengaduan === "selesai") {
-                        var status = '<button class="btn btn-success btn-sm">Selesai</button>';
-                    }
-                    if (response.data.asset_data != null) {
-                        form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
-                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
-                            .nama_lokasi);
-                        form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
-                            .group_kategori_asset.nama_group);
-                        form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
-                            .nama_kategori);
-                    } else {
-                        form.find('input[name=nama_asset]').val("-");
-                        form.find('input[name=kelompok_asset]').val("-");
-                        form.find('input[name=jenis_asset]').val("-");
-                        form.find('input[name=lokasi_asset]').val(response.data.lokasi.nama_lokasi);
-                    }
-                    form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
-                    form.find('#status_laporan').empty();
-                    form.find('#status_laporan').append(status);
-                    form.find('textarea[name=catatan_pengaduan]').val(response.data.catatan_pengaduan);
-                    form.find('input[name=diajukan_oleh]').val(response.data.created_by_name);
-                    form.find('textarea[name=catatan_admin]').val(response.data.catatan_admin);
+                    const modal = $('.modalDetailPengaduanData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
                     modal.modal('show');
                 }
             })
         }
+
     </script>
+    @include('pages.admin.keluhan.components.js._script_modal_create')
 @endsection
 @section('main-content')
     <div class="row">
@@ -230,6 +217,16 @@
                         <h3 class="kt-portlet__head-title">
                             Data Pengaduan
                         </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                            <div class="kt-portlet__head-actions">
+                                <button onclick="openModalByClass('modalFilterAsset')"
+                                    class="btn btn-sm btn-info shadow-custom" type="button"><i
+                                        class="fas fa-sliders-h mr-2"></i>
+                                    Filter</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
@@ -258,7 +255,8 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.keluhan._modal_preview')
-    @include('pages.admin.keluhan._modal_edit_keluhan')
-    @include('pages.admin.keluhan._modal_detail_keluhan')
+    @include('pages.admin.keluhan.components.modal._modal_preview')
+    @include('pages.admin.keluhan.components.modal._modal_edit_keluhan')
+    @include('pages.admin.keluhan.components.modal._modal_filter')
+    @include('pages.admin.keluhan.components.modal._modal_detail_keluhan')
 @endsection

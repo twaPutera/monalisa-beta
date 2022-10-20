@@ -33,7 +33,7 @@
     </div>
 </div>
 <div class="col-12 col-md-4">
-    <label for="">Log Bahan Habis Pakai Masuk</label>
+    <label for="">History Data Masuk</label>
     <div class="table-responsive">
         <table class="table table-striped mb-0" id="datatableLogService">
             <thead>
@@ -52,7 +52,7 @@
 
 </div>
 <div class="col-12 col-md-4">
-    <label for="">Log Bahan Habis Pakai Keluar</label>
+    <label for="">History Data Keluar</label>
     <div class="table-responsive">
         <table class="table table-striped mb-0" id="datatableLogPengurangan">
             <thead>

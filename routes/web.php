@@ -177,8 +177,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     Route::group(['prefix' => 'services'], function () {
         Route::get('/', [ServicesController::class, 'index'])->name('admin.services.index');
         Route::get('/datatable', [ServicesController::class, 'datatable'])->name('admin.services.datatable');
+        Route::get('/datatable-log', [ServicesController::class, 'datatableLog'])->name('admin.services.datatable.log');
         Route::post('/store', [ServicesController::class, 'store'])->name('admin.services.store');
         Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('admin.services.edit');
+        Route::get('/detail/{id}', [ServicesController::class, 'detail'])->name('admin.services.detail');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
     });
@@ -187,9 +189,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     Route::group(['prefix' => 'keluhan'], function () {
         Route::get('/', [KeluhanController::class, 'index'])->name('admin.keluhan.index');
         Route::get('/edit/{id}', [KeluhanController::class, 'edit'])->name('admin.keluhan.edit');
+        Route::get('/detail/{id}', [KeluhanController::class, 'detail'])->name('admin.keluhan.detail');
         Route::post('/update/{id}', [KeluhanController::class, 'update'])->name('admin.keluhan.update');
         Route::get('/image/{id}', [KeluhanController::class, 'getImg'])->name('admin.keluhan.get-image');
         Route::get('/datatable', [KeluhanController::class, 'datatable'])->name('admin.keluhan.datatable');
+        Route::get('/datatable-log', [KeluhanController::class, 'datatableLog'])->name('admin.keluhan.datatable.log');
+
     });
     # Peminjaman
     Route::group(['prefix' => 'peminjaman'], function () {

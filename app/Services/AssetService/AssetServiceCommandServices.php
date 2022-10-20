@@ -13,6 +13,8 @@ use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
 use Illuminate\Support\Facades\Session;
 use App\Helpers\SsoHelpers;
+use App\Models\LogServiceAsset;
+use Illuminate\Support\Facades\Auth;
 
 class AssetServiceCommandServices
 {
@@ -39,6 +41,8 @@ class AssetServiceCommandServices
         $detail_asset_service->tindakan = $request->tindakan;
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
+
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -78,6 +82,8 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
+
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
             $path = storage_path('app/images/asset-service');
@@ -115,6 +121,8 @@ class AssetServiceCommandServices
         $detail_asset_service->tindakan = $request->tindakan;
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
+
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -154,6 +162,8 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "dirubah");
+
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-service');
             if (isset($asset_service->image[0])) {
@@ -177,5 +187,17 @@ class AssetServiceCommandServices
     {
         $name = 'asset-service-' . $kodeasset . '-' . time() . '.' . $extension;
         return $name;
+    }
+
+    protected static function storeLog($id_asset, $nama_asset, $status, $log = "ditambahkan")
+    {
+        $log_asset = new LogServiceAsset();
+        $user = SsoHelpers::getUserLogin();
+        $log_asset->id_service = $id_asset;
+        $log_asset->message_log = "Service asset telah $log untuk asset $nama_asset oleh " . Auth::user()->role;
+        $log_asset->status = $status == 'onprogress' ? 'on progress' : $status;
+        $log_asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
+        $log_asset->save();
+        return $log_asset;
     }
 }
