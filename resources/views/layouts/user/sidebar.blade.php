@@ -8,7 +8,7 @@
                         <img src="/assets/user/img/sample/avatar/avatar1.jpg" alt="image" class="imaged  w36">
                     </div>
                     <div class="in">
-                        <strong>Sebastian Doe</strong>
+                        <strong>{{ $user->name }}</strong>
                         <div class="text-primary"><strong>Jenis Role</strong></div>
                     </div>
                     <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
@@ -82,14 +82,19 @@
                         </a>
                     </li>
                     <li>
-                        <a href="app-login.html" class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="log-out-outline"></ion-icon>
-                            </div>
-                            <div class="in">
-                                Log out
-                            </div>
-                        </a>
+                        <form method="POST" action="{{ route('sso.logout') }}">
+                            @csrf
+                            <a class="item" href="#"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                <div class="icon-box bg-primary">
+                                    <ion-icon name="log-out-outline"></ion-icon>
+                                </div>
+                                <div class="in">
+                                    Log out
+                                </div>
+                            </a>
+                        </form>
+
                     </li>
 
 

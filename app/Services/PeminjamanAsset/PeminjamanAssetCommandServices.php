@@ -72,13 +72,13 @@ class PeminjamanAssetCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $peminjaman = PeminjamanAsset::findOrFail($id);
-        $peminjaman->status = $request->status == 'disetujui' ? 'diproses' : 'ditolak';
+        $peminjaman->status = $request->status;
         $peminjaman->save();
 
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
         $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
-        $approval->is_approve = $request->status == 'disetujui' ? 1 : 2;
+        $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
         $approval->save();
 
@@ -128,6 +128,8 @@ class PeminjamanAssetCommandServices
     {
         $peminjaman = PeminjamanAsset::findOrFail($id_peminjaman);
 
+        $user = SsoHelpers::getUserLogin();
+
         if ($peminjaman->tanggal_pengembalian > $request->tanggal_expired_perpanjangan) {
             throw new Exception('Tanggal perpanjangan tidak boleh kurang dari tanggal pengembalian');
         }
@@ -143,6 +145,32 @@ class PeminjamanAssetCommandServices
         $approval = new Approval();
         $approval->approvable_type = get_class($perpanjangan);
         $approval->approvable_id = $perpanjangan->id;
+        $peminjaman->created_by = config('app.sso_siska') ? $user->guid : $user->id;
+        $approval->save();
+
+        return $perpanjangan;
+    }
+
+    public function changeApprovalStatusPerpanjangan(PeminjamanApprovalUpdate $request, $id)
+    {
+        $request->validated();
+
+        $user = SsoHelpers::getUserLogin();
+        $perpanjangan = PerpanjanganPeminjamanAsset::findOrFail($id);
+        $perpanjangan->status = $request->status;
+        $perpanjangan->save();
+
+        if ($request->status == 'disetujui') {
+            $peminjaman = $perpanjangan->peminjaman_asset;
+            $peminjaman->tanggal_pengembalian = $perpanjangan->tanggal_expired_perpanjangan;
+            $peminjaman->save();
+        }
+
+        $approval = $perpanjangan->approval;
+        $approval->tanggal_approval = date('Y-m-d H:i:s');
+        $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
+        $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
+        $approval->keterangan = $request->keterangan;
         $approval->save();
 
         return $perpanjangan;

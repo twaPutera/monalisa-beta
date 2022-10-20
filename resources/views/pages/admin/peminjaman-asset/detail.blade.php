@@ -309,40 +309,87 @@
                             </div>
                         </div>
                         <div class="col-md-8 col-12">
-                            <div class="kt-portlet shadow-custom">
-                                <div class="kt-portlet__head px-4">
-                                    <div class="kt-portlet__head-label">
-                                        <h3 class="kt-portlet__head-title">
-                                            Request Peminjaman
-                                        </h3>
+                            <div class="row">
+                                <div class="col-md-4 col-12">
+                                    <div class="kt-portlet shadow-custom">
+                                        <div class="kt-portlet__head px-4">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Request Peminjaman
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="50px">No</th>
+                                                            <th>Nama Kategori</th>
+                                                            <th width="50px">Jumlah</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tableBodyDetailPeminjaman">
+                                                        @foreach ($peminjaman->request_peminjaman_asset as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ $loop->iteration }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->kategori_asset->nama_kategori }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->jumlah }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="kt-portlet__body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th width="50px">No</th>
-                                                    <th>Nama Kategori</th>
-                                                    <th width="50px">Jumlah</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tableBodyDetailPeminjaman">
-                                                @foreach ($peminjaman->request_peminjaman_asset as $item)
-                                                    <tr>
-                                                        <td>
-                                                            {{ $loop->iteration }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $item->kategori_asset->nama_kategori }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $item->jumlah }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                <div class="col-md-8 col-12">
+                                    <div class="kt-portlet shadow-custom">
+                                        <div class="kt-portlet__head px-4">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Request Peminjaman
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="50px">No</th>
+                                                            <th>Tanggal Expired</th>
+                                                            <th>Tanggal Perpanjangan</th>
+                                                            <th width="50px">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="">
+                                                        @foreach ($peminjaman->perpanjangan_peminjaman_asset as $item)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ $loop->iteration }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->tanggal_expired_sebelumnya }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->tanggal_expired_perpanjangan }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->status }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

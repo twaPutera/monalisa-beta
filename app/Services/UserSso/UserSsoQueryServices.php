@@ -4,6 +4,7 @@ namespace App\Services\UserSso;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
 
 class UserSsoQueryServices
 {
@@ -32,24 +33,32 @@ class UserSsoQueryServices
         return $response_sso_siska['data']['nodes'];
     }
 
-    public function getDataUserByRoleId(Request $request, int $id_role)
+    public function getDataUserByRoleId(Request $request, $role)
     {
-        $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
+        $sso_login = config('app.sso_login');
+        $user = User::query()->where('role', $role)->first();
+        if ($sso_login) {
+            $sso_siska = config('app.sso_siska');
+            if ($sso_siska) {
+                $jwt_token = $_COOKIE[config('app.jwt_cookie_name')];
 
-        $sso_siska_url = config('app.sso_siska_url') . '/api/users';
+                $sso_siska_url = config('app.sso_siska_url') . '/api/users';
 
-        $response_sso_siska = Http::withHeaders([
-            'accept' => 'application/json',
-            'Authorization' => 'Bearer ' . $jwt_token,
-        ])->get($sso_siska_url, [
-            'fields' => 'name,guid,email',
-            'search' => 'name:' . $request->keyword,
-            'roles' => [$id_role],
-            'page' => 1,
-            'perPage' => 20,
-        ]);
+                $response_sso_siska = Http::withHeaders([
+                    'accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $jwt_token,
+                ])->get($sso_siska_url, [
+                    'fields' => 'name,guid,email',
+                    'search' => 'name:' . $request->keyword,
+                    'roles' => [$role],
+                    'page' => 1,
+                    'perPage' => 20,
+                ]);
+                $user = $response_sso_siska['data']['nodes'];
+            }
+        }
 
-        return $response_sso_siska['data']['nodes'];
+        return $user;
     }
 
     public function getUserByGuid(string $guid)

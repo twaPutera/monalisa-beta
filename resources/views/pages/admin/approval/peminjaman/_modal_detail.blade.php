@@ -11,24 +11,43 @@
                 @csrf
                 <div class="modal-body row">
                     <div class="col-md-4 col-12">
-                        <div class="mb-2">
+                        <div class="mb-2 perpanjanganDeskripsi">
+                            <h5>Deskripsi Perpanjangan</h5>
+                            <div class="form-group">
+                                <label for="nama">Nama Peminjam</label>
+                                <input type="text" class="form-control namaPeminjam" readonly name="nama" placeholder="Nama" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tanggal Pengembalian Sebelumnya</label>
+                                <input type="date" class="form-control" id="tanggalPengembalianSebelumnya" readonly name="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tanggal Perpanjangan</label>
+                                <input type="date" class="form-control" id="tanggalPerpanjangan" readonly name="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Alasan Perpanjangan</label>
+                                <textarea name="" class="form-control" readonly id="alasanPerpanjangan" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="deskripsiPeminjaman">
                             <h5>Deskripsi Peminjaman</h5>
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Nama Peminjam</label>
-                            <input type="text" class="form-control" id="namaPeminjam" readonly name="nama" placeholder="Nama" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tanggal Peminjaman</label>
-                            <input type="date" class="form-control" id="tanggalPeminjam" readonly name="kode_satuan">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tanggal Pengembalian</label>
-                            <input type="date" class="form-control" id="tanggalPengembalian" readonly name="nama_satuan">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Alasan Peminjaman</label>
-                            <textarea name="" class="form-control" readonly id="alasanPeminjaman" cols="30" rows="10"></textarea>
+                            <div class="form-group">
+                                <label for="nama">Nama Peminjam</label>
+                                <input type="text" class="form-control namaPeminjam" readonly name="nama" placeholder="Nama" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tanggal Peminjaman</label>
+                                <input type="date" class="form-control" id="tanggalPeminjam" readonly name="kode_satuan">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tanggal Pengembalian</label>
+                                <input type="date" class="form-control" id="tanggalPengembalian" readonly name="nama_satuan">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Alasan Peminjaman</label>
+                                <textarea name="" class="form-control" readonly id="alasanPeminjaman" cols="30" rows="10"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-12">
