@@ -70,14 +70,14 @@ class PemutihanAssetCommandServices
     public function changeApprovalStatus(PemutihanApprovalUpdate $request, $id)
     {
         $request->validated();
-
+        $user = SsoHelpers::getUserLogin();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $pemutihan->status = $request->status == 'disetujui' ? 'Diproses' : 'Ditolak';
         $pemutihan->save();
 
         foreach ($pemutihan->detail_pemutihan_asset as $item) {
             if ($request->status == 'disetujui') {
-                $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $item->id_asset_data)->first();
+                $asset_data = AssetData::where('id', $item->id_asset_data)->first();
                 $asset_data->is_pemutihan = 1;
                 $asset_data->save();
             }
@@ -85,11 +85,10 @@ class PemutihanAssetCommandServices
 
         $approval = $pemutihan->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
-        $approval->guid_approver = Session::get('user')->guid;
-        $approval->is_approve = $request->status == 'disetujui' ? 1 : 2;
+        $approval->guid_approver = $user->guid ?? $user->id;
+        $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
         $approval->save();
-
         return $pemutihan;
     }
 
@@ -258,7 +257,7 @@ class PemutihanAssetCommandServices
         }
 
         if ($user->guid != $pemutihan->approval->guid_approver) {
-            throw new Exception('Anda tidak dapat mengubah status pemindahan asset ini');
+            throw new Exception('Anda tidak dapat mengubah status pemutihan asset ini');
         }
 
         $pemutihan->status = $request->status;

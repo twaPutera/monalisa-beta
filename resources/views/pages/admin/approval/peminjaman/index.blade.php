@@ -25,7 +25,9 @@
                     url: "{{ route('admin.approval.datatable') }}",
                     data: function(d) {
                         // d.is_approve = null;
-                        d.approvable_types = ['App\\Models\\PeminjamanAsset', 'App\\Models\\PerpanjanganPeminjamanAsset'];
+                        d.approvable_types = ['App\\Models\\PeminjamanAsset',
+                            'App\\Models\\PerpanjanganPeminjamanAsset'
+                        ];
                     }
                 },
                 columns: [{
@@ -67,7 +69,8 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-approvable_id="${full.approvable_id}" data-approvable_type="${full.approvable_type}" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-is_approve="${full.is_approve}" data-url_detail="` + data + `" data-url_update="` +
+                                <button onclick="showDetail(this)" data-approvable_id="${full.approvable_id}" data-approvable_type="${full.approvable_type}" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-is_approve="${full.is_approve}" data-url_detail="` +
+                                data + `" data-url_update="` +
                                 full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
@@ -78,7 +81,8 @@
                         targets: [2],
                         render: function(data, type, full, meta) {
                             if (data === 'App\\Models\\PeminjamanAsset') return 'Peminjaman Asset';
-                            else if (data === 'App\\Models\\PerpanjanganPeminjamanAsset') return 'Perpanjangan Peminjaman Asset';
+                            else if (data === 'App\\Models\\PerpanjanganPeminjamanAsset')
+                                return 'Perpanjangan Peminjaman Asset';
                         },
                     },
                     {
@@ -129,7 +133,7 @@
                             if (data == '1') {
                                 element =
                                     '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
-                            } else if (data == '2') {
+                            } else if (data == '0') {
                                 element =
                                     '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
                             }
@@ -214,7 +218,8 @@
                                 return item.id == approvable_id;
                             });
 
-                            $('#tanggalPengembalianSebelumnya').val(perpanjangan[0].tanggal_expired_sebelumnya);
+                            $('#tanggalPengembalianSebelumnya').val(perpanjangan[0]
+                                .tanggal_expired_sebelumnya);
                             $('#tanggalPerpanjangan').val(perpanjangan[0].tanggal_expired_perpanjangan);
                             $('#alasanPerpanjangan').val(perpanjangan[0].alasan_perpanjangan);
 
@@ -243,7 +248,8 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span>
+                                Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">

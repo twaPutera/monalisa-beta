@@ -38,6 +38,7 @@ class PemutihanController extends Controller
             //code...
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th);
             DB::rollBack();
             return response()->json([
                 'success' => false,
