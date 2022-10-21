@@ -17,9 +17,9 @@ use App\Services\SistemConfig\SistemConfigQueryServices;
 class AssetDataCommandServices
 {
     protected $sistemConfigServices;
-    public function __construct(SistemConfigQueryServices $sistemConfigServices)
+    public function __construct()
     {
-        $this->sistemConfigServices = $sistemConfigServices;
+        $this->sistemConfigServices = new SistemConfigQueryServices();
     }
     public function store(AssetStoreRequest $request)
     {
