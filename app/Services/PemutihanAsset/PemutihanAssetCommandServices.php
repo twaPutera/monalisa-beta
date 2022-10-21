@@ -189,7 +189,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver[0])) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -238,7 +238,7 @@ class PemutihanAssetCommandServices
 
         if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
-            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver[0]->id;
+            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
             $approval->approvable_type = get_class($pemutihan);
             $approval->approvable_id = $pemutihan->id;
             $approval->save();
