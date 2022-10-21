@@ -269,9 +269,20 @@
                                 @elseif($peminjaman->status == 'disetujui')
                                     <button class="btn btn-sm btn-success" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Disetujui</button>
                                 @elseif($peminjaman->status == 'dipinjam')
-                                    <button class="btn btn-sm btn-info" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Dipinjam</button>
-                                @elseif($peminjaman->status == 'terlambat')
+                                    <form action="{{ route('admin.peminjaman.detail-asset.change-status', $peminjaman->id) }}" class="form-confirm d-inline" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="selesai">
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
+                                    </form>
+                                @elseif($peminjaman->status == 'overdue')
                                     <button class="btn btn-sm btn-warning" style="pointer-events: none;"><i class="fas fa-calendar-times mr-2"></i> Terlambat</button>
+                                    <form action="{{ route('admin.peminjaman.detail-asset.change-status', $peminjaman->id) }}" class="form-confirm d-inline" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="selesai">
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
+                                    </form>
+                                @elseif($peminjaman->status == 'selesai')
+                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Selesai</button>
                                 @endif
                             </div>
                         </div>
