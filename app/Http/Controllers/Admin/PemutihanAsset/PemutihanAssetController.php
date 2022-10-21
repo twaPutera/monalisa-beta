@@ -36,7 +36,7 @@ class PemutihanAssetController extends Controller
     public function index()
     {
         $total_asset = $this->pemutihanAssetQueryServices->findAll()->count();
-        return view('pages.admin.pemutihan-asset.index', compact('total_asset'));
+        return view('pages.admin.pemutihan-asset.bast.index', compact('total_asset'));
     }
 
     public function datatable(Request $request)

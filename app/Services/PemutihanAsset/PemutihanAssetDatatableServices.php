@@ -140,9 +140,20 @@ class PemutihanAssetDatatableServices
     {
         $query = DetailPemutihanAsset::query();
         $query->with(['asset_data']);
-        $query->where('id_pemutihan_asset', $request->id_pemutihan_detail);
+
+        if (isset($request->id_pemutihan_detail)) {
+            $query->where('id_pemutihan_asset', $request->id_pemutihan_detail);
+        }
+
+        if (isset($request->is_pemutihan)) {
+            $query->whereHas('asset_data', function ($q) use ($request) {
+                $q->where('is_pemutihan', $request->is_pemutihan);
+            });
+        }
+
         $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
+            ->addIndexColumn()
             ->addColumn('file_gambar', function ($item) {
                 $data = '';
                 $data .= '<button type="button" onclick="showPemutihanAsset(this)"';
@@ -150,11 +161,18 @@ class PemutihanAssetDatatableServices
                 $data .= 'class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $data;
             })
+            ->addColumn('button_show_asset', function ($item) {
+                $element = '';
+                $element .= '<a href="'. route('admin.listing-asset.detail', $item->id_asset_data) .'" class="btn btn-sm btn-icon">
+                                <i class="fa fa-eye"></i>
+                            </a>';
+                return $element;
+            })
             ->addColumn('kode_asset', function ($item) {
                 return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;
             })
             ->addColumn('deskripsi', function ($item) {
-                return empty($item->deskripsi) ? 'Tidak Ada' : $item->deskripsi;
+                return empty($item->asset_data->deskripsi) ? 'Tidak Ada' : $item->asset_data->deskripsi;
             })
             ->addColumn('jenis_asset', function ($item) {
                 return empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori;
@@ -168,7 +186,7 @@ class PemutihanAssetDatatableServices
             ->addColumn('keterangan_pemutihan', function ($item) {
                 return empty($item->keterangan_pemutihan) ? 'Tidak Ada' : $item->keterangan_pemutihan;
             })
-            ->rawColumns(['file_gambar'])
+            ->rawColumns(['file_gambar', 'button_show_asset'])
             ->make(true);
     }
 }
