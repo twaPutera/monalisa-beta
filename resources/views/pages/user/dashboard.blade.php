@@ -4,16 +4,17 @@
     <script>
         $(document).ready(function() {
             getAllDataAssetOwner();
+            getSummaryData();
         });
         const getAllDataAssetOwner = () => {
             $.ajax({
-                url: '{{ route("user.asset-data.get-all-data-asset-by-user") }}',
+                url: '{{ route('user.asset-data.get-all-data-asset-by-user') }}',
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         if (response.data.length > 0) {
-                            $(response.data).each(function (index, value) {
+                            $(response.data).each(function(index, value) {
                                 $('#assetContainer').append(generateTemplateAsset(value));
                             });
                         }
@@ -48,64 +49,81 @@
                 </a>
             `;
         }
+        const getSummaryData = () => {
+            $.ajax({
+                url: '{{ route('user.get-summary-dashboard') }}',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    created_by: '{{ $user->guid ?? $user->id }}',
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#totalAduan').empty();
+                        $('#totalAduan').append(response.data.total_aduan);
+                    }
+                },
+            })
+        }
     </script>
 @endsection
 @section('content')
-<div class="section wallet-card-section pt-1">
-    <div class="wallet-card">
-        <!-- Balance -->
-        <div class="balance">
-            <div class="left">
-                <span class="title text-primary">Selamat Datang</span>
-                <h1 class="text-muted" style="font-size: 20px;">{{ $user->name }}</h1>
-                <span class="text-muted">Jenis Role</span>
+    <div class="section wallet-card-section pt-1">
+        <div class="wallet-card">
+            <!-- Balance -->
+            <div class="balance">
+                <div class="left">
+                    <span class="title text-primary">Selamat Datang</span>
+                    <h1 class="text-muted" style="font-size: 20px;">{{ $user->name }}</h1>
+                    <span class="text-muted">Jenis Role</span>
+                </div>
+                <div class="right">
+                    <img alt="Logo" src="{{ asset('assets/images/logo-Press-103x75.png') }}"
+                        class="kt-header__brand-logo-default" width="80px" />
+                </div>
             </div>
-            <div class="right">
-                <img alt="Logo" src="{{ asset('assets/images/logo-Press-103x75.png') }}" class="kt-header__brand-logo-default" width="80px" />
+            <!-- * Balance -->
+            <!-- Wallet Footer -->
+            <div class="wallet-footer justify-content-between">
+                <div class="item">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
+                        <div class="icon-wrapper bg-primary">
+                            2
+                        </div>
+                        <strong>Aset</strong>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#sendActionSheet">
+                        <div class="icon-wrapper bg-danger" id="totalAduan">
+                            0
+                        </div>
+                        <strong>Aduan</strong>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="app-cards.html">
+                        <div class="icon-wrapper bg-info">
+                            1
+                        </div>
+                        <strong>Peminjaman</strong>
+                    </a>
+                </div>
             </div>
+            <!-- * Wallet Footer -->
         </div>
-        <!-- * Balance -->
-        <!-- Wallet Footer -->
-        <div class="wallet-footer justify-content-between">
-            <div class="item">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
-                    <div class="icon-wrapper bg-primary">
-                        2
-                    </div>
-                    <strong>Aset</strong>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#sendActionSheet">
-                    <div class="icon-wrapper bg-danger">
-                        12
-                    </div>
-                    <strong>Aduan</strong>
-                </a>
-            </div>
-            <div class="item">
-                <a href="app-cards.html">
-                    <div class="icon-wrapper bg-info">
-                        1
-                    </div>
-                    <strong>Peminjaman</strong>
-                </a>
-            </div>
+    </div>
+    <div class="section mt-2">
+        <div class="d-flex justify-content-between">
+            <h2 class="text-grey"><strong>Daftar Aset Anda</strong></h2>
+            <h2 class="text-grey"><strong id="countAsset">(2)</strong></h2>
         </div>
-        <!-- * Wallet Footer -->
     </div>
-</div>
-<div class="section mt-2">
-    <div class="d-flex justify-content-between">
-        <h2 class="text-grey"><strong>Daftar Aset Anda</strong></h2>
-        <h2 class="text-grey"><strong id="countAsset">(2)</strong></h2>
-    </div>
-</div>
-<div class="section mt-2">
-    <div class="card p-1 bg-light-grey border-radius-sm">
-        <div class="card-body p-1 bg-light-grey" id="assetContainer">
+    <div class="section mt-2">
+        <div class="card p-1 bg-light-grey border-radius-sm">
+            <div class="card-body p-1 bg-light-grey" id="assetContainer">
 
-            {{-- <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
+                {{-- <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
                 <div class="d-flex align-items-center">
                     <div class="icon-wrapper pt-1 bg-danger rounded-circle text-center" style="width: 40px; height: 40px;">
                         <ion-icon name="remove-circle-outline" style="font-size: 23px;"></ion-icon>
@@ -125,7 +143,7 @@
                     </div>
                 </div>
             </a> --}}
+            </div>
         </div>
     </div>
-</div>
 @endsection

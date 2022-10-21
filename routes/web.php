@@ -194,7 +194,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
         Route::get('/image/{id}', [KeluhanController::class, 'getImg'])->name('admin.keluhan.get-image');
         Route::get('/datatable', [KeluhanController::class, 'datatable'])->name('admin.keluhan.datatable');
         Route::get('/datatable-log', [KeluhanController::class, 'datatableLog'])->name('admin.keluhan.datatable.log');
-
     });
     # Peminjaman
     Route::group(['prefix' => 'peminjaman'], function () {
@@ -344,6 +343,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
 
 Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|staff']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
+    Route::get('/dashboard/get-summary-dashboard', [UserDashboardController::class, 'getDashboardData'])->name('user.get-summary-dashboard');
     Route::group(['prefix' => 'scan-qr'], function () {
         Route::get('/', [ScanQrCodeController::class, 'index'])->name('user.scan-qr.index');
         Route::post('find', [ScanQrCodeController::class, 'find'])->name('user.scan-qr.find');
@@ -382,11 +382,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
     });
 
     Route::group(['prefix' => 'pengaduan'], function () {
-        Route::group(['prefix' => 'get-data'], function () {
-            Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('user.pengaduan.lokasi.get-select2');
-        });
-
         Route::get('/', [UserPengaduanController::class, 'index'])->name('user.pengaduan.index');
+        Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('user.pengaduan.lokasi.get-select2');
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');
         Route::get('/edit/{id}', [UserPengaduanController::class, 'edit'])->name('user.pengaduan.edit');
         Route::post('/update/{id}', [UserPengaduanController::class, 'update'])->name('user.pengaduan.update');
