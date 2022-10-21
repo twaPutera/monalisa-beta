@@ -73,7 +73,7 @@
                             if (data == '1') {
                                 element =
                                     '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
-                            } else if (data == '2') {
+                            } else if (data == '0') {
                                 element =
                                     '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
                             }
@@ -143,7 +143,8 @@
                         if (data.approval.is_approve == 1) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval.tanggal_approval).show();
-                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' : 'ditolak';
+                            const status_approval = data.approval.is_approve == '1' ? 'disetujui' :
+                                'ditolak';
                             $('#statusApproval option[value=' + status_approval + ']').attr('selected',
                                 true);
                             $('#keteranganApproval').val(data.approval.keterangan);
@@ -165,13 +166,20 @@
                                 value.id + `"
                                 class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
                             `;
+                            const kode_asset = value.asset_data.kode_asset ? value.asset_data
+                                .kode_asset : 'Tidak Ada';
+                            const deskripsi = value.asset_data.deskripsi ? value.asset_data
+                                .deskripsi : 'Tidak Ada';
+                            const lokasi = value.asset_data.lokasi ? value.asset_data.lokasi
+                                .nama_lokasi : 'Tidak Ada';
+
                             let element = `
                                 <tr>
                                     <td>` + (index + 1) + `</td>
                                     <td>` + buttonImage + `</td>
-                                    <td>` + value.asset_data.kode_asset + `</td>
-                                    <td>` + value.asset_data.deskripsi + `</td>
-                                    <td>` + value.asset_data.lokasi.nama_lokasi + `</td>
+                                    <td>` + kode_asset + `</td>
+                                    <td>` + deskripsi + `</td>
+                                    <td>` + lokasi + `</td>
                                     <td>` + value.keterangan_pemutihan + `</td>
                                 </tr>
                             `;
@@ -194,7 +202,8 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span>
+                                Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">

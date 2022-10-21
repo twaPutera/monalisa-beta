@@ -84,9 +84,9 @@ class DashboardController extends Controller
             $total_all_peminjaman = $list_peminjaman_asset->count();
             $total_all_pemutihan = $list_pemutihan_asset->count();
 
-            $total_pemindahan = $list_pemindahan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
-            $total_pemutihan = $list_pemutihan_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
-            $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->orWhere('is_approve', 0)->count();
+            $total_pemindahan = $list_pemindahan_asset->where('is_approve', null)->count();
+            $total_pemutihan = $list_pemutihan_asset->where('is_approve', null)->count();
+            $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->count();
 
             if (Auth::user()->role == "manager") {
                 $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan;

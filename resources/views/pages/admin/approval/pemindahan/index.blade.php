@@ -2,7 +2,8 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
@@ -27,8 +28,7 @@
                         d.approvable_type = 'App\\Models\\PemindahanAsset';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -66,11 +66,13 @@
                     {
                         targets: [1],
                         render: function(data, type, full, meta) {
-                            let element = ` <button onclick="showDetail(this)" data-url_detail="`+data+`" data-url_update="`+full.link_update+`" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
+                            let element = ` <button onclick="showDetail(this)" data-url_detail="` +
+                                data + `" data-url_update="` + full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                                 <i class="la la-eye"></i>
                                             </button>`;
                             if (full.is_approve == '1') {
-                                element += `<a href="${full.data_detail_approval.link_stream_bast}" class="btn ml-1 btn-sm btn-icon btn-success" target="_blank"><i class="fa fa-file"><i/></a>`
+                                element +=
+                                    `<a href="${full.data_detail_approval.link_stream_bast}" class="btn ml-1 btn-sm btn-icon btn-success" target="_blank"><i class="fa fa-file"><i/></a>`
                             }
 
                             return element;
@@ -85,11 +87,14 @@
                     {
                         targets: [7],
                         render: function(data, type, full, meta) {
-                            let element = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
+                            let element =
+                                '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
                             if (data == '1') {
-                                element = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
-                            } else if (data == '2') {
-                                element = '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
+                                element =
+                                    '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
+                            } else if (data == '0') {
+                                element =
+                                    '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
                             }
                             return element;
                         },
@@ -138,8 +143,10 @@
                         if (data.approval[0].is_approve == '1') {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval[0].tanggal_approval).show();
-                            const status_approval = data.approval[0].is_approve == '1' ? 'disetujui' : 'ditolak';
-                            $('#statusApproval option[value='+status_approval+']').attr('selected', true);
+                            const status_approval = data.approval[0].is_approve == '1' ? 'disetujui' :
+                                'ditolak';
+                            $('#statusApproval option[value=' + status_approval + ']').attr('selected',
+                                true);
                             $('#keteranganApproval').val(data.approval[0].keterangan);
                         }
                         const kategori_name = kategori ? kategori.nama_kategori : '-';
@@ -179,7 +186,8 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span>
+                                Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
