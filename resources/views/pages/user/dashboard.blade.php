@@ -94,7 +94,7 @@
                     </a>
                 </div>
                 <div class="item">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#sendActionSheet">
+                    <a href="{{ route('user.pengaduan.index') }}">
                         <div class="icon-wrapper bg-danger" id="totalAduan">
                             0
                         </div>
