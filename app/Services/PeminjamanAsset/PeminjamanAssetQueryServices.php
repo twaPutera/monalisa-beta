@@ -19,6 +19,10 @@ class PeminjamanAssetQueryServices
             $peminjaman->where('status', $request->status);
         }
 
+        if ($request->has('statusArray')) {
+            $peminjaman->whereIn('status', $request->statusArray);
+        }
+
         if ($request->has('guid_peminjam_asset')) {
             $peminjaman->where('guid_peminjam_asset', $request->guid_peminjam_asset);
         }

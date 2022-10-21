@@ -11,9 +11,9 @@
 @section('custom-js')
     <script>
         $(document).ready(function() {
-            getAllDataPeminjaman('pendingContainer', 'pending');
-            getAllDataPeminjaman('dipinjamContainer', 'dipinjam');
-            getAllDataPeminjaman('selesaiContainer', 'selesai');
+            getAllDataPeminjaman('pendingContainer', ['pending']);
+            getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'overdue', 'ditolak']);
+            getAllDataPeminjaman('selesaiContainer', ['selesai']);
         })
     </script>
     <script>
@@ -23,7 +23,7 @@
                 data: {
                     guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
                     with: ['request_peminjaman_asset.kategori_asset'],
-                    status: status
+                    statusArray: status
                 },
                 type: 'GET',
                 dataType: 'json',
@@ -98,6 +98,14 @@
                         })
                         $('#alasanPeminjaman').text(data.alasan_peminjaman);
 
+                        $('.containerPerpanjangan').empty();
+
+                        if (data.perpanjangan_peminjaman_asset.length > 0) {
+                            $(data.perpanjangan_peminjaman_asset).each(function (index, value) {
+                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(value));
+                            })
+                        }
+
                         if (data.status == 'dipinjam' || data.status == 'duedate') {
                             const data_perpanjangan = data.perpanjangan_peminjaman_asset.filter((item) => (
                                 item.status === 'pending'
@@ -128,6 +136,10 @@
                 template = '<span class="badge badge-warning">Due Date</span>';
             } else if (status == 'selesai') {
                 template = '<span class="badge badge-success">Selesai</span>';
+            } else if (status == 'ditolak') {
+                template = '<span class="badge badge-danger">Ditolak</span>';
+            } else if (status == 'disetujui') {
+                template = '<span class="badge badge-success">Disetujui</span>';
             }
 
             return template;
@@ -168,6 +180,21 @@
             }
         }
 
+        const generateListHistoryPerpanjangan = (data) => {
+            return `
+                <div class="py-2 px-2 border border-primary border-radius-sm">
+                    <div class="border-bottom d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-dark mb-0"><strong>Tanggal Perpanjangan</strong></p>
+                            <p class="mb-0">${data.tanggal_expired_perpanjangan}</p>
+                        </div>
+                        ${generateStatusPeminjaman(data.status)}
+                    </div>
+                    <p class="mb-0">${data.alasan_perpanjangan}</p>
+                </div>
+            `;
+        }
+
         $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
             if (data.success) {
                 changeTextToast('toastSuccess', data.message);
@@ -179,7 +206,7 @@
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-            if (!errors.success) {
+            if (!errors.success && errors.message) {
                 dialogDanger(errors.message, errors.error);
             }
             for (let key in errors) {
