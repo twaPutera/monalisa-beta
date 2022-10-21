@@ -46,6 +46,9 @@
                         data: 'tipe_approval'
                     },
                     {
+                        data: 'approvable.no_memo'
+                    },
+                    {
                         data: 'is_approve'
                     },
                     {
@@ -66,7 +69,7 @@
                         },
                     },
                     {
-                        targets: [3],
+                        targets: [4],
                         render: function(data, type, full, meta) {
                             let element =
                                 '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
@@ -224,6 +227,7 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>Jenis Approval</th>
+                                    <th>No. Berita Acara</th>
                                     <th>Status</th>
                                     <th>Pemohon</th>
                                 </tr>

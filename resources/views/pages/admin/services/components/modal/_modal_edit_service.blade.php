@@ -14,13 +14,15 @@
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <label for="">Pilih Lokasi</label>
-                            <select name="id_lokasi" class="form-control selectLocationService" id="lokasiAssetUpdateService">
+                            <select name="id_lokasi" class="form-control selectLocationService"
+                                id="lokasiAssetUpdateService">
 
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="">Pilih Asset</label>
-                            <select name="id_asset" class="form-control selectAssetService" id="listAssetLocationUpdate">
+                            <select name="id_asset" class="form-control selectAssetService"
+                                id="listAssetLocationUpdate">
 
                             </select>
                         </div>
@@ -59,20 +61,14 @@
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadioEdit1" class="custom-control-input"
-                                        name="status_service" id="status_service" value="onprogress">
-                                    <label class="custom-control-label" for="customRadioEdit1"> Proses</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadioEdit2" class="custom-control-input"
-                                        name="status_service" id="status_service" value="backlog">
-                                    <label class="custom-control-label" for="customRadioEdit2"> Tertunda</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadioEdit3" class="custom-control-input"
-                                        name="status_service" id="status_service" value="selesai">
-                                    <label class="custom-control-label" for="customRadioEdit3"> Selesai</label>
+                                <label for="">Status Service</label>
+                                <div>
+                                    <select name="status_service" class="form-control" id="status_service"
+                                        style="width: 200px" id="">
+                                        <option value="onprogress" selected>Proses</option>
+                                        <option value="backlog">Tertunda</option>
+                                        <option value="selesai">Selesai</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -80,13 +76,17 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="">Kondisi Asset</label>
                                 <div>
-                                    <select name="status_kondisi" id="service_kondisi" class="form-control"
-                                        style="width: 200px" id="">
-                                        <option value="baik">Baik</option>
+                                    <select name="status_kondisi" class="form-control" style="width: 200px"
+                                        id="">
+                                        <option value="baik" selected>Baik</option>
                                         <option value="rusak">Rusak</option>
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Keterangan Service</label>
+                            <textarea cols="30" rows="10" class="form-control" name="keterangan_service"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="">File/Gambar Hasil Service</label>
@@ -97,8 +97,8 @@
                                 </div>
                                 <label for="file_asset_service_update" class="btn btn-primary">
                                     Upload
-                                    <input type="file" id="file_asset_service_update" accept=".jpeg,.png,.jpg,.gif,.svg"
-                                        class="d-none" name="file_asset_service">
+                                    <input type="file" id="file_asset_service_update"
+                                        accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none" name="file_asset_service">
                                 </label>
                             </div>
                         </div>

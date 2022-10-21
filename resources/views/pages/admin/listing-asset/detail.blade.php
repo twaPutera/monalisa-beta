@@ -60,8 +60,7 @@
                         d.id_asset_data = '{{ $asset->id }}';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'tanggal_peminjaman'
                     },
                     {
@@ -85,7 +84,7 @@
                     //Custom template data
                     {
                         targets: [0, 1],
-                        render: function (data, type, full, meta) {
+                        render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
                     },
@@ -698,7 +697,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-
+                                        
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
@@ -741,6 +740,11 @@
                                     <tr>
                                         <td width="40%">Jenis</td>
                                         <td><strong>{{ $asset->kategori_asset->nama_kategori ?? 'Jenis Tidak Ada' }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Tipe</td>
+                                        <td><strong>{{ ucWords($asset->type) ?? 'Tidak Ada' }}</strong>
                                         </td>
                                     </tr>
                                     <tr>

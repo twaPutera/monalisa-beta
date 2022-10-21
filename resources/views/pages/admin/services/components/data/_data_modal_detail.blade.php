@@ -22,6 +22,16 @@
                 </td>
             </tr>
             <tr>
+                <td width="40%">Jenis Asset</td>
+                <td><strong>{{ $listing_asset_service->keterangan ?? '-' }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td width="40%">Tipe</td>
+                <td><strong>{{ ucWords($listing_asset_service->detail_service->asset_data->type) ?? '-' }}</strong>
+                </td>
+            </tr>
+            <tr>
                 <td width="40%">Status Kondisi Asset</td>
                 <td><strong>{{ ucWords($listing_asset_service->status_kondisi) }}</strong></td>
             </tr>
@@ -31,10 +41,11 @@
                 </td>
             </tr>
             <tr>
-                <td width="40%">Jenis Asset</td>
+                <td width="40%">Keterangan Service</td>
                 <td><strong>{{ $listing_asset_service->detail_service->asset_data->kategori_asset->nama_kategori ?? '-' }}</strong>
                 </td>
             </tr>
+
             <tr>
                 <td width="40%">Status Service</td>
                 <td><strong>{{ ucWords($listing_asset_service->status_service) }}</strong></td>

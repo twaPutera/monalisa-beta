@@ -12,9 +12,15 @@ use App\Helpers\DepresiasiHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Helpers\SsoHelpers;
+use App\Services\SistemConfig\SistemConfigQueryServices;
 
 class AssetDataCommandServices
 {
+    protected $sistemConfigServices;
+    public function __construct(SistemConfigQueryServices $sistemConfigServices)
+    {
+        $this->sistemConfigServices = $sistemConfigServices;
+    }
     public function store(AssetStoreRequest $request)
     {
         $request->validated();
@@ -28,6 +34,7 @@ class AssetDataCommandServices
         $path = storage_path('app/images/qr-code/' . $qr_name);
         $qr_code = QrCodeHelpers::generateQrCode($request->kode_asset, $path);
 
+        $config = $this->sistemConfigServices->findByConfig("min_asset_value");
         $asset = new AssetData();
         $asset->deskripsi = $request->deskripsi;
         $asset->kode_asset = $request->kode_asset;
@@ -55,6 +62,7 @@ class AssetDataCommandServices
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
+        $asset->type = $config != null && $config->value >= $request->nilai_perolehan ? "inventaris" : "asset";
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->save();
 

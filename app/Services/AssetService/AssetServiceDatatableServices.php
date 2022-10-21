@@ -116,8 +116,12 @@ class AssetServiceDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
-                $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                if ($item->status_service != "selesai") {
+                    $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
+                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                } else {
+                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                }
                 return $element;
             })
             ->addColumn('asset_data', function ($item) {
@@ -127,6 +131,7 @@ class AssetServiceDatatableServices
                     ->select([
                         'asset_data.id',
                         'asset_data.deskripsi',
+                        'asset_data.type',
                         'kategori_assets.nama_kategori',
                         'group_kategori_assets.nama_group',
                     ])->where('asset_data.id', $item->detail_service->id_asset_data)

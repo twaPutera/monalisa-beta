@@ -147,6 +147,9 @@
                         data: 'deskripsi'
                     },
                     {
+                        data: 'type'
+                    },
+                    {
                         data: 'group'
                     },
                     {
@@ -181,13 +184,13 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: 8,
+                        targets: 9,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
                     },
                     {
-                        targets: 6,
+                        targets: 7,
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'rusak') {
@@ -208,7 +211,7 @@
                         }
                     },
                     {
-                        targets: 7,
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 0) {
@@ -411,6 +414,7 @@
                                     <th width="50px">Aksi</th>
                                     <th width="150px">Kode</th>
                                     <th width="200px">Deskripsi</th>
+                                    <th width="200px">Tipe</th>
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Kategori</th>
                                     <th width="180px">Status Kondisi</th>
