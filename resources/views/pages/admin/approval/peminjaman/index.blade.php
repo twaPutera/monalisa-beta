@@ -221,6 +221,8 @@
                             $('.perpanjanganDeskripsi').show();
                         } else {
                             $('#tanggalPeminjam').val(data.tanggal_peminjaman);
+                            $('#jamMulai').val(data.jam_mulai);
+                            $('#jamAkhir').val(data.jam_selesai);
                             $('#tanggalPengembalian').val(data.tanggal_pengembalian);
                             $('#alasanPeminjaman').val(data.alasan_peminjaman);
 

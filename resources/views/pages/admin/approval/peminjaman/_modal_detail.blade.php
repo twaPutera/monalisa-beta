@@ -38,11 +38,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Tanggal Peminjaman</label>
-                                <input type="date" class="form-control" id="tanggalPeminjam" readonly name="kode_satuan">
+                                <div class="d-flex">
+                                    <input type="date" class="form-control w-75" id="tanggalPeminjam" readonly name="">
+                                    <input type="text" class="form-control w-25" id="jamMulai" readonly name="">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Tanggal Pengembalian</label>
-                                <input type="date" class="form-control" id="tanggalPengembalian" readonly name="nama_satuan">
+                                <div class="d-flex">
+                                    <input type="date" class="form-control w-75" id="tanggalPengembalian" readonly name="">
+                                    <input type="text" class="form-control w-25" id="jamAkhir" readonly name="">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Alasan Peminjaman</label>
