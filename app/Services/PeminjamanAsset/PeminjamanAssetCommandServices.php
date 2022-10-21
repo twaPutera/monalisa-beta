@@ -155,6 +155,7 @@ class PeminjamanAssetCommandServices
         $perpanjangan->tanggal_expired_perpanjangan = $request->tanggal_expired_perpanjangan;
         $perpanjangan->alasan_perpanjangan = $request->alasan_perpanjangan;
         $perpanjangan->status = 'pending';
+        $perpanjangan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $perpanjangan->save();
 
         $approval = new Approval();

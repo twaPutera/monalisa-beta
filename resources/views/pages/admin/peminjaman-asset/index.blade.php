@@ -69,6 +69,9 @@
                             } else if (data == 'diproses') {
                                 element =
                                     '<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Diproses</span>';
+                            } else if (data == 'selesai') {
+                                element =
+                                    '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Selesai</span>';
                             }
                             return element;
                         },

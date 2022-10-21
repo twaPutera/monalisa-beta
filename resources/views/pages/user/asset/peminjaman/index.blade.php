@@ -169,12 +169,12 @@
         const showHideFormPerpanjangan = (element) => {
             if (showPerpanjangan) {
                 $(element).text('Batal').removeClass('btn-warning').addClass('btn-danger');
-                $('.containerPerpanjangan').show();
+                $('.containerPerpanjanganForm').show();
                 $('#btnSubmitPerpanjangan').show();
                 showPerpanjangan = false;
             } else {
                 $(element).text('Ajukan Perpanjangan').removeClass('btn-danger').addClass('btn-warning');
-                $('.containerPerpanjangan').hide();
+                $('.containerPerpanjanganForm').hide();
                 $('#btnSubmitPerpanjangan').hide();
                 showPerpanjangan = true;
             }
