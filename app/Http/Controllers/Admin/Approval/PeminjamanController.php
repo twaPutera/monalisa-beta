@@ -34,7 +34,7 @@ class PeminjamanController extends Controller
                 'message' => 'Berhasil mengubah status approval',
                 'data' => [
                     'peminjaman' => $data,
-                    'url' => route('admin.peminjaman.detail', $data->id_peminjaman_asset),
+                    'url' => route('admin.peminjaman.detail', $data->id),
                 ],
             ]);
             //code...

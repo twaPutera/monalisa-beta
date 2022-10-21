@@ -44,6 +44,8 @@ class PeminjamanAssetCommandServices
         $peminjaman->guid_peminjam_asset = config('app.sso_siska') ? $user->guid : $user->id;
         $peminjaman->json_peminjam_asset = json_encode($user);
         $peminjaman->tanggal_peminjaman = $request->tanggal_peminjaman;
+        $peminjaman->jam_selesai = $request->jam_selesai;
+        $peminjaman->jam_mulai = $request->jam_mulai;
         $peminjaman->tanggal_pengembalian = $request->tanggal_pengembalian;
         $peminjaman->alasan_peminjaman = $request->alasan_peminjaman;
         $peminjaman->status = 'pending';

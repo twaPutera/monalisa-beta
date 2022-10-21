@@ -414,7 +414,7 @@
                                     <div class="kt-portlet__head-toolbar">
                                         <div class="kt-portlet__head-wrapper">
                                             <div class="kt-portlet__head-actions">
-                                                @if($peminjaman->status == 'diproses')
+                                                @if($peminjaman->status == 'disetujui')
                                                     <button type="button" onclick="openModalByClass('modalCreateDetailPeminjaman')"
                                                         class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
                                                 @endif
