@@ -68,7 +68,10 @@
                     },
                     {
                         name: 'asset_data.type',
-                        data: 'asset_data.type'
+                        data: 'asset_data.type',
+                        render: function(type) {
+                            return type === null ? 'Tidak Ada' : type;
+                        }
                     },
                     {
                         data: 'asset_data.nama_group'

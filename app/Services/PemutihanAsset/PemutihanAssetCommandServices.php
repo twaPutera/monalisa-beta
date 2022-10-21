@@ -42,6 +42,7 @@ class PemutihanAssetCommandServices
         $pemutihan->json_manager = config('app.sso_siska') ? json_encode($approver[0]) : json_encode($approver);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
+        $pemutihan->nama_pemutihan = $request->nama_pemutihan;
         $pemutihan->status = 'Draft';
         $pemutihan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $pemutihan->is_store = 0;
@@ -231,6 +232,7 @@ class PemutihanAssetCommandServices
 
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
+        $pemutihan->nama_pemutihan = $request->nama_pemutihan;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->status = $request->status_pemutihan;
         $pemutihan->save();

@@ -30,6 +30,9 @@ class PemutihanAssetDatatableServices
             ->addColumn('tanggal', function ($item) {
                 return empty($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
             })
+            ->addColumn('nama_pemutihan', function ($item) {
+                return empty($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
+            })
             ->addColumn('no_memo', function ($item) {
                 return empty($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
             })
@@ -163,7 +166,7 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('button_show_asset', function ($item) {
                 $element = '';
-                $element .= '<a href="'. route('admin.listing-asset.detail', $item->id_asset_data) .'" class="btn btn-sm btn-icon">
+                $element .= '<a href="' . route('admin.listing-asset.detail', $item->id_asset_data) . '" class="btn btn-sm btn-icon">
                                 <i class="fa fa-eye"></i>
                             </a>';
                 return $element;

@@ -31,6 +31,7 @@ class PemutihanAssetUpdateRequest extends FormRequest
             'gambar_asset.*' => 'nullable',
             'gambar_asset' => 'nullable|min:1',
             'tanggal' => 'required|date',
+            'nama_pemutihan' => 'required|string|max:255',
             'no_berita_acara' => 'nullable|string|max:50',
             'keterangan_pemutihan' => 'required|string|max:255',
             'file_berita_acara' => 'nullable|mimes:pdf,docx,doc|max:4048',

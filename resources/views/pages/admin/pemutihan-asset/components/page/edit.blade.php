@@ -84,6 +84,13 @@
                         data: 'jenis_asset'
                     },
                     {
+                        name: 'type',
+                        data: 'type',
+                        render: function(type) {
+                            return type === null ? 'Tidak Ada' : type;
+                        }
+                    },
+                    {
                         name: 'lokasi_asset',
                         data: 'lokasi_asset'
                     },
@@ -217,6 +224,13 @@
                             </td>
                         </tr>
                         <tr>
+                            <td width="40%">Nama Pemutihan</td>
+                            <td>
+                                <input type="text" class="form-control" value="{{ $pemutihan_asset->nama_pemutihan }}"
+                                    name="nama_pemutihan">
+                            </td>
+                        </tr>
+                        <tr>
                             <td width="40%">Keterangan Umum</td>
                             <td>
                                 <textarea cols="30" rows="10" class="form-control" name="keterangan_pemutihan">{{ $pemutihan_asset->keterangan }}</textarea>
@@ -308,6 +322,7 @@
                                         <th>Kode Asset</th>
                                         <th>Deskripsi Asset</th>
                                         <th>Jenis Asset</th>
+                                        <th>Tipe</th>
                                         <th>Lokasi Asset</th>
                                         <th>Keterangan Pemutihan</th>
                                         <th>Ubah Foto Asset</th>
@@ -324,6 +339,7 @@
                                             <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
                                             </td>
+                                            <td>{{ $item->asset_data->type ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}
                                             </td>
                                             <td>

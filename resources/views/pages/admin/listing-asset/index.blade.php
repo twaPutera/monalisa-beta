@@ -147,7 +147,10 @@
                         data: 'deskripsi'
                     },
                     {
-                        data: 'type'
+                        data: 'type',
+                        render: function(type) {
+                            return type === null ? 'Tidak Ada' : type;
+                        }
                     },
                     {
                         data: 'group'
@@ -370,8 +373,8 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('admin.pemutihan-asset.asset.index') }}" class="btn btn-danger shadow-custom btn-sm mr-2"
-                        type="button"><i class="fas fa-backspace"></i>
+                    <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
+                        class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
                         Pemutihan</a>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
