@@ -329,8 +329,10 @@
 @endsection
 @section('main-content')
     <div class="row">
-
-        <div class="col-md-12 col-12">
+        <div class="col-md-2 col-12">
+            @include('pages.admin.pemutihan-asset.menu')
+        </div>
+        <div class="col-md-10 col-12">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">

@@ -160,20 +160,28 @@
         <div class="form-group boxed">
             <div class="input-wrapper">
                 <label class="text-dark" for=""><strong>Tanggal Peminjaman</strong></label>
-                <input type="date" name="tanggal_peminjaman" class="form-control" id="" placeholder="Text Input">
-                <i class="clear-input">
-                    <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle"></ion-icon>
-                </i>
+                <div class="d-flex">
+                    <div class="" style="width: 60%;">
+                        <input type="date" name="tanggal_peminjaman" class="form-control pe-1" id="" placeholder="Text Input">
+                    </div>
+                    <div class=""style="width: 40%;">
+                        <input type="time" name="jam_mulai" class="form-control pe-1" id="" placeholder="Text Input">
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="form-group boxed">
             <div class="input-wrapper">
                 <label class="text-dark" for=""><strong>Tanggal Pengembalian</strong></label>
-                <input type="date" name="tanggal_pengembalian" class="form-control" id="" placeholder="Text Input">
-                <i class="clear-input">
-                    <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle"></ion-icon>
-                </i>
+                <div class="d-flex">
+                    <div class="" style="width: 60%;">
+                        <input type="date" name="tanggal_pengembalian" class="form-control pe-1" id="" placeholder="Text Input">
+                    </div>
+                    <div class=""style="width: 40%;">
+                        <input type="time" name="jam_selesai" class="form-control pe-1" id="" placeholder="Text Input">
+                    </div>
+                </div>
             </div>
         </div>
 

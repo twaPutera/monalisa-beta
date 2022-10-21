@@ -49,7 +49,7 @@
                             <p id="alasanPeminjaman">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi, aperiam! Illum nobis ad sapiente debitis id? Non officia mollitia eum, cupiditate nemo unde, odio aliquam voluptatibus qui magni, fugiat harum?</p>
                         </div>
                         <hr>
-                        <div class="containerPerpanjangan slide-bottom mt-3" style="display: none;">
+                        <div class="containerPerpanjanganForm slide-bottom mt-3" style="display: none;">
                             <form action="" method="POST" class="form-submit" id="formPerpanjangan">
                                 @csrf
                                 <input type="hidden" name="tanggal_pengembalian" readonly value="" class="form-control tanggalPengembalian" id="" placeholder="">

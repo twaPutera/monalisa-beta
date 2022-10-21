@@ -26,6 +26,8 @@ class PeminjamanAssetStoreRequest extends FormRequest
         return [
             'tanggal_peminjaman' => 'required|date',
             'tanggal_pengembalian' => 'required|date',
+            'jam_selesai' => 'nullable|date_format:H:i',
+            'jam_mulai' => 'nullable|date_format:H:i',
             'alasan_peminjaman' => 'required|string',
             'id_jenis_asset' => 'required|array',
             'id_jenis_asset.*' => 'required|uuid',

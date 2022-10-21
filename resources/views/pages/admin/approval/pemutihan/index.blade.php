@@ -43,6 +43,9 @@
                         name: 'action'
                     },
                     {
+                        data: "approvable.no_memo"
+                    },
+                    {
                         data: 'tipe_approval'
                     },
                     {
@@ -226,8 +229,8 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Jenis Approval</th>
-                                    <th>No. Berita Acara</th>
+                                    <th>No BAST</th>
+                                    <th>Jenis Pemutihan</th>
                                     <th>Status</th>
                                     <th>Pemohon</th>
                                 </tr>

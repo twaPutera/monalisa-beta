@@ -159,9 +159,6 @@
                         data: 'status_kondisi'
                     },
                     {
-                        data: 'is_pemutihan'
-                    },
-                    {
                         data: 'tanggal_perolehan'
                     },
                     {
@@ -210,23 +207,6 @@
                             return element;
                         }
                     },
-                    {
-                        targets: 8,
-                        render: function(data, type, full, meta) {
-                            let element = '';
-                            if (data == 0) {
-                                element =
-                                    `<h6 class="text-center text-danger" style="font-size: 20px"><i
-                                    class="fas fa-times-circle"></i></h6>`;
-                            } else if (data == 1) {
-                                element =
-                                    `<h6 class="text-center text-success" style="font-size: 20px"><i
-                                    class="fas fa-check-circle"></i></h6>`;
-                            }
-
-                            return element;
-                        }
-                    }
                 ],
                 createdRow: function(row, data, index) {
                     $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
@@ -390,7 +370,7 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('admin.pemutihan-asset.index') }}" class="btn btn-danger shadow-custom btn-sm mr-2"
+                    <a href="{{ route('admin.pemutihan-asset.asset.index') }}" class="btn btn-danger shadow-custom btn-sm mr-2"
                         type="button"><i class="fas fa-backspace"></i>
                         Pemutihan</a>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
@@ -418,7 +398,6 @@
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Kategori</th>
                                     <th width="180px">Status Kondisi</th>
-                                    <th width="180px">Status Pemutihan</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
                                     <th width="150px">Lokasi</th>

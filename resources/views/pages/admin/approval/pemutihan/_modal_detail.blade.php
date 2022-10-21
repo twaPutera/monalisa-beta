@@ -37,7 +37,7 @@
                             <input type="text" class="form-control" id="createdBy" disabled>
                         </div>
                     </div>
-                    <div class="col-md-5 col-12">
+                    <div class="col-md-6 col-12">
                         <div class="mb-2">
                             <h5>Detail barang yang dipinjam</h5>
                         </div>
@@ -59,7 +59,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-3 col-12">
                         <div class="mb-2">
                             <h5>Status Approval Pemutihan</h5>
                         </div>
