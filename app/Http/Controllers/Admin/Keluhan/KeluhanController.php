@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Keluhan;
 
+use Throwable;
 use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,7 +10,6 @@ use App\Services\Keluhan\KeluhanQueryServices;
 use App\Services\Keluhan\KeluhanCommandServices;
 use App\Services\Keluhan\KeluhanDatatableServices;
 use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
-use Throwable;
 
 class KeluhanController extends Controller
 {

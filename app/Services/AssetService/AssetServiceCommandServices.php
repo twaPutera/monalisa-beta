@@ -5,16 +5,15 @@ namespace App\Services\AssetService;
 use App\Models\Service;
 use App\Models\AssetData;
 use App\Models\AssetImage;
+use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\DetailService;
+use App\Models\LogServiceAsset;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
-use Illuminate\Support\Facades\Session;
-use App\Helpers\SsoHelpers;
-use App\Models\LogServiceAsset;
-use Illuminate\Support\Facades\Auth;
 
 class AssetServiceCommandServices
 {
@@ -167,7 +166,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Perubahan");
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Perubahan');
 
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-service');
@@ -194,7 +193,7 @@ class AssetServiceCommandServices
         return $name;
     }
 
-    protected static function storeLog($id_asset, $nama_asset, $status, $log = "Penambahan")
+    protected static function storeLog($id_asset, $nama_asset, $status, $log = 'Penambahan')
     {
         $log_asset = new LogServiceAsset();
         $user = SsoHelpers::getUserLogin();

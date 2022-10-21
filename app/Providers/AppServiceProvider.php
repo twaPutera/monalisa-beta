@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use Firebase\JWT\JWT;
+use App\Helpers\SsoHelpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\View as ViewView;
 use Illuminate\Support\ServiceProvider;
-use App\Helpers\SsoHelpers;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view::composer('*', function (ViewView $view) {
-
             $user = SsoHelpers::getUserLogin();
             $view->with('user', $user);
         });

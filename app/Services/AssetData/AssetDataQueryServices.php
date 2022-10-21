@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataQueryServices
 {

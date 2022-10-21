@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin\ListingAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\KategoriAsset\KategoriAssetQueryServices;
 use App\Services\PemindahanAsset\PemindahanDatatableServices;
 use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
-use App\Services\KategoriAsset\KategoriAssetQueryServices;
 
 class PemindahanAssetController extends Controller
 {

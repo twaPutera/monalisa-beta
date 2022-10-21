@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Services\User\UserQueryServices;
 
 class Approval extends Model
 {
@@ -51,7 +51,7 @@ class Approval extends Model
             return 'Pemutihan Asset';
         } elseif ($this->approvable instanceof PeminjamanAsset) {
             return 'Peminjaman Asset';
-        } else if ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
+        } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
             return 'Perpanjangan Peminjaman Asset';
         }
 

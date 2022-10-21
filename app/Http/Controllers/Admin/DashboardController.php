@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Services\Approval\ApprovalQueryServices;
 use Illuminate\Http\Request;
-use App\Services\AssetData\AssetDataQueryServices;
-use App\Services\AssetService\AssetServiceQueryServices;
-use App\Services\Pengaduan\PengaduanQueryServices;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Services\Approval\ApprovalQueryServices;
+use App\Services\AssetData\AssetDataQueryServices;
+use App\Services\Pengaduan\PengaduanQueryServices;
+use App\Services\AssetService\AssetServiceQueryServices;
 
 class DashboardController extends Controller
 {
@@ -45,8 +44,8 @@ class DashboardController extends Controller
             $data_summary_chart_asset_by_month_regis = $this->assetDataQueryServices->getDataChartSummaryAssetByMonthRegister($request);
             $data_summary_service_by_status = $this->assetServiceQueryServices->getDataChartByStatus($request);
             $data_pengaduan = $this->pengaduanQueryServices->findAll($request);
-            $data_belum_ditangani = $data_pengaduan->where('status_pengaduan', "dilaporkan")->count();
-            $data_sudah_ditangani = $data_pengaduan->where('status_pengaduan', '!=', "dilaporkan")->count();
+            $data_belum_ditangani = $data_pengaduan->where('status_pengaduan', 'dilaporkan')->count();
+            $data_sudah_ditangani = $data_pengaduan->where('status_pengaduan', '!=', 'dilaporkan')->count();
             $data_total_pengaduan = $data_pengaduan->count();
             return response()->json([
                 'success' => true,
@@ -60,15 +59,15 @@ class DashboardController extends Controller
                     'dataSummaryServiceByStatus' => $data_summary_service_by_status,
                     'dataTotalPengaduan' => $data_total_pengaduan,
                     'dataBelumDitangani' => $data_belum_ditangani,
-                    'dataSudahDitangani' => $data_sudah_ditangani
-                ]
+                    'dataSudahDitangani' => $data_sudah_ditangani,
+                ],
             ]);
             //code...
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -76,9 +75,9 @@ class DashboardController extends Controller
     public function getDaftarApproval(Request $request)
     {
         try {
-            $list_pemindahan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemindahanAsset");
-            $list_pemutihan_asset = $this->approvalQueryServices->findAll("App\\Models\\PemutihanAsset");
-            $list_peminjaman_asset = $this->approvalQueryServices->findAll("App\\Models\\PeminjamanAsset");
+            $list_pemindahan_asset = $this->approvalQueryServices->findAll('App\\Models\\PemindahanAsset');
+            $list_pemutihan_asset = $this->approvalQueryServices->findAll('App\\Models\\PemutihanAsset');
+            $list_peminjaman_asset = $this->approvalQueryServices->findAll('App\\Models\\PeminjamanAsset');
 
             $total_all_pemindahan = $list_pemindahan_asset->count();
             $total_all_peminjaman = $list_peminjaman_asset->count();
@@ -88,7 +87,7 @@ class DashboardController extends Controller
             $total_pemutihan = $list_pemutihan_asset->where('is_approve', null)->count();
             $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->count();
 
-            if (Auth::user()->role == "manager") {
+            if (Auth::user()->role == 'manager') {
                 $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan;
             } else {
                 $daftar_approval = $total_pemindahan + $total_peminjaman;
@@ -96,9 +95,9 @@ class DashboardController extends Controller
 
             if ($request->url == 'peminjaman') {
                 $approval_task = $total_all_peminjaman;
-            } else if ($request->url == 'pemutihan') {
+            } elseif ($request->url == 'pemutihan') {
                 $approval_task = $total_all_pemutihan;
-            } else if ($request->url == 'pemindahan') {
+            } elseif ($request->url == 'pemindahan') {
                 $approval_task = $total_all_pemindahan;
             } else {
                 $approval_task = 0;
@@ -111,13 +110,13 @@ class DashboardController extends Controller
                     'total_approval_pemutihan' => $total_pemutihan,
                     'total_approval_peminjaman' => $total_peminjaman,
                     'daftar_approval' => $daftar_approval,
-                    'approval_task' => $approval_task
-                ]
+                    'approval_task' => $approval_task,
+                ],
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

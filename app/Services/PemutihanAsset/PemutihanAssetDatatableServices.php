@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\PemutihanAsset;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPemutihanAsset;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetDatatableServices
 {
@@ -40,7 +40,7 @@ class PemutihanAssetDatatableServices
                 return empty($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('created_by', function ($item) {
-                $name = "Not Found";
+                $name = 'Not Found';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? collect($user[0]) : null;
@@ -62,7 +62,7 @@ class PemutihanAssetDatatableServices
                                     <i class="fa fa-trash"></i>
                                 </button>';
                     $element .= '</form>';
-                } else if ($item->status == 'Ditolak') {
+                } elseif ($item->status == 'Ditolak') {
                     $element .= '<form action="' . route('admin.pemutihan-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
                     $element .= csrf_field();
                     $element .= '<a href="' . route('admin.pemutihan-asset.edit.ditolak', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">

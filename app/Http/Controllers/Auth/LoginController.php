@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginStoreRequest;
 use App\Services\Auth\AuthCommandServices;
-use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginStoreRequest;
 
 class LoginController extends Controller
 {
@@ -36,8 +35,7 @@ class LoginController extends Controller
 
         if ($user->role == 'user') {
             return redirect()->route('user.dashboard.index');
-        } else {
-            return redirect()->route('admin.dashboard');
         }
+        return redirect()->route('admin.dashboard');
     }
 }

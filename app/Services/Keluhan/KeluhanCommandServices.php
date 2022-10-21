@@ -2,13 +2,12 @@
 
 namespace App\Services\Keluhan;
 
-use App\Helpers\FileHelpers;
-use App\Helpers\SsoHelpers;
 use App\Models\Pengaduan;
-use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 use App\Models\AssetImage;
+use App\Helpers\SsoHelpers;
+use App\Helpers\FileHelpers;
 use App\Models\LogPengaduanAsset;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 
 class KeluhanCommandServices
 {
@@ -42,7 +41,7 @@ class KeluhanCommandServices
         return $asset_pengaduan;
     }
 
-    protected static function storeLog($id_pengaduan,  $status, $message)
+    protected static function storeLog($id_pengaduan, $status, $message)
     {
         $log_asset = new LogPengaduanAsset();
         $user = SsoHelpers::getUserLogin();

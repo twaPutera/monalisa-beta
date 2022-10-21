@@ -2,9 +2,9 @@
 
 namespace App\Services\User;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Models\User;
 
 class UserDatatableServices
 {

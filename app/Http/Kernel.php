@@ -18,7 +18,7 @@ class Kernel extends HttpKernel
         \Illuminate\Auth\Middleware\Authorize::class,
 
         \App\Http\Middleware\SsoMiddleware::class,
-        \App\Http\Middleware\Authenticate::class
+        \App\Http\Middleware\Authenticate::class,
     ];
     /**
      * The application's global HTTP middleware stack.

@@ -103,7 +103,7 @@ class AssetServiceQueryServices
                 'value' => $count,
                 'itemStyle' => [
                     'color' => $color[$key],
-                ]
+                ],
             ];
             $data['name'][] = $status_service[$key];
         }
@@ -113,7 +113,7 @@ class AssetServiceQueryServices
             'value' => array_sum(array_column($data['data'], 'value')),
             'itemStyle' => [
                 'color' => $color[3],
-            ]
+            ],
         ];
 
         return $data;

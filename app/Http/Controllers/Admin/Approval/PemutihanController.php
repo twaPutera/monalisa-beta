@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Approval;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\PemutihanApprovalUpdate;
-use App\Services\Approval\ApprovalQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
 
 class PemutihanController extends Controller
