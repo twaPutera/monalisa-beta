@@ -29,9 +29,9 @@
 
 ## Account Information
 
--   Username : admin
--   Password : admin
-
+Admin
+-   Username : admin@gmail.com
+-   Password : password
 ## Noted
 
 Sebelum melakukan pull atau sebelum melakukan push, mohon melakukan reformat dengan syntax `php artisan php-cs-fixer:fix`, Kemudian silahkan lakukan git add dan commit kembali, lalu dapat melakukan push
