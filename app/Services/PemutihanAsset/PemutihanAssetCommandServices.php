@@ -97,7 +97,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver[0])) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -124,7 +124,7 @@ class PemutihanAssetCommandServices
 
         if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
-            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver[0]->id;
+            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
             $approval->approvable_type = get_class($pemutihan);
             $approval->approvable_id = $pemutihan->id;
             $approval->save();
