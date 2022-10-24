@@ -25,7 +25,7 @@ class LokasiUpdateRequest extends FormRequest
     {
         return [
             'id_parent_lokasi' => 'nullable|uuid|max:255',
-            'kode_lokasi' => 'required|max:255|unique:lokasis,kode_lokasi,' . $this->id,
+            'kode_lokasi' => 'required|max:255|unique:lokasis,kode_lokasi,' . $this->id . ',id,deleted_at,NULL',
             'nama_lokasi' => 'required|max:255',
             'keterangan' => 'nullable|string',
         ];

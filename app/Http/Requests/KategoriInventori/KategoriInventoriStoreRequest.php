@@ -24,7 +24,7 @@ class KategoriInventoriStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_kategori' => 'required|string|max:255|unique:kategori_inventories,kode_kategori',
+            'kode_kategori' => 'required|string|max:255|unique:kategori_inventories,kode_kategori,NULL,id,deleted_at,NULL',
             'nama_kategori' => 'required|string|max:255',
         ];
     }

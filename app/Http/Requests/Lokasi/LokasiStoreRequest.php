@@ -25,7 +25,7 @@ class LokasiStoreRequest extends FormRequest
     {
         return [
             'id_parent_lokasi' => 'nullable|string|max:255',
-            'kode_lokasi' => 'required|max:255|unique:lokasis,kode_lokasi',
+            'kode_lokasi' => 'required|max:255|unique:lokasis,kode_lokasi,NULL,id,deleted_at,NULL',
             'nama_lokasi' => 'required|max:255',
             'keterangan' => 'nullable|string',
         ];

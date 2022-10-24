@@ -3,6 +3,7 @@
 namespace App\Http\Requests\KategoriAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class KategoriAssetStoreRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class KategoriAssetStoreRequest extends FormRequest
     {
         return [
             'id_group_kategori_asset' => 'required|uuid|exists:group_kategori_assets,id',
-            'kode_kategori' => 'required|string|max:255|unique:kategori_assets,kode_kategori',
+            'kode_kategori' => 'required|string|max:255|unique:kategori_assets,kode_kategori,NULL,id,deleted_at,NULL',
             'nama_kategori' => 'required|string|max:255',
             'umur_asset' => 'required|integer|min:0|max:25',
         ];

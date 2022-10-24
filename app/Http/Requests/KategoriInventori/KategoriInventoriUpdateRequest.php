@@ -24,7 +24,7 @@ class KategoriInventoriUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_kategori' => 'required|string|max:255|unique:kategori_inventories,kode_kategori,' . $this->id,
+            'kode_kategori' => 'required|string|max:255|unique:kategori_inventories,kode_kategori,' . $this->id . ',id,deleted_at,NULL',
             'nama_kategori' => 'required|string|max:255',
         ];
     }

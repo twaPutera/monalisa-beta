@@ -3,6 +3,7 @@
 namespace App\Http\Requests\GroupKategoriAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GroupKategoriAssetStoreRequest extends FormRequest
 {
@@ -24,7 +25,9 @@ class GroupKategoriAssetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_group' => 'required|unique:group_kategori_assets,kode_group',
+            'kode_group' => ['required', Rule::unique('group_kategori_assets', 'kode_group')->where(function ($query) {
+                return $query->where('kode_group', $this->kode_group)->whereNull('deleted_at');
+            })],
             'nama_group' => 'required|string|max:255',
         ];
     }

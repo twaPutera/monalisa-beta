@@ -24,7 +24,7 @@ class VendorUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_vendor' => 'required|unique:vendors,kode_vendor,' . $this->id,
+            'kode_vendor' => 'required|unique:vendors,kode_vendor,' . $this->id . ',id,deleted_at,NULL',
             'nama_vendor' => 'required|string|max:255',
         ];
     }

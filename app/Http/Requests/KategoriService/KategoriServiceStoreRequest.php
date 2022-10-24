@@ -24,7 +24,7 @@ class KategoriServiceStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_service' => 'required|string|max:255|unique:kategori_services,kode_service',
+            'kode_service' => 'required|string|max:255|unique:kategori_services,kode_service,NULL,id,deleted_at,NULL',
             'nama_service' => 'required|string|max:255',
         ];
     }

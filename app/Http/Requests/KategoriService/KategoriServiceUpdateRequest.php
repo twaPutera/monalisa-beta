@@ -24,7 +24,7 @@ class KategoriServiceUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_service' => 'required|string|max:255|unique:kategori_services,kode_service,' . $this->id,
+            'kode_service' => 'required|string|max:255|unique:kategori_services,kode_service,' . $this->id . ',id,deleted_at,NULL',
             'nama_service' => 'required|string|max:255',
         ];
     }

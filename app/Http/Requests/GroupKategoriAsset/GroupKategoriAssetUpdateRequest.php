@@ -3,6 +3,7 @@
 namespace App\Http\Requests\GroupKategoriAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GroupKategoriAssetUpdateRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class GroupKategoriAssetUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_group' => 'required|unique:group_kategori_assets,kode_group,' . $this->id,
+            'kode_group' => 'required|unique:group_kategori_assets,kode_group,' . $this->id . ',id,deleted_at,NULL',
             'nama_group' => 'required|string|max:255',
         ];
     }

@@ -24,7 +24,7 @@ class KelasAssetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'no_akun' => 'required|string|max:255|unique:kelas_assets,no_akun',
+            'no_akun' => 'required|string|max:255|unique:kelas_assets,no_akun,NULL,id,deleted_at,NULL',
             'nama_kelas' => 'required|string|max:255',
         ];
     }
