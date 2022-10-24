@@ -136,7 +136,7 @@ class PengaduanController extends Controller
     public function download(Request $request)
     {
         try {
-            if ($request->status == "request") {
+            if ($request->status == 'request') {
                 $path = storage_path('app/images/asset-pengaduan/' . $request->filename);
             } else {
                 $path = storage_path('app/images/asset-respon-pengaduan/' . $request->filename);

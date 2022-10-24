@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin\UserManagement;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\User\UserQueryServices;
+use App\Services\User\UserCommandServices;
 use App\Http\Requests\User\UserStoreRequest;
+use App\Services\User\UserDatatableServices;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\UserChangePasswordRequest;
-use Illuminate\Http\Request;
-use App\Services\User\UserCommandServices;
-use App\Services\User\UserQueryServices;
-use App\Services\User\UserDatatableServices;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -43,14 +43,14 @@ class UserController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'User has been created successfully',
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -62,14 +62,14 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
             //code...
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -85,14 +85,14 @@ class UserController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'User has been updated successfully',
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -111,7 +111,7 @@ class UserController extends Controller
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -126,14 +126,14 @@ class UserController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Password has been changed successfully',
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

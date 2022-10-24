@@ -49,6 +49,9 @@
                         data: 'tipe_approval'
                     },
                     {
+                        data: 'approvable.no_memo'
+                    },
+                    {
                         data: 'is_approve'
                     },
                     {

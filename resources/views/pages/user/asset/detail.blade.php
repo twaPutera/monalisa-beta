@@ -46,6 +46,17 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
+                        <p class="mb-0 text-green">Type</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-0 text-green text-end">
+                            {{ ucWords($asset_data->type) ?? 'Tidak Ada Tipe' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
                         <p class="mb-0 text-green">Lokasi</p>
                     </div>
                     <div class="col">

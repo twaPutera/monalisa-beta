@@ -6,9 +6,11 @@ use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Models\AssetImage;
+use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
+use Illuminate\Support\Facades\Session;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\Approval\PemutihanApprovalUpdate;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
@@ -16,8 +18,6 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
-use Illuminate\Support\Facades\Session;
-use App\Helpers\SsoHelpers;
 
 class PemutihanAssetCommandServices
 {
@@ -34,7 +34,7 @@ class PemutihanAssetCommandServices
 
         $user = SsoHelpers::getUserLogin();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -42,6 +42,7 @@ class PemutihanAssetCommandServices
         $pemutihan->json_manager = config('app.sso_siska') ? json_encode($approver[0]) : json_encode($approver);
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
+        $pemutihan->nama_pemutihan = $request->nama_pemutihan;
         $pemutihan->status = 'Draft';
         $pemutihan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $pemutihan->is_store = 0;
@@ -96,7 +97,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -169,7 +170,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -188,7 +189,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -231,6 +232,7 @@ class PemutihanAssetCommandServices
 
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
+        $pemutihan->nama_pemutihan = $request->nama_pemutihan;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->status = $request->status_pemutihan;
         $pemutihan->save();

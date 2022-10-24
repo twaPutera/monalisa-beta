@@ -2,9 +2,9 @@
 
 namespace App\Services\UserSso;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Models\User;
 
 class UserSsoQueryServices
 {

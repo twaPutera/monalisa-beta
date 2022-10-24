@@ -67,6 +67,13 @@
                         data: 'asset_data.deskripsi'
                     },
                     {
+                        name: 'asset_data.type',
+                        data: 'asset_data.type',
+                        render: function(type) {
+                            return type === null ? 'Tidak Ada' : type;
+                        }
+                    },
+                    {
                         data: 'asset_data.nama_group'
                     },
                     {
@@ -82,13 +89,13 @@
                     },
                 ],
                 columnDefs: [{
-                        targets: [2, 7],
+                        targets: [2, 8],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 6,
+                        targets: 7,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -283,6 +290,7 @@
                     form.find('input[name=tanggal_mulai_service]').val(response.data.tanggal_mulai);
                     form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
                     form.find('textarea[name=permasalahan]').val(response.data.detail_service.permasalahan);
+                    form.find('textarea[name=keterangan_service]').val(response.data.keterangan);
                     form.find('textarea[name=tindakan]').val(response.data.detail_service.tindakan);
                     form.find('textarea[name=catatan]').val(response.data.detail_service.tindakan);
                     modal.on('shown.bs.modal', function(e) {
@@ -294,8 +302,8 @@
                             allowClear: true,
                             parent: $(this)
                         });
-                        $("input[name=status_service][value=" + status_service + "]").prop(
-                            'checked', true);
+                        $('#status_service option[value="' + response.data
+                            .status_service + '"]').attr('selected', 'selected');
 
                         $('#service_kondisi option[value="' + response.data
                             .status_kondisi + '"]').attr('selected', 'selected');
@@ -502,7 +510,8 @@
                                     <th>No</th>
                                     <th>#</th>
                                     <th>Tgl. Mulai</th>
-                                    <th>Asset</th>
+                                    <th>Deskripsi Asset</th>
+                                    <th>Tipe</th>
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
                                     <th>Status</th>

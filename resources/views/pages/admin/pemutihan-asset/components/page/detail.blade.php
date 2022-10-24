@@ -73,7 +73,12 @@
                         </tr>
                         <tr>
                             <td width="40%">No Berita Acara</td>
-                            <td><strong>{{ $pemutihan_asset->no_memo }}</strong>
+                            <td><strong>{{ $pemutihan_asset->no_memo ?? 'Tidak Ada' }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Nama Pemutihan</td>
+                            <td><strong>{{ $pemutihan_asset->nama_pemutihan }}</strong>
                             </td>
                         </tr>
                         <tr>
@@ -140,6 +145,7 @@
                                         <th>Kode Asset</th>
                                         <th>Deskripsi Asset</th>
                                         <th>Jenis Asset</th>
+                                        <th>Tipe</th>
                                         <th>Lokasi Asset</th>
                                         <th>Keterangan Pemutihan</th>
                                         <th>Foto Asset Terbaru</th>
@@ -153,6 +159,7 @@
                                             <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
                                             </td>
+                                            <td>{{ ucWords($item->asset_data->type) ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}
                                             </td>
                                             <td>

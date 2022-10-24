@@ -6,6 +6,7 @@ use App\Models\Lokasi;
 use App\Models\Vendor;
 use App\Models\AssetData;
 use App\Models\KelasAsset;
+use App\Helpers\SsoHelpers;
 use App\Models\SatuanAsset;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
@@ -14,7 +15,6 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use App\Helpers\SsoHelpers;
 
 class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 {
@@ -57,8 +57,8 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'no_seri' => $row[9],
             'spesifikasi' => $row[15],
             'nilai_buku_asset' => $row[4],
-            'is_pinjam' => $row[17] == "iya" ? 1 : 0,
-            'is_sparepart' => $row[18]  == "iya" ? 1 : 0,
+            'is_pinjam' => $row[17] == 'iya' ? 1 : 0,
+            'is_sparepart' => $row[18]  == 'iya' ? 1 : 0,
             'nilai_depresiasi' => DepresiasiHelpers::getNilaiDepresiasi($row[4], $id_kategori->umur_asset),
             // 'umur_manfaat_fisikal' => $row[18],
             'umur_manfaat_komersial' => $id_kategori->umur_asset,
@@ -129,7 +129,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             // '19' => 'Umur Manfaat Komersial',
             '16' => 'Status Kondisi Asset',
             '17' => 'Status Peminjaman',
-            '18' => 'Status Sparepart'
+            '18' => 'Status Sparepart',
         ];
     }
 }

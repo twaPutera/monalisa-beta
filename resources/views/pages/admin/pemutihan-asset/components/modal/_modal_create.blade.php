@@ -22,6 +22,10 @@
                             <input type="text" class="form-control" name="no_berita_acara">
                         </div>
                         <div class="form-group">
+                            <label for="">Nama Pemutihan</label>
+                            <input type="text" class="form-control" name="nama_pemutihan">
+                        </div>
+                        <div class="form-group">
                             <label for="">Keterangan Pemutihan</label>
                             <textarea cols="30" rows="10" class="form-control" name="keterangan_pemutihan"></textarea>
                         </div>
@@ -44,13 +48,15 @@
                         <div class="row">
                             <div class="form-group col-12 col-md-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="" onchange="filterTableService()" id="groupAssetCreate" class="form-control jenispicker mr-2">
+                                <select name="" onchange="filterTableService()" id="groupAssetCreate"
+                                    class="form-control jenispicker mr-2">
 
                                 </select>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <label for="">Status Kondisi</label>
-                                <select name="" onchange="filterTableService()" class="form-control kondisipicker mr-2">
+                                <select name="" onchange="filterTableService()"
+                                    class="form-control kondisipicker mr-2">
                                     <option value="semua">Semua</option>
                                     <option value="bagus">Bagus</option>
                                     <option value="rusak">Rusak</option>
@@ -59,6 +65,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">List Asset Yang Akan Diputihkan</label>
+                            <div class="alert alert-danger d-none" id="alert-list-asset">List asset yang diputihkan wajib diisi</div>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="addAssetData">
                                     <thead>
@@ -69,6 +76,7 @@
                                             <th class="text-center">Kode Asset</th>
                                             <th>Deskripsi Asset</th>
                                             <th>Jenis Asset</th>
+                                            <th>Type</th>
                                             <th>Lokasi Asset</th>
                                             <th>Kondisi Asset</th>
                                         </tr>

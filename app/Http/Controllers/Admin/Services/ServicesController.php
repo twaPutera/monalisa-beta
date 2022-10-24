@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Services;
 
+use Throwable;
 use Illuminate\Http\Request;
 use App\Models\DetailService;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,6 @@ use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
-use Throwable;
 
 class ServicesController extends Controller
 {
@@ -47,7 +47,7 @@ class ServicesController extends Controller
         foreach ($allLokasi as $itemLokasi) {
             foreach ($allDetail as $itemServices) {
                 if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {
-                    $data['namaLokasi'] =  !empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : "Tidak Ada";
+                    $data['namaLokasi'] =  ! empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : 'Tidak Ada';
                     $data['totalLokasi'] = $itemServices->where('id_lokasi', $itemLokasi->id)->count();
                 }
             }

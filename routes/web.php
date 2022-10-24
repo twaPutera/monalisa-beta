@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SsoController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Sso\SsoDataController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\AssetOpnameController;
@@ -34,12 +35,11 @@ use App\Http\Controllers\Admin\Approval\ApprovalController as AdminApprovalContr
 use App\Http\Controllers\User\PemindahanAssetController as UserPemindahanAssetController;
 use App\Http\Controllers\User\PeminjamanAssetController as UserPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAssetController;
-use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
-use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
-use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
+use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
+use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
+use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
+use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 
 /*
 |--------------------------------------------------------------------------

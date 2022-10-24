@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableApprovalsAddQrPath extends Migration
+class AlterTableAssetDataAddNewColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterTableApprovalsAddQrPath extends Migration
      */
     public function up()
     {
-        Schema::table('approvals', function (Blueprint $table) {
-            $table->string('qr_path')->nullable()->after('is_approve');
+        Schema::table('asset_data', function (Blueprint $table) {
+            $table->string('type')->after('umur_manfaat_komersial')->nullable();
         });
     }
 

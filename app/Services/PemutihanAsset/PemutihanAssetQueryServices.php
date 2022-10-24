@@ -4,8 +4,8 @@ namespace App\Services\PemutihanAsset;
 
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetQueryServices
 {
@@ -33,7 +33,7 @@ class PemutihanAssetQueryServices
                 ->where('id', $id)->first();
         }
         if (isset($data->created_by)) {
-            $name = "Not Found";
+            $name = 'Not Found';
             if (config('app.sso_siska')) {
                 $user = $data->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($data->created_by);
                 $name = isset($user[0]) ? collect($user[0]) : null;

@@ -3,8 +3,8 @@
 namespace App\Services\Keluhan;
 
 use App\Models\Pengaduan;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class KeluhanQueryServices
 {
@@ -20,7 +20,7 @@ class KeluhanQueryServices
             ->with(['image', 'asset_data', 'lokasi', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])
             ->where('id', $id)
             ->firstOrFail();
-        $name = "Not Found";
+        $name = 'Not Found';
         if (isset($data->created_by)) {
             if (config('app.sso_siska')) {
                 $user = $this->userSsoQueryServices->getUserByGuid($data->created_by);

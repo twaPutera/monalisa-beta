@@ -5,8 +5,8 @@ namespace App\Services\PemindahanAsset;
 use Illuminate\Http\Request;
 use App\Models\PemindahanAsset;
 use Yajra\DataTables\DataTables;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemindahanDatatableServices
 {
@@ -60,7 +60,7 @@ class PemindahanDatatableServices
                 return $asset;
             })
             ->addColumn('pembuat', function ($item) {
-                $name = "Not Found";
+                $name = 'Not Found';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? collect($user[0]) : null;

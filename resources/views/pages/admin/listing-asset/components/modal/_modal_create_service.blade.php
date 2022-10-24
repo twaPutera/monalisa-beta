@@ -63,20 +63,14 @@
                     <div class="col-md-4 col-6">
                         <div class="form-group">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio1" checked class="custom-control-input"
-                                        name="status_service" id="status_service" value="onprogress">
-                                    <label class="custom-control-label" for="customRadio1"> Proses</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio2" class="custom-control-input"
-                                        name="status_service" id="status_service" value="backlog">
-                                    <label class="custom-control-label" for="customRadio2"> Tertunda</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio3" class="custom-control-input"
-                                        name="status_service" id="status_service" value="selesai">
-                                    <label class="custom-control-label" for="customRadio3"> Selesai</label>
+                                <label for="">Status Service</label>
+                                <div>
+                                    <select name="status_service" class="form-control" style="width: 200px"
+                                        id="">
+                                        <option value="onprogress" selected>Proses</option>
+                                        <option value="backlog">Tertunda</option>
+                                        <option value="selesai">Selesai</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -91,6 +85,10 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Keterangan Service</label>
+                            <textarea cols="30" rows="10" class="form-control" name="keterangan_service"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="">File/Gambar Hasil Service</label>

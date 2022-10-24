@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
-use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
-use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
-use App\Services\Approval\ApprovalQueryServices;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
+use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
+use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
 
 class PemindahanController extends Controller
 {

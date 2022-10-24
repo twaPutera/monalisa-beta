@@ -2,9 +2,8 @@
 
 namespace App\Services\Auth;
 
-use App\Http\Requests\Auth\LoginStoreRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\LoginStoreRequest;
 
 class AuthCommandServices
 {

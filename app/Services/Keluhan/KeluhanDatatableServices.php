@@ -2,13 +2,13 @@
 
 namespace App\Services\Keluhan;
 
-use App\Models\LogPengaduanAsset;
+use Carbon\Carbon;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
+use App\Models\LogPengaduanAsset;
+use App\Services\User\UserQueryServices;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\UserSso\UserSsoQueryServices;
-use App\Services\User\UserQueryServices;
-use Carbon\Carbon;
 
 class KeluhanDatatableServices
 {
@@ -28,10 +28,10 @@ class KeluhanDatatableServices
                 return Carbon::parse($item->created_at)->format('Y-m-d') ?? 'Tidak Ada';
             })
             ->addColumn('message_log', function ($item) {
-                return $item->message_log ?? "Tidak Ada";
+                return $item->message_log ?? 'Tidak Ada';
             })
             ->addColumn('created_by', function ($item) {
-                $name = "-";
+                $name = '-';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
@@ -55,7 +55,7 @@ class KeluhanDatatableServices
             $query->orWhere('id_asset_data', $request->id_asset);
         }
         if (isset($request->status_pengaduan)) {
-            if ($request->status_pengaduan != "all") {
+            if ($request->status_pengaduan != 'all') {
                 $query->where('status_pengaduan', $request->status_pengaduan);
             }
         }
@@ -63,19 +63,19 @@ class KeluhanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+                return ! empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
+                return ! empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return !empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
+                return ! empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+                return ! empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
-                $name = "Not Found";
+                $name = 'Not Found';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? collect($user[0]) : null;
@@ -93,10 +93,10 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return !empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
+                return ! empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
             })
             ->addColumn('catatan_admin', function ($item) {
-                return !empty($item->catatan_admin) ? $item->catatan_admin : '-';
+                return ! empty($item->catatan_admin) ? $item->catatan_admin : '-';
             })
             ->addColumn('action', function ($item) {
                 $element = '';

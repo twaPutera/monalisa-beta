@@ -5,6 +5,7 @@ namespace App\Services\AssetData;
 use App\Models\LogAsset;
 use App\Models\AssetData;
 use App\Models\AssetImage;
+use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
@@ -12,10 +13,15 @@ use App\Helpers\DepresiasiHelpers;
 use App\Helpers\SistemConfigHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
-use App\Helpers\SsoHelpers;
+use App\Services\SistemConfig\SistemConfigQueryServices;
 
 class AssetDataCommandServices
 {
+    protected $sistemConfigServices;
+    public function __construct()
+    {
+        $this->sistemConfigServices = new SistemConfigQueryServices();
+    }
     public function store(AssetStoreRequest $request)
     {
         $request->validated();
@@ -58,6 +64,7 @@ class AssetDataCommandServices
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
+        $asset->type = $config != null && $config->value >= $request->nilai_perolehan ? 'inventaris' : 'asset';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_inventaris = $min_asset_value < $request->nilai_perolehan ? '1' : '0';
         $asset->save();

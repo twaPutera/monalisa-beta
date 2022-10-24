@@ -7,8 +7,8 @@ use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
 use Yajra\DataTables\DataTables;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataDatatableServices
 {
@@ -76,7 +76,7 @@ class AssetDataDatatableServices
         }
 
         if (isset($request->is_pemutihan)) {
-            if ($request->is_pemutihan == "all") {
+            if ($request->is_pemutihan == 'all') {
                 $query->where('is_pemutihan', 0);
                 $query->orWhere('is_pemutihan', 1);
             } else {
@@ -98,7 +98,7 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (!isset($request->is_pemutihan)) {
+        if (! isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
         // $query->orderBy('created_at', 'ASC');
@@ -120,7 +120,7 @@ class AssetDataDatatableServices
                 return $item->kategori_asset->nama_kategori ?? 'Tidak ada Kategori';
             })
             ->addColumn('owner_name', function ($item) {
-                $name = "-";
+                $name = '-';
                 if (config('app.sso_siska')) {
                     $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
                     $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
@@ -144,7 +144,7 @@ class AssetDataDatatableServices
                 return $element;
             })
             ->addColumn('register_oleh', function ($item) {
-                $name = "-";
+                $name = '-';
                 if (config('app.sso_siska')) {
                     $user = $item->register_oleh == null ? null : $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
                     $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
@@ -182,7 +182,7 @@ class AssetDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('created_by', function ($item) {
-                $name = "-";
+                $name = '-';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';

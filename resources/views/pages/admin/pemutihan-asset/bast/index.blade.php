@@ -40,6 +40,10 @@
                         data: 'tanggal'
                     },
                     {
+                        name: 'nama_pemutihan',
+                        data: 'nama_pemutihan'
+                    },
+                    {
                         name: 'no_memo',
                         data: 'no_memo'
                     },
@@ -59,7 +63,7 @@
                 columnDefs: [
                     //Custom template data
                     {
-                        targets: 5,
+                        targets: 6,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "Draft") {
@@ -103,16 +107,23 @@
                         searchable: false,
                     },
                     {
-                        name: 'deskripsi',
-                        data: 'deskripsi'
-                    },
-                    {
                         name: 'kode_asset',
                         data: 'kode_asset'
                     },
                     {
+                        name: 'deskripsi',
+                        data: 'deskripsi'
+                    },
+                    {
                         name: 'nama_kategori',
                         data: 'nama_kategori'
+                    },
+                    {
+                        name: 'type',
+                        data: 'type',
+                        render: function(type) {
+                            return type === null ? 'Tidak Ada' : type;
+                        }
                     },
                     {
                         name: 'nama_lokasi',
@@ -164,6 +175,10 @@
                     if (key == "file_asset_service") {
                         $('#preview-file-image-error').html(errors[key][0]);
                         $('#preview-file-image-error-update').html(errors[key][0]);
+                    }
+                    if (key == "id_checkbox") {
+                        console.log($('#alert-list-asset'));
+                        $('#alert-list-asset').removeClass('d-none');
                     }
                 }
             });
@@ -240,6 +255,13 @@
                                 {
                                     name: 'jenis_asset',
                                     data: 'jenis_asset'
+                                },
+                                {
+                                    name: 'type',
+                                    data: 'type',
+                                    render: function(type) {
+                                        return type === null ? 'Tidak Ada' : type;
+                                    }
                                 },
                                 {
                                     name: 'lokasi_asset',
@@ -358,6 +380,7 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>Tanggal Pemutihan</th>
+                                    <th>Nama Pemutihan</th>
                                     <th>No Berita Acara</th>
                                     <th>Keterangan Pemutihan</th>
                                     <th>Status Pemutihan</th>

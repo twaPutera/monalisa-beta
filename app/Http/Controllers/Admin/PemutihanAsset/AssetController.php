@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\PemutihanAsset;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {

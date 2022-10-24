@@ -2,15 +2,15 @@
 
 namespace App\Services\AssetService;
 
+use Carbon\Carbon;
 use App\Models\Service;
 use App\Models\AssetData;
-use App\Models\LogServiceAsset;
 use Illuminate\Http\Request;
+use App\Models\LogServiceAsset;
 use Yajra\DataTables\DataTables;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
-use Carbon\Carbon;
 use Yajra\DataTables\Contracts\DataTable;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetServiceDatatableServices
 {
@@ -33,10 +33,10 @@ class AssetServiceDatatableServices
                 return Carbon::parse($item->created_at)->format('Y-m-d') ?? 'Tidak Ada';
             })
             ->addColumn('message_log', function ($item) {
-                return $item->message_log ?? "Tidak Ada";
+                return $item->message_log ?? 'Tidak Ada';
             })
             ->addColumn('created_by', function ($item) {
-                $name = "-";
+                $name = '-';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
@@ -116,8 +116,12 @@ class AssetServiceDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
-                $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                if ($item->status_service != 'selesai') {
+                    $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
+                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                } else {
+                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                }
                 return $element;
             })
             ->addColumn('asset_data', function ($item) {
@@ -127,6 +131,7 @@ class AssetServiceDatatableServices
                     ->select([
                         'asset_data.id',
                         'asset_data.deskripsi',
+                        'asset_data.type',
                         'kategori_assets.nama_kategori',
                         'group_kategori_assets.nama_group',
                     ])->where('asset_data.id', $item->detail_service->id_asset_data)

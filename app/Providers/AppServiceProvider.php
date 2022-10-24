@@ -29,7 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view::composer('*', function (ViewView $view) {
-
             $user = SsoHelpers::getUserLogin();
             $view->with('user', $user);
         });

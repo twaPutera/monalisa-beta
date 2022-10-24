@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Pengaduan\PengaduanQueryServices;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -26,7 +26,7 @@ class DashboardController extends Controller
             'success' => true,
             'data' => [
                 'total_aduan' => $data_pengaduan,
-            ]
+            ],
         ]);
     }
 }

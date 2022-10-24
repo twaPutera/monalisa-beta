@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\PemutihanAsset;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPemutihanAsset;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetDatatableServices
 {
@@ -30,6 +30,9 @@ class PemutihanAssetDatatableServices
             ->addColumn('tanggal', function ($item) {
                 return empty($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
             })
+            ->addColumn('nama_pemutihan', function ($item) {
+                return empty($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
+            })
             ->addColumn('no_memo', function ($item) {
                 return empty($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
             })
@@ -37,7 +40,7 @@ class PemutihanAssetDatatableServices
                 return empty($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('created_by', function ($item) {
-                $name = "Not Found";
+                $name = 'Not Found';
                 if (config('app.sso_siska')) {
                     $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? collect($user[0]) : null;
@@ -59,7 +62,7 @@ class PemutihanAssetDatatableServices
                                     <i class="fa fa-trash"></i>
                                 </button>';
                     $element .= '</form>';
-                } else if ($item->status == 'Ditolak') {
+                } elseif ($item->status == 'Ditolak') {
                     $element .= '<form action="' . route('admin.pemutihan-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
                     $element .= csrf_field();
                     $element .= '<a href="' . route('admin.pemutihan-asset.edit.ditolak', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
@@ -163,7 +166,7 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('button_show_asset', function ($item) {
                 $element = '';
-                $element .= '<a href="'. route('admin.listing-asset.detail', $item->id_asset_data) .'" class="btn btn-sm btn-icon">
+                $element .= '<a href="' . route('admin.listing-asset.detail', $item->id_asset_data) . '" class="btn btn-sm btn-icon">
                                 <i class="fa fa-eye"></i>
                             </a>';
                 return $element;
