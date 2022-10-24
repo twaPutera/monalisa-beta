@@ -167,15 +167,18 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($pemutihan_asset->detail_pemutihan_asset as $index => $item)
+                                        @php
+                                            $json_asset = json_decode($item->json_asset);
+                                        @endphp
                                         <tr>
                                             <td class="text-center">{{ $index + 1 }}</td>
-                                            <td>{{ $item->asset_data->kode_asset ?? 'Tidak Ada' }}</td>
-                                            <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
-                                            <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
+                                            <td>{{ $json_asset->kode_asset ?? 'Tidak Ada' }}</td>
+                                            <td>{{ $json_asset->deskripsi ?? 'Tidak Ada' }}</td>
+                                            <td>{{ empty($json_asset->kategori_asset->nama_kategori) ? 'Tidak Ada' : $json_asset->kategori_asset->nama_kategori }}
                                             </td>
-                                            <td>{{ ucWords($item->asset_data->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}
+                                            <td>{{ ucWords($json_asset->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}
                                             </td>
-                                            <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}
+                                            <td>{{ empty($json_asset->lokasi->nama_lokasi) ? 'Tidak Ada' : $json_asset->lokasi->nama_lokasi }}
                                             </td>
                                             <td>
                                                 <div class="form-group">
