@@ -306,11 +306,17 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Peminjaman</label>
-                                        <input type="date" value="{{ $peminjaman->tanggal_peminjaman }}" class="form-control" id="tanggalPeminjam" readonly name="kode_satuan">
+                                        <div class="d-flex">
+                                            <input type="date" class="form-control w-75" id="tanggalPeminjam" readonly name="" value="{{ $peminjaman->tanggal_peminjaman }}">
+                                            <input type="text" class="form-control w-25" id="jamMulai" readonly name="" value="{{ $peminjaman->jam_mulai ?? "-" }}">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Pengembalian</label>
-                                        <input type="date" value="{{ $peminjaman->tanggal_pengembalian }}" class="form-control" id="tanggalPengembalian" readonly name="nama_satuan">
+                                        <div class="d-flex">
+                                            <input type="date" class="form-control w-75" id="tanggalPengembalian" readonly name="" value="{{ $peminjaman->tanggal_pengembalian }}">
+                                            <input type="text" class="form-control w-25" id="jamAkhir" readonly name="" value="{{ $peminjaman->jam_selesai ?? "-" }}">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Alasan Peminjaman</label>

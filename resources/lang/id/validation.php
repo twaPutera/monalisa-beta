@@ -1,5 +1,6 @@
 <?php
 return [
+    'alpha_spaces'         => 'Isian :attribute tidak boleh ada spasi.',
     'accepted'             => 'Isian :attribute harus diterima.',
     'active_url'           => 'Isian :attribute bukan URL yang sah.',
     'after'                => 'Isian :attribute harus tanggal setelah :date.',

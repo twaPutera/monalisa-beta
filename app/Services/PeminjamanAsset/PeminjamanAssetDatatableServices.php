@@ -28,7 +28,7 @@ class PeminjamanAssetDatatableServices
             });
         }
 
-        $query->orderBy('created_at', 'ASC');
+        $query->orderBy('created_at', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_peminjam', function ($row) {

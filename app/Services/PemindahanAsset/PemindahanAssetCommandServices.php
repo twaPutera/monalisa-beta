@@ -156,6 +156,11 @@ class PemindahanAssetCommandServices
         $approval_pemindahan_asset->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval_pemindahan_asset->tanggal_approval = date('Y-m-d');
         $approval_pemindahan_asset->keterangan = $request->keterangan;
+
+        if ($request->status == 'disetujui') {
+
+        }
+
         $approval_pemindahan_asset->save();
 
         $pemindahan_asset->status = $request->status;

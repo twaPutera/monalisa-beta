@@ -9,6 +9,7 @@ use App\Helpers\FileHelpers;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
+use App\Helpers\SistemConfigHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Helpers\SsoHelpers;
@@ -27,6 +28,8 @@ class AssetDataCommandServices
         $qr_name = 'qr-asset-' . $request->kode_asset . '.png';
         $path = storage_path('app/images/qr-code/' . $qr_name);
         $qr_code = QrCodeHelpers::generateQrCode($request->kode_asset, $path);
+
+        $min_asset_value = SistemConfigHelpers::get('min_asset_value');
 
         $asset = new AssetData();
         $asset->deskripsi = $request->deskripsi;
@@ -56,6 +59,7 @@ class AssetDataCommandServices
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
+        $asset->is_inventaris = $min_asset_value < $request->nilai_perolehan ? '1' : '0';
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {

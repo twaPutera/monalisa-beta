@@ -24,8 +24,8 @@ class UserChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => 'required|string|min:8|confirmed',
-            'password_confirmation' => 'required|string|min:8',
+            'password' => 'required|string|min:8|confirmed|alpha_spaces',
+            'password_confirmation' => 'required|string|min:8|alpha_spaces',
         ];
     }
 }
