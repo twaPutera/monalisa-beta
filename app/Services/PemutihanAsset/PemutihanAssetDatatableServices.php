@@ -193,7 +193,7 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('kondisi_asset', function ($item) {
                 $json_asset = json_decode($item->json_asset);
-                return empty($json_asset->status_kondisi) ? 'Tidak Ada' : $json_asset->status_kondisi;
+                return empty($json_asset->status_kondisi) ? 'Tidak Ada' : ucWords($json_asset->status_kondisi);
             })
             ->addColumn('keterangan_pemutihan', function ($item) {
                 return empty($item->keterangan_pemutihan) ? 'Tidak Ada' : $item->keterangan_pemutihan;
