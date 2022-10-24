@@ -245,12 +245,12 @@
                                     data: 'file_gambar'
                                 },
                                 {
-                                    name: 'deskripsi',
-                                    data: 'deskripsi'
-                                },
-                                {
                                     name: 'kode_asset',
                                     data: 'kode_asset'
+                                },
+                                {
+                                    name: 'deskripsi',
+                                    data: 'deskripsi'
                                 },
                                 {
                                     name: 'jenis_asset',
@@ -259,9 +259,6 @@
                                 {
                                     name: 'is_inventaris',
                                     data: 'is_inventaris',
-                                    render: function(type) {
-                                        return type == 1 ? 'Inventaris' : 'Asset';
-                                    }
                                 },
                                 {
                                     name: 'lokasi_asset',

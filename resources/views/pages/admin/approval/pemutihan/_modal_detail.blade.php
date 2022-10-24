@@ -28,8 +28,8 @@
                         </div>
                         <div class="form-group">
                             <label for="">File Berita Acara</label>
-                            <a href="" download id="fileBeritaAcara" class="btn btn-primary shadow-custom btn-sm"><i
-                                    class="fa fa-download"></i>
+                            <a href="" download id="fileBeritaAcara"
+                                class="btn btn-primary shadow-custom btn-sm"><i class="fa fa-download"></i>
                                 Unduh</a>
                         </div>
                         <div class="form-group">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="mb-2">
-                            <h5>Detail barang yang dipinjam</h5>
+                            <h5>Detail item yang diputihkan</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">

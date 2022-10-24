@@ -49,9 +49,6 @@
                         data: 'tipe_approval'
                     },
                     {
-                        data: 'approvable.no_memo'
-                    },
-                    {
                         data: 'is_approve'
                     },
                     {
@@ -172,11 +169,14 @@
                                 value.id + `"
                                 class="btn btn-sm btn-icon"><i class="fa fa-image"></i></a>
                             `;
-                            const kode_asset = value.asset_data.kode_asset ? value.asset_data
+                            const kode_asset = JSON.parse(value.json_asset).kode_asset ? JSON.parse(
+                                    value.json_asset)
                                 .kode_asset : 'Tidak Ada';
-                            const deskripsi = value.asset_data.deskripsi ? value.asset_data
+                            const deskripsi = JSON.parse(value.json_asset).deskripsi ? JSON.parse(
+                                    value.json_asset)
                                 .deskripsi : 'Tidak Ada';
-                            const lokasi = value.asset_data.lokasi ? value.asset_data.lokasi
+                            const lokasi = JSON.parse(value.json_asset).lokasi ? JSON.parse(value
+                                    .json_asset).lokasi
                                 .nama_lokasi : 'Tidak Ada';
 
                             let element = `
