@@ -172,19 +172,28 @@ class PemutihanAssetDatatableServices
                 return $element;
             })
             ->addColumn('kode_asset', function ($item) {
-                return empty($item->asset_data->kode_asset) ? 'Tidak Ada' : $item->asset_data->kode_asset;
+                $json_asset = json_decode($item->json_asset);
+                return empty($json_asset->kode_asset) ? 'Tidak Ada' : $json_asset->kode_asset;
             })
             ->addColumn('deskripsi', function ($item) {
-                return empty($item->asset_data->deskripsi) ? 'Tidak Ada' : $item->asset_data->deskripsi;
+                $json_asset = json_decode($item->json_asset);
+                return empty($json_asset->deskripsi) ? 'Tidak Ada' : $json_asset->deskripsi;
             })
             ->addColumn('jenis_asset', function ($item) {
-                return empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori;
+                $json_asset = json_decode($item->json_asset);
+                return empty($json_asset->kategori_asset->nama_kategori) ? 'Tidak Ada' : $json_asset->kategori_asset->nama_kategori;
+            })
+            ->addColumn('is_inventaris', function ($item) {
+                $json_asset = json_decode($item->json_asset);
+                return  $json_asset->is_inventaris == 1 ? 'Inventaris' : "Asset";
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi;
+                $json_asset = json_decode($item->json_asset);
+                return empty($json_asset->lokasi->nama_lokasi) ? 'Tidak Ada' : $json_asset->lokasi->nama_lokasi;
             })
             ->addColumn('kondisi_asset', function ($item) {
-                return empty($item->asset_data->status_kondisi) ? 'Tidak Ada' : $item->asset_data->status_kondisi;
+                $json_asset = json_decode($item->json_asset);
+                return empty($json_asset->status_kondisi) ? 'Tidak Ada' : $json_asset->status_kondisi;
             })
             ->addColumn('keterangan_pemutihan', function ($item) {
                 return empty($item->keterangan_pemutihan) ? 'Tidak Ada' : $item->keterangan_pemutihan;

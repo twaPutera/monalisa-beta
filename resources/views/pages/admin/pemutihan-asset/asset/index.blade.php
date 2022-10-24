@@ -25,8 +25,7 @@
                         d.is_pemutihan = '1';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -51,6 +50,10 @@
                     {
                         name: 'jenis_asset',
                         data: 'jenis_asset'
+                    },
+                    {
+                        name: 'is_inventaris',
+                        data: 'is_inventaris'
                     },
                     {
                         name: 'lokasi_asset',
@@ -148,6 +151,7 @@
                                     <th class="text-center">Kode Asset</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Jenis Asset</th>
+                                    <th>Tipe</th>
                                     <th>Lokasi Asset</th>
                                     <th>Kondisi Asset</th>
                                     <th>Keterangan Pemutihan</th>
