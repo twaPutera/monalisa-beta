@@ -161,10 +161,10 @@ class PemindahanAssetCommandServices
         if ($request->status == 'disetujui') {
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/pemindahan/' . $qr_name);
-            $qr_code = QrCodeHelpers::generateQrCode(json_encode($approval_pemindahan_asset), $path);
+            $qr_code = QrCodeHelpers::generateQrCode($approval_pemindahan_asset->id, $path);
         }
 
-        $approval_pemindahan_asset->qr_path = $qr_code;
+        $approval_pemindahan_asset->qr_path = $qr_name;
 
         $approval_pemindahan_asset->save();
 

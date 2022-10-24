@@ -19,6 +19,7 @@ use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\User\UserQueryServices;
 
 class MasterAssetController extends Controller
 {
@@ -28,13 +29,16 @@ class MasterAssetController extends Controller
     protected $userSsoQueryServices;
     protected $assetServiceQueryServices;
     protected $assetOpnameQueryServices;
+    protected $userQueryServices;
+
     public function __construct(
         AssetDataCommandServices $assetDataCommandServices,
         AssetDataDatatableServices $assetDataDatatableServices,
         AssetDataQueryServices $assetDataQueryServices,
         UserSsoQueryServices $userSsoQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices,
-        assetOpnameQueryServices $assetOpnameQueryServices
+        AssetOpnameQueryServices $assetOpnameQueryServices,
+        UserQueryServices $userQueryServices
     ) {
         $this->assetDataCommandServices = $assetDataCommandServices;
         $this->assetDataDatatableServices = $assetDataDatatableServices;
@@ -42,6 +46,7 @@ class MasterAssetController extends Controller
         $this->userSsoQueryServices = $userSsoQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
         $this->assetOpnameQueryServices = $assetOpnameQueryServices;
+        $this->userQueryServices = $userQueryServices;
     }
 
     public function index()
@@ -188,13 +193,23 @@ class MasterAssetController extends Controller
     public function getDataAllOwnerSelect2(Request $request)
     {
         try {
-            $response = $this->userSsoQueryServices->getUserSso($request);
-            $data = collect($response)->map(function ($item) {
-                return [
-                    'id' => $item['guid'],
-                    'text' => $item['name'] . ' - ' . $item['email'],
-                ];
-            });
+            if (config('app.sso_siska')) {
+                $response = $this->userSsoQueryServices->getUserSso($request);
+                $data = collect($response)->map(function ($item) {
+                    return [
+                        'id' => $item['guid'],
+                        'text' => $item['name'] . ' - ' . $item['email'],
+                    ];
+                });
+            } else {
+                $response = $this->userQueryServices->findAll($request);
+                $data = $response->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'text' => $item->name . ' - ' . $item->email,
+                    ];
+                });
+            }
 
             return response()->json([
                 'success' => true,

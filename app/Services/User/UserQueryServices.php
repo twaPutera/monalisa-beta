@@ -15,6 +15,10 @@ class UserQueryServices
             $users->where('name', 'like', '%' . $request->name . '%');
         }
 
+        if ($request->has('keyword')) {
+            $users->where('name', 'like', '%' . $request->keyword . '%');
+        }
+
         if ($request->has('email')) {
             $users->where('email', 'like', '%' . $request->email . '%');
         }

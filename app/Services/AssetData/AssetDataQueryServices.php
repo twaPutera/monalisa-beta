@@ -36,15 +36,17 @@ class AssetDataQueryServices
         $created_by = null;
         if (isset($data->ownership)) {
             if (config('app.sso_siska')) {
-                $user = $this->userSsoQueryServices->findById($data->ownership->created_by);
+                $user = $this->userSsoQueryServices->findById($data->ownership);
                 $user = isset($user[0]) ? collect($user[0]) : null;
             } else {
                 $user = $this->userQueryServices->findById($data->ownership);
             }
         }
+
         if ($data->log_asset_opname->count() > 0) {
             if (config('app.sso_siska')) {
                 $created_by = $this->userSsoQueryServices->getUserByGuid($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
+                $created_by = isset($created_by[0]) ? collect($created_by[0]) : null;
             } else {
                 $created_by = $this->userQueryServices->findById($data->log_asset_opname->sortByDesc('created_at')->first()->created_by);
             }
@@ -55,8 +57,8 @@ class AssetDataQueryServices
         });
 
         $data->link_detail = route('admin.listing-asset.detail', $data->id);
-        $data->owner_name = $user == null ? 'Tidak ada' : $user[0]['nama'];
-        $data->created_by_opname = $created_by == null ? 'Tidak Ada' : $created_by[0]['nama'];
+        $data->owner_name = $user == null ? 'Tidak ada' : $user->name ?? $user->nama;
+        $data->created_by_opname = $created_by == null ? 'Tidak Ada' : $created_by->name ?? $created_by->nama;
         return $data;
     }
 

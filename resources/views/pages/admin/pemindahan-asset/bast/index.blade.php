@@ -138,12 +138,16 @@
         <tr>
             <td style="width: 70%;">
                 <p>PIHAK PERTAMA</p>
-                <div style="height: 80px"></div>
+                <div style="height: 120px"></div>
                 <p>{{ $penyerah->nama }}</p>
             </td>
             <td style="width: 30%;">
                 <p>PIHAK KEDUA</p>
-                <div style="height: 80px"></div>
+                <div style="height: 120px">
+                    @if(isset($data->approval[0]->qr_path))
+                        <img src="{{ storage_path('app/images/qr-code/pemindahan/' . $data->approval[0]->qr_path) }}" alt="" style="width: 90px; height: 90px;">
+                    @endif
+                </div>
                 <p>{{ $penerima->nama }}</p>
             </td>
         </tr>

@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
+use App\Helpers\QrCodeHelpers;
 use App\Models\PeminjamanAsset;
 use App\Models\DetailPeminjamanAsset;
 use App\Models\RequestPeminjamanAsset;
@@ -84,6 +85,12 @@ class PeminjamanAssetCommandServices
         $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
         $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
+        if ($request->status == 'disetujui') {
+            $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
+            $path = storage_path('app/images/qr-code/peminjaman/' . $qr_name);
+            $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
+        }
+        $approval->qr_path = $qr_name;
         $approval->save();
 
         return $peminjaman;

@@ -8,6 +8,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
+use App\Helpers\QrCodeHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use Illuminate\Support\Facades\Session;
@@ -89,6 +90,15 @@ class PemutihanAssetCommandServices
         $approval->guid_approver = $user->guid ?? $user->id;
         $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
+
+        if ($request->status == 'disetujui') {
+            $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
+            $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
+            $qr_code = QrCodeHelpers::generateQrCode(json_encode($approval), $path);
+        }
+
+        $approval->qr_path = $qr_code;
+
         $approval->save();
         return $pemutihan;
     }
@@ -273,6 +283,13 @@ class PemutihanAssetCommandServices
         $approval->status = $request->status == 'disetujui' ? '1' : '0';
         $approval->tanggal_approval = date('Y-m-d');
         $approval->keterangan = $request->keterangan;
+
+        if ($request->status == 'disetujui') {
+            $qr_name = 'qr-approval-pemutihan-' . time() . '.png';
+            $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
+            $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
+        }
+
         $approval->save();
 
         if ($request->status == 'disetujui') {

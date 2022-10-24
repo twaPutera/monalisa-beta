@@ -147,9 +147,9 @@
                         data: 'deskripsi'
                     },
                     {
-                        data: 'type',
+                        data: 'is_inventaris',
                         render: function(type) {
-                            return type === null ? 'Tidak Ada' : type;
+                            return type == 1 ? 'Inventaris' : 'Aset';
                         }
                     },
                     {
@@ -184,7 +184,7 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: 9,
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
