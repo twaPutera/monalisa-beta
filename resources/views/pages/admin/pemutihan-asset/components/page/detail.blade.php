@@ -32,6 +32,18 @@
                     showToastError('Gagal', errors.message);
                 }
                 for (let key in errors) {
+                    if (key.includes("keterangan_pemutihan_asset")) {
+                        let errorAlert = $('#alert-error');
+                        errorAlert.empty();
+                        errorAlert.removeClass('d-none');
+                        errorAlert.append("Keterangan Pemutihan Asset Wajib Diisi");
+                    }
+                    if (key.includes("gambar_asset")) {
+                        let errorAlert = $('#alert-error');
+                        errorAlert.empty();
+                        errorAlert.removeClass('d-none');
+                        errorAlert.append("Gambar Asset Wajib Diisi");
+                    }
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
@@ -125,6 +137,8 @@
                         </ol>
                     </div>
                 @endif
+                <div class="alert alert-danger d-none" id="alert-error"></div>
+
                 <div class="kt-portlet shadow-custom">
                     <div class="kt-portlet__head px-4">
                         <div class="kt-portlet__head-label">
