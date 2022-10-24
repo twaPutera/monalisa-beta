@@ -23,8 +23,8 @@
                 <div class="form-group col-md-6 col-12">
                     <label for="">Status Pengaduan</label>
                     <select name="status_pengaduan" class="form-control" id="statusPengaduanFilter">
-                        <option value="all">Semua Status</option>
-                        <option value="dilaporkan" selected>Laporan Masuk</option>
+                        <option value="all" selected>Semua Status</option>
+                        <option value="dilaporkan">Laporan Masuk</option>
                         <option value="diproses">Diproses</option>
                         <option value="selesai">Selesai</option>
                     </select>
