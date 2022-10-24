@@ -89,8 +89,9 @@ class PeminjamanAssetCommandServices
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/peminjaman/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
+            $approval->qr_path = $qr_name;
         }
-        $approval->qr_path = $qr_name;
+
         $approval->save();
 
         return $peminjaman;

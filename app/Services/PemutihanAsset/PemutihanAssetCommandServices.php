@@ -298,6 +298,7 @@ class PemutihanAssetCommandServices
             $qr_name = 'qr-approval-pemutihan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
+            $approval->qr_path = $qr_name;
         }
 
         $approval->save();
