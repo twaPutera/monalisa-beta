@@ -67,10 +67,10 @@
                         data: 'asset_data.deskripsi'
                     },
                     {
-                        name: 'asset_data.type',
-                        data: 'asset_data.type',
+                        name: 'asset_data.is_inventaris',
+                        data: 'asset_data.is_inventaris',
                         render: function(type) {
-                            return type === null ? 'Tidak Ada' : type;
+                            return type == 1 ? "Inventaris" : "Asset";
                         }
                     },
                     {

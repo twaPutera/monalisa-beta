@@ -119,10 +119,10 @@
                         data: 'nama_kategori'
                     },
                     {
-                        name: 'type',
-                        data: 'type',
+                        name: 'is_inventaris',
+                        data: 'is_inventaris',
                         render: function(type) {
-                            return type === null ? 'Tidak Ada' : type;
+                            return type == 1 ? 'Inventaris' : 'Asset';
                         }
                     },
                     {
@@ -257,10 +257,10 @@
                                     data: 'jenis_asset'
                                 },
                                 {
-                                    name: 'type',
-                                    data: 'type',
+                                    name: 'is_inventaris',
+                                    data: 'is_inventaris',
                                     render: function(type) {
-                                        return type === null ? 'Tidak Ada' : type;
+                                        return type == 1 ? 'Inventaris' : 'Asset';
                                     }
                                 },
                                 {

@@ -42,7 +42,20 @@
                 if (!errors.success) {
                     showToastError('Gagal', errors.message);
                 }
+
                 for (let key in errors) {
+                    if (key.includes("keterangan_pemutihan_asset")) {
+                        let errorAlert = $('#alert-error');
+                        errorAlert.empty();
+                        errorAlert.removeClass('d-none');
+                        errorAlert.append("Keterangan Pemutihan Asset Wajib Diisi");
+                    }
+                    if (key.includes("gambar_asset")) {
+                        let errorAlert = $('#alert-error');
+                        errorAlert.empty();
+                        errorAlert.removeClass('d-none');
+                        errorAlert.append("Gambar Asset Yang Dimasukkan Tidak Sesuai");
+                    }
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
@@ -50,6 +63,7 @@
                         $('#preview-file-image-error').html(errors[key][0]);
                         $('#preview-file-image-error-update').html(errors[key][0]);
                     }
+
                 }
             });
 
@@ -84,8 +98,8 @@
                         data: 'jenis_asset'
                     },
                     {
-                        name: 'type',
-                        data: 'type',
+                        name: 'is_inventaris',
+                        data: 'is_inventaris',
                         render: function(type) {
                             return type === null ? 'Tidak Ada' : type;
                         }
@@ -291,6 +305,8 @@
                         </ol>
                     </div>
                 @endif
+                <div class="alert alert-danger d-none" id="alert-error"></div>
+
                 <div class="kt-portlet shadow-custom">
                     <div class="kt-portlet__head px-4">
                         <div class="kt-portlet__head-label">
@@ -330,17 +346,22 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($pemutihan_asset->detail_pemutihan_asset as $index => $item)
+                                        @php
+                                            $json_asset = json_decode($item->json_asset);
+                                        @endphp
                                         <tr>
                                             <td class="text-center">{{ $index + 1 }}</td>
                                             <td><button type="button" onclick="showPemutihanAsset(this)"
                                                     data-url_detail="{{ route('admin.pemutihan-asset.edit.listing-asset.get-image', $item->id) }}"
                                                     class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button></td>
-                                            <td>{{ $item->asset_data->kode_asset ?? 'Tidak Ada' }}</td>
-                                            <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
-                                            <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
+                                            <td>{{ $json_asset->kode_asset ?? 'Tidak Ada' }}</td>
+                                            <td>{{ $json_asset->deskripsi ?? 'Tidak Ada' }}</td>
+                                            <td>{{ empty($json_asset->kategori_asset->nama_kategori) ? 'Tidak Ada' : $json_asset->kategori_asset->nama_kategori }}
                                             </td>
-                                            <td>{{ $item->asset_data->type ?? 'Tidak Ada' }}</td>
-                                            <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}
+                                            <td>{{ ucWords($json_asset->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}
+                                            </td>
+
+                                            <td>{{ empty($json_asset->lokasi->nama_lokasi) ? 'Tidak Ada' : $json_asset->lokasi->nama_lokasi }}
                                             </td>
                                             <td>
                                                 <div class="form-group">

@@ -131,7 +131,7 @@ class AssetServiceDatatableServices
                     ->select([
                         'asset_data.id',
                         'asset_data.deskripsi',
-                        'asset_data.type',
+                        'asset_data.is_inventaris',
                         'kategori_assets.nama_kategori',
                         'group_kategori_assets.nama_group',
                     ])->where('asset_data.id', $item->detail_service->id_asset_data)

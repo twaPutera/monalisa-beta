@@ -64,7 +64,6 @@ class AssetDataCommandServices
         $asset->qr_code = $qr_name;
         $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
-        // $asset->type = $config != null && $config->value >= $request->nilai_perolehan ? 'inventaris' : 'asset';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_inventaris = $min_asset_value < $request->nilai_perolehan ? '1' : '0';
         $asset->save();
