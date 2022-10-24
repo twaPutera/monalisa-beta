@@ -50,7 +50,7 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            {{ ucWords($asset_data->type) ?? 'Tidak Ada Tipe' }}</p>
+                            {{ ucWords($asset_data->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}</p>
                     </div>
                 </div>
             </div>

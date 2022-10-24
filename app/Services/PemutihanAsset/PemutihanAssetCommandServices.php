@@ -34,7 +34,7 @@ class PemutihanAssetCommandServices
 
         $user = SsoHelpers::getUserLogin();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -51,11 +51,14 @@ class PemutihanAssetCommandServices
 
         for ($i = 0; $i < count($request->id_checkbox); $i++) {
             $id_checkbox = $request->id_checkbox[$i];
+            $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
             $detail_pemutihan = new DetailPemutihanAsset();
             $detail_pemutihan->id_pemutihan_asset = $pemutihan->id;
             $detail_pemutihan->id_asset_data = $id_checkbox;
+            $detail_pemutihan->json_asset = json_encode($find_asset);
             $detail_pemutihan->save();
         }
+
 
         if ($request->hasFile('file_berita_acara')) {
             $filename = self::generateNameFile($request->file('file_berita_acara')->getClientOriginalExtension(), $pemutihan->id);
@@ -97,13 +100,14 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
         if ($request->hasFile('gambar_asset')) {
             foreach ($request->file('gambar_asset') as $i => $file) {
                 $detail_pemutihan = DetailPemutihanAsset::findOrFail($request->id_asset[$i]);
+                $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $detail_pemutihan->id_asset_data)->first();
                 $filename = self::generateNameImage($file->getClientOriginalExtension(), $detail_pemutihan->id);
                 $path = storage_path('app/images/asset-pemutihan');
                 $filenamesave = FileHelpers::saveFile($file, $path, $filename);
@@ -114,6 +118,7 @@ class PemutihanAssetCommandServices
                 $asset_images->path = $filenamesave;
                 $asset_images->save();
 
+                $detail_pemutihan->json_asset = json_encode($find_asset);
                 $detail_pemutihan->keterangan_pemutihan = $request->keterangan_pemutihan_asset[$i];
                 $detail_pemutihan->save();
             }
@@ -135,7 +140,7 @@ class PemutihanAssetCommandServices
     public function destroy(string $id)
     {
         $pemutihan = PemutihanAsset::findOrFail($id);
-        if ($pemutihan->status == 'Draft') {
+        if ($pemutihan->status == 'Draft' || $pemutihan->status == 'Ditolak') {
             if (isset($pemutihan->file_bast)) {
                 $path = storage_path('app/file/pemutihan');
                 $pathOld = $path . '/' . $pemutihan->file_bast;
@@ -162,15 +167,17 @@ class PemutihanAssetCommandServices
             array_push($request_checkbox, $id_checkbox);
             $cek_detail_pemutihan = DetailPemutihanAsset::where('id_asset_data', $id_checkbox)->where('id_pemutihan_asset', $id)->first();
             if ($cek_detail_pemutihan == null) {
+                $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
                 $detail_pemutihan_create = new DetailPemutihanAsset();
                 $detail_pemutihan_create->id_pemutihan_asset = $id;
                 $detail_pemutihan_create->id_asset_data = $id_checkbox;
+                $detail_pemutihan_create->json_asset = json_encode($find_asset);
                 $detail_pemutihan_create->save();
             }
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -189,7 +196,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager');
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -226,6 +233,9 @@ class PemutihanAssetCommandServices
         }
         for ($i = 0; $i < count($request->keterangan_pemutihan_asset); $i++) {
             $detail_pemutihan = DetailPemutihanAsset::with(['image'])->where('id', $request->id_asset[$i])->first();
+            $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $detail_pemutihan->id_asset_data)->first();
+
+            $detail_pemutihan->json_asset = json_encode($find_asset);
             $detail_pemutihan->keterangan_pemutihan = $request->keterangan_pemutihan_asset[$i];
             $detail_pemutihan->save();
         }

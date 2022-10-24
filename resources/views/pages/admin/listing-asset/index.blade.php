@@ -147,9 +147,9 @@
                         data: 'deskripsi'
                     },
                     {
-                        data: 'type',
+                        data: 'is_inventaris',
                         render: function(type) {
-                            return type === null ? 'Tidak Ada' : type;
+                            return type == 1 ? 'Inventaris' : 'Asset';
                         }
                     },
                     {

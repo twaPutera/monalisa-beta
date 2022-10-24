@@ -159,7 +159,8 @@
                                             <td>{{ $item->asset_data->deskripsi ?? 'Tidak Ada' }}</td>
                                             <td>{{ empty($item->asset_data->kategori_asset->nama_kategori) ? 'Tidak Ada' : $item->asset_data->kategori_asset->nama_kategori }}
                                             </td>
-                                            <td>{{ ucWords($item->asset_data->type) ?? 'Tidak Ada' }}</td>
+                                            <td>{{ ucWords($item->asset_data->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}
+                                            </td>
                                             <td>{{ empty($item->asset_data->lokasi->nama_lokasi) ? 'Tidak Ada' : $item->asset_data->lokasi->nama_lokasi }}
                                             </td>
                                             <td>

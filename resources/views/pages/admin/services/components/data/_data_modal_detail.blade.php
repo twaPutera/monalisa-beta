@@ -28,7 +28,7 @@
             </tr>
             <tr>
                 <td width="40%">Tipe</td>
-                <td><strong>{{ ucWords($listing_asset_service->detail_service->asset_data->type) ?? '-' }}</strong>
+                <td><strong>{{ ucWords($listing_asset_service->detail_service->asset_data->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}</strong>
                 </td>
             </tr>
             <tr>

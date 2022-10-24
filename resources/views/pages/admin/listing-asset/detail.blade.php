@@ -744,7 +744,7 @@
                                     </tr>
                                     <tr>
                                         <td width="40%">Tipe</td>
-                                        <td><strong>{{ ucWords($asset->type) ?? 'Tidak Ada' }}</strong>
+                                        <td><strong>{{ ucWords($asset->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}</strong>
                                         </td>
                                     </tr>
                                     <tr>
