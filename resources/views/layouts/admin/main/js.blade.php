@@ -45,6 +45,12 @@
 <script src="{{ asset('assets/js/scripts.bundle.min.js') }}" type="text/javascript"></script>
 
 <script>
+    // Set Ajax Header
+    $.ajaxSetup({
+        headers: {
+            "Accept": "application/json",
+        }
+    });
     toastr.options = {
         "closeButton": true,
         "debug": false,

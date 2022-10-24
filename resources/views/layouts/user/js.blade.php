@@ -5,6 +5,13 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <!-- Splide -->
 <script src="{{ asset('assets/user/js/plugins/splide/splide.min.js') }}"></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            "Accept": "application/json",
+        }
+    });
+</script>
 @yield('pluggin-js')
 <!-- Base Js File -->
 <script src="{{ asset('assets/user/js/base.js') }}"></script>
