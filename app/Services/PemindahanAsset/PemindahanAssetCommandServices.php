@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
+use App\Helpers\QrCodeHelpers;
 use App\Models\PemindahanAsset;
 use App\Models\DetailPemindahanAsset;
 use App\Models\ApprovalPemindahanAsset;
@@ -158,8 +159,12 @@ class PemindahanAssetCommandServices
         $approval_pemindahan_asset->keterangan = $request->keterangan;
 
         if ($request->status == 'disetujui') {
-
+            $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
+            $path = storage_path('app/images/qr-code/pemindahan/' . $qr_name);
+            $qr_code = QrCodeHelpers::generateQrCode(json_encode($approval_pemindahan_asset), $path);
         }
+
+        $approval_pemindahan_asset->qr_path = $qr_code;
 
         $approval_pemindahan_asset->save();
 
