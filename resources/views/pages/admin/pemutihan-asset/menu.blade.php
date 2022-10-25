@@ -5,7 +5,7 @@
         @else
             class="kt-nav__link px-3" href="{{ route('admin.pemutihan-asset.asset.index') }}" @endif>
             <span class="kt-nav__link-icon">
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-list"></i>
             </span>
             <span class="kt-nav__link-text">Asset Diputihkan</span> </a>
     </li>
