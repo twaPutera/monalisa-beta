@@ -534,7 +534,8 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-book"></i></span>
                                     Bahan Habis Pakai</span></a></li>
-                        <li class="kt-menu__item" aria-haspopup="true"><a href="#"
+                        <li class="kt-menu__item @if (\Request::segment(2) == 'report') kt-menu__item--active @endif"
+                            aria-haspopup="true"><a href="{{ route('admin.report.summary-asset.index') }}"
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-print"></i></span>
                                     Report</span></a></li>
