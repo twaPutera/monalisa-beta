@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DepresiasionAllAssetJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->job(DepresiasionAllAssetJob::class)->monthlyOn(15, '01:00');
     }
 
     /**

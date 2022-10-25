@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\AssetData;
+use App\Models\DepresiasiAsset;
 
 class DepresiasiHelpers
 {
@@ -29,5 +30,23 @@ class DepresiasiHelpers
             ->where('nilai_buku_asset', '>', 1)
             ->get();
         return $asset;
+    }
+
+    public static function depresiasiAsset(AssetData $asset, $tanggal_depresiasi)
+    {
+        $nilai_buku_akhir = $asset->nilai_buku_asset - $asset->nilai_depresiasi;
+
+        $depresiasi = new DepresiasiAsset();
+        $depresiasi->id_asset_data = $asset->id;
+        $depresiasi->nilai_depresiasi = $asset->nilai_depresiasi;
+        $depresiasi->tanggal_depresiasi = $tanggal_depresiasi;
+        $depresiasi->nilai_buku_awal = $asset->nilai_buku_asset;
+        $depresiasi->nilai_buku_akhir = $nilai_buku_akhir < 1 ? 1 : $nilai_buku_akhir;
+        $depresiasi->save();
+
+        $asset->nilai_buku_asset = $nilai_buku_akhir < 1 ? 1 : $nilai_buku_akhir;
+        $asset->save();
+
+        return [$depresiasi->id, $asset->id, $asset->nilai_buku_asset, $nilai_buku_akhir];
     }
 }
