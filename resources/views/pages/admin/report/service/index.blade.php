@@ -26,9 +26,9 @@
                 ajax: {
                     url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                     data: function(d) {
-                        d.month = $('.monthpicker').val();
-                        d.year = $('.yearpicker').val();
-                        d.status_service = $("input[name='status_services']:checked").val();
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
+                        d.status_service = "selesai";
                         d.id_lokasi = $('#lokasiFilter').val();
                         d.keyword = $('#searchServices').val();
                     }
@@ -126,7 +126,63 @@
 
                 }
             });
+            $('#lokasiFilter').select2({
+                width: '150px',
+                placeholder: 'Pilih Lokasi',
+                allowClear: true,
+            })
+            generateLocationServiceSelect();
+
         });
+        const filterTableService = () => {
+            table.DataTable().ajax.reload();
+        }
+
+        const generateLocationServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectLocationService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Lokasi</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+        $('.datepickerAwal').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerAkhir').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        const detailService = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailInventarisData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
     </script>
 @endsection
 @section('main-content')
@@ -135,20 +191,37 @@
             @include('pages.admin.report.menu')
         </div>
         <div class="col-md-10 col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="input-group mr-3" style="width: 250px;">
+                        <input type="text" id="searchServices" class="form-control form-control-sm"
+                            placeholder="Search for...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton"
+                                type="button"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <select name="" onchange="filterTableService()"
+                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
+                        id="lokasiFilter">
+
+                    </select>
+                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                        class="form-control datepickerAwal mx-2" style="width: 150px;" placeholder="Tanggal Awal">
+                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                        class="form-control datepickerAkhir mr-2" style="width: 150px;" placeholder="Tanggal Akhir">
+                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>
+                        Export Excel</button>
+                </div>
+            </div>
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
                             History Services
                         </h3>
-                    </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <div class="kt-portlet__head-wrapper">
-                            <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
@@ -176,4 +249,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.report.service.components.modal._modal_detail_service')
 @endsection

@@ -74,6 +74,14 @@ class AssetServiceDatatableServices
             });
         }
 
+        if (isset($request->awal)) {
+            $query->where('tanggal_selesai', '>=', $request->awal);
+        }
+
+        if (isset($request->akhir)) {
+            $query->where('tanggal_selesai', '<=', $request->akhir);
+        }
+
         if (isset($request->year)) {
             $query->whereYear('tanggal_mulai', $request->year);
         }

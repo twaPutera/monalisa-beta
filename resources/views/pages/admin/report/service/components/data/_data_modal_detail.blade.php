@@ -87,4 +87,4 @@
 
 </div>
 
-@include('pages.admin.services.components.js._data_modal_detail_js')
+@include('pages.admin.report.service.components.js._data_modal_detail_js')

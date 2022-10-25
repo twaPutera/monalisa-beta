@@ -464,8 +464,9 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <select name="" class="filterLokasi selectLocationService form-control mr-2"
-                        style="width: 150px;" id="lokasiFilter">
+                    <select name="" onchange="filterTime()"
+                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
+                        id="lokasiFilter">
 
                     </select>
                     <input type="text" onchange="filterTime()" value="{{ date('Y') }}" readonly
