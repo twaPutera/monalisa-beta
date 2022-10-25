@@ -18,8 +18,19 @@
                 responsive: true,
                 // searchDelay: 500,
                 processing: true,
+                searching: false,
+                ordering: false,
+                bLengthChange: false,
                 serverSide: true,
-                ajax: "{{ route('admin.pemutihan-asset.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.report.depresiasi.datatable') }}",
+                    data: function (d) {
+                        d.bulan_depresiasi = $('.monthpicker').val();
+                        d.tahun_depresiasi = $('.yearpicker').val();
+                        d.group_kategori_asset = $('#groupAssetCreate').val();
+                        d.kategori_asset = $('#kategoriAssetCreate').val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -28,35 +39,36 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "action",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'action'
+                        data: "group",
+                        name: 'group'
                     },
                     {
-                        name: 'tanggal',
-                        data: 'tanggal'
+                        name: 'nama_kategori',
+                        data: 'nama_kategori'
                     },
                     {
-                        name: 'nama_pemutihan',
-                        data: 'nama_pemutihan'
+                        name: 'asset_data.kode_asset',
+                        data: 'asset_data.kode_asset'
                     },
                     {
-                        name: 'no_memo',
-                        data: 'no_memo'
+                        name: 'asset_data.deskripsi',
+                        data: 'asset_data.deskripsi'
                     },
                     {
-                        name: 'keterangan',
-                        data: 'keterangan'
+                        name: 'tanggal_depresiasi',
+                        data: 'tanggal_depresiasi'
                     },
                     {
-                        name: 'status',
-                        data: 'status'
+                        name: 'nilai_depresiasi',
+                        data: 'nilai_depresiasi'
                     },
                     {
-                        name: 'created_by',
-                        data: 'created_by'
+                        name: 'nilai_buku_awal',
+                        data: 'nilai_buku_awal'
+                    },
+                    {
+                        name: 'nilai_buku_akhir',
+                        data: 'nilai_buku_akhir'
                     },
                 ],
                 columnDefs: [
@@ -66,28 +78,102 @@
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
-                    $(formElement).trigger('reset');
-                    $(formElement).find(".invalid-feedback").remove();
-                    $(formElement).find(".is-invalid").removeClass("is-invalid");
-                    let modal = $(formElement).closest('.modal');
-                    modal.modal('hide');
-                    table.DataTable().ajax.reload();
-                    showToastSuccess('Sukses', data.message);
+                    //
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-                //if validation not pass
-                if (!errors.success) {
-                    showToastError('Gagal', errors.message);
-                }
-                for (let key in errors) {
-                    let element = formElement.find(`[name=${key}]`);
-                    clearValidation(element);
-                    showValidation(element, errors[key][0]);
-
-                }
+                //
             });
+
+            generateMonthPicker();
+            generateYearPicker();
         });
+
+        $('.modalFilterAsset').on('shown.bs.modal', function() {
+            setTimeout(() => {
+                generateGroupSelect2('groupAssetCreate');
+            }, 2000);
+        });
+
+        $('#groupAssetCreate').on('change', function() {
+            generateKategoriSelect2Create('kategoriAssetCreate', $(this).val());
+        });
+
+        const filterTableAsset = () => {
+            table.DataTable().ajax.reload();
+        }
+
+        const generateMonthPicker = () => {
+            $('.monthpicker').datepicker({
+                format: "mm",
+                viewMode: "months",
+                minViewMode: "months",
+                autoclose: true,
+                todayHighlight: true,
+            })
+        }
+
+        const generateYearPicker = () => {
+            $('.yearpicker').datepicker({
+                format: 'yyyy',
+                viewMode: 'years',
+                minViewMode: 'years',
+                clearBtn: true,
+                autoclose: true,
+            });
+        }
+
+        const generateGroupSelect2 = (idElement) => {
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Kelompok',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.group-kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        const generateKategoriSelect2Create = (idElement, idGroup) => {
+            $('#' + idElement).removeAttr('disabled');
+            $('#' + idElement).select2({
+                width: '100%',
+                placeholder: 'Pilih Jenis',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                            id_group_kategori_asset: idGroup,
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
     </script>
 @endsection
 @section('main-content')
@@ -100,14 +186,13 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Depresiasi
+                            Depresiasi Aset
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
+                                <button type="button" onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
                             </div>
                         </div>
                     </div>
@@ -118,13 +203,14 @@
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
-                                    <th width="100px">#</th>
-                                    <th>Tanggal Pemutihan</th>
-                                    <th>Nama Pemutihan</th>
-                                    <th>No Berita Acara</th>
-                                    <th>Keterangan Pemutihan</th>
-                                    <th>Status Pemutihan</th>
-                                    <th>Diajukan Oleh</th>
+                                    <th>Kelompok Aset</th>
+                                    <th>Jenis Aset</th>
+                                    <th>Kode Aset</th>
+                                    <th>Deskripsi Aset</th>
+                                    <th>Tanggal Depresiasi</th>
+                                    <th>Nilai Depresiasi</th>
+                                    <th>Nilai Awal</th>
+                                    <th>Nilai Akhir</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,4 +222,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.report.depresiasi._modal_filter')
 @endsection
