@@ -12,14 +12,27 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
-        var table = $('#datatableExample');
+        var table = $('#datatableLogService');
         $(document).ready(function() {
             table.DataTable({
                 responsive: true,
-                // searchDelay: 500,
                 processing: true,
+                searching: false,
+                ordering: false,
                 serverSide: true,
-                ajax: "{{ route('admin.pemutihan-asset.datatable') }}",
+                bLengthChange: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                    data: function(d) {
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
+                        d.status_service = "selesai";
+                        d.id_lokasi = $('#lokasiFilter').val();
+                        d.keyword = $('#searchServices').val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -35,33 +48,59 @@
                         name: 'action'
                     },
                     {
-                        name: 'tanggal',
-                        data: 'tanggal'
+                        name: 'tanggal_mulai',
+                        data: 'tanggal_mulai'
                     },
                     {
-                        name: 'nama_pemutihan',
-                        data: 'nama_pemutihan'
+                        name: 'asset_data.deskripsi',
+                        data: 'asset_data.deskripsi'
                     },
                     {
-                        name: 'no_memo',
-                        data: 'no_memo'
+                        name: 'asset_data.is_inventaris',
+                        data: 'asset_data.is_inventaris',
+                        render: function(type) {
+                            return type == 1 ? "Inventaris" : "Asset";
+                        }
                     },
                     {
-                        name: 'keterangan',
-                        data: 'keterangan'
+                        data: 'asset_data.nama_group'
                     },
                     {
-                        name: 'status',
-                        data: 'status'
+                        data: 'asset_data.nama_kategori'
                     },
                     {
-                        name: 'created_by',
-                        data: 'created_by'
+                        name: 'status_service',
+                        data: 'status_service'
+                    },
+                    {
+                        name: 'tanggal_selesai',
+                        data: 'tanggal_selesai'
                     },
                 ],
-                columnDefs: [
+                columnDefs: [{
+                        targets: [2, 8],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "on progress") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Proses</span>`;
+                            } else if (data == "backlog") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Tertunda</span>`;
+                            } else if (data == "selesai") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                            }
+                            return element;
+                        },
+                    }
                     //Custom template data
-
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -87,7 +126,63 @@
 
                 }
             });
+            $('#lokasiFilter').select2({
+                width: '150px',
+                placeholder: 'Pilih Lokasi',
+                allowClear: true,
+            })
+            generateLocationServiceSelect();
+
         });
+        const filterTableService = () => {
+            table.DataTable().ajax.reload();
+        }
+
+        const generateLocationServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectLocationService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Lokasi</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+        $('.datepickerAwal').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerAkhir').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        const detailService = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailInventarisData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
     </script>
 @endsection
 @section('main-content')
@@ -96,6 +191,31 @@
             @include('pages.admin.report.menu')
         </div>
         <div class="col-md-10 col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <div class="input-group mr-3" style="width: 250px;">
+                        <input type="text" id="searchServices" class="form-control form-control-sm"
+                            placeholder="Search for...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton"
+                                type="button"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <select name="" onchange="filterTableService()"
+                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
+                        id="lokasiFilter">
+
+                    </select>
+                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                        class="form-control datepickerAwal mx-2" style="width: 150px;" placeholder="Tanggal Awal">
+                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                        class="form-control datepickerAkhir mr-2" style="width: 150px;" placeholder="Tanggal Akhir">
+                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>
+                        Export Excel</button>
+                </div>
+            </div>
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -103,28 +223,21 @@
                             History Services
                         </h3>
                     </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <div class="kt-portlet__head-wrapper">
-                            <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="kt-portlet__body">
                     <div class="table-responsive">
-                        <table class="table table-striped dt_table" id="datatableExample">
+                        <table class="table table-striped mb-0" id="datatableLogService">
                             <thead>
                                 <tr>
-                                    <th width="50px">No</th>
-                                    <th width="100px">#</th>
-                                    <th>Tanggal Pemutihan</th>
-                                    <th>Nama Pemutihan</th>
-                                    <th>No Berita Acara</th>
-                                    <th>Keterangan Pemutihan</th>
-                                    <th>Status Pemutihan</th>
-                                    <th>Diajukan Oleh</th>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Tgl. Mulai</th>
+                                    <th>Deskripsi Asset</th>
+                                    <th>Tipe</th>
+                                    <th>Kelompok</th>
+                                    <th>Jenis</th>
+                                    <th>Status</th>
+                                    <th>Tgl. Selesai</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,4 +249,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.report.service.components.modal._modal_detail_service')
 @endsection
