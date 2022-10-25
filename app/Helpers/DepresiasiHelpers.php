@@ -49,4 +49,19 @@ class DepresiasiHelpers
 
         return [$depresiasi->id, $asset->id, $asset->nilai_buku_asset, $nilai_buku_akhir];
     }
+
+    public static function getAwalTanggalDepresiasi($date)
+    {
+        if (date('d', strtotime($date)) > 15) {
+            $date = date('Y-m-d', strtotime($date . ' +1 month'));
+        }
+        return date('Y-m-15', strtotime($date));
+    }
+
+    public static function getAkhirtanggalDepresiasi($date, $tahun)
+    {
+        $date = date('Y-m-15', strtotime($date . ' +1 year'));
+        $date = date('Y-m-15', strtotime($date . ' -1 day'));
+        return $date;
+    }
 }
