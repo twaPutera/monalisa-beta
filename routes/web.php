@@ -38,6 +38,10 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
+use App\Http\Controllers\Admin\History\DepresiasiController;
+use App\Http\Controllers\Admin\History\HistoryPengaduanController;
+use App\Http\Controllers\Admin\History\HistoryServiceController;
+use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 
@@ -142,7 +146,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
             Route::get('/datatable', [MasterAssetController::class, 'log_opname_dt'])->name('admin.listing-asset.log-opname.datatable');
             Route::get('/show/{id}', [MasterAssetController::class, 'log_opname_show'])->name('admin.listing-asset.log-opname.show');
         });
+
     });
+
+    #Report
+    Route::group(['prefix' => 'report'], function () {
+        Route::group(['prefix' => 'summary-asset'], function () {
+            Route::get('/', [SummaryAssetController::class, 'index'])->name('admin.report.summary-asset.index');
+        });
+        Route::group(['prefix' => 'depresiasi'], function () {
+            Route::get('/', [DepresiasiController::class, 'index'])->name('admin.report.depresiasi.index');
+        });
+        Route::group(['prefix' => 'history-pengaduan'], function () {
+            Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
+        });
+        Route::group(['prefix' => 'history-service'], function () {
+            Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
+        });
+    });
+    
     # Pemutihan Asset
     Route::group(['prefix' => 'pemutihan-asset'], function () {
         Route::group(['prefix' => 'bast'], function () {
