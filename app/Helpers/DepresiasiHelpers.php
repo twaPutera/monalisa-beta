@@ -60,8 +60,23 @@ class DepresiasiHelpers
 
     public static function getAkhirtanggalDepresiasi($date, $tahun)
     {
-        $date = date('Y-m-15', strtotime($date . ' +1 year'));
-        $date = date('Y-m-15', strtotime($date . ' -1 day'));
+        $date = date('Y-m-15', strtotime($date . $tahun . ' year'));
         return $date;
+    }
+
+    public static function getDiffOfMonth($date1, $date2)
+    {
+        $date1 = new \DateTime($date1);
+        $date2 = new \DateTime($date2);
+        $diff = $date1->diff($date2);
+        return $diff->m + ($diff->y * 12);
+    }
+
+    public static function generateUmurAsset($date, $umur)
+    {
+        $diff = self::getDiffOfMonth($date, date('Y-m-d'));
+        $umur_asset = $umur - $diff;
+
+        return ($umur_asset/12);
     }
 }
