@@ -47,6 +47,7 @@ class AssetDataCommandServices
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->tanggal_perolehan = $request->tanggal_perolehan;
         $asset->nilai_perolehan = $request->nilai_perolehan;
+        $asset->nilai_buku_assets = $request->nilai_buku_assets;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
@@ -66,6 +67,8 @@ class AssetDataCommandServices
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_inventaris = $min_asset_value < $request->nilai_perolehan ? '1' : '0';
+        $asset->tanggal_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($request->tanggal_perolehan);
+        $asset->tanggal_akhir_depresiasi = DepresiasiHelpers::getAkhirTanggalDepresiasi($asset->tanggal_awal_depresiasi, $kategori_asset->umur_asset);
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {
