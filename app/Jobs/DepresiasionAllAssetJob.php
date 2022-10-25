@@ -40,7 +40,6 @@ class DepresiasionAllAssetJob implements ShouldQueue
                 DB::beginTransaction();
                 $data = DepresiasiHelpers::depresiasiAsset($asset, date('Y-m-d'));
                 DB::commit();
-                logger('Depresiasi asset berhasil: ', [$data]);
             } catch (\Throwable $th) {
                 DB::rollBack();
                 logger('Error Depresiasi Asset: ' . $asset->id, [$th->getMessage()]);
