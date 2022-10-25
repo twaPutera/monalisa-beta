@@ -191,31 +191,7 @@
             @include('pages.admin.report.menu')
         </div>
         <div class="col-md-10 col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchServices" class="form-control form-control-sm"
-                            placeholder="Search for...">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton"
-                                type="button"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <select name="" onchange="filterTableService()"
-                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
-                        id="lokasiFilter">
 
-                    </select>
-                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
-                        class="form-control datepickerAwal mx-2" style="width: 150px;" placeholder="Tanggal Awal">
-                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
-                        class="form-control datepickerAkhir mr-2" style="width: 150px;" placeholder="Tanggal Akhir">
-                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>
-                        Export Excel</button>
-                </div>
-            </div>
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -223,8 +199,46 @@
                             History Services
                         </h3>
                     </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="kt-portlet__head-wrapper">
+                            <div class="kt-portlet__head-actions">
+                                <div class="d-flex align-items-center mt-2 mb-2">
+                                    <select name="" onchange="filterTableService()"
+                                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
+                                        id="lokasiFilter">
+
+                                    </select>
+                                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                                        class="form-control datepickerAwal mx-2" style="width: 150px;"
+                                        placeholder="Tanggal Awal">
+                                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                                        class="form-control datepickerAkhir mr-2" style="width: 150px;"
+                                        placeholder="Tanggal Akhir">
+                                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i
+                                            class="fas fa-print"></i>
+                                        Export Excel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="kt-portlet__body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="input-group mr-3" style="width: 250px;">
+                                <input type="text" id="searchServices" class="form-control form-control-sm"
+                                    placeholder="Search for...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-icon" onclick="filterTableService()"
+                                        id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped mb-0" id="datatableLogService">
                             <thead>

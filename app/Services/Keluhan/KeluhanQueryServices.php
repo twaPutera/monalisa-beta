@@ -17,7 +17,9 @@ class KeluhanQueryServices
     public function findById(string $id)
     {
         $data = Pengaduan::query()
-            ->with(['image', 'asset_data', 'lokasi', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])
+            ->with(['image' => function ($q) {
+                $q->orderBy('created_at', 'asc');
+            }, 'asset_data', 'lokasi', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])
             ->where('id', $id)
             ->firstOrFail();
         $name = 'Not Found';

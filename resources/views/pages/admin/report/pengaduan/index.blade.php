@@ -12,14 +12,24 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
-        var table = $('#datatableExample');
+        var table = $('#datatableLogService');
         $(document).ready(function() {
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.pemutihan-asset.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.keluhan.datatable') }}",
+                    data: function(d) {
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
+                        d.status_pengaduan = "selesai";
+                        d.id_lokasi = $('#lokasiAssetCreateService').val();
+                        d.id_asset = $('#listAssetLocation').val();
+                        d.keyword = $('#searchServices').val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -35,34 +45,56 @@
                         name: 'action'
                     },
                     {
-                        name: 'tanggal',
-                        data: 'tanggal'
+                        name: 'tanggal_keluhan',
+                        data: 'tanggal_keluhan'
                     },
                     {
-                        name: 'nama_pemutihan',
-                        data: 'nama_pemutihan'
+                        data: 'nama_asset',
+                        data: 'nama_asset'
                     },
                     {
-                        name: 'no_memo',
-                        data: 'no_memo'
+                        data: 'lokasi_asset',
+                        data: 'lokasi_asset'
                     },
                     {
-                        name: 'keterangan',
-                        data: 'keterangan'
+                        data: 'catatan_pengaduan',
+                        data: 'catatan_pengaduan'
                     },
                     {
-                        name: 'status',
-                        data: 'status'
+                        data: 'gambar_pengaduan',
+                        data: 'gambar_pengaduan'
                     },
                     {
-                        name: 'created_by',
-                        data: 'created_by'
+                        data: 'created_by_name',
+                        data: 'created_by_name'
                     },
-                ],
-                columnDefs: [
-                    //Custom template data
+                    {
+                        data: 'status_pengaduan',
+                        data: 'status_pengaduan'
+                    },
+                    {
+                        data: 'catatan_admin',
+                        data: 'catatan_admin'
+                    },
 
                 ],
+                columnDefs: [{
+                    targets: 8,
+                    render: function(data, type, full, meta) {
+                        let element = "";
+                        if (data == "dilaporkan") {
+                            element +=
+                                `<span class="kt-badge kt-badge--warning kt-badge--inline">Laporan Masuk</span>`;
+                        } else if (data == "diproses") {
+                            element +=
+                                `<span class="kt-badge kt-badge--info kt-badge--inline">Diproses</span>`;
+                        } else if (data == "selesai") {
+                            element +=
+                                `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                        }
+                        return element;
+                    },
+                }],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
@@ -87,6 +119,111 @@
 
                 }
             });
+
+            $('#lokasiAssetCreateService').select2({
+                width: '150px',
+                placeholder: 'Pilih Lokasi',
+                allowClear: true,
+            })
+            $('#listAssetLocation').select2({
+                width: '150px',
+                placeholder: 'Pilih Asset',
+                padding: '10px',
+                allowClear: true,
+            })
+            generateLocationServiceSelect();
+            generateLocationAsset();
+        });
+        const detail = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailPengaduanData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
+
+        const showKeluhanImage = (button) => {
+            const url = $(button).data('url_detail');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const data = response.data;
+                    const modal = $('.modalPreviewAsset');
+                    if (response.success) {
+                        if (data.image.length > 0) {
+                            $('#imgPreviewAsset').attr('src', data.image[0].link);
+                        } else {
+                            $('#imgPreviewAsset').attr('src',
+                                'https://via.placeholder.com/400x250?text=Preview Image');
+                        }
+                        modal.modal('show');
+                    }
+                },
+            })
+        }
+        const generateLocationServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#lokasiAssetCreateService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Lokasi</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
+        const generateLocationAsset = () => {
+            $.ajax({
+                url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#listAssetLocation');
+                        select.empty();
+                        select.append(`<option value="">Pilih Asset</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
+        const filterTableService = () => {
+            table.DataTable().ajax.reload();
+        }
+
+        $('.datepickerAwal').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerAkhir').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
         });
     </script>
 @endsection
@@ -106,25 +243,62 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateInventarisData')"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add </button>
+                                <div class="d-flex align-items-center mt-2 mb-2">
+                                    <div class="mr-2">
+                                        <select name="" onchange="filterTableService()" class="form-control"
+                                            style="width: 150px;" id="lokasiAssetCreateService">
+
+                                        </select>
+                                    </div>
+                                    <select name="" onchange="filterTableService()" class="form-control"
+                                        style="width: 150px;" id="listAssetLocation">
+
+                                    </select>
+                                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                                        class="form-control datepickerAwal mx-2" style="width: 150px;"
+                                        placeholder="Tanggal Awal">
+                                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                                        class="form-control datepickerAkhir mr-2" style="width: 150px;"
+                                        placeholder="Tanggal Akhir">
+                                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i
+                                            class="fas fa-print"></i>
+                                        Export Excel</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="kt-portlet__body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="input-group mr-3" style="width: 250px;">
+                                <input type="text" id="searchServices" class="form-control form-control-sm"
+                                    placeholder="Search for...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-icon" onclick="filterTableService()"
+                                        id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+
+                        </div>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table table-striped dt_table" id="datatableExample">
+                        <table class="table table-striped mb-0" id="datatableLogService">
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Tanggal Pemutihan</th>
-                                    <th>Nama Pemutihan</th>
-                                    <th>No Berita Acara</th>
-                                    <th>Keterangan Pemutihan</th>
-                                    <th>Status Pemutihan</th>
-                                    <th>Diajukan Oleh</th>
+                                    <th>Tanggal Pengaduan</th>
+                                    <th>Nama Asset</th>
+                                    <th>Lokasi Asset</th>
+                                    <th>Catatan Pengaduan</th>
+                                    <th>Gambar Pengaduan</th>
+                                    <th>Dilaporkan Oleh</th>
+                                    <th>Status Pengaduan</th>
+                                    <th>Catatan Admin</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,4 +310,6 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.report.pengaduan.components.modal._modal_preview')
+    @include('pages.admin.report.pengaduan.components.modal._modal_detail_keluhan')
 @endsection

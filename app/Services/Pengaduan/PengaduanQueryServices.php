@@ -30,6 +30,8 @@ class PengaduanQueryServices
 
     public function findById(string $id)
     {
-        return Pengaduan::findOrFail($id);
+        return Pengaduan::with(['image' => function ($q) {
+            $q->orderBy('created_at', 'asc');
+        }])->findOrFail($id);
     }
 }

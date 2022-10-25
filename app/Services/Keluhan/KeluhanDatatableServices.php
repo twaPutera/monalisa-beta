@@ -54,6 +54,20 @@ class KeluhanDatatableServices
         if (isset($request->id_asset)) {
             $query->orWhere('id_asset_data', $request->id_asset);
         }
+
+
+        if (isset($request->awal)) {
+            $query->where('tanggal_pengaduan', '>=', $request->awal);
+        }
+
+        if (isset($request->akhir)) {
+            $query->where('tanggal_pengaduan', '<=', $request->akhir);
+        }
+
+        if (isset($request->keyword)) {
+            $query->where('catatan_pengaduan', 'like', '%' . $request->keyword . '%');
+        }
+        
         if (isset($request->status_pengaduan)) {
             if ($request->status_pengaduan != 'all') {
                 $query->where('status_pengaduan', $request->status_pengaduan);
@@ -63,16 +77,16 @@ class KeluhanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return ! empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return ! empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
+                return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return ! empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
+                return !empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return ! empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
@@ -93,10 +107,10 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return ! empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
+                return !empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
             })
             ->addColumn('catatan_admin', function ($item) {
-                return ! empty($item->catatan_admin) ? $item->catatan_admin : '-';
+                return !empty($item->catatan_admin) ? $item->catatan_admin : '-';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
