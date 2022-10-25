@@ -185,7 +185,7 @@ class PemutihanAssetDatatableServices
             })
             ->addColumn('is_inventaris', function ($item) {
                 $json_asset = json_decode($item->json_asset);
-                return  $json_asset->is_inventaris == 1 ? 'Inventaris' : "Asset";
+                return  isset($json_asset->is_inventaris) && $json_asset->is_inventaris == 1 ? 'Inventaris' : "Asset";
             })
             ->addColumn('lokasi_asset', function ($item) {
                 $json_asset = json_decode($item->json_asset);
