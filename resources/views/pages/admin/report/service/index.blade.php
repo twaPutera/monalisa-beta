@@ -12,14 +12,27 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
-        var table = $('#datatableExample');
+        var table = $('#datatableLogService');
         $(document).ready(function() {
             table.DataTable({
                 responsive: true,
-                // searchDelay: 500,
                 processing: true,
+                searching: false,
+                ordering: false,
                 serverSide: true,
-                ajax: "{{ route('admin.pemutihan-asset.datatable') }}",
+                bLengthChange: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                    data: function(d) {
+                        d.month = $('.monthpicker').val();
+                        d.year = $('.yearpicker').val();
+                        d.status_service = $("input[name='status_services']:checked").val();
+                        d.id_lokasi = $('#lokasiFilter').val();
+                        d.keyword = $('#searchServices').val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -35,33 +48,59 @@
                         name: 'action'
                     },
                     {
-                        name: 'tanggal',
-                        data: 'tanggal'
+                        name: 'tanggal_mulai',
+                        data: 'tanggal_mulai'
                     },
                     {
-                        name: 'nama_pemutihan',
-                        data: 'nama_pemutihan'
+                        name: 'asset_data.deskripsi',
+                        data: 'asset_data.deskripsi'
                     },
                     {
-                        name: 'no_memo',
-                        data: 'no_memo'
+                        name: 'asset_data.is_inventaris',
+                        data: 'asset_data.is_inventaris',
+                        render: function(type) {
+                            return type == 1 ? "Inventaris" : "Asset";
+                        }
                     },
                     {
-                        name: 'keterangan',
-                        data: 'keterangan'
+                        data: 'asset_data.nama_group'
                     },
                     {
-                        name: 'status',
-                        data: 'status'
+                        data: 'asset_data.nama_kategori'
                     },
                     {
-                        name: 'created_by',
-                        data: 'created_by'
+                        name: 'status_service',
+                        data: 'status_service'
+                    },
+                    {
+                        name: 'tanggal_selesai',
+                        data: 'tanggal_selesai'
                     },
                 ],
-                columnDefs: [
+                columnDefs: [{
+                        targets: [2, 8],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "on progress") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Proses</span>`;
+                            } else if (data == "backlog") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Tertunda</span>`;
+                            } else if (data == "selesai") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                            }
+                            return element;
+                        },
+                    }
                     //Custom template data
-
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -114,17 +153,18 @@
                 </div>
                 <div class="kt-portlet__body">
                     <div class="table-responsive">
-                        <table class="table table-striped dt_table" id="datatableExample">
+                        <table class="table table-striped mb-0" id="datatableLogService">
                             <thead>
                                 <tr>
-                                    <th width="50px">No</th>
-                                    <th width="100px">#</th>
-                                    <th>Tanggal Pemutihan</th>
-                                    <th>Nama Pemutihan</th>
-                                    <th>No Berita Acara</th>
-                                    <th>Keterangan Pemutihan</th>
-                                    <th>Status Pemutihan</th>
-                                    <th>Diajukan Oleh</th>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Tgl. Mulai</th>
+                                    <th>Deskripsi Asset</th>
+                                    <th>Tipe</th>
+                                    <th>Kelompok</th>
+                                    <th>Jenis</th>
+                                    <th>Status</th>
+                                    <th>Tgl. Selesai</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -9,6 +9,6 @@ class HistoryServiceController extends Controller
 {
     public function index()
     {
-        return view('pages.admin.report.asset.index');
+        return view('pages.admin.report.service.index');
     }
 }
