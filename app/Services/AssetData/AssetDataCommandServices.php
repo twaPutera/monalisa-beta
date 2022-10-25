@@ -29,7 +29,7 @@ class AssetDataCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
-        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, $kategori_asset->umur_asset);
+        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, ($kategori_asset->umur_asset * 12));
 
         $qr_name = 'qr-asset-' . $request->kode_asset . '.png';
         $path = storage_path('app/images/qr-code/' . $qr_name);
@@ -47,7 +47,7 @@ class AssetDataCommandServices
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->tanggal_perolehan = $request->tanggal_perolehan;
         $asset->nilai_perolehan = $request->nilai_perolehan;
-        $asset->nilai_buku_assets = $request->nilai_buku_assets;
+        $asset->nilai_buku_asset = $request->nilai_buku_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
@@ -59,11 +59,10 @@ class AssetDataCommandServices
         $asset->status_akunting = $request->status_akunting;
         $asset->no_seri = $request->no_seri;
         $asset->spesifikasi = $request->spesifikasi;
-        $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->nilai_depresiasi = $nilai_depresiasi;
         $asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset->qr_code = $qr_name;
-        $asset->umur_manfaat_komersial = $kategori_asset->umur_asset;
+        $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset*12));
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_inventaris = $min_asset_value < $request->nilai_perolehan ? '1' : '0';

@@ -156,6 +156,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
         });
         Route::group(['prefix' => 'depresiasi'], function () {
             Route::get('/', [DepresiasiController::class, 'index'])->name('admin.report.depresiasi.index');
+            Route::get('/datatable', [DepresiasiController::class, 'datatable'])->name('admin.report.depresiasi.datatable');
         });
         Route::group(['prefix' => 'history-pengaduan'], function () {
             Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
@@ -164,7 +165,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
             Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
         });
     });
-    
+
     # Pemutihan Asset
     Route::group(['prefix' => 'pemutihan-asset'], function () {
         Route::group(['prefix' => 'bast'], function () {
