@@ -140,7 +140,7 @@ class AssetDataDatatableServices
             })
             ->addColumn('checkbox', function ($item) {
                 $element = '';
-                $element .= '<input type="checkbox" name="id_checkbox[]" value="' . $item->id . '">';
+                $element .= '<input type="checkbox" name="id_checkbox[]" onchange="checklistAsset(this)" class="check-item" value="' . $item->id . '">';
                 return $element;
             })
             ->addColumn('register_oleh', function ($item) {

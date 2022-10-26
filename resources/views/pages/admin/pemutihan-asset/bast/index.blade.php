@@ -89,6 +89,8 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
+                searching: false,
+                bLengthChange: false,
                 orderings: false,
                 autoWidth: false,
                 ajax: {
@@ -97,6 +99,7 @@
                         d.is_pemutihan = 0;
                         d.jenis = $('.jenispicker').val();
                         d.status_kondisi = $('.kondisipicker').val();
+                        d.searchKeyword = $('#searchAsset').val();
                     }
                 },
                 columns: [{
@@ -141,6 +144,13 @@
                     }
                     //Custom template data
                 ],
+                "drawCallback": function (settings) {
+                    console.log('drawCallback:');
+
+                    setTimeout(function () {
+                        rerenderCheckbox();
+                    }, 100);
+                },
             });
 
 
@@ -211,6 +221,7 @@
         $('.check-item').each(function(i, e) {
             $(e).prop('checked', false);
         });
+
         const detail = (button) => {
             const url_detail = $(button).data('url_detail');
             $.ajax({
@@ -344,9 +355,31 @@
                 generateKategoriSelect2Create('groupAssetCreate');
             }, 2000);
         });
+
+        const checklistAsset = (element) => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val())
+            if ($(element).is(':checked')) {
+                jsonTempAsset.push($(element).val());
+            } else {
+                jsonTempAsset = jsonTempAsset.filter(item => item != $(element).val());
+            }
+            $('#jsonTempAsset').val(JSON.stringify(jsonTempAsset));
+            console.log(jsonTempAsset);
+        }
+
+        const rerenderCheckbox = () => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val());
+            console.log(jsonTempAsset);
+            if (jsonTempAsset.length > 0) {
+                jsonTempAsset.forEach(function (user_id) {
+                    $(`input[name="id_checkbox[]"][value="${user_id}"]`).prop('checked', true);
+                })
+            }
+        }
     </script>
 @endsection
 @section('main-content')
+    <input type="hidden" id="jsonTempAsset" value="[]">
     <div class="row">
         <div class="col-md-2 col-12">
             @include('pages.admin.pemutihan-asset.menu')
