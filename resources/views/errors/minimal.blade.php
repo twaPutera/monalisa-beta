@@ -18,6 +18,15 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            .justify-center {
+                justify-content: center;
+            }
+
+            .link-dashboard {
+                color: #FFF;
+                font-size: 16px;
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -31,6 +40,9 @@
                     <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
                         @yield('message')
                     </div>
+                </div>
+                <div class="mt-2 flex justify-center">
+                    <a href="{{ route('login.redirect') }}" class="link-dashboard">Kembali Ke Dashboard</a>
                 </div>
             </div>
         </div>

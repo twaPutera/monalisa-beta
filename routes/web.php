@@ -70,7 +70,7 @@ Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->mi
 Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware('auth');
 Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware('auth');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|manager']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/getDaftarApproval', [AdminDashboardController::class, 'getDaftarApproval'])->name('admin.dashboard.approval');
     Route::group(['prefix' => 'summary'], function () {
@@ -80,7 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     Route::group(['prefix' => 'approval'], function () {
         Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');
         Route::get('/detail/{id}', [AdminApprovalController::class, 'show'])->name('admin.approval.show');
-        Route::group(['prefix' => 'peminjaman'], function () {
+        Route::group(['prefix' => 'peminjaman', 'middleware' => ['role:manager|staff']], function () {
             Route::get('/', [AdminApprovalPeminjamanController::class, 'index'])->name('admin.approval.peminjaman.index');
             Route::post('/change-status/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApproval'])->name('admin.approval.peminjaman.change-status');
             Route::post('/change-status-perpanjangan/{id}', [AdminApprovalPeminjamanController::class, 'changeStatusApprovaPerpanjangan'])->name('admin.approval.peminjaman.change-status-perpanjangan');
@@ -89,16 +89,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
             Route::get('/', [AdminPemutihanAssetController::class, 'index'])->name('admin.approval.pemutihan.index');
             Route::post('/change-status/{id}', [AdminPemutihanAssetController::class, 'changeStatusApproval'])->name('admin.approval.pemutihan.change-status');
         });
-        Route::group(['prefix' => 'pemindahan'], function () {
+        Route::group(['prefix' => 'pemindahan', 'middleware' => ['role:manager|staff']], function () {
             Route::get('/', [AdminApprovalPemindahanController::class, 'index'])->name('admin.approval.pemindahan.index');
             Route::post('/change-status/{id}', [AdminApprovalPemindahanController::class, 'changeStatusApproval'])->name('admin.approval.pemindahan.change-status');
         });
-        Route::group(['prefix' => 'history'], function () {
+        Route::group(['prefix' => 'history', 'middleware' => ['role:manager|staff']], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
         });
     });
     # Listing Asset
-    Route::group(['prefix' => 'listing-asset'], function () {
+    Route::group(['prefix' => 'listing-asset', 'middleware' => ['role:manager|staff']], function () {
         Route::get('/', [MasterAssetController::class, 'index'])->name('admin.listing-asset.index');
         Route::get('/datatable', [MasterAssetController::class, 'datatable'])->name('admin.listing-asset.datatable');
         Route::post('/store', [MasterAssetController::class, 'store'])->name('admin.listing-asset.store');
@@ -128,7 +128,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
             Route::get('/show/{id}', [AssetServiceController::class, 'show'])->name('admin.listing-asset.service-asset.show');
         });
 
-        # Service Asset
+        # Pemindahan Asset
         Route::group(['prefix' => 'pemindahan-asset'], function () {
             Route::post('/store', [PemindahanAssetController::class, 'store'])->name('admin.listing-asset.pemindahan-asset.store');
             Route::get('/datatable', [PemindahanAssetController::class, 'datatable'])->name('admin.listing-asset.pemindahan-asset.datatable');
@@ -150,7 +150,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     #Report
-    Route::group(['prefix' => 'report'], function () {
+    Route::group(['prefix' => 'report', 'middleware' => ['role:admin|manager|staff']], function () {
         Route::group(['prefix' => 'summary-asset'], function () {
             Route::get('/', [SummaryAssetController::class, 'index'])->name('admin.report.summary-asset.index');
         });
@@ -167,7 +167,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # Pemutihan Asset
-    Route::group(['prefix' => 'pemutihan-asset'], function () {
+    Route::group(['prefix' => 'pemutihan-asset', 'middleware' => ['role:manager|staff']], function () {
         Route::group(['prefix' => 'bast'], function () {
             Route::get('/', [PemutihanAssetController::class, 'index'])->name('admin.pemutihan-asset.index');
             Route::get('/datatable', [PemutihanAssetController::class, 'datatable'])->name('admin.pemutihan-asset.datatable');
@@ -202,7 +202,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # Services
-    Route::group(['prefix' => 'services'], function () {
+    Route::group(['prefix' => 'services', 'middleware' => ['role:staff']], function () {
         Route::get('/', [ServicesController::class, 'index'])->name('admin.services.index');
         Route::get('/datatable', [ServicesController::class, 'datatable'])->name('admin.services.datatable');
         Route::get('/datatable-log', [ServicesController::class, 'datatableLog'])->name('admin.services.datatable.log');
@@ -214,7 +214,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # Keluhan
-    Route::group(['prefix' => 'keluhan'], function () {
+    Route::group(['prefix' => 'keluhan', 'middleware' => ['role:staff']], function () {
         Route::get('/', [KeluhanController::class, 'index'])->name('admin.keluhan.index');
         Route::get('/edit/{id}', [KeluhanController::class, 'edit'])->name('admin.keluhan.edit');
         Route::get('/detail/{id}', [KeluhanController::class, 'detail'])->name('admin.keluhan.detail');
@@ -224,7 +224,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
         Route::get('/datatable-log', [KeluhanController::class, 'datatableLog'])->name('admin.keluhan.datatable.log');
     });
     # Peminjaman
-    Route::group(['prefix' => 'peminjaman'], function () {
+    Route::group(['prefix' => 'peminjaman', 'middleware' => ['role:manager|staff']], function () {
         Route::get('/', [AdminPeminjamanAssetController::class, 'index'])->name('admin.peminjaman.index');
         Route::get('/datatable', [AdminPeminjamanAssetController::class, 'datatable'])->name('admin.peminjaman.datatable');
         Route::get('/show/{id}', [AdminPeminjamanAssetController::class, 'show'])->name('admin.peminjaman.show');
@@ -238,7 +238,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # Inventaris
-    Route::group(['prefix' => 'listing-inventaris'], function () {
+    Route::group(['prefix' => 'listing-inventaris', 'middleware' => ['role:manager|staff']], function () {
         Route::get('/', [MasterInventarisController::class, 'index'])->name('admin.listing-inventaris.index');
         Route::get('/get-one-inventaris', [MasterInventarisController::class, 'getOne'])->name('admin.listing-inventaris.get.one');
         Route::get('/datatable', [MasterInventarisController::class, 'datatable'])->name('admin.listing-inventaris.datatable');
@@ -255,7 +255,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # User Management
-    Route::group(['prefix' => 'user-management'], function () {
+    Route::group(['prefix' => 'user-management', 'middleware' => ['role:admin']], function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('/', [AdminUserManagementUserController::class, 'index'])->name('admin.user-management.user.index');
             Route::post('/store', [AdminUserManagementUserController::class, 'store'])->name('admin.user-management.user.store');
@@ -268,7 +268,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:admin|m
     });
 
     # Setting
-    Route::group(['prefix' => 'setting'], function () {
+    Route::group(['prefix' => 'setting', 'middleware' => ['role:admin|staff']], function () {
         // #Sistem Config
         Route::group(['prefix' => 'sistem-config'], function () {
             Route::get('/', [SistemConfigController::class, 'index'])->name('admin.sistem-config.index');
@@ -390,7 +390,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
-        Route::group(['prefix' => 'peminjaman'], function () {
+        Route::group(['prefix' => 'peminjaman', ], function () {
             Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');
             Route::get('/detail/{id}', [UserPeminjamanAssetController::class, 'detail'])->name('user.asset-data.peminjaman.detail');
             Route::get('/get-all-data', [UserPeminjamanAssetController::class, 'getAllData'])->name('user.asset-data.peminjaman.get-all-data');
@@ -398,18 +398,18 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso', 'auth', 'role:user|sta
             Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
             Route::post('/perpanjangan/{id}/store', [UserPeminjamanAssetController::class, 'storePerpanjangan'])->name('user.asset-data.peminjaman.perpanjangan.store');
         });
-        Route::group(['prefix' => 'opname'], function () {
+        Route::group(['prefix' => 'opname', 'middleware' => ['role:staff']], function () {
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');
             Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('user.asset-data.opname.store');
         });
     });
-    Route::group(['prefix' => 'approval'], function () {
+    Route::group(['prefix' => 'approval', 'middleware' => ['role:user']], function () {
         Route::get('/', [UserApprovalController::class, 'index'])->name('user.approval.index');
         Route::get('/detail/{id}', [UserApprovalController::class, 'detail'])->name('user.approval.detail');
         Route::get('/get-all-data', [UserApprovalController::class, 'getAllData'])->name('user.approval.get-all-data');
     });
 
-    Route::group(['prefix' => 'pengaduan'], function () {
+    Route::group(['prefix' => 'pengaduan', 'middleware' => ['role:user']], function () {
         Route::get('/', [UserPengaduanController::class, 'index'])->name('user.pengaduan.index');
         Route::get('/get-select2', [LokasiController::class, 'getAllSelect2'])->name('user.pengaduan.lokasi.get-select2');
         Route::get('/create', [UserPengaduanController::class, 'create'])->name('user.pengaduan.create');

@@ -14,11 +14,11 @@ class AlterTableUserAddCoumn extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->uuid('id')->change();
-            $table->uuid('guid')->after('email')->nullable();
-            $table->string('username_sso')->nullable()->after('guid');
-            $table->string('role', 50)->default('user')->after('email');
-            $table->string('is_active', 2)->default('1')->after('role');
+            // $table->uuid('id')->change();
+            // $table->uuid('guid')->after('email')->nullable();
+            // $table->string('username_sso')->nullable()->after('guid');
+            // $table->string('role', 50)->default('user')->after('email');
+            // $table->string('is_active', 2)->default('1')->after('role');
         });
     }
 
