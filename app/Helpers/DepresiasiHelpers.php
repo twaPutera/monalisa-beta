@@ -16,6 +16,53 @@ class DepresiasiHelpers
         return $nilai_depresiasi;
     }
 
+    public static function sumAllDepresiasiAsset($id_asset, $year = null)
+    {
+        $query = DepresiasiAsset::query()
+            ->where('id_asset_data', $id_asset);
+
+        if (isset($year)) {
+            $query->whereYear('tanggal_depresiasi', $year);
+        }
+
+        $sum = $query->sum('nilai_depresiasi');
+
+        return $sum;
+    }
+
+    public static function getSisaBulanDepresiasi($tanggal_akhir, $id_asset)
+    {
+        $depresiasi = DepresiasiAsset::query()
+            ->where('id_asset_data', $id_asset)
+            ->orderby('tanggal_depresiasi', 'desc')
+            ->first();
+
+        $diff_month = self::getDiffOfMonth($tanggal_akhir, $depresiasi->tanggal_depresiasi);
+        return $diff_month > 0 ? $diff_month : 0;
+    }
+
+    public static function getNilaiBukuAwalTahun($id_asset, $year)
+    {
+        $depresiasi = DepresiasiAsset::query()
+            ->where('id_asset_data', $id_asset)
+            ->whereYear('tanggal_depresiasi', $year)
+            ->whereMonth('tanggal_depresiasi', 1)
+            ->first();
+
+        return isset($depresiasi) ? $depresiasi->nilai_buku_akhir : 0;
+    }
+
+    public static function getNilaiBukuAkhirTahun($id_asset, $year)
+    {
+        $depresiasi = DepresiasiAsset::query()
+            ->where('id_asset_data', $id_asset)
+            ->whereYear('tanggal_depresiasi', $year)
+            ->whereMonth('tanggal_depresiasi', 12)
+            ->first();
+
+        return isset($depresiasi) ? $depresiasi->nilai_buku_akhir : 0;
+    }
+
     public static function getDataAssetDepresiasi()
     {
         $asset = AssetData::query()
@@ -28,6 +75,7 @@ class DepresiasiHelpers
             ->where('is_pemutihan', '0')
             ->where('is_inventaris', '0')
             ->where('nilai_buku_asset', '>', 1)
+            ->where('nilai_depresiasi', '>', 0)
             ->get();
         return $asset;
     }

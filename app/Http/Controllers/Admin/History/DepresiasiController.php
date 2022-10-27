@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\History;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\DepresiasiAsset\DepresiasiAssetDatatableServices;
+use App\Exports\DepresiasiExport;
 
 class DepresiasiController extends Controller
 {
@@ -23,5 +24,10 @@ class DepresiasiController extends Controller
     public function datatable(Request $request)
     {
         return $this->depresiasiAssetDatatableServices->datatable($request);
+    }
+
+    public function download()
+    {
+        return (new DepresiasiExport(2018))->download('depresiasi.xlsx');
     }
 }
