@@ -162,9 +162,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso', 'auth', 'role:manager
         });
         Route::group(['prefix' => 'history-pengaduan'], function () {
             Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
+            Route::get('/download/export', [HistoryPengaduanController::class, 'download'])->name('admin.report.history-pengaduan.download-export');
         });
         Route::group(['prefix' => 'history-service'], function () {
             Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
+            Route::get('/download/export', [HistoryServiceController::class, 'download'])->name('admin.report.history-service.download-export');
         });
     });
 
