@@ -60,6 +60,11 @@ class MasterAssetController extends Controller
         return $this->assetDataDatatableServices->datatable($request);
     }
 
+    public function datatableReport(Request $request)
+    {
+        return $this->assetDataDatatableServices->datatableReport($request);
+    }
+
     public function store(AssetStoreRequest $request)
     {
         DB::beginTransaction();

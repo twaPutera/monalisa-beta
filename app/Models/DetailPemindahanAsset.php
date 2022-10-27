@@ -14,4 +14,9 @@ class DetailPemindahanAsset extends Model
     {
         return $this->belongsTo(PemindahanAsset::class, 'id_pemindahan_asset');
     }
+
+    public function asset_data()
+    {
+        return $this->belongsTo(AssetData::class, 'id_asset', 'id');
+    }
 }
