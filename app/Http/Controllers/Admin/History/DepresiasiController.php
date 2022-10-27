@@ -26,8 +26,8 @@ class DepresiasiController extends Controller
         return $this->depresiasiAssetDatatableServices->datatable($request);
     }
 
-    public function download()
+    public function download(Request $request)
     {
-        return (new DepresiasiExport(2018))->download('depresiasi.xlsx');
+        return (new DepresiasiExport($request->year ?? date('Y')))->download('laporan-depresiasi-asset-tahun-'. $request->year .'.xlsx');
     }
 }
