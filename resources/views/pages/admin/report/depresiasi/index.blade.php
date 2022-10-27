@@ -174,6 +174,12 @@
                 },
             });
         }
+
+        const exportDepresiasi = () => {
+            let year = $('#yearExport').val();
+            let url = "{{ route('admin.report.depresiasi.download-export') }}" + '?year=' + year;
+            window.open(url, '_blank');
+        }
     </script>
 @endsection
 @section('main-content')
@@ -192,7 +198,7 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <a href="{{ route('admin.report.depresiasi.download-export') }}" target="_blank" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export </a>
+                                <button onclick="openModalByClass('modalExport')" type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export </button>
                                 <button type="button" onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
                             </div>
                         </div>
@@ -224,4 +230,5 @@
         </div>
     </div>
     @include('pages.admin.report.depresiasi._modal_filter')
+    @include('pages.admin.report.depresiasi._modal_export')
 @endsection
