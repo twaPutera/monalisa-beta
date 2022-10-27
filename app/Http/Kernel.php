@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
 
+        \App\Http\Middleware\SsoUpMiddleware::class,
         \App\Http\Middleware\SsoMiddleware::class,
         \App\Http\Middleware\Authenticate::class,
     ];
@@ -79,5 +80,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'sso' => \App\Http\Middleware\SsoMiddleware::class,
         'role' => \App\Http\Middleware\CheckUserRole::class,
+        'sso_up' => \App\Http\Middleware\SsoUpMiddleware::class,
     ];
 }
