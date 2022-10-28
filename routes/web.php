@@ -102,6 +102,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     Route::group(['prefix' => 'listing-asset'], function () {
         Route::get('/', [MasterAssetController::class, 'index'])->name('admin.listing-asset.index');
         Route::get('/datatable', [MasterAssetController::class, 'datatable'])->name('admin.listing-asset.datatable');
+        Route::get('/datatable-report', [MasterAssetController::class, 'datatableReport'])->name('admin.listing-asset.datatable.report');
         Route::post('/store', [MasterAssetController::class, 'store'])->name('admin.listing-asset.store');
         Route::get('/show/{id}', [MasterAssetController::class, 'show'])->name('admin.listing-asset.show');
         Route::get('/detail/{id}', [MasterAssetController::class, 'detail'])->name('admin.listing-asset.detail');
@@ -162,9 +163,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         });
         Route::group(['prefix' => 'history-pengaduan'], function () {
             Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
+            Route::get('/download/export', [HistoryPengaduanController::class, 'download'])->name('admin.report.history-pengaduan.download-export');
         });
         Route::group(['prefix' => 'history-service'], function () {
             Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
+            Route::get('/download/export', [HistoryServiceController::class, 'download'])->name('admin.report.history-service.download-export');
         });
     });
 

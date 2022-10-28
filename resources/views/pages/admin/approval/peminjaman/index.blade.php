@@ -90,12 +90,19 @@
                         render: function(data, type, full, meta) {
                             let date;
                             if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
-                                date = full.approvable.tanggal_peminjaman;
+                                if (full.approvable.jam_mulai != null) {
+                                    date = full.approvable.tanggal_peminjaman;
+                                    time = full.approvable.jam_mulai;
+                                    return formatDateIntoIndonesia(date) + " " + time;
+                                } else {
+                                    date = full.approvable.tanggal_peminjaman;
+                                    return formatDateIntoIndonesia(date);
+                                }
                             } else {
                                 date = full.approvable.tanggal_expired_sebelumnya;
+                                return formatDateIntoIndonesia(date);
                             }
 
-                            return formatDateIntoIndonesia(date);
                         },
                     },
                     {
@@ -103,11 +110,18 @@
                         render: function(data, type, full, meta) {
                             let date;
                             if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
-                                date = full.approvable.tanggal_pengembalian;
+                                if (full.approvable.jam_selesai != null) {
+                                    date = full.approvable.tanggal_pengembalian;
+                                    time = full.approvable.jam_selesai;
+                                    return formatDateIntoIndonesia(date) + " " + time;
+                                } else {
+                                    date = full.approvable.tanggal_pengembalian;
+                                    return formatDateIntoIndonesia(date);
+                                }
                             } else {
                                 date = full.approvable.tanggal_expired_perpanjangan;
+                                return formatDateIntoIndonesia(date);
                             }
-                            return formatDateIntoIndonesia(date);
                         },
                     },
                     {
@@ -116,13 +130,26 @@
                             let start;
                             let end;
                             if (full.approvable_type == 'App\\Models\\PeminjamanAsset') {
-                                start = new Date(full.approvable.tanggal_pengembalian);
-                                end = new Date(full.approvable.tanggal_peminjaman);
+                                if (full.approvable.jam_mulai != null && full.approvable
+                                    .jam_selesai != null) {
+                                    start = new Date(full.approvable.tanggal_pengembalian + " " +
+                                        full
+                                        .approvable.jam_selesai);
+                                    end = new Date(full.approvable.tanggal_peminjaman + " " + full
+                                        .approvable.jam_mulai);
+                                    let data = sumDiffAndTimeFromTwoDate(start, end);
+                                    return data;
+                                } else {
+                                    start = new Date(full.approvable.tanggal_pengembalian);
+                                    end = new Date(full.approvable.tanggal_peminjaman);
+                                    return sumDiffFromTwoDate(start, end) + " Hari";
+                                }
                             } else {
                                 start = new Date(full.approvable.tanggal_expired_perpanjangan);
                                 end = new Date(full.approvable.tanggal_expired_sebelumnya);
+                                return sumDiffFromTwoDate(start, end) + " Hari";
+
                             }
-                            return sumDiffFromTwoDate(start, end) + " Hari";
                         },
                     },
                     {

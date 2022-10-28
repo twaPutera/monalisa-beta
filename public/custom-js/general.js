@@ -2,36 +2,41 @@ $(".form-submit").submit(function (e) {
     e.preventDefault();
     let form = $(this);
     let formData = new FormData(form[0]);
-    let url = form.attr('action');
-    let method = form.attr('method');
+    let url = form.attr("action");
+    let method = form.attr("method");
     let enctype = form.attr("enctype");
-    $(this).children('input').each(
-        function () {
-            if ($(this).attr('type') == 'file') {
-                if ($(this).attr('multiple')) {
+    $(this)
+        .children("input")
+        .each(function () {
+            if ($(this).attr("type") == "file") {
+                if ($(this).attr("multiple")) {
                     for (let i = 0; i < $(this)[0].files.length; i++) {
-                        formData.append($(this).attr('name'), $(this)[0].files[i]);
+                        formData.append(
+                            $(this).attr("name"),
+                            $(this)[0].files[i]
+                        );
                     }
                 } else {
-                    formData.append($(this).attr('name'), $(this)[0].files[0]);
+                    formData.append($(this).attr("name"), $(this)[0].files[0]);
                 }
-            } else if ($(this).attr('type') == 'checkbox') {
+            } else if ($(this).attr("type") == "checkbox") {
                 let arrayChecked = [];
-                $('input[name="' + $(this).attr('name') + '"]:checked').each(function () {
-                    arrayChecked.push($(this).val());
-                })
-                if ($(this).is(':checked')) {
-                    formData.append($(this).attr('name'), arrayChecked);
+                $('input[name="' + $(this).attr("name") + '"]:checked').each(
+                    function () {
+                        arrayChecked.push($(this).val());
+                    }
+                );
+                if ($(this).is(":checked")) {
+                    formData.append($(this).attr("name"), arrayChecked);
                 }
-            } else if ($(this).attr('type') == 'radio') {
-                if ($(this).is(':checked')) {
-                    formData.append($(this).attr('name'), $(this).val());
+            } else if ($(this).attr("type") == "radio") {
+                if ($(this).is(":checked")) {
+                    formData.append($(this).attr("name"), $(this).val());
                 }
             } else {
                 formData.append($(this).attr("name"), $(this).val());
             }
-        }
-    );
+        });
 
     $.ajax({
         url: url,
@@ -78,7 +83,7 @@ $(".form-submit").submit(function (e) {
             //     clearValidation(element);
             //     showValidation(element, errors[key][0]);
             // }
-        }
+        },
     });
 });
 
@@ -131,7 +136,7 @@ const formConfirmSubmit = () => {
             }
         });
     });
-}
+};
 
 const showAlert = (title, message, type) => {
     Swal.fire({
@@ -140,9 +145,9 @@ const showAlert = (title, message, type) => {
         icon: type,
         confirmButtonText: "Ok",
     });
-}
+};
 
-$(document).ready(function() {
+$(document).ready(function () {
     $(".dt_table").on("draw.dt", function () {
         formConfirmSubmit();
     });
@@ -150,15 +155,17 @@ $(document).ready(function() {
 
 const showValidation = (element, message) => {
     $(element).addClass("is-invalid");
-    $(element).parent().append(`<div class="invalid-feedback">${message}</div>`);
-}
+    $(element)
+        .parent()
+        .append(`<div class="invalid-feedback">${message}</div>`);
+};
 
 const clearValidation = (element) => {
     $(element).removeClass("is-invalid");
     $(element).parent().find(".invalid-feedback").remove();
-}
+};
 
-$('.modal').on('hidden.bs.modal', function (e) {
+$(".modal").on("hidden.bs.modal", function (e) {
     let modal = $(this);
     modal.find(".invalid-feedback").remove();
     modal.find(".is-invalid").removeClass("is-invalid");
@@ -169,7 +176,7 @@ $('.inputimage input[type="file"').change(function () {
     let reader = new FileReader();
     reader.onload = function () {
         $(".inputimage img").attr("src", reader.result);
-    }
+    };
     reader.readAsDataURL(file);
 });
 
@@ -198,9 +205,30 @@ const formatDateIntoIndonesia = (data) => {
     let month = date.getMonth();
     let year = date.getFullYear();
     return `${day} ${arrayMonth[month]} ${year}`;
-}
+};
 
 const sumDiffFromTwoDate = (date1, date2) => {
     let diff = date1.getTime() - date2.getTime();
     return Math.ceil(diff / (1000 * 3600 * 24));
-}
+};
+
+const sumDiffAndTimeFromTwoDate = (date1, date2) => {
+    var diff = date1.getTime() - date2.getTime();
+
+    days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    diff -= days * 1000 * 60 * 60 * 24;
+
+    hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+
+    minutes = Math.floor(diff / 1000 / 60);
+    diff -= minutes * 1000 * 60;
+
+    seconds = Math.floor(diff / 1000);
+
+
+    //  Set Duration
+    var sDuration = days + " Hari " + hours + " Jam " + minutes + " Menit";
+    //  -------------------------------------------------------------------  //
+    return sDuration;
+};

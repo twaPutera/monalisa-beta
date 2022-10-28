@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body row">
                 <div class="form-group col-md-6 col-12">
-                    <label for="">Kategori Asset</label>
+                    <label for="">Jenis Asset</label>
                     <select name="id_kategori_asset" class="form-control" id="kategoriAssetFilter">
 
                     </select>

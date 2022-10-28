@@ -132,10 +132,20 @@
                 allowClear: true,
             })
             generateLocationServiceSelect();
-
+            exportData();
         });
         const filterTableService = () => {
+            exportData();
             table.DataTable().ajax.reload();
+        }
+
+        const exportData = () => {
+            let awal = $('.datepickerAwal').val();
+            let akhir = $('.datepickerAkhir').val();
+            let id_lokasi = $('#lokasiFilter').val();
+            $('#tgl_awal_export').val(awal);
+            $('#tgl_akhir_export').val(akhir);
+            $('#id_lokasi_export').val(id_lokasi);
         }
 
         const generateLocationServiceSelect = () => {
@@ -202,22 +212,27 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <div class="d-flex align-items-center mt-2 mb-2">
-                                    <select name="" onchange="filterTableService()"
-                                        class="filterLokasi selectLocationService form-control mr-2" style="width: 150px;"
-                                        id="lokasiFilter">
+                                <form action="{{ route('admin.report.history-service.download-export') }}" method="get">
+                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                        <select name="" onchange="filterTableService()"
+                                            class="filterLokasi selectLocationService form-control mr-2"
+                                            style="width: 150px;" id="lokasiFilter">
 
-                                    </select>
-                                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
-                                        class="form-control datepickerAwal mx-2" style="width: 150px;"
-                                        placeholder="Tanggal Awal">
-                                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
-                                        class="form-control datepickerAkhir mr-2" style="width: 150px;"
-                                        placeholder="Tanggal Akhir">
-                                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i
-                                            class="fas fa-print"></i>
-                                        Export Excel</button>
-                                </div>
+                                        </select>
+                                        <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                                            class="form-control datepickerAwal mx-2" style="width: 150px;"
+                                            placeholder="Tanggal Awal">
+                                        <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                                            class="form-control datepickerAkhir mr-2" style="width: 150px;"
+                                            placeholder="Tanggal Akhir">
+                                        <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="tgl_awal" id="tgl_awal_export">
+                                        <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
+                                        <button class="btn btn-success shadow-custom btn-sm" type="submit"
+                                            type="button"><i class="fas fa-print"></i>
+                                            Export Excel</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

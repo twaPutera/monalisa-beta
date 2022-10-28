@@ -40,7 +40,6 @@ class PemindahanAssetCommandServices
         $check_pemindahan_asset = PemindahanAsset::query()->whereHas('detail_pemindahan_asset', function ($q) use ($request) {
             $q->where('id_asset', $request->asset_id);
         })->where('status', 'pending')->exists();
-
         if ($check_pemindahan_asset) {
             throw new Exception('Asset masih ada dalam pemindahan asset');
         }
@@ -60,11 +59,10 @@ class PemindahanAssetCommandServices
             'jabatan' => $request->jabatan_penyerah,
             'unit_kerja' => $request->unit_kerja_penyerah,
         ];
-
         if (config('app.sso_siska')) {
             $data_penerima = $this->userSsoQueryServices->getUserByGuid($request->penerima_asset);
             $data_penyerah = $this->userSsoQueryServices->getUserByGuid($request->penyerah_asset);
-
+            
             $array_penerima_array = [
                 'guid' => $data_penerima[0]['token_user'],
                 'nama' => $data_penerima[0]['nama'],
@@ -82,7 +80,7 @@ class PemindahanAssetCommandServices
         } else {
             $data_penerima = $this->userQueryServices->findById($request->penerima_asset);
             $data_penyerah = $this->userQueryServices->findById($request->penyerah_asset);
-
+            
             $array_penerima_array = [
                 'guid' => $data_penerima->id,
                 'nama' => $data_penerima->name,
@@ -98,7 +96,7 @@ class PemindahanAssetCommandServices
                 'no_induk' => $data_penyerah->no_induk,
             ];
         }
-
+        
         $data_penerima_array = array_merge($data_penerima_array, $array_penerima_array);
         $data_penyerah_array = array_merge($data_penyerah_array, $array_penyerah_array);
 
@@ -134,7 +132,6 @@ class PemindahanAssetCommandServices
 
         $message_log = 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' berhasil dibuat pada asset ' . $asset->deskripsi;;
         $this->assetDataCommandServices->insertLogAsset($asset->id, $message_log);
-
         return $pemindahan_asset;
     }
 

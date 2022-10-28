@@ -6,6 +6,7 @@ use App\Models\LogAsset;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
+use App\Services\AssetOpname\AssetOpnameQueryServices;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -98,7 +99,7 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (! isset($request->is_pemutihan)) {
+        if (!isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
         // $query->orderBy('created_at', 'ASC');
@@ -158,7 +159,132 @@ class AssetDataDatatableServices
             ->rawColumns(['action', 'checkbox'])
             ->make(true);
     }
+    public function datatableReport(Request $request)
+    {
+        $query = AssetData::query()
+            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image', 'log_asset_opname', 'detail_peminjaman_asset', 'detail_pemindahan_asset']);
 
+        if (isset($request->searchKeyword)) {
+            $query->where(function ($querySearch) use ($request) {
+                $querySearch->where('deskripsi', 'like', '%' . $request->searchKeyword . '%')
+                    ->orWhere('kode_asset', 'like', '%' . $request->searchKeyword . '%')
+                    ->orWhere('no_seri', 'like', '%' . $request->searchKeyword . '%');
+            });
+        }
+
+        if (isset($request->id_lokasi) && $request->id_lokasi != 'root') {
+            $query->where('id_lokasi', $request->id_lokasi);
+        }
+
+        if (isset($request->id_kategori_asset)) {
+            $query->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+
+        $query->where('is_pemutihan', 0);
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('group', function ($item) {
+                return $item->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';
+            })
+            ->addColumn('nama_lokasi', function ($item) {
+                return $item->lokasi->nama_lokasi ?? 'Tidak ada Lokasi';
+            })
+            ->addColumn('nama_vendor', function ($item) {
+                return $item->vendor->nama_vendor ?? 'Tidak ada Vendor';
+            })
+            ->addColumn('nama_satuan', function ($item) {
+                return $item->satuan_asset->nama_satuan ?? 'Tidak ada Satuan';
+            })
+            ->addColumn('nama_kategori', function ($item) {
+                return $item->kategori_asset->nama_kategori ?? 'Tidak ada Kategori';
+            })
+            ->addColumn('tanggal_opname', function ($item) {
+                $opname = $item->log_asset_opname->sortByDesc('created_at')->first();
+                return $opname->tanggal_opname ?? '-';
+            })
+            ->addColumn('catatan_opname', function ($item) {
+                $opname = $item->log_asset_opname->sortByDesc('created_at')->first();
+                return $opname->keterangan ?? '-';
+            })
+            ->addColumn('user_opname', function ($item) {
+                $opname = $item->log_asset_opname->sortByDesc('created_at')->first();
+                $name = '-';
+                if (config('app.sso_siska')) {
+                    $user = $opname == null ? null : $this->userSsoQueryServices->getUserByGuid($opname->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $opname == null ? null : $this->userQueryServices->findById($opname->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
+            })
+            ->addColumn('tanggal_peminjaman', function ($item) {
+                $peminjaman = $item->detail_peminjaman_asset->sortByDesc('created_at')->first();
+                return $peminjaman->peminjaman_asset->tanggal_peminjaman ?? '-';
+            })
+            ->addColumn('tanggal_pengembalian', function ($item) {
+                $peminjaman = $item->detail_peminjaman_asset->sortByDesc('created_at')->first();
+                return $peminjaman->peminjaman_asset->tanggal_pengembalian ?? '-';
+            })
+            ->addColumn('status_peminjaman', function ($item) {
+                $peminjaman = $item->detail_peminjaman_asset->sortByDesc('created_at')->first();
+                return $peminjaman->peminjaman_asset->status ?? '-';
+            })
+            ->addColumn('user_peminjaman', function ($item) {
+                $peminjaman = $item->detail_peminjaman_asset->sortByDesc('created_at')->first();
+                $peminjam = $peminjaman ? json_decode($peminjaman->peminjaman_asset->json_peminjam_asset) : 'Not Found';
+                $name = $peminjam->name ?? "Not Found";
+                return $name;
+            })
+            ->addColumn('tanggal_pemindahan', function ($item) {
+                $pemindahan = $item->detail_pemindahan_asset->sortByDesc('created_at')->first();
+                return $pemindahan->pemindahan_asset->tanggal_pemindahan ?? '-';
+            })
+            ->addColumn('user_penyerah', function ($item) {
+                $pemindahan = $item->detail_pemindahan_asset->sortByDesc('created_at')->first();
+                $penyerah = $pemindahan ? json_decode($pemindahan->pemindahan_asset->json_penyerah_asset) : 'Not Found';
+                $name = $penyerah->nama ?? "Not Found";
+                return $name;
+            })
+            ->addColumn('user_penerima', function ($item) {
+                $pemindahan = $item->detail_pemindahan_asset->sortByDesc('created_at')->first();
+                $penerima = $pemindahan ? json_decode($pemindahan->pemindahan_asset->json_penerima_asset) : 'Not Found';
+                $name = $penerima->nama ?? "Not Found";
+                return $name;
+            })
+            ->addColumn('owner_name', function ($item) {
+                $name = '-';
+                if (config('app.sso_siska')) {
+                    $user = $item->ownership == null ? null : $this->userSsoQueryServices->getUserByGuid($item->ownership);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->ownership == null ? null : $this->userQueryServices->findById($item->ownership);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
+            })
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<a href ="' . route('admin.listing-asset.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></a>';
+                return $element;
+            })
+            ->addColumn('register_oleh', function ($item) {
+                $name = '-';
+                if (config('app.sso_siska')) {
+                    $user = $item->register_oleh == null ? null : $this->userSsoQueryServices->getUserByGuid($item->register_oleh);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->register_oleh == null ? null : $this->userQueryServices->findById($item->register_oleh);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
+            })
+            ->rawColumns(['action', 'checkbox'])
+            ->make(true);
+    }
     public function log_asset_dt(Request $request)
     {
         $query = LogAsset::query();
