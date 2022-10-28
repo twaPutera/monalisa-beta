@@ -10,7 +10,10 @@ use App\Services\User\UserCommandServices;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Services\User\UserDatatableServices;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\User\UserImportRequest;
 use App\Http\Requests\UserChangePasswordRequest;
+use App\Imports\UserImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -143,5 +146,51 @@ class UserController extends Controller
         $datatable = $this->userDatatableServices->datatable($request);
 
         return $datatable;
+    }
+
+    public function import(UserImportRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            Excel::import(new UserImport, $request->file('file'));
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User has been imported successfully',
+            ], 200);
+
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $th) {
+            DB::rollback();
+            $failures = $th->failures();
+            $errors = [];
+            foreach ($failures as $failure) {
+                $errors[] = [
+                    'row' => $failure->row(),
+                    'attribute' => $failure->attribute(),
+                    'errors' => $failure->errors(),
+                    'values' => $failure->values(),
+                ];
+            }
+            return response()->json([
+                'success' => false,
+                'form' => 'import',
+                'message' => $th->getMessage(),
+                'errors' => $errors,
+            ], 400);
+        } catch (\Throwable $th) {
+            // throw $th;
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function downloadTemplateImport()
+    {
+        $path = public_path('template-import/template-import-user-up.xlsx');
+        return response()->download($path);
     }
 }

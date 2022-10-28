@@ -264,6 +264,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::group(['prefix' => 'user'], function () {
             Route::get('/', [AdminUserManagementUserController::class, 'index'])->name('admin.user-management.user.index');
             Route::post('/store', [AdminUserManagementUserController::class, 'store'])->name('admin.user-management.user.store');
+            Route::post('/import', [AdminUserManagementUserController::class, 'import'])->name('admin.user-management.user.import');
+            Route::get('/download-template-import', [AdminUserManagementUserController::class, 'downloadTemplateImport'])->name('admin.user-management.user.download-template-import');
             Route::get('/show/{id}', [AdminUserManagementUserController::class, 'show'])->name('admin.user-management.user.show');
             Route::post('/update/{id}', [AdminUserManagementUserController::class, 'update'])->name('admin.user-management.user.update');
             Route::post('/delete/{id}', [AdminUserManagementUserController::class, 'delete'])->name('admin.user-management.user.delete');

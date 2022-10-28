@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\UserChangePasswordRequest;
+use App\Http\Requests\User\UserImportRequest;
 
 class UserCommandServices
 {

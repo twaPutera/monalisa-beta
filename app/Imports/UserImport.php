@@ -32,9 +32,9 @@ class UserImport implements ToModel, WithStartRow, WithValidation
     public function rules(): array
     {
         return [
-            '0' => 'required|string',
+            '0' => 'required',
             '1' => 'required|email|unique:users,email',
-            '2' => 'required|string',
+            '2' => 'required',
             '3' => 'required|string|unique:users,username_sso',
             '4' => 'required|string|in:admin,manager,staff,user',
             '5' => 'nullable|string',

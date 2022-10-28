@@ -82,6 +82,18 @@
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
                 }
+
+                if (formElement.attr('id') == 'formImportUser') {
+                    $('.error-import-container').empty();
+                    $(errors).each(function(index, value) {
+                        let message =
+                            `<li class="text-danger"><strong>Baris ${value.row} dalam kolom ${value.attribute} : </strong>${value.errors[0]}</li>`;
+                        $('.error-import-container').append(message);
+                    });
+                    $('.error-import-asset').show();
+                    // reset form
+                    formElement[0].reset();
+                }
             });
         });
 
@@ -128,8 +140,8 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalCreateUser')"
-                                    class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2" type="button"><i class="fa fa-file"></i> Import</button>
+                                <button type="button" onclick="openModalByClass('modalCreateUser')" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Tambah Data </button>
                             </div>
                         </div>
                     </div>
@@ -159,4 +171,5 @@
     @include('pages.admin.user-management.user._modal_create')
     @include('pages.admin.user-management.user._modal_edit')
     @include('pages.admin.user-management.user._modal_change_password')
+    @include('pages.admin.user-management.user._modal_import')
 @endsection
