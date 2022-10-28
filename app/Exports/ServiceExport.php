@@ -20,11 +20,11 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;
         $this->id_lokasi = $lokasi;
+        $this->number = 0;
     }
 
     public function query()
     {
-        $i = 1;
         $query = Service::query();
         $query->join('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
         $query->join('detail_services', 'detail_services.id_service', '=', 'services.id');
@@ -60,11 +60,6 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         }
         $query->where('services.status_service', 'selesai');
         $query->orderBy('services.created_at', 'DESC');
-        $query->get()->map(function ($item) use (&$i) {
-            $item->no = $i;
-            $i++;
-            return $item;
-        });
         return $query;
     }
 
@@ -76,7 +71,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
     public function map($item): array
     {
         return [
-            $item->no,
+            $this->number += 1,
             $item->tanggal_mulai,
             $item->tanggal_selesai,
             $item->kode_asset,
@@ -92,7 +87,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             $item->status_service
         ];
     }
-    
+
     public function headings(): array
     {
         return ['No', 'Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service'];

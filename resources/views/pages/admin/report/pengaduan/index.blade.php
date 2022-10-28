@@ -133,7 +133,21 @@
             })
             generateLocationServiceSelect();
             generateLocationAsset();
+            exportData();
         });
+
+        const exportData = () => {
+            let awal = $('.datepickerAwal').val();
+            let akhir = $('.datepickerAkhir').val();
+            let id_lokasi = $('#lokasiAssetCreateService').val();
+            let id_asset = $('#listAssetLocation').val();
+            $('#tgl_awal_export').val(awal);
+            $('#tgl_akhir_export').val(akhir);
+            $('#id_lokasi_export').val(id_lokasi);
+            $('#id_asset_export').val(id_asset);
+
+        }
+
         const detail = (button) => {
             const url_detail = $(button).data('url_detail');
             $.ajax({
@@ -210,6 +224,7 @@
         }
 
         const filterTableService = () => {
+            exportData();
             table.DataTable().ajax.reload();
         }
 
@@ -243,27 +258,33 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <div class="d-flex align-items-center mt-2 mb-2">
-                                    <div class="mr-2">
+                                <form action="{{ route('admin.report.history-pengaduan.download-export') }}" method="get">
+                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                        <div class="mr-2">
+                                            <select name="" onchange="filterTableService()" class="form-control"
+                                                style="width: 150px;" id="lokasiAssetCreateService">
+
+                                            </select>
+                                        </div>
                                         <select name="" onchange="filterTableService()" class="form-control"
-                                            style="width: 150px;" id="lokasiAssetCreateService">
+                                            style="width: 150px;" id="listAssetLocation">
 
                                         </select>
+                                        <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
+                                            class="form-control datepickerAwal mx-2" style="width: 150px;"
+                                            placeholder="Tanggal Awal">
+                                        <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
+                                            class="form-control datepickerAkhir mr-2" style="width: 150px;"
+                                            placeholder="Tanggal Akhir">
+                                        <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="id_asset" id="id_asset_export">
+                                        <input type="hidden" name="tgl_awal" id="tgl_awal_export">
+                                        <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
+                                        <button class="btn btn-success shadow-custom btn-sm" type="submit"><i
+                                                class="fas fa-print"></i>
+                                            Export Excel</button>
                                     </div>
-                                    <select name="" onchange="filterTableService()" class="form-control"
-                                        style="width: 150px;" id="listAssetLocation">
-
-                                    </select>
-                                    <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
-                                        class="form-control datepickerAwal mx-2" style="width: 150px;"
-                                        placeholder="Tanggal Awal">
-                                    <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
-                                        class="form-control datepickerAkhir mr-2" style="width: 150px;"
-                                        placeholder="Tanggal Akhir">
-                                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i
-                                            class="fas fa-print"></i>
-                                        Export Excel</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
