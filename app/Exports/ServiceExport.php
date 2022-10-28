@@ -4,9 +4,16 @@ namespace App\Exports;
 
 use App\Models\Service;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ServiceExport implements FromQuery, WithHeadings
+class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
     public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null)
     {
@@ -17,6 +24,7 @@ class ServiceExport implements FromQuery, WithHeadings
 
     public function query()
     {
+        $i = 1;
         $query = Service::query();
         $query->join('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
         $query->join('detail_services', 'detail_services.id_service', '=', 'services.id');
@@ -39,6 +47,7 @@ class ServiceExport implements FromQuery, WithHeadings
             'services.keterangan',
             'services.status_service'
         ]);
+
         if (isset($this->id_lokasi)) {
             $query->where('detail_services.id_lokasi', $this->id_lokasi);
         }
@@ -51,6 +60,11 @@ class ServiceExport implements FromQuery, WithHeadings
         }
         $query->where('services.status_service', 'selesai');
         $query->orderBy('services.created_at', 'DESC');
+        $query->get()->map(function ($item) use (&$i) {
+            $item->no = $i;
+            $i++;
+            return $item;
+        });
         return $query;
     }
 
@@ -59,9 +73,48 @@ class ServiceExport implements FromQuery, WithHeadings
         return 'History Service';
     }
 
-
+    public function map($item): array
+    {
+        return [
+            $item->no,
+            $item->tanggal_mulai,
+            $item->tanggal_selesai,
+            $item->kode_asset,
+            $item->deskripsi,
+            $item->nama_kategori,
+            $item->nama_lokasi,
+            $item->status_kondisi,
+            $item->nama_group,
+            $item->permasalahan,
+            $item->tindakan,
+            $item->catatan,
+            $item->keterangan,
+            $item->status_service
+        ];
+    }
+    
     public function headings(): array
     {
-        return ['Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service'];
+        return ['No', 'Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service'];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            1 => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center']],
+        ];
+    }
+    public function registerEvents(): array
+    {
+        return [
+            // Handle by a closure.
+            AfterSheet::class => function (AfterSheet $event) {
+                $highestRow = $event->sheet->getHighestRow();
+                $highestColumn = $event->sheet->getHighestColumn();
+                $lastCell = $highestColumn . $highestRow;
+                $rangeCell = 'A1:' . $lastCell;
+                $event->sheet->getDelegate()->getStyle($rangeCell)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            },
+        ];
     }
 }
