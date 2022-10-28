@@ -37,7 +37,7 @@ class DepresiasiHelpers
             ->orderby('tanggal_depresiasi', 'desc')
             ->first();
 
-        $diff_month = self::getDiffOfMonth($tanggal_akhir, $depresiasi->tanggal_depresiasi);
+        $diff_month = self::getDiffOfMonth($tanggal_akhir, $depresiasi->tanggal_depresiasi ?? $tanggal_akhir);
         return $diff_month > 0 ? $diff_month : 0;
     }
 

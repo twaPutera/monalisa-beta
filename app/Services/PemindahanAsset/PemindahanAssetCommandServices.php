@@ -9,7 +9,6 @@ use App\Helpers\SsoHelpers;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PemindahanAsset;
 use App\Models\DetailPemindahanAsset;
-use App\Models\ApprovalPemindahanAsset;
 use Illuminate\Support\Facades\Session;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -54,15 +53,27 @@ class PemindahanAssetCommandServices
         $data_penerima_array = [
             'jabatan' => $request->jabatan_penerima,
             'unit_kerja' => $request->unit_kerja_penerima,
+            'guid' => null,
+            'nama' => "Tidak Ada",
+            'email' => "Tidak Ada",
+            'no_hp' => "Tidak Ada",
+            'no_induk' => "Tidak Ada",
         ];
         $data_penyerah_array = [
             'jabatan' => $request->jabatan_penyerah,
             'unit_kerja' => $request->unit_kerja_penyerah,
+            'guid' => null,
+            'nama' => "Tidak Ada",
+            'email' => "Tidak Ada",
+            'no_hp' => "Tidak Ada",
+            'no_induk' => "Tidak Ada",
         ];
+        $array_penyerah_array = [];
+        $array_penerima_array = [];
         if (config('app.sso_siska')) {
             $data_penerima = $this->userSsoQueryServices->getUserByGuid($request->penerima_asset);
             $data_penyerah = $this->userSsoQueryServices->getUserByGuid($request->penyerah_asset);
-            
+
             $array_penerima_array = [
                 'guid' => $data_penerima[0]['token_user'],
                 'nama' => $data_penerima[0]['nama'],
@@ -80,23 +91,28 @@ class PemindahanAssetCommandServices
         } else {
             $data_penerima = $this->userQueryServices->findById($request->penerima_asset);
             $data_penyerah = $this->userQueryServices->findById($request->penyerah_asset);
-            
-            $array_penerima_array = [
-                'guid' => $data_penerima->id,
-                'nama' => $data_penerima->name,
-                'email' => $data_penerima->email,
-                'no_hp' => $data_penerima->no_hp,
-                'no_induk' => $data_penerima->no_induk,
-            ];
-            $array_penyerah_array = [
-                'guid' => $data_penyerah->id,
-                'nama' => $data_penyerah->name,
-                'email' => $data_penyerah->email,
-                'no_hp' => $data_penyerah->no_hp,
-                'no_induk' => $data_penyerah->no_induk,
-            ];
+
+            if(isset($data_penerima)){
+                $array_penerima_array = [
+                    'guid' => $data_penerima->guid,
+                    'nama' => $data_penerima->name,
+                    'email' => $data_penerima->email,
+                    'no_hp' => $data_penerima->no_hp,
+                    'no_induk' => $data_penerima->no_induk,
+                ];
+            }
+
+            if(isset($data_penyerah)){
+                $array_penyerah_array = [
+                    'guid' => $data_penyerah->guid,
+                    'nama' => $data_penyerah->name,
+                    'email' => $data_penyerah->email,
+                    'no_hp' => $data_penyerah->no_hp,
+                    'no_induk' => $data_penyerah->no_induk,
+                ];
+            }
         }
-        
+
         $data_penerima_array = array_merge($data_penerima_array, $array_penerima_array);
         $data_penyerah_array = array_merge($data_penyerah_array, $array_penyerah_array);
 

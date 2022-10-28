@@ -150,7 +150,7 @@
                             $('#keteranganApproval').val(data.approval[0].keterangan);
                         }
                         const kategori_name = kategori ? kategori.nama_kategori : '-';
-                        const group_name = kategori ? kategori.group_kategori_asset.nama_group : '-';
+                        const group_name = kategori.group_kategori_asset ? kategori.group_kategori_asset.nama_group : '-';
 
                         $('#groupAsset').text(group_name);
                         $('#kategoriAsset').text(kategori_name);
