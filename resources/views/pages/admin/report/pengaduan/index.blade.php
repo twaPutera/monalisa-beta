@@ -26,7 +26,7 @@
                         d.akhir = $('.datepickerAkhir').val();
                         d.status_pengaduan = "selesai";
                         d.id_lokasi = $('#lokasiAssetCreateService').val();
-                        d.id_asset = $('#listAssetLocation').val();
+                        d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.keyword = $('#searchServices').val();
                     }
                 },
@@ -125,9 +125,9 @@
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
             })
-            $('#listAssetLocation').select2({
+            $('#listKategoriAssetLocation').select2({
                 width: '150px',
-                placeholder: 'Pilih Asset',
+                placeholder: 'Pilih Jenis Asset',
                 padding: '10px',
                 allowClear: true,
             })
@@ -140,11 +140,11 @@
             let awal = $('.datepickerAwal').val();
             let akhir = $('.datepickerAkhir').val();
             let id_lokasi = $('#lokasiAssetCreateService').val();
-            let id_asset = $('#listAssetLocation').val();
+            let id_kategori_asset = $('#listKategoriAssetLocation').val();
             $('#tgl_awal_export').val(awal);
             $('#tgl_akhir_export').val(akhir);
             $('#id_lokasi_export').val(id_lokasi);
-            $('#id_asset_export').val(id_asset);
+            $('#id_kategori_asset_export').val(id_kategori_asset);
 
         }
 
@@ -206,14 +206,14 @@
 
         const generateLocationAsset = () => {
             $.ajax({
-                url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+                url: "{{ route('admin.setting.kategori-asset.get-data-select2') }}",
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        const select = $('#listAssetLocation');
+                        const select = $('#listKategoriAssetLocation');
                         select.empty();
-                        select.append(`<option value="">Pilih Asset</option>`);
+                        select.append(`<option value="">Pilih Jenis Asset</option>`);
                         response.data.forEach((item) => {
                             select.append(
                                 `<option value="${item.id}">${item.text}</option>`);
@@ -267,7 +267,7 @@
                                             </select>
                                         </div>
                                         <select name="" onchange="filterTableService()" class="form-control"
-                                            style="width: 150px;" id="listAssetLocation">
+                                            style="width: 150px;" id="listKategoriAssetLocation">
 
                                         </select>
                                         <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
@@ -277,7 +277,7 @@
                                             class="form-control datepickerAkhir mr-2" style="width: 150px;"
                                             placeholder="Tanggal Akhir">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
-                                        <input type="hidden" name="id_asset" id="id_asset_export">
+                                        <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <input type="hidden" name="tgl_awal" id="tgl_awal_export">
                                         <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
                                         <button class="btn btn-success shadow-custom btn-sm" type="submit"><i

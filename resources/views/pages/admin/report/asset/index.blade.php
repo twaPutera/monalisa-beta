@@ -237,8 +237,18 @@
             })
             generateLocationServiceSelect();
             generateKategoriAssetSelect();
+            exportData();
         });
+
+        const exportData = () => {
+            let id_lokasi = $('#lokasiFilter').val();
+            let id_kategori_asset = $('#kategoriAssetFilter').val();
+            $('#id_lokasi_export').val(id_lokasi);
+            $('#id_kategori_asset_export').val(id_kategori_asset);
+
+        }
         const filterTableService = () => {
+            exportData();
             table.DataTable().ajax.reload();
         }
 
@@ -298,23 +308,27 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <div class="d-flex align-items-center mt-2 mb-2">
-                                    <div class="mr-2">
+                                <form action="{{ route('admin.report.summary-asset.download-export') }}" method="get">
+                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                        <div class="mr-2">
+                                            <select name="" onchange="filterTableService()"
+                                                class="filterLokasi selectLocationService form-control mr-2"
+                                                style="width: 150px;" id="lokasiFilter">
+
+                                            </select>
+                                        </div>
                                         <select name="" onchange="filterTableService()"
-                                            class="filterLokasi selectLocationService form-control mr-2"
-                                            style="width: 150px;" id="lokasiFilter">
+                                            class="filterLokasi selectKategoriAsset form-control mr-2" style="width: 150px;"
+                                            id="kategoriAssetFilter">
 
                                         </select>
+                                        <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
+                                        <button class="btn btn-success ml-1 shadow-custom btn-sm" type="submit"><i
+                                                class="fas fa-print"></i>
+                                            Export Excel</button>
                                     </div>
-                                    <select name="" onchange="filterTableService()"
-                                        class="filterLokasi selectKategoriAsset form-control mr-2" style="width: 150px;"
-                                        id="kategoriAssetFilter">
-
-                                    </select>
-                                    <button class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i
-                                            class="fas fa-print"></i>
-                                        Export Excel</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -346,7 +360,7 @@
                                     <th width="200px">Deskripsi</th>
                                     <th width="200px">Tipe</th>
                                     <th width="150px">Asset Group</th>
-                                    <th width="150px">Kategori</th>
+                                    <th width="150px">Jenis Asset</th>
                                     <th width="180px">Status Kondisi</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
