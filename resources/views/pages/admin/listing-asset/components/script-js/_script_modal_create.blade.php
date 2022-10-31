@@ -51,6 +51,34 @@
         });
     }
 
+    const generateMemorandumAndinSelect2 = () => {
+        $('#memorandumAndin').select2({
+            width: '100%',
+            placeholder: 'Pilih Memorandum',
+            dropdownParent: $('.modal.show'),
+            ajax: {
+                url: '{{ route('andin-api.find-data-memorandum') }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        keyword: params.term, // search term
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+                    return {
+                        results: data.data,
+                    };
+                },
+                cache: true
+            },
+        }).on('change', function (e) {
+            const data = $(this).select2('data')[0];
+            $('#noMemoSurat').val(data.text);
+        });
+    }
+
     $('.modalCreateAssetService').on('shown.bs.modal', function() {
         setTimeout(() => {
             // generateSelect2Lokasi('lokasiAssetCreateService');
@@ -66,6 +94,7 @@
             generateSatuanAsset();
             generateVendorAsset();
             generateOwnerAsset();
+            generateMemorandumAndinSelect2();
         }, 2000);
     });
 

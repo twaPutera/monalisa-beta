@@ -44,6 +44,7 @@ use App\Http\Controllers\Admin\History\HistoryServiceController;
 use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\Api\AndinApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -439,6 +440,10 @@ Route::group(['prefix' => 'sso-api'], function () {
     Route::get('/get-data-position', [SsoDataController::class, 'getDataPosition'])->name('sso-api.get-data-position');
     Route::get('/get-data-position-by-guid', [SsoDataController::class, 'getDataPositionByGuid'])->name('sso-api.get-data-position-by-guid');
     Route::get('/get-data-unit-by-position', [SsoDataController::class, 'getDataUnitByGuid'])->name('sso-api.get-data-unit-by-position');
+});
+
+Route::group(['prefix' => 'andin-api'], function () {
+    Route::get('/get-data-memorandum', [AndinApiController::class, 'findAllMemorandum'])->name('andin-api.find-data-memorandum');
 });
 
 Route::group(['prefix' => 'test-front', 'namespace' => 'TestFront'], function () {

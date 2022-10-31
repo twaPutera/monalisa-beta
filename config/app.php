@@ -21,6 +21,7 @@ return [
     'siska_url' => env('SISKA_URL', null),
     'sso_login' => env('SSO_LOGIN', false),
     'sso_siska' => env('SSO_SISKA', false),
+    'andin_url' => env('ANDIN_URL', null),
 
     'jwt_secret' => env('JWT_SECRET', 'example_key'),
 

@@ -131,9 +131,13 @@
                         <div class="row">
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
-                                    <label for="">Nomor Memo / Surat</label>
-                                    <input type="text" class="form-control" value="{{ $asset->no_memo_surat }}"
-                                        name="no_memo_surat">
+                                    <label for="">No Memorandum</label>
+                                    <select name="id_surat_memo_andin" class="form-control" id="memorandumAndin">
+                                        @if (isset($asset->id_surat_memo_andin))
+                                            <option selected="selected" value="{{ $asset->id_surat_memo_andin }}">{{ $asset->no_memo_surat }}</option>
+                                        @endif
+                                    </select>
+                                    <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nomor PO</label>

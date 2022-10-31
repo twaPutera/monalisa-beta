@@ -53,6 +53,7 @@ class AssetDataCommandServices
         $asset->tgl_register = date('Y-m-d');
         $asset->register_oleh = config('app.sso_siska') ? $user->guid : $user->id;
         $asset->no_memo_surat = $request->no_memo_surat;
+        $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->status_kondisi = $request->status_kondisi;
@@ -126,6 +127,7 @@ class AssetDataCommandServices
         // $asset->ownership = $request->ownership;
         // $asset->tgl_register = date('Y-m-d');
         $asset->no_memo_surat = $request->no_memo_surat;
+        $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         // $asset->status_kondisi = $request->status_kondisi;

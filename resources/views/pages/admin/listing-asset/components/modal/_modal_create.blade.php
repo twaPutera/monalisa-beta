@@ -118,8 +118,11 @@
                         <div class="row">
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
-                                    <label for="">Nomor Memo / Surat</label>
-                                    <input type="text" class="form-control" name="no_memo_surat">
+                                    <label for="">No Memorandum</label>
+                                    <select name="id_surat_memo_andin" class="form-control" id="memorandumAndin">
+
+                                    </select>
+                                    <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nomor PO</label>

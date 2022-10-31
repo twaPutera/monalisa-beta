@@ -38,6 +38,7 @@ class AssetUpdateRequest extends FormRequest
             // 'tgl_register' => 'required|date|date_format:Y-m-d',
             // 'register_oleh' => 'required|uuid',
             'no_memo_surat' => 'nullable|string|max:50',
+            'id_surat_memo_andin' => 'nullable|uuid',
             'no_po' => 'nullable|string|max:50',
             'no_sp3' => 'nullable|string|max:50',
             // 'status_kondisi' => 'required|string|max:50',
