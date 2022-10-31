@@ -100,7 +100,7 @@
                 const tab_peminjaman = $("#peminjaman-approval-count");
                 const tab_pemindahan = $("#pemindahan-approval-count");
                 const tab_pemutihan = $("#pemutihan-approval-count");
-                const daftar_approval = $("#daftar-approval-count");
+                const daftar_approval = $(".daftar-approval-count");
                 const approval_task = $(".approval-task-count");
                 if (response.success) {
                     tab_pemindahan.empty();

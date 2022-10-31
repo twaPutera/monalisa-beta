@@ -1,5 +1,5 @@
 @extends('layouts.user.master')
-@section('page-title', 'Daftar Pengajuan')
+@section('page-title', 'Daftar Peminjaman')
 @section('custom-css')
     <style>
         .containerPerpanjangan {
@@ -133,7 +133,7 @@
             } else if (status == 'dipinjam') {
                 template = '<span class="badge badge-primary">Sedang Dipinjam</span>';
             } else if (status == 'duedate') {
-                template = '<span class="badge badge-warning">Due Date</span>';
+                template = '<span class="badge badge-warning">Terlambat</span>';
             } else if (status == 'selesai') {
                 template = '<span class="badge badge-success">Selesai</span>';
             } else if (status == 'ditolak') {

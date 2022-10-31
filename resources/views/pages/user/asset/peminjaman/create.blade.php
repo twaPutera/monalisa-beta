@@ -165,7 +165,7 @@
                         <input type="date" name="tanggal_peminjaman" class="form-control pe-1" id="" placeholder="Text Input">
                     </div>
                     <div class=""style="width: 40%;">
-                        <input type="time" name="jam_mulai" class="form-control pe-1" id="" placeholder="Text Input">
+                        <input type="time" name="jam_mulai" value="01:00" class="form-control pe-1" id="" placeholder="Text Input">
                     </div>
                 </div>
             </div>
@@ -179,7 +179,7 @@
                         <input type="date" name="tanggal_pengembalian" class="form-control pe-1" id="" placeholder="Text Input">
                     </div>
                     <div class=""style="width: 40%;">
-                        <input type="time" name="jam_selesai" class="form-control pe-1" id="" placeholder="Text Input">
+                        <input type="time" name="jam_selesai" value="23:00" class="form-control pe-1" id="" placeholder="Text Input">
                     </div>
                 </div>
             </div>

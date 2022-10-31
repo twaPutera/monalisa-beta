@@ -78,19 +78,22 @@ class DashboardController extends Controller
             $list_pemindahan_asset = $this->approvalQueryServices->findAll('App\\Models\\PemindahanAsset');
             $list_pemutihan_asset = $this->approvalQueryServices->findAll('App\\Models\\PemutihanAsset');
             $list_peminjaman_asset = $this->approvalQueryServices->findAll('App\\Models\\PeminjamanAsset');
+            $list_request_perpanjangan = $this->approvalQueryServices->findAll('App\\Models\\PerpanjanganPeminjamanAsset');
 
             $total_all_pemindahan = $list_pemindahan_asset->count();
             $total_all_peminjaman = $list_peminjaman_asset->count();
             $total_all_pemutihan = $list_pemutihan_asset->count();
+            $total_all_request_perpanjangan = $list_request_perpanjangan->count();
 
             $total_pemindahan = $list_pemindahan_asset->where('is_approve', null)->count();
             $total_pemutihan = $list_pemutihan_asset->where('is_approve', null)->count();
             $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->count();
+            $total_request_perpanjangan = $list_request_perpanjangan->where('is_approve', null)->count();
 
             if (Auth::user()->role == 'manager') {
-                $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan;
+                $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan + $total_request_perpanjangan;
             } else {
-                $daftar_approval = $total_pemindahan + $total_peminjaman;
+                $daftar_approval = $total_pemindahan + $total_peminjaman + $total_request_perpanjangan;
             }
 
             if ($request->url == 'peminjaman') {

@@ -198,8 +198,8 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button onclick="openModalByClass('modalExport')" type="button" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export </button>
                                 <button type="button" onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                <button onclick="openModalByClass('modalExport')" class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>Export Excel</button>
                             </div>
                         </div>
                     </div>

@@ -311,7 +311,7 @@
                                         id="kategoriAssetFilter">
 
                                     </select>
-                                    <button class="btn btn-success shadow-custom btn-sm" type="button"><i
+                                    <button class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i
                                             class="fas fa-print"></i>
                                         Export Excel</button>
                                 </div>

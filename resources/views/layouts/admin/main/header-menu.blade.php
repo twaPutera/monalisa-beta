@@ -23,7 +23,7 @@
             <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid">
                 <div class="kt-header__topbar-item mr-3 d-flex align-items-center">
                     <a class="kt-header__topbar-wrapper" href="{{ route('admin.approval.peminjaman.index') }}">
-                        <u>Daftar Approval</u>(<span id="daftar-approval-count">0</span>)
+                        <u>Daftar Approval</u>(<span class="daftar-approval-count">0</span>)
                     </a>
                 </div>
                 <div class="kt-header__topbar-item d-flex align-items-center mr-3">

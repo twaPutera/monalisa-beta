@@ -2,6 +2,7 @@
 
 namespace App\Services\PeminjamanAsset;
 
+use App\Helpers\DateIndoHelpers;
 use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
@@ -18,6 +19,7 @@ use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
+use App\Jobs\PeminjamanDueDateJob;
 
 class PeminjamanAssetCommandServices
 {
@@ -85,7 +87,13 @@ class PeminjamanAssetCommandServices
         $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
         $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
+
         if ($request->status == 'disetujui') {
+            $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
+            $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
+
+            PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
+
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/peminjaman/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
@@ -136,6 +144,7 @@ class PeminjamanAssetCommandServices
         $peminjam = json_decode($peminjaman->json_peminjam_asset);
 
         if ($request->status == 'dipinjam') {
+
             $detail_peminjaman = DetailPeminjamanAsset::where('id_peminjaman_asset', $peminjaman->id)->get();
             foreach ($detail_peminjaman as $detail) {
                 $message_log = 'Asset Dipinjam pada tanggal ' . date('d/m/Y', strtotime($peminjaman->tanggal_peminjaman)) . ' oleh ' . $peminjam->name;
@@ -187,6 +196,11 @@ class PeminjamanAssetCommandServices
             $peminjaman = $perpanjangan->peminjaman_asset;
             $peminjaman->tanggal_pengembalian = $perpanjangan->tanggal_expired_perpanjangan;
             $peminjaman->save();
+
+            $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
+            $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
+
+            PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
         }
 
         $approval = $perpanjangan->approval;

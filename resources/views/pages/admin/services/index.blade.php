@@ -509,7 +509,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>#</th>
+                                    <th width="100px">#</th>
                                     <th>Tgl. Mulai</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Tipe</th>

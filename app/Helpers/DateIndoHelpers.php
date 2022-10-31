@@ -57,4 +57,13 @@ class DateIndoHelpers
 
         return $arrayDay[$day];
     }
+
+    public static function getDiffMinutesFromTwoDates($date1, $date2)
+    {
+        $date1 = strtotime($date1);
+        $date2 = strtotime($date2);
+        $diff = abs($date1 - $date2);
+        $diff = $diff / (60);
+        return $diff;
+    }
 }
