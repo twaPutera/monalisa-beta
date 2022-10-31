@@ -51,10 +51,11 @@ class KeluhanDatatableServices
         if (isset($request->id_lokasi)) {
             $query->orWhere('id_lokasi', $request->id_lokasi);
         }
-        if (isset($request->id_asset)) {
-            $query->orWhere('id_asset_data', $request->id_asset);
+        if (isset($request->id_kategori_asset)) {
+            $query->whereHas('asset_data', function ($query) use ($request) {
+                $query->where('id_kategori_asset', $request->id_kategori_asset);
+            });
         }
-
 
         if (isset($request->awal)) {
             $query->where('tanggal_pengaduan', '>=', $request->awal);
@@ -67,7 +68,7 @@ class KeluhanDatatableServices
         if (isset($request->keyword)) {
             $query->where('catatan_pengaduan', 'like', '%' . $request->keyword . '%');
         }
-        
+
         if (isset($request->status_pengaduan)) {
             if ($request->status_pengaduan != 'all') {
                 $query->where('status_pengaduan', $request->status_pengaduan);

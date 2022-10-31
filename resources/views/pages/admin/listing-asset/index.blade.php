@@ -408,7 +408,7 @@
                                     <th width="200px">Deskripsi</th>
                                     <th width="200px">Tipe</th>
                                     <th width="150px">Asset Group</th>
-                                    <th width="150px">Kategori</th>
+                                    <th width="150px">Jenis Asset</th>
                                     <th width="180px">Status Kondisi</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>

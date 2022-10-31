@@ -17,13 +17,13 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
-    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null, $asset = null)
+    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null, $kategori_asset = null)
     {
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;
         $this->id_lokasi = $lokasi;
         $this->number = 0;
-        $this->id_asset = $asset;
+        $this->id_kategori_asset = $kategori_asset;
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
     }
@@ -31,7 +31,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
     public function query()
     {
         $query = Pengaduan::query();
-        $query->join('lokasis', 'pengaduans.id_lokasi', '=', 'lokasis.id');
+        $query->leftJoin('lokasis', 'pengaduans.id_lokasi', '=', 'lokasis.id');
         $query->leftJoin('asset_data', 'pengaduans.id_asset_data', '=', 'asset_data.id');
         $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
         $query->leftJoin('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
@@ -46,11 +46,11 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             'pengaduans.catatan_admin',
             'pengaduans.status_pengaduan'
         ]);
-        if (isset($this->id_lokasi)) {
+        if (isset($this->id_lokasi) && $this->id_lokasi != 'root') {
             $query->orWhere('pengaduans.id_lokasi', $this->id_lokasi);
         }
-        if (isset($this->id_asset)) {
-            $query->orWhere('pengaduans.id_asset_data', $this->id_asset);
+        if (isset($this->id_kategori_asset)) {
+            $query->orWhere('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
 
         if (isset($this->awal)) {
@@ -60,7 +60,6 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
         if (isset($this->akhir)) {
             $query->where('pengaduans.tanggal_pengaduan', '<=', $this->akhir);
         }
-
         $query->where('pengaduans.status_pengaduan', 'selesai');
         $query->orderBy('pengaduans.tanggal_pengaduan', 'DESC');
         return $query;
