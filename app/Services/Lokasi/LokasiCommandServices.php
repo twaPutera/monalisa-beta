@@ -5,6 +5,7 @@ namespace App\Services\Lokasi;
 use App\Models\Lokasi;
 use App\Http\Requests\Lokasi\LokasiStoreRequest;
 use App\Http\Requests\Lokasi\LokasiUpdateRequest;
+use App\Models\AssetData;
 
 class LokasiCommandServices
 {
@@ -39,6 +40,16 @@ class LokasiCommandServices
     public function destroy($id)
     {
         $lokasi = Lokasi::findOrFail($id);
+
+        $asset_data = AssetData::query()
+            ->where('id_lokasi', $lokasi->id)
+            ->get();
+
+        foreach ($asset_data as $item) {
+            $item->id_lokasi = null;
+            $item->save();
+        }
+
         $lokasi->delete();
 
         return $lokasi;

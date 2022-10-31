@@ -359,3 +359,12 @@ td {
 .datepicker table td, .datepicker table th {
     font-size: 14px;
 }
+
+@media (min-width: 1025px) {
+    .kt-header-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link>.kt-menu__link-text {
+        font-size: 1rem;
+    }
+    .kt-header-menu .kt-menu__nav>.kt-menu__item>.kt-menu__link .kt-menu__link-icon {
+        font-size: 1rem;
+    }
+}

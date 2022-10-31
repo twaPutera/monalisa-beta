@@ -52,6 +52,7 @@
                 },
                 "plugins": ["dnd", "types", "search", "adv_search"]
             }).on('changed.jstree', function(e, data) {
+                $('#lokasiFilterAktif').text(data.node.text);
                 $('#lokasiParentId').val(data.selected[0]);
                 table.DataTable().ajax.reload();
             });
@@ -285,13 +286,22 @@
                                 `<h6 class="text-center text-secondary" style="font-size: 24px"><i
                                     class="fas fa-question-circle"></i></h6>`;
                         }
+
+                        if (asset.peminjam != null) {
+                            $('#peminjamAsset').html(asset.peminjam);
+                            $('#assetPinjam').html('<h6 class="text-center text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>');
+                        } else {
+                            $('#peminjamAsset').html('Tidak Ada');
+                            $('#assetPinjam').html('<h6 class="text-center text-danger" style="font-size: 24px"><i class="fas fa-times-circle"></i></h6>');
+                        }
+
                         $('#assetNamePreview').text(asset.deskripsi);
                         $('#assetKondisi').empty();
                         $('#assetKondisi').append(kondisi);
                         $('#assetPemutihan').empty();
                         $('#assetPemutihan').append(pemutihan);
-                        $('#assetPinjam').empty();
-                        $('#assetPinjam').append(pinjam);
+                        // $('#assetPinjam').empty();
+                        // $('#assetPinjam').append(pinjam);
                         $('#opnameCekBy').empty();
                         $('#opnameCekBy').append(asset.created_by_opname);
                         $('#catatanOpname').text(opname ? opname.keterangan : 'Tidak Ada');
@@ -385,8 +395,7 @@
             <div class="row">
                 <div class="col-8" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
-                                Lokasi Asset(Rektorat)</span></h5>
+                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> - Lokasi Asset(<span id="lokasiFilterAktif"></span>)</span></h5>
                         <h5 class="text-primary"><strong>Total 4</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
@@ -454,7 +463,7 @@
                         </div>
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Peminjam</h6>
-                            <h6 class="text-right">No Item Selected</h6>
+                            <h6 class="text-right" id="peminjamAsset">No Item Selected</h6>
                         </div>
                         <div class="text-right">
                             <a href="#" class="text-primary" id="linkDetailAsset"><u>Lihat Detail</u></a>

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
+use App\Models\DetailPeminjamanAsset;
+use App\Models\PemindahanAsset;
+use App\Models\PeminjamanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -19,7 +22,7 @@ class AssetDataQueryServices
         $this->userQueryServices = new UserQueryServices();
     }
 
-    public function findById(string $id)
+    public function findById(string $id, array $request = [])
     {
         $data =  AssetData::query()
             ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image', 'detail_service', 'log_asset_opname'])
@@ -55,6 +58,20 @@ class AssetDataQueryServices
             $item->link = route('admin.listing-asset.image.preview') . '?filename=' . $item->path;
             return $item;
         });
+
+        if (isset($request['peminjaman'])) {
+            $peminjaman = PeminjamanAsset::query()
+                ->wherehas('detail_peminjaman_asset', function ($query) use ($id) {
+                    $query->where('id_asset', $id);
+                })
+                ->where('status', 'diproses')
+                ->first();
+            $data->peminjam = null;
+            if (isset($peminjaman)) {
+                $peminjam = json_decode($peminjaman->json_peminjam_asset);
+                $data->peminjam = $peminjam;
+            }
+        }
 
         $data->link_detail = route('admin.listing-asset.detail', $data->id);
         $data->owner_name = $user == null ? 'Tidak ada' : $user->name ?? $user->nama;

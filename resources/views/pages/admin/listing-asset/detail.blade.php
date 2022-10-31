@@ -615,18 +615,9 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
+                <div></div>
                 <div class="d-flex align-items-center">
-                    <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchTree" class="form-control form-control-sm"
-                            placeholder="Search for...">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
-                                    class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    @if ($asset->is_pemutihan != 1)
+                    @if ($asset->is_pemutihan != '1')
                         <button onclick="openModalByClass('modalCreatePemindahan')"
                             class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan"
                             type="button">
@@ -697,7 +688,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-                                        
+
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
