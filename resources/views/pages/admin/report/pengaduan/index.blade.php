@@ -17,6 +17,8 @@
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
+                searching: false,
+                bLengthChange: false,
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -259,7 +261,7 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
                                 <form action="{{ route('admin.report.history-pengaduan.download-export') }}" method="get">
-                                    <div class="d-flex align-items-center mt-2 mb-2">
+                                    <div class="d-md-flex d-block align-items-center mt-2 mb-2">
                                         <div class="mr-2">
                                             <select name="" onchange="filterTableService()" class="form-control"
                                                 style="width: 150px;" id="lokasiAssetCreateService">

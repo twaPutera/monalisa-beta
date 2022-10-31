@@ -19,7 +19,7 @@
                 // searchDelay: 500,
                 processing: true,
                 searching: false,
-                ordering: false,
+                // ordering: false,
                 bLengthChange: false,
                 serverSide: true,
                 ajax: {
@@ -29,6 +29,7 @@
                         d.tahun_depresiasi = $('.yearpicker').val();
                         d.group_kategori_asset = $('#groupAssetCreate').val();
                         d.kategori_asset = $('#kategoriAssetCreate').val();
+                        d.keyword = $('#searchDepresiasi').val();
                     }
                 },
                 columns: [{
@@ -205,6 +206,15 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
+                    <div class="d-flex align-items-center">
+                        <div class="input-group mr-3" style="width: 250px;">
+                            <input type="text" id="searchDepresiasi" class="form-control form-control-sm"
+                                placeholder="Search for...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped dt_table" id="datatableExample">
                             <thead>

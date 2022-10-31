@@ -52,7 +52,7 @@ class AssetServiceDatatableServices
     public function datatable(Request $request)
     {
         $query = Service::query()
-            ->with(['detail_service', 'kategori_service', 'image']);
+            ->with(['kategori_service', 'image', 'detail_service.asset_data']);
 
         if (isset($request->id_asset_data)) {
             $query->whereHas('detail_service', function ($query) use ($request) {
@@ -92,7 +92,9 @@ class AssetServiceDatatableServices
 
         if (isset($request->keyword)) {
             $query->whereHas('detail_service', function ($query) use ($request) {
-                $query->where('permasalahan', 'like', '%' . $request->keyword . '%');
+                $query->whereHas('asset_data', function ($query) use ($request) {
+                    $query->where('deskripsi', 'like', '%' . $request->keyword . '%');
+                });
             });
         }
 

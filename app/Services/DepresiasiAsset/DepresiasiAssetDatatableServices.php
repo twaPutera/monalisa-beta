@@ -17,6 +17,12 @@ class DepresiasiAssetDatatableServices
             $query->where('id_asset_data', $request->id_asset_data);
         }
 
+        if (isset($request->keyword)) {
+            $query->whereHas('asset_data', function ($q) use ($request) {
+                $q->where('deskripsi', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
         if (isset($request->bulan_depresiasi)) {
             $query->whereMonth('tanggal_depresiasi', $request->bulan_depresiasi);
         }
