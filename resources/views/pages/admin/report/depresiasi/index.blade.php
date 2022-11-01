@@ -74,7 +74,12 @@
                 ],
                 columnDefs: [
                     //Custom template data
-
+                    {
+                        targets: [6, 7, 8],
+                        render: function(data, type, full, meta) {
+                            return formatNumber(data);
+                        }
+                    }
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {

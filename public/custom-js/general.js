@@ -232,3 +232,8 @@ const sumDiffAndTimeFromTwoDate = (date1, date2) => {
     //  -------------------------------------------------------------------  //
     return sDuration;
 };
+
+const formatNumber = (number) => {
+    let numberString = number.toString().replace(".", ",");
+    return numberString.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+};
