@@ -123,22 +123,6 @@
             });
         });
 
-        const detail = (button) => {
-            const url_detail = $(button).data('url_detail');
-            $.ajax({
-                url: url_detail,
-                type: 'GET',
-                dataType: 'html',
-                success: function(response) {
-                    const modal = $('.modalDetailInventarisData');
-                    const detail = modal.find('.modalDetailBodyData');
-                    detail.empty();
-                    detail.append(response);
-                    modal.modal('show');
-                }
-            })
-        }
-
         const edit = (button) => {
             const url_edit = $(button).data('url_edit');
             const url_update = $(button).data('url_update');
