@@ -449,7 +449,7 @@
                     <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                         <span class="kt-hidden kt-header__topbar-welcome">Hi,</span>
                         <span class="kt-hidden kt-header__topbar-username">user</span>
-                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'No Name' }}&background=5174ff&color=fff"
+                        <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff"
                             id="userDropdown" alt="Profile" class="kt-hidden-">
                         <span class="kt-header__topbar-icon kt-header__topbar-icon--brand kt-hidden"><b>S</b></span>
                     </div>
@@ -459,14 +459,14 @@
                         <!--begin: Head -->
                         <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
                             <div class="kt-user-card__avatar">
-                                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'No Name' }}&background=5174ff&color=fff"
+                                <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff"
                                     id="userDropdown" alt="Profile" class="kt-hidden-">
                                 <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
                                 <span
                                     class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold kt-hidden">S</span>
                             </div>
                             <div class="kt-user-card__name">
-                                {{ $nama ?? 'No Name' }}
+                                {{ $user->name ?? 'No Name' }}
                             </div>
                         </div>
 
@@ -474,11 +474,25 @@
 
                         <!--begin: Navigation -->
                         <div class="kt-notification">
+                            @if ($user->role == 'staff')
+                                <a href="{{ route('user.dashboard.index') }}" target="_blank" class="kt-notification__item">
+                                    <div class="kt-notification__item-icon">
+                                        <i class="flaticon2-calendar-3 kt-font-success"></i>
+                                    </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title kt-font-bold">
+                                            Portal User
+                                        </div>
+                                        {{-- <div class="kt-notification__item-time">
+
+                                        </div> --}}
+                                    </div>
+                                </a>
+                            @endif
                             <div class="kt-notification__custom kt-space-end">
                                 <form method="POST" action="{{ route('sso.logout') }}">
                                     @csrf
-                                    <a class="btn btn-label btn-label-brand btn-sm btn-bold" href="#"
-                                        onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <a class="btn btn-label btn-label-brand btn-sm btn-bold" href="#" onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('LOGOUT') }}
                                     </a>
                                 </form>
