@@ -211,6 +211,12 @@
                             return element;
                         }
                     },
+                    {
+                        targets: 9,
+                        render: function(data, type, full, meta) {
+                            return formatNumber(data);
+                        }
+                    }
                 ],
                 createdRow: function(row, data, index) {
                     $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
