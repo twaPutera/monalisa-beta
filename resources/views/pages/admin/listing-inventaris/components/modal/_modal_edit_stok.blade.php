@@ -44,8 +44,11 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
-                            <label for="">Nomor Memo</label>
-                            <input type="text" class="form-control" name="no_memo">
+                            <label for="">No Memorandum</label>
+                            <select name="id_surat_memo_andin" class="form-control" id="memorandumAndin">
+
+                            </select>
+                            <input type="hidden" id="noMemoSurat" name="no_memo" value="">
                         </div>
                         <div class="form-group">
                             <label for="">Tanggal Penggunaan</label>

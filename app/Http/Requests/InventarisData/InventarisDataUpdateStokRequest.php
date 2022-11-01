@@ -27,6 +27,7 @@ class InventarisDataUpdateStokRequest extends FormRequest
             'jumlah_keluar' => 'required|integer|min:0',
             'no_memo' => 'required|string|max:50',
             'tanggal' => 'required|date',
+            'id_surat_memo_andin' => 'required|uuid',
         ];
     }
 }

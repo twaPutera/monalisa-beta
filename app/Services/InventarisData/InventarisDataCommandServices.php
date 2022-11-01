@@ -93,6 +93,7 @@ class InventarisDataCommandServices
 
             $detailInventori = new LogPenguranganInventori();
             $detailInventori->id_inventori = $id;
+            $detailInventori->id_surat_memo_andin = $request->id_surat_memo_andin;
             $detailInventori->no_memo = $request->no_memo;
             $detailInventori->jumlah = $request->jumlah_keluar;
             $detailInventori->tanggal = $request->tanggal;
