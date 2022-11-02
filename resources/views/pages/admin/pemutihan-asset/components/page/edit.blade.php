@@ -56,6 +56,10 @@
                         errorAlert.removeClass('d-none');
                         errorAlert.append("Gambar Asset Yang Dimasukkan Tidak Sesuai");
                     }
+                    if (key == "id_checkbox") {
+                        console.log($('#alert-list-asset'));
+                        $('#alert-list-asset').removeClass('d-none');
+                    }
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
@@ -95,13 +99,13 @@
                     },
                     {
                         name: 'jenis_asset',
-                        data: 'jenis_asset'
+                        data: 'jenis_asset',
                     },
                     {
                         name: 'is_inventaris',
                         data: 'is_inventaris',
                         render: function(type) {
-                            return type === null ? 'Tidak Ada' : type;
+                            return type == 1 ? 'Inventaris' : 'Asset';
                         }
                     },
                     {
@@ -171,7 +175,8 @@
                         table3.DataTable().ajax.reload();
                     })
                     modal.on('hidden.bs.modal', function() {
-                        table3.dataTable().fnDestroy();
+                        table3.DataTable().ajax.reload();
+                        form[0].reset();
                     })
                     modal.modal('show');
                 }
@@ -329,6 +334,7 @@
                     </div>
 
                     <div class="kt-portlet__body">
+                        <label for="">List Asset Yang Akan Diputihkan</label>
                         <div class="table-responsive">
                             <table class="table table-striped dt_table" id="datatableExample">
                                 <thead>

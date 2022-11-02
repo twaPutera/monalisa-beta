@@ -889,7 +889,7 @@
                                         <th>#</th>
                                         <th>Status</th>
                                         <th>Pemberi</th>
-                                        <th>Penerima Terakhirnya</th>
+                                        <th>Penerima</th>
                                         <th>User</th>
                                     </tr>
                                 </thead>

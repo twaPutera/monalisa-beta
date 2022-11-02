@@ -137,10 +137,11 @@
                         let form = modal.find('form');
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
+                        $('.isDisabled').attr('disabled', false);
                         const penerima = JSON.parse(data.json_penerima_asset);
                         const penyerah = JSON.parse(data.json_penyerah_asset);
                         const asset = JSON.parse(data.detail_pemindahan_asset.json_asset_data);
-                        if (data.approval[0].is_approve == '1') {
+                        if (data.approval[0].is_approve == 1) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(data.approval[0].tanggal_approval).show();
                             const status_approval = data.approval[0].is_approve == '1' ? 'disetujui' :

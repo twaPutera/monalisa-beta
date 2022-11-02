@@ -108,7 +108,7 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Kode Kelompok Asset</th>
+                                    <th>Asset Kelas</th>
                                     <th>Nama Kelompok Asset</th>
                                 </tr>
                             </thead>

@@ -226,6 +226,13 @@
                         showAsset(data.action);
                     });
                 },
+                footerCallback: function(row, data, start, end, display) {
+                    let totalRecord = data.length;
+                    console.log(totalRecord);
+                    let target = $('#totalFilterAktif');
+                    target.empty();
+                    target.append("Total " + totalRecord);
+                }
             });
 
             $('.datepickerCreate').datepicker({
@@ -295,10 +302,14 @@
 
                         if (asset.peminjam != null) {
                             $('#peminjamAsset').html(asset.peminjam);
-                            $('#assetPinjam').html('<h6 class="text-center text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>');
+                            $('#assetPinjam').html(
+                                '<h6 class="text-center text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>'
+                            );
                         } else {
                             $('#peminjamAsset').html('Tidak Ada');
-                            $('#assetPinjam').html('<h6 class="text-center text-danger" style="font-size: 24px"><i class="fas fa-times-circle"></i></h6>');
+                            $('#assetPinjam').html(
+                                '<h6 class="text-center text-danger" style="font-size: 24px"><i class="fas fa-times-circle"></i></h6>'
+                            );
                         }
 
                         $('#assetNamePreview').text(asset.deskripsi);
@@ -333,6 +344,7 @@
             const file = $(this)[0].files[0];
             $('#preview-file-text').text(file.name);
         });
+
         $('#fileImport').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-excel-text').text(file.name);
@@ -401,8 +413,9 @@
             <div class="row">
                 <div class="col-8" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> - Lokasi Asset(<span id="lokasiFilterAktif"></span>)</span></h5>
-                        <h5 class="text-primary"><strong>Total 4</strong></h5>
+                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
+                                Lokasi Asset (<span id="lokasiFilterAktif">Universitas Pertamina</span>)</span></h5>
+                        <h5 class="text-primary"><strong id="totalFilterAktif">Total 0</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
                         <table class="table table-striped table-hover" id="datatableExample">

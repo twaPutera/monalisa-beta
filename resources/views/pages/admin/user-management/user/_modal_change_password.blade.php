@@ -15,7 +15,7 @@
                         <input type="password" class="form-control" name="password">
                     </div>
                     <div class="form-group">
-                        <label for="">Konfirmasi Password Baru</label>
+                        <label for="">Konfirmasi Password</label>
                         <input type="password" class="form-control" name="password_confirmation">
                     </div>
                 </div>

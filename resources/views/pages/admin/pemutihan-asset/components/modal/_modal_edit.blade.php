@@ -30,6 +30,9 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <div class="alert alert-danger d-none" id="alert-list-asset">List asset yang diputihkan wajib
+                            diisi
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped mb-0 editAssetData" id="editAssetData">
                                 <thead>

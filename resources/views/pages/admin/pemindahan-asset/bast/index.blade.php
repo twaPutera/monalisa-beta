@@ -126,7 +126,7 @@
 </div>
 
 <div style="margin-top: 20px;">
-    <p style="text-align: justify;">Jika terjadi kerusakan karena human error seperti kelalaian pengguna, instalasi software illegal dan lain sebagainya maka segala biaya yang timbul akan menjadi tanggung jawab PIHAK KEDUA</p>
+    <p style="text-align: justify;">Jika terjadi kerusakan karena <em>human error</em> seperti kelalaian pengguna, instalasi <em>software illegal</em> dan lain sebagainya maka segala biaya yang timbul akan menjadi tanggung jawab PIHAK KEDUA</p>
 </div>
 
 <div style="margin-top: 20px;">
