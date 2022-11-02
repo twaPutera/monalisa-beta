@@ -12,7 +12,7 @@
             </div>
         </div>
     </a>
-    <a href="#" class="item">
+    <a href="{{ route('user.dashboard.profile') }}" class="item @if(\Request::segment(2) == 'profile') active @endif">
         <div class="col">
             <ion-icon name="person-outline" role="img" class="md hydrated"></ion-icon>
             <strong>Profile</strong>
