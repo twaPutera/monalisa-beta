@@ -113,7 +113,7 @@
             getDataOptionSelect();
         });
 
-        const getDataOptionSelect = () => {
+        const getDataOptionSelect = (id = null) => {
             $.ajax({
                 url: "{{ route('admin.setting.lokasi.get-select2') }}",
                 type: 'GET',
@@ -126,9 +126,17 @@
                         if (element.id == $('#lokasiParentId').val()) {
                             selected = 'selected';
                         }
-                        select.append(
-                            `<option ${selected} value="${element.id}">${element.text}</option>`
-                        );
+                        if (id != null && id != element.id) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
+
+                        if (id == null) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
                     });
                 }
             })
@@ -159,7 +167,7 @@
                     form.find('input[name=nama_lokasi]').val(response.data.nama_lokasi);
                     form.find('textarea[name=keterangan]').val(response.data.keterangan);
                     modal.on('shown.bs.modal', function(e) {
-                        getDataOptionSelect();
+                        getDataOptionSelect(response.data.id);
                         generateSelect2Lokasi();
                         form.find('select[name="parent_id"]').select2('val', response.data
                             .parent_id);
