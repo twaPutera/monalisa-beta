@@ -12,7 +12,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Parent Lokasi</label>
+                        <label for="">Induk Lokasi</label>
                         <select name="id_parent_lokasi" id="" class="form-control select2Lokasi">
                             <option value=""></option>
                         </select>

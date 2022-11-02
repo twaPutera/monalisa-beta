@@ -208,7 +208,7 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Parent Lokasi</th>
+                                    <th>Induk Lokasi</th>
                                     <th>Kode</th>
                                     <th>Nama Lokasi</th>
                                 </tr>
