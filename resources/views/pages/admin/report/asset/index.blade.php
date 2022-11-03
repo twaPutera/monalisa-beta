@@ -33,14 +33,14 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: false,
+                ordering: true,
                 scrollX: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.listing-asset.datatable.report') }}",
                     data: function(d) {
-                        d.id_lokasi = $('#lokasiFilter').val();
-                        d.id_kategori_asset = $('#kategoriAssetFilter').val();
+                        d.id_lokasi = $('#lokasiAssetCreateService').val();
+                        d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.searchKeyword = $('#searchAsset').val();
                     }
                 },
@@ -78,6 +78,12 @@
                     },
                     {
                         data: 'status_kondisi'
+                    },
+                    {
+                        data: 'status_akunting',
+                        render: function(d) {
+                            return d == null ? 'Tidak Ada' : d;
+                        }
                     },
                     {
                         data: 'tanggal_perolehan'
@@ -142,7 +148,7 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: [8, 15, 18, 19, 22],
+                        targets: [9, 16, 19, 20, 23],
                         render: function(data, type, full, meta) {
                             if (data != '-') {
                                 return formatDateIntoIndonesia(data);
@@ -151,7 +157,13 @@
                         }
                     },
                     {
-                        targets: 20,
+                        targets: 10,
+                        render: function(data, type, full, meta) {
+                            return formatNumber(data);
+                        }
+                    },
+                    {
+                        targets: 21,
                         render: function(data, type, full, meta) {
                             let element = '-';
                             if (data == 'disetujui') {
@@ -225,24 +237,25 @@
 
                 }
             });
-            $('#lokasiFilter').select2({
-                width: '150px',
+            $('#lokasiAssetCreateService').select2({
+                width: '100%',
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
             })
-            $('#kategoriAssetFilter').select2({
-                width: '150px',
+            $('#listKategoriAssetLocation').select2({
+                width: '100%',
                 placeholder: 'Pilih Jenis Asset',
+                padding: '10px',
                 allowClear: true,
             })
             generateLocationServiceSelect();
-            generateKategoriAssetSelect();
+            generateLocationAsset();
             exportData();
         });
 
         const exportData = () => {
-            let id_lokasi = $('#lokasiFilter').val();
-            let id_kategori_asset = $('#kategoriAssetFilter').val();
+            let id_lokasi = $('#lokasiAssetCreateService').val();
+            let id_kategori_asset = $('#listKategoriAssetLocation').val();
             $('#id_lokasi_export').val(id_lokasi);
             $('#id_kategori_asset_export').val(id_kategori_asset);
 
@@ -259,7 +272,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        const select = $('.selectLocationService');
+                        const select = $('#lokasiAssetCreateService');
                         select.empty();
                         select.append(`<option value="">Pilih Lokasi</option>`);
                         response.data.forEach((item) => {
@@ -271,14 +284,14 @@
             })
         }
 
-        const generateKategoriAssetSelect = () => {
+        const generateLocationAsset = () => {
             $.ajax({
                 url: "{{ route('admin.setting.kategori-asset.get-data-select2') }}",
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        const select = $('.selectKategoriAsset');
+                        const select = $('#listKategoriAssetLocation');
                         select.empty();
                         select.append(`<option value="">Pilih Jenis Asset</option>`);
                         response.data.forEach((item) => {
@@ -310,21 +323,11 @@
                             <div class="kt-portlet__head-actions">
                                 <form action="{{ route('admin.report.summary-asset.download-export') }}" method="get">
                                     <div class="d-flex align-items-center mt-2 mb-2">
-                                        <div class="mr-2">
-                                            <select name="" onchange="filterTableService()"
-                                                class="filterLokasi selectLocationService form-control mr-2"
-                                                style="width: 150px;" id="lokasiFilter">
-
-                                            </select>
-                                        </div>
-                                        <select name="" onchange="filterTableService()"
-                                            class="filterLokasi selectKategoriAsset form-control mr-2" style="width: 150px;"
-                                            id="kategoriAssetFilter">
-
-                                        </select>
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
                                         <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
-                                        <button class="btn btn-success ml-1 shadow-custom btn-sm" type="submit"><i
+                                        <button type="button" onclick="openModalByClass('modalFilterAsset')"
+                                            class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                        <button class="btn btn-success ml-1 shadow-custom btn-sm ml-2" type="submit"><i
                                                 class="fas fa-print"></i>
                                             Export Excel</button>
                                     </div>
@@ -362,6 +365,7 @@
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Jenis Asset</th>
                                     <th width="180px">Status Kondisi</th>
+                                    <th width="180px">Status Akunting</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
                                     <th width="150px">Lokasi</th>
@@ -390,5 +394,5 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.report.service.components.modal._modal_detail_service')
+    @include('pages.admin.report.asset._modal_filter_asset')
 @endsection

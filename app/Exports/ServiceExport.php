@@ -15,11 +15,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
-    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null)
+    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null, $kategori_asset = null)
     {
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;
         $this->id_lokasi = $lokasi;
+        $this->id_kategori_asset = $kategori_asset;
         $this->number = 0;
     }
 
@@ -50,6 +51,9 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
 
         if (isset($this->id_lokasi)) {
             $query->where('detail_services.id_lokasi', $this->id_lokasi);
+        }
+        if (isset($this->id_kategori_asset)) {
+            $query->where('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
         if (isset($this->awal)) {
             $query->where('services.tanggal_selesai', '>=', $this->awal);

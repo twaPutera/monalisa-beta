@@ -16,10 +16,12 @@
         $(document).ready(function() {
             table.DataTable({
                 responsive: true,
-                // searchDelay: 500,
+                searchDelay: 500,
+                processing: true,
                 searching: false,
                 bLengthChange: false,
-                processing: true,
+                ordering: true,
+                scrollX: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.keluhan.datatable') }}",
@@ -123,12 +125,12 @@
             });
 
             $('#lokasiAssetCreateService').select2({
-                width: '150px',
+                width: '100%',
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
             })
             $('#listKategoriAssetLocation').select2({
-                width: '150px',
+                width: '100%',
                 placeholder: 'Pilih Jenis Asset',
                 padding: '10px',
                 allowClear: true,
@@ -262,27 +264,13 @@
                             <div class="kt-portlet__head-actions">
                                 <form action="{{ route('admin.report.history-pengaduan.download-export') }}" method="get">
                                     <div class="d-md-flex d-block align-items-center mt-2 mb-2">
-                                        <div class="mr-2">
-                                            <select name="" onchange="filterTableService()" class="form-control"
-                                                style="width: 150px;" id="lokasiAssetCreateService">
-
-                                            </select>
-                                        </div>
-                                        <select name="" onchange="filterTableService()" class="form-control"
-                                            style="width: 150px;" id="listKategoriAssetLocation">
-
-                                        </select>
-                                        <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
-                                            class="form-control datepickerAwal mx-2" style="width: 150px;"
-                                            placeholder="Tanggal Awal">
-                                        <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
-                                            class="form-control datepickerAkhir mr-2" style="width: 150px;"
-                                            placeholder="Tanggal Akhir">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
                                         <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <input type="hidden" name="tgl_awal" id="tgl_awal_export">
                                         <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
-                                        <button class="btn btn-success shadow-custom btn-sm" type="submit"><i
+                                        <button type="button" onclick="openModalByClass('modalFilterAsset')"
+                                            class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                        <button class="btn btn-success shadow-custom btn-sm ml-2" type="submit"><i
                                                 class="fas fa-print"></i>
                                             Export Excel</button>
                                     </div>
@@ -335,4 +323,5 @@
     </div>
     @include('pages.admin.report.pengaduan.components.modal._modal_preview')
     @include('pages.admin.report.pengaduan.components.modal._modal_detail_keluhan')
+    @include('pages.admin.report.pengaduan.components.modal._modal_filter_keluhan')
 @endsection

@@ -47,10 +47,10 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             'pengaduans.status_pengaduan'
         ]);
         if (isset($this->id_lokasi) && $this->id_lokasi != 'root') {
-            $query->orWhere('pengaduans.id_lokasi', $this->id_lokasi);
+            $query->where('pengaduans.id_lokasi', $this->id_lokasi);
         }
         if (isset($this->id_kategori_asset)) {
-            $query->orWhere('asset_data.id_kategori_asset', $this->id_kategori_asset);
+            $query->where('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
 
         if (isset($this->awal)) {

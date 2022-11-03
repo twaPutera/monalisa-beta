@@ -52,7 +52,7 @@ class AssetServiceDatatableServices
     public function datatable(Request $request)
     {
         $query = Service::query()
-            ->with(['kategori_service', 'image', 'detail_service.asset_data']);
+            ->with(['kategori_service', 'image', 'detail_service']);
 
         if (isset($request->id_asset_data)) {
             $query->whereHas('detail_service', function ($query) use ($request) {
@@ -62,6 +62,14 @@ class AssetServiceDatatableServices
 
         if (isset($request->id_kategori_service)) {
             $query->where('id_kategori_service', $request->id_kategori_service);
+        }
+
+        if (isset($request->id_kategori_asset)) {
+            $query->whereHas('detail_service', function ($query) use ($request) {
+                $query->whereHas('asset_data', function ($query) use ($request) {
+                    $query->where('id_kategori_asset', $request->id_kategori_asset);
+                });
+            });
         }
 
         if (isset($request->status_service)) {
@@ -118,6 +126,18 @@ class AssetServiceDatatableServices
 
             ->addColumn('deskripsi_service', function ($item) {
                 return $item->detail_service->catatan ?? 'Tidak Ada';
+            })
+            ->addColumn('asset_deskripsi', function ($item) {
+                return $item->detail_service->asset_data->deskripsi ?? 'Tidak Ada';
+            })
+            ->addColumn('is_inventaris', function ($item) {
+                return $item->detail_service->asset_data->is_inventaris;
+            })
+            ->addColumn('nama_group', function ($item) {
+                return $item->detail_service->asset_data->kelas_asset->nama_kelas ?? 'Tidak Ada';
+            })
+            ->addColumn('nama_kategori', function ($item) {
+                return $item->detail_service->asset_data->kategori_asset->nama_kategori ?? 'Tidak Ada';
             })
             ->addColumn('btn_show_service', function ($item) {
                 $element = '';

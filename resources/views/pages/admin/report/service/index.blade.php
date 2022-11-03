@@ -16,20 +16,21 @@
         $(document).ready(function() {
             table.DataTable({
                 responsive: true,
+                searchDelay: 500,
                 processing: true,
                 searching: false,
-                ordering: false,
-                serverSide: true,
                 bLengthChange: false,
-                paging: false,
-                info: false,
+                ordering: true,
+                scrollX: true,
+                serverSide: true,
                 ajax: {
                     url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                     data: function(d) {
                         d.awal = $('.datepickerAwal').val();
                         d.akhir = $('.datepickerAkhir').val();
                         d.status_service = "selesai";
-                        d.id_lokasi = $('#lokasiFilter').val();
+                        d.id_lokasi = $('#lokasiAssetCreateService').val();
+                        d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.keyword = $('#searchServices').val();
                     }
                 },
@@ -52,21 +53,23 @@
                         data: 'tanggal_mulai'
                     },
                     {
-                        name: 'asset_data.deskripsi',
-                        data: 'asset_data.deskripsi'
+                        name: 'asset_deskripsi',
+                        data: 'asset_deskripsi'
                     },
                     {
-                        name: 'asset_data.is_inventaris',
-                        data: 'asset_data.is_inventaris',
+                        name: 'is_inventaris',
+                        data: 'is_inventaris',
                         render: function(type) {
                             return type == 1 ? "Inventaris" : "Asset";
                         }
                     },
                     {
-                        data: 'asset_data.nama_group'
+                        name: 'nama_group',
+                        data: 'nama_group'
                     },
                     {
-                        data: 'asset_data.nama_kategori'
+                        name: 'nama_kategori',
+                        data: 'nama_kategori'
                     },
                     {
                         name: 'status_service',
@@ -126,12 +129,19 @@
 
                 }
             });
-            $('#lokasiFilter').select2({
-                width: '150px',
+            $('#lokasiAssetCreateService').select2({
+                width: '100%',
                 placeholder: 'Pilih Lokasi',
                 allowClear: true,
             })
+            $('#listKategoriAssetLocation').select2({
+                width: '100%',
+                placeholder: 'Pilih Jenis Asset',
+                padding: '10px',
+                allowClear: true,
+            })
             generateLocationServiceSelect();
+            generateLocationAsset();
             exportData();
         });
         const filterTableService = () => {
@@ -142,10 +152,12 @@
         const exportData = () => {
             let awal = $('.datepickerAwal').val();
             let akhir = $('.datepickerAkhir').val();
-            let id_lokasi = $('#lokasiFilter').val();
+            let id_lokasi = $('#lokasiAssetCreateService').val();
+            let id_kategori_asset = $('#listKategoriAssetLocation').val();
             $('#tgl_awal_export').val(awal);
             $('#tgl_akhir_export').val(akhir);
             $('#id_lokasi_export').val(id_lokasi);
+            $('#id_kategori_asset_export').val(id_kategori_asset);
         }
 
         const generateLocationServiceSelect = () => {
@@ -155,7 +167,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        const select = $('.selectLocationService');
+                        const select = $('#lokasiAssetCreateService');
                         select.empty();
                         select.append(`<option value="">Pilih Lokasi</option>`);
                         response.data.forEach((item) => {
@@ -166,6 +178,26 @@
                 }
             })
         }
+
+        const generateLocationAsset = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.kategori-asset.get-data-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#listKategoriAssetLocation');
+                        select.empty();
+                        select.append(`<option value="">Pilih Jenis Asset</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+
         $('.datepickerAwal').datepicker({
             todayHighlight: true,
             width: '100%',
@@ -214,21 +246,13 @@
                             <div class="kt-portlet__head-actions">
                                 <form action="{{ route('admin.report.history-service.download-export') }}" method="get">
                                     <div class="d-flex align-items-center mt-2 mb-2">
-                                        <select name="" onchange="filterTableService()"
-                                            class="filterLokasi selectLocationService form-control mr-2"
-                                            style="width: 150px;" id="lokasiFilter">
-
-                                        </select>
-                                        <input type="text" onchange="filterTableService()" name="tanggal_awal" readonly
-                                            class="form-control datepickerAwal mx-2" style="width: 150px;"
-                                            placeholder="Tanggal Awal">
-                                        <input type="text" onchange="filterTableService()" name="tanggal_akhir" readonly
-                                            class="form-control datepickerAkhir mr-2" style="width: 150px;"
-                                            placeholder="Tanggal Akhir">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <input type="hidden" name="tgl_awal" id="tgl_awal_export">
                                         <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
-                                        <button class="btn btn-success shadow-custom btn-sm" type="submit"
+                                        <button type="button" onclick="openModalByClass('modalFilterAsset')"
+                                            class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                        <button class="btn btn-success shadow-custom btn-sm ml-2" type="submit"
                                             type="button"><i class="fas fa-print"></i>
                                             Export Excel</button>
                                     </div>
@@ -279,4 +303,5 @@
         </div>
     </div>
     @include('pages.admin.report.service.components.modal._modal_detail_service')
+    @include('pages.admin.report.service.components.modal._modal_filter_service')
 @endsection
