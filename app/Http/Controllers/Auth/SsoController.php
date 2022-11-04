@@ -43,7 +43,7 @@ class SsoController extends Controller
 
     public function logoutSso(Request $request)
     {
-        if (config('app.sso_login') && config('app.sso_siska')) {
+        if (config('app.sso_login') || config('app.sso_siska')) {
             $response = $this->ssoServices->logoutSso($request);
 
             if ($response) {

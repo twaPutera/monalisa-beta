@@ -55,8 +55,6 @@ class SSOServices
         $request->session()->forget('jwt_token');
         $request->session()->forget('user');
 
-        SsoUpMiddleware::trySessionSsoLogout();
-
         $request->session()->flush();
 
         \Cookie::forget(config('app.access_token_cookie_name'));
