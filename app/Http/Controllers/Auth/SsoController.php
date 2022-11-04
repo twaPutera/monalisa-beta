@@ -53,7 +53,7 @@ class SsoController extends Controller
             Auth::logout();
             $request->session()->flush();
             $request->session()->regenerate();
-            return redirect()->route('/');
+            return redirect('/');
         }
 
         return redirect()->route('admin.dashboard');
