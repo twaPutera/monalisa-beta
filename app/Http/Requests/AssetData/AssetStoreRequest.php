@@ -52,6 +52,7 @@ class AssetStoreRequest extends FormRequest
             'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'is_sparepart' => 'nullable|in:0,1',
             'is_pinjam' => 'nullable|in:0,1',
+            'is_it' => 'nullable|in:0,1',
             'asal_asset' => 'nullable|string|uuid',
         ];
     }

@@ -70,7 +70,7 @@ Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->mi
 Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware(['sso_up:web', 'auth']);
 Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware(['sso_up:web', 'auth']);
 
-Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:manager|staff|admin']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:manager|staff_asset|staff_it|admin']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/getDaftarApproval', [AdminDashboardController::class, 'getDaftarApproval'])->name('admin.dashboard.approval');
     Route::group(['prefix' => 'summary'], function () {
@@ -383,7 +383,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     });
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:user|staff']], function () {
+Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:user|staff_asset|staff_it']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::get('/profile', [UserDashboardController::class, 'profile'])->name('user.dashboard.profile');
     Route::get('/dashboard/get-summary-dashboard', [UserDashboardController::class, 'getDashboardData'])->name('user.get-summary-dashboard');
