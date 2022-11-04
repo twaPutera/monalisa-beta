@@ -19,7 +19,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
@@ -30,7 +30,7 @@ class PengaduanCommandServices
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
 
-        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Penambahan');
+        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Laporan Masuk');
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_pengaduan->id);
@@ -50,7 +50,7 @@ class PengaduanCommandServices
         $request->validated();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
@@ -60,7 +60,7 @@ class PengaduanCommandServices
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
         $asset_pengaduan->save();
 
-        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Perubahan');
+        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Perubahan Laporan');
 
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-pengaduan');
@@ -104,7 +104,7 @@ class PengaduanCommandServices
         $log_asset = new LogPengaduanAsset();
         $user = SsoHelpers::getUserLogin();
         $log_asset->id_pengaduan = $id_pengaduan;
-        $log_asset->message_log = "$action Data ($message)";
+        $log_asset->message_log = "$action Data Pengaduan Asset/Lokasi ($message)";
         $log_asset->status =  $status;
         $log_asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $log_asset->save();

@@ -24,7 +24,7 @@
                 scrollX: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('admin.keluhan.datatable') }}",
+                    url: "{{ route('admin.report.history-pengaduan.datatable') }}",
                     data: function(d) {
                         d.awal = $('.datepickerAwal').val();
                         d.akhir = $('.datepickerAkhir').val();
