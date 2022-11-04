@@ -80,6 +80,7 @@ class SsoUpMiddleware
             } catch (\Throwable $th) {
                 // throw $th;
                 logger('try_catch:', ['SsoUpMiddleware_handle:', 'helper', $th->getMessage()]);
+                report($th);
 
                 return response()->redirectTo($sso_login_url);
             }
@@ -127,11 +128,12 @@ class SsoUpMiddleware
                         if (null != $temp_user) {
                             if (null != Auth::guard('web')->user()) {
                                 if (Auth::guard('web')->user()->id == $temp_user->id) {
-                                    return response()->redirectToRoute('root.index');
+                                    return response()->redirectToRoute('login.redirect');
                                 }
                             } else {
                                 if (Auth::guard('web')->loginUsingId($temp_user->id)) {
-                                    return response()->redirectToRoute('root.index');
+                                    return response()->json([$temp_user]);
+                                    return response()->redirectToRoute('login.redirect');
                                 }
                             }
                         }
@@ -152,7 +154,7 @@ class SsoUpMiddleware
             } catch (\Throwable $th) {
                 // throw $th;
                 logger('try_catch:', ['SsoUpMiddleware_handle:', 'helper', $th->getMessage()]);
-
+                report($th);
                 // Do nothing.
             }
         }

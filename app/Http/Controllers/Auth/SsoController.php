@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\SSO\SSOServices;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\SsoUpMiddleware;
 
 class SsoController extends Controller
 {
@@ -43,17 +44,18 @@ class SsoController extends Controller
 
     public function logoutSso(Request $request)
     {
-        if (config('app.sso_login') && config('app.sso_siska')) {
+        if (config('app.sso_login') || config('app.sso_siska')) {
             $response = $this->ssoServices->logoutSso($request);
 
             if ($response) {
-                return redirect()->route('sso.redirect');
+                return redirect('/');
             }
         } else {
             Auth::logout();
+            SsoUpMiddleware::trySessionSsoLogout();
             $request->session()->flush();
             $request->session()->regenerate();
-            return redirect()->route('login');
+            return redirect('/');
         }
 
         return redirect()->route('admin.dashboard');
