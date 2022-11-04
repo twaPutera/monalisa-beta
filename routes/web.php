@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemut
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\History\DepresiasiController;
+use App\Http\Controllers\Admin\History\HistoryPeminjamanController;
 use App\Http\Controllers\Admin\History\HistoryPengaduanController;
 use App\Http\Controllers\Admin\History\HistoryServiceController;
 use App\Http\Controllers\Admin\History\SummaryAssetController;
@@ -146,7 +147,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/datatable', [MasterAssetController::class, 'log_opname_dt'])->name('admin.listing-asset.log-opname.datatable');
             Route::get('/show/{id}', [MasterAssetController::class, 'log_opname_show'])->name('admin.listing-asset.log-opname.show');
         });
-
     });
 
     #Report
@@ -164,6 +164,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
             Route::get('/download/export', [HistoryPengaduanController::class, 'download'])->name('admin.report.history-pengaduan.download-export');
         });
+
+        Route::group(['prefix' => 'history-peminjaman'], function () {
+            Route::get('/', [HistoryPeminjamanController::class, 'index'])->name('admin.report.history-peminjaman.index');
+            Route::get('/download/export', [HistoryPeminjamanController::class, 'download'])->name('admin.report.history-peminjaman.download-export');
+        });
+
         Route::group(['prefix' => 'history-service'], function () {
             Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
             Route::get('/download/export', [HistoryServiceController::class, 'download'])->name('admin.report.history-service.download-export');
@@ -397,7 +403,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
-        Route::group(['prefix' => 'peminjaman', ], function () {
+        Route::group(['prefix' => 'peminjaman',], function () {
             Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');
             Route::get('/detail/{id}', [UserPeminjamanAssetController::class, 'detail'])->name('user.asset-data.peminjaman.detail');
             Route::get('/get-all-data', [UserPeminjamanAssetController::class, 'getAllData'])->name('user.asset-data.peminjaman.get-all-data');
