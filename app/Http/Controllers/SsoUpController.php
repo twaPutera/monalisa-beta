@@ -44,7 +44,7 @@ class SsoUpController extends Controller
                 ]);
                 logger('SsoUpController_handleToken:', ['sso_login_success', $username]);
 
-                return response()->redirectToRoute('root.index');
+                return response()->redirectToRoute('login.redirect');
             }
         } catch (\Throwable $th) {
             // throw $th;
@@ -60,7 +60,7 @@ class SsoUpController extends Controller
 
             $helper = new SsoUpHelper(config('sso-up'));
             if ($helper->isLoggedIn($token, $username)) {
-                return response()->redirectToRoute('root.index');
+                return response()->redirectToRoute('login.redirect');
             }
 
             SsoUpMiddleware::trySessionSsoLogout();

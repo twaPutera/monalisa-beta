@@ -128,12 +128,12 @@ class SsoUpMiddleware
                         if (null != $temp_user) {
                             if (null != Auth::guard('web')->user()) {
                                 if (Auth::guard('web')->user()->id == $temp_user->id) {
-                                    return response()->redirectToRoute('root.index');
+                                    return response()->redirectToRoute('login.redirect');
                                 }
                             } else {
                                 if (Auth::guard('web')->loginUsingId($temp_user->id)) {
                                     return response()->json([$temp_user]);
-                                    return response()->redirectToRoute('root.index');
+                                    return response()->redirectToRoute('login.redirect');
                                 }
                             }
                         }
