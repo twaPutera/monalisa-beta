@@ -44,7 +44,7 @@ class SsoUpMiddleware
                     try {
                         $temp_user = User::query()
                             ->select(['id'])
-                            ->where('sso_username', $username)
+                            ->where('username_sso', $username)
                             ->where('is_active', '1')
                             ->first();
                         if (null != $temp_user) {
@@ -61,28 +61,6 @@ class SsoUpMiddleware
                     } catch (\Throwable $th) {
                         // throw $th;
                         logger('try_catch:', ['SsoUpMiddleware_handle:', 'web guard', $th->getMessage()]);
-                    }
-
-                    try {
-                        $temp_user = AdminUser::query()
-                            ->select(['id'])
-                            ->where('sso_username', $username)
-                            ->where('is_active', '1')
-                            ->first();
-                        if (null != $temp_user) {
-                            if (null != Auth::guard('web_admin')->user()) {
-                                if (Auth::guard('web_admin')->user()->id == $temp_user->id) {
-                                    return $next($request);
-                                }
-                            } else {
-                                if (Auth::guard('web_admin')->loginUsingId($temp_user->id)) {
-                                    return $next($request);
-                                }
-                            }
-                        }
-                    } catch (\Throwable $th) {
-                        // throw $th;
-                        logger('try_catch:', ['SsoUpMiddleware_handle:', 'web_admin guard', $th->getMessage()]);
                     }
 
                     // Remove session because SSO username unknown
@@ -143,7 +121,7 @@ class SsoUpMiddleware
                     try {
                         $temp_user = User::query()
                             ->select(['id'])
-                            ->where('sso_username', $username)
+                            ->where('username_sso', $username)
                             ->where('is_active', '1')
                             ->first();
                         if (null != $temp_user) {
@@ -160,28 +138,6 @@ class SsoUpMiddleware
                     } catch (\Throwable $th) {
                         // throw $th;
                         logger('try_catch:', ['SsoUpMiddleware_handle:', 'web guard', $th->getMessage()]);
-                    }
-
-                    try {
-                        $temp_user = AdminUser::query()
-                            ->select(['id'])
-                            ->where('sso_username', $username)
-                            ->where('is_active', '1')
-                            ->first();
-                        if (null != $temp_user) {
-                            if (null != Auth::guard('web_admin')->user()) {
-                                if (Auth::guard('web_admin')->user()->id == $temp_user->id) {
-                                    return response()->redirectToRoute('root.index');
-                                }
-                            } else {
-                                if (Auth::guard('web_admin')->loginUsingId($temp_user->id)) {
-                                    return response()->redirectToRoute('root.index');
-                                }
-                            }
-                        }
-                    } catch (\Throwable $th) {
-                        // throw $th;
-                        logger('try_catch:', ['SsoUpMiddleware_handle:', 'web_admin guard', $th->getMessage()]);
                     }
 
                     // Remove session because SSO username unknown
