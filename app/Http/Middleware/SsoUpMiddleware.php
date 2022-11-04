@@ -80,6 +80,7 @@ class SsoUpMiddleware
             } catch (\Throwable $th) {
                 // throw $th;
                 logger('try_catch:', ['SsoUpMiddleware_handle:', 'helper', $th->getMessage()]);
+                report($th);
 
                 return response()->redirectTo($sso_login_url);
             }
@@ -152,7 +153,7 @@ class SsoUpMiddleware
             } catch (\Throwable $th) {
                 // throw $th;
                 logger('try_catch:', ['SsoUpMiddleware_handle:', 'helper', $th->getMessage()]);
-
+                report($th);
                 // Do nothing.
             }
         }
