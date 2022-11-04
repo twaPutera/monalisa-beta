@@ -89,28 +89,36 @@
                                 <label for="">Nomor Seri</label>
                                 <input type="text" class="form-control" name="no_seri">
                             </div>
-                            <div class="row">
-
-                                <div class="form-group col-md-6 col-6">
-                                    <div class="d-flex align-items-center mt-4">
-                                        <span class="kt-switch kt-switch--sm kt-switch--icon">
-                                            <label class="mb-0">
-                                                <input type="checkbox" value="1" name="is_sparepart">
-                                                <span></span>
-                                            </label>
-                                        </span>
-                                        <span class="ml-4">Sparepart</span>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6 col-6">
-                                    <div class="d-flex align-items-center mt-4">
-                                        <span class="kt-switch kt-switch--sm kt-switch--icon">
-                                            <label class="mb-0">
-                                                <input type="checkbox" value="1" name="is_pinjam">
-                                                <span></span>
-                                            </label>
-                                        </span>
-                                        <span class="ml-4">Dapat Dipinjam</span>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="form-group col-md-4 col-6 d-flex">
+                                        <div class="d-flex align-items-center mr-4">
+                                            <span class="kt-switch kt-switch--sm kt-switch--icon">
+                                                <label class="mb-0">
+                                                    <input type="checkbox" value="1" name="is_sparepart">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                            <span class="ml-4">Sparepart</span>
+                                        </div>
+                                        <div class="d-flex align-items-center mr-4">
+                                            <span class="kt-switch kt-switch--sm kt-switch--icon">
+                                                <label class="mb-0">
+                                                    <input type="checkbox" value="1" name="is_pinjam">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                            <span class="ml-4">Dapat Dipinjam</span>
+                                        </div>
+                                        <div class="d-flex align-items-center mr-4">
+                                            <span class="kt-switch kt-switch--sm kt-switch--icon">
+                                                <label class="mb-0">
+                                                    <input type="checkbox" value="1" name="is_it">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                            <span class="ml-4">Barang IT</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
