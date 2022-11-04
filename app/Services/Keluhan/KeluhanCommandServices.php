@@ -46,7 +46,7 @@ class KeluhanCommandServices
         $log_asset = new LogPengaduanAsset();
         $user = SsoHelpers::getUserLogin();
         $log_asset->id_pengaduan = $id_pengaduan;
-        $log_asset->message_log = "Perubahan data ($message)";
+        $log_asset->message_log = "Penanganan Pengaduan ($message)";
         $log_asset->status =  $status;
         $log_asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $log_asset->save();

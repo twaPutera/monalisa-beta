@@ -30,7 +30,7 @@ class PengaduanCommandServices
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
 
-        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Laporan Masuk');
+        $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Laporan Masuk');
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_pengaduan->id);
@@ -60,7 +60,7 @@ class PengaduanCommandServices
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
         $asset_pengaduan->save();
 
-        $log = self::storeLog($asset_pengaduan->id, 'laporan masuk', $request->alasan_pengaduan, 'Perubahan Laporan');
+        $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Perubahan Laporan');
 
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-pengaduan');

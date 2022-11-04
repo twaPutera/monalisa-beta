@@ -28,7 +28,8 @@
                     data: function(d) {
                         d.awal = $('.datepickerAwal').val();
                         d.akhir = $('.datepickerAkhir').val();
-                        d.status_pengaduan = "selesai";
+                        d.status_pengaduan = $('#statusPengaduan').val();
+                        d.id_asset_data = $('#assetDataService').val();
                         d.id_lokasi = $('#lokasiAssetCreateService').val();
                         d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.keyword = $('#searchServices').val();
@@ -40,13 +41,6 @@
                         orderable: false,
                         searchable: false,
                         name: 'DT_RowIndex'
-                    },
-                    {
-                        data: "action",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'action'
                     },
                     {
                         name: 'tanggal_keluhan',
@@ -77,28 +71,49 @@
                         data: 'status_pengaduan'
                     },
                     {
-                        data: 'catatan_admin',
-                        data: 'catatan_admin'
+                        data: 'log_terakhir',
+                        data: 'log_terakhir'
+                    },
+                    {
+                        data: 'message_log',
+                        data: 'message_log'
+                    },
+                    {
+                        data: 'dilakukan_oleh',
+                        data: 'dilakukan_oleh'
                     },
 
                 ],
                 columnDefs: [{
-                    targets: 8,
-                    render: function(data, type, full, meta) {
-                        let element = "";
-                        if (data == "dilaporkan") {
-                            element +=
-                                `<span class="kt-badge kt-badge--warning kt-badge--inline">Laporan Masuk</span>`;
-                        } else if (data == "diproses") {
-                            element +=
-                                `<span class="kt-badge kt-badge--info kt-badge--inline">Diproses</span>`;
-                        } else if (data == "selesai") {
-                            element +=
-                                `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
-                        }
-                        return element;
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "dilaporkan") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Laporan Masuk</span>`;
+                            } else if (data == "diproses") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Diproses</span>`;
+                            } else if (data == "selesai") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                            }
+                            return element;
+                        },
                     },
-                }],
+                    {
+                        targets: [1],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: [8],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateTimeIntoIndonesia(data) : '-';
+                        },
+                    },
+                ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
@@ -135,18 +150,29 @@
                 padding: '10px',
                 allowClear: true,
             })
+            $('#assetDataService').select2({
+                width: '100%',
+                placeholder: 'Pilih Asset',
+                padding: '10px',
+                allowClear: true,
+            })
             generateLocationServiceSelect();
             generateLocationAsset();
+            generateAssetServiceSelect();
             exportData();
         });
 
         const exportData = () => {
             let awal = $('.datepickerAwal').val();
             let akhir = $('.datepickerAkhir').val();
+            let id_asset_data = $('#assetDataService').val();
+            let status_pengaduan = $('#statusPengaduan').val();
             let id_lokasi = $('#lokasiAssetCreateService').val();
             let id_kategori_asset = $('#listKategoriAssetLocation').val();
             $('#tgl_awal_export').val(awal);
+            $('#status_pengaduan_export').val(status_pengaduan);
             $('#tgl_akhir_export').val(akhir);
+            $('#id_asset_data_export').val(id_asset_data);
             $('#id_lokasi_export').val(id_lokasi);
             $('#id_kategori_asset_export').val(id_kategori_asset);
 
@@ -167,7 +193,24 @@
                 }
             })
         }
-
+        const generateAssetServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#assetDataService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Asset</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
         const showKeluhanImage = (button) => {
             const url = $(button).data('url_detail');
             $.ajax({
@@ -262,12 +305,15 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <form action="{{ route('admin.report.history-pengaduan.download-export') }}" method="get">
+                                <form action="{{ route('admin.report.history-pengaduan.download-export') }}"
+                                    method="get">
                                     <div class="d-md-flex d-block align-items-center mt-2 mb-2">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="status_pengaduan" id="status_pengaduan_export">
                                         <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <input type="hidden" name="tgl_awal" id="tgl_awal_export">
                                         <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
+                                        <input type="hidden" name="id_asset_data" id="id_asset_data_export">
                                         <button type="button" onclick="openModalByClass('modalFilterAsset')"
                                             class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
                                         <button class="btn btn-success shadow-custom btn-sm ml-2" type="submit"><i
@@ -301,7 +347,6 @@
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
-                                    <th width="100px">#</th>
                                     <th>Tanggal Pengaduan</th>
                                     <th>Nama Asset</th>
                                     <th>Lokasi Asset</th>
@@ -309,7 +354,9 @@
                                     <th>Gambar Pengaduan</th>
                                     <th>Dilaporkan Oleh</th>
                                     <th>Status Pengaduan</th>
-                                    <th>Catatan Admin</th>
+                                    <th>Log Terakhir</th>
+                                    <th>Aktifitas</th>
+                                    <th>Dilakukan Oleh</th>
                                 </tr>
                             </thead>
                             <tbody>

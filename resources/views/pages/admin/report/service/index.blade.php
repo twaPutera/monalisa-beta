@@ -87,9 +87,15 @@
                     },
                 ],
                 columnDefs: [{
-                        targets: [1, 2, 8],
+                        targets: [1, 2],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: [8],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
