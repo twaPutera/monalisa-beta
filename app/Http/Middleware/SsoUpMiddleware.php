@@ -132,6 +132,7 @@ class SsoUpMiddleware
                                 }
                             } else {
                                 if (Auth::guard('web')->loginUsingId($temp_user->id)) {
+                                    return response()->json([$temp_user]);
                                     return response()->redirectToRoute('root.index');
                                 }
                             }
