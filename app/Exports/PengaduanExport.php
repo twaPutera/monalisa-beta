@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\LogPengaduanAsset;
 use App\Models\Pengaduan;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -17,20 +18,29 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
-    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null, $kategori_asset = null)
-    {
+    public function __construct(
+        $tgl_awal = null,
+        $tgl_akhir = null,
+        $lokasi = null,
+        $kategori_asset = null,
+        $asset_data = null,
+        $status_pengaduan = null
+    ) {
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;
         $this->id_lokasi = $lokasi;
         $this->number = 0;
         $this->id_kategori_asset = $kategori_asset;
+        $this->id_asset_data = $asset_data;
+        $this->status_pengaduan = $status_pengaduan;
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
     }
 
     public function query()
     {
-        $query = Pengaduan::query();
+        $query = LogPengaduanAsset::query();
+        $query->join('pengaduans', 'log_pengaduan_assets.id_pengaduan', '=', 'pengaduans.id');
         $query->leftJoin('lokasis', 'pengaduans.id_lokasi', '=', 'lokasis.id');
         $query->leftJoin('asset_data', 'pengaduans.id_asset_data', '=', 'asset_data.id');
         $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
@@ -44,8 +54,12 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             'pengaduans.created_by',
             'pengaduans.catatan_pengaduan',
             'pengaduans.catatan_admin',
-            'pengaduans.status_pengaduan'
+            'log_pengaduan_assets.status',
+            'log_pengaduan_assets.created_at as log_terakhir',
+            'log_pengaduan_assets.message_log',
+            'log_pengaduan_assets.created_by as dilakukan_oleh'
         ]);
+
         if (isset($this->id_lokasi) && $this->id_lokasi != 'root') {
             $query->where('pengaduans.id_lokasi', $this->id_lokasi);
         }
@@ -60,8 +74,18 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
         if (isset($this->akhir)) {
             $query->where('pengaduans.tanggal_pengaduan', '<=', $this->akhir);
         }
-        $query->where('pengaduans.status_pengaduan', 'selesai');
-        $query->orderBy('pengaduans.tanggal_pengaduan', 'DESC');
+
+        if (isset($this->id_asset_data)) {
+            $query->where('pengaduans.id_asset_data', $this->id_asset_data);
+        }
+
+        if (isset($this->status_pengaduan)) {
+            if ($this->status_pengaduan != 'all') {
+                $query->where('log_pengaduan_assets.status', $this->status_pengaduan);
+            }
+        }
+
+        $query->orderBy('log_pengaduan_assets.created_at', 'DESC');
         return $query;
     }
 
@@ -80,6 +104,15 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
             $name = isset($user) ? $user->name : 'Not Found';
         }
+
+        $dilakukan_oleh = '-';
+        if (config('app.sso_siska')) {
+            $user_melakukan = $item->dilakukan_oleh == null ? null : $this->userSsoQueryServices->getUserByGuid($item->dilakukan_oleh);
+            $dilakukan_oleh = isset($user_melakukan[0]) ? $user_melakukan[0]['nama'] : 'Not Found';
+        } else {
+            $user_melakukan = $item->dilakukan_oleh == null ? null : $this->userQueryServices->findById($item->dilakukan_oleh);
+            $dilakukan_oleh = isset($user_melakukan) ? $user_melakukan->name : 'Not Found';
+        }
         return [
             $this->number += 1,
             $item->tanggal_pengaduan,
@@ -90,13 +123,16 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $name,
             $item->catatan_pengaduan,
             $item->catatan_admin,
-            $item->status_pengaduan,
+            $item->status == "dilaporkan" ? 'laporan masuk' : $item->status,
+            $item->log_terakhir,
+            $item->message_log,
+            $dilakukan_oleh
         ];
     }
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Pengaduan Masuk', 'Nama Asset Yang Diadukan', 'Kelompok Asset', 'Jenis Asset', 'Nama Lokasi Yang Diadukan', 'Dilaporkan Oleh', 'Catatan Pengaduan', 'Catatan Admin', 'Status Pengaduan'];
+        return ['No', 'Tanggal Pengaduan Masuk', 'Nama Asset Yang Diadukan', 'Kelompok Asset', 'Jenis Asset', 'Nama Lokasi Yang Diadukan', 'Dilaporkan Oleh', 'Catatan Pengaduan', 'Catatan Admin', 'Status Pengaduan', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)

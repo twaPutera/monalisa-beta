@@ -23,7 +23,7 @@ class HistoryServiceController extends Controller
 
     public function download(Request $request)
     {
-        return Excel::download(new ServiceExport($request->tgl_awal, $request->tgl_akhir, $request->id_lokasi, $request->id_kategori_asset), 'laporan-history-services.xlsx');
+        return Excel::download(new ServiceExport($request->tgl_awal, $request->tgl_akhir, $request->id_lokasi, $request->id_kategori_asset, $request->status_service, $request->id_asset_data), 'laporan-history-services.xlsx');
     }
 
     public function datatable(Request $request)

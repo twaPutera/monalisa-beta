@@ -9,6 +9,19 @@
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 @endsection
+@section('custom_css')
+    <style>
+        div.dataTables_wrapper {
+            width: 200% !important;
+        }
+
+        #imgPreviewAsset {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+@endsection
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
@@ -51,6 +64,10 @@
                         data: 'tanggal_selesai'
                     },
                     {
+                        name: 'kode_asset',
+                        data: 'kode_asset'
+                    },
+                    {
                         name: 'asset_deskripsi',
                         data: 'asset_deskripsi'
                     },
@@ -68,6 +85,26 @@
                     {
                         name: 'nama_kategori',
                         data: 'nama_kategori'
+                    },
+                    {
+                        name: 'lokasi',
+                        data: 'lokasi'
+                    },
+                    {
+                        name: 'permasalahan',
+                        data: 'permasalahan'
+                    },
+                    {
+                        name: 'tindakan',
+                        data: 'tindakan'
+                    },
+                    {
+                        name: 'catatan',
+                        data: 'catatan'
+                    },
+                    {
+                        name: 'keterangan',
+                        data: 'keterangan'
                     },
                     {
                         name: 'status_service',
@@ -93,13 +130,13 @@
                         },
                     },
                     {
-                        targets: [8],
+                        targets: [14],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 7,
+                        targets: 13,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -312,10 +349,16 @@
                                     <th>No</th>
                                     <th>Tgl. Mulai</th>
                                     <th>Tgl. Selesai</th>
+                                    <th>Kode Asset</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Tipe</th>
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
+                                    <th>Lokasi</th>
+                                    <th>Permasalahan</th>
+                                    <th>Tindakan</th>
+                                    <th>Catatan</th>
+                                    <th>Keterangan Service</th>
                                     <th>Status Service</th>
                                     <th>Log Terakhir</th>
                                     <th>Aktifitas</th>

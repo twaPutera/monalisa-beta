@@ -194,9 +194,7 @@ class AssetServiceDatatableServices
 
         if (isset($request->status_service)) {
             if ($request->status_service != 'all') {
-                $query->whereHas('service', function ($query) use ($request) {
-                    $query->where('status_service', $request->status_service);
-                });
+                $query->where('status', $request->status_service);
             }
         }
 
@@ -255,6 +253,12 @@ class AssetServiceDatatableServices
                 }
                 return $name;
             })
+            ->addColumn('kode_asset', function ($item) {
+                return $item->service->detail_service->asset_data->kode_asset ?? 'Tidak Ada';
+            })
+            ->addColumn('lokasi', function ($item) {
+                return $item->service->detail_service->asset_data->lokasi->nama_lokasi ?? 'Tidak Ada';
+            })
             ->addColumn('asset_deskripsi', function ($item) {
                 return $item->service->detail_service->asset_data->deskripsi ?? 'Tidak Ada';
             })
@@ -266,6 +270,18 @@ class AssetServiceDatatableServices
             })
             ->addColumn('tanggal_selesai', function ($item) {
                 return $item->service->tanggal_selesai ?? 'Tidak Ada';
+            })
+            ->addColumn('permasalahan', function ($item) {
+                return $item->service->detail_service->permasalahan ?? 'Tidak Ada';
+            })
+            ->addColumn('tindakan', function ($item) {
+                return $item->service->detail_service->tindakan ?? 'Tidak Ada';
+            })
+            ->addColumn('catatan', function ($item) {
+                return $item->service->detail_service->catatan ?? 'Tidak Ada';
+            })
+            ->addColumn('keterangan', function ($item) {
+                return $item->service->keterangan ?? 'Tidak Ada';
             })
             ->addColumn('status_service', function ($item) {
                 return $item->status ?? 'Tidak Ada';

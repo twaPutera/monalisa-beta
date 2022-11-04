@@ -2,7 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\Service;
+use App\Models\LogServiceAsset;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -15,18 +17,29 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
-    public function __construct($tgl_awal = null, $tgl_akhir = null, $lokasi = null, $kategori_asset = null)
-    {
+    public function __construct(
+        $tgl_awal = null,
+        $tgl_akhir = null,
+        $lokasi = null,
+        $kategori_asset = null,
+        $status_servce = null,
+        $asset_data = null,
+    ) {
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;
         $this->id_lokasi = $lokasi;
         $this->id_kategori_asset = $kategori_asset;
+        $this->id_asset_data = $asset_data;
+        $this->status_service = $status_servce;
         $this->number = 0;
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function query()
     {
-        $query = Service::query();
+        $query = LogServiceAsset::query();
+        $query->join('services', 'log_service_assets.id_service', '=', 'services.id');
         $query->join('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
         $query->join('detail_services', 'detail_services.id_service', '=', 'services.id');
         $query->join('asset_data', 'detail_services.id_asset_data', '=', 'asset_data.id');
@@ -46,15 +59,31 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             'detail_services.tindakan',
             'detail_services.catatan',
             'services.keterangan',
-            'services.status_service'
+            'log_service_assets.status',
+            'log_service_assets.created_at as log_terakhir',
+            'log_service_assets.message_log',
+            'log_service_assets.created_by'
         ]);
+
+
+        if (isset($this->status_service)) {
+            if ($this->status_service != 'all') {
+                $query->where('log_service_assets.status', $this->status_service);
+            }
+        }
+
+        if (isset($this->id_asset_data)) {
+            $query->where('detail_services.id_asset_data', $this->id_asset_data);
+        }
 
         if (isset($this->id_lokasi)) {
             $query->where('detail_services.id_lokasi', $this->id_lokasi);
         }
+
         if (isset($this->id_kategori_asset)) {
             $query->where('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
+
         if (isset($this->awal)) {
             $query->where('services.tanggal_selesai', '>=', $this->awal);
         }
@@ -62,8 +91,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         if (isset($this->akhir)) {
             $query->where('services.tanggal_selesai', '<=', $this->akhir);
         }
-        $query->where('services.status_service', 'selesai');
-        $query->orderBy('services.created_at', 'DESC');
+        $query->orderBy('log_service_assets.created_at', 'DESC');
         return $query;
     }
 
@@ -74,6 +102,14 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
 
     public function map($item): array
     {
+        $name = '-';
+        if (config('app.sso_siska')) {
+            $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+            $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+        } else {
+            $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
+            $name = isset($user) ? $user->name : 'Not Found';
+        }
         return [
             $this->number += 1,
             $item->tanggal_mulai,
@@ -88,13 +124,16 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             $item->tindakan,
             $item->catatan,
             $item->keterangan,
-            $item->status_service
+            $item->status,
+            $item->log_terakhir,
+            $item->message_log,
+            $name
         ];
     }
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service'];
+        return ['No', 'Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)

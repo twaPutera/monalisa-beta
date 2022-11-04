@@ -24,7 +24,7 @@ class HistoryPengaduanController extends Controller
 
     public function download(Request $request)
     {
-        return Excel::download(new PengaduanExport($request->tgl_awal, $request->tgl_akhir, $request->id_lokasi, $request->id_kategori_asset), 'laporan-history-pengaduan.xlsx');
+        return Excel::download(new PengaduanExport($request->tgl_awal, $request->tgl_akhir, $request->id_lokasi, $request->id_kategori_asset, $request->id_asset_data, $request->status_pengaduan), 'laporan-history-pengaduan.xlsx');
     }
 
     public function datatable(Request $request)
