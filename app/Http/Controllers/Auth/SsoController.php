@@ -47,13 +47,13 @@ class SsoController extends Controller
             $response = $this->ssoServices->logoutSso($request);
 
             if ($response) {
-                return redirect()->route('sso.redirect');
+                return redirect('/');
             }
         } else {
             Auth::logout();
             $request->session()->flush();
             $request->session()->regenerate();
-            return redirect()->route('login');
+            return redirect()->route('/');
         }
 
         return redirect()->route('admin.dashboard');
