@@ -4,6 +4,9 @@ namespace App\Services\SSO;
 
 use App\Helpers\SsoHelpers;
 use Illuminate\Support\Str;
+use App\Helpers\SsoUpHelper;
+use App\Http\Middleware\SsoMiddleware;
+use App\Http\Middleware\SsoUpMiddleware;
 use Illuminate\Http\Request;
 
 class SSOServices
@@ -51,6 +54,8 @@ class SSOServices
         $request->session()->forget('refresh_token');
         $request->session()->forget('jwt_token');
         $request->session()->forget('user');
+
+        SsoUpMiddleware::trySessionSsoLogout();
 
         $request->session()->flush();
 
