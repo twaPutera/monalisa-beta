@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\History;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\DepresiasiAsset\DepresiasiAssetDatatableServices;
 use App\Exports\DepresiasiExport;
+use App\Http\Controllers\Controller;
+use App\Services\DepresiasiAsset\DepresiasiAssetDatatableServices;
 
 class DepresiasiController extends Controller
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin\History;
 
+use Illuminate\Http\Request;
 use App\Exports\PengaduanExport;
 use App\Http\Controllers\Controller;
-use App\Services\Keluhan\KeluhanDatatableServices;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\Keluhan\KeluhanDatatableServices;
 
 class HistoryPengaduanController extends Controller
 {

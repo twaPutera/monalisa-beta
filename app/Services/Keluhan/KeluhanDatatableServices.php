@@ -78,16 +78,16 @@ class KeluhanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+                return ! empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
+                return ! empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return !empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
+                return ! empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+                return ! empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
@@ -108,10 +108,10 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return !empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
+                return ! empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
             })
             ->addColumn('catatan_admin', function ($item) {
-                return !empty($item->catatan_admin) ? $item->catatan_admin : '-';
+                return ! empty($item->catatan_admin) ? $item->catatan_admin : '-';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -175,7 +175,6 @@ class KeluhanDatatableServices
             });
         }
 
-
         if (isset($request->status_pengaduan)) {
             if ($request->status_pengaduan != 'all') {
                 $query->where('status', $request->status_pengaduan);
@@ -185,16 +184,16 @@ class KeluhanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return !empty($item->pengaduan->tanggal_pengaduan) ? $item->pengaduan->tanggal_pengaduan : '-';
+                return ! empty($item->pengaduan->tanggal_pengaduan) ? $item->pengaduan->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return !empty($item->pengaduan->asset_data->deskripsi) ? $item->pengaduan->asset_data->deskripsi : '-';
+                return ! empty($item->pengaduan->asset_data->deskripsi) ? $item->pengaduan->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return !empty($item->pengaduan->lokasi->nama_lokasi) ? $item->pengaduan->lokasi->nama_lokasi : '-';
+                return ! empty($item->pengaduan->lokasi->nama_lokasi) ? $item->pengaduan->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return !empty($item->pengaduan->catatan_pengaduan) ? $item->pengaduan->catatan_pengaduan : '-';
+                return ! empty($item->pengaduan->catatan_pengaduan) ? $item->pengaduan->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
@@ -215,13 +214,13 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return !empty($item->status) ? $item->status : '-';
+                return ! empty($item->status) ? $item->status : '-';
             })
             ->addColumn('message_log', function ($item) {
-                return !empty($item->message_log) ? $item->message_log : '-';
+                return ! empty($item->message_log) ? $item->message_log : '-';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return !empty($item->created_at) ? $item->created_at : '-';
+                return ! empty($item->created_at) ? $item->created_at : '-';
             })
             ->addColumn('dilakukan_oleh', function ($item) {
                 $name = 'Not Found';

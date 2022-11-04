@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Sso\SsoDataController;
+use App\Http\Controllers\Api\AndinApiController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
@@ -11,14 +12,19 @@ use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 use App\Http\Controllers\Admin\Services\ServicesController;
+use App\Http\Controllers\Admin\History\DepresiasiController;
 use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
+use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\History\HistoryServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
+use App\Http\Controllers\Admin\History\HistoryPengaduanController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
+use App\Http\Controllers\Admin\History\HistoryPeminjamanController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
@@ -38,14 +44,8 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
-use App\Http\Controllers\Admin\History\DepresiasiController;
-use App\Http\Controllers\Admin\History\HistoryPeminjamanController;
-use App\Http\Controllers\Admin\History\HistoryPengaduanController;
-use App\Http\Controllers\Admin\History\HistoryServiceController;
-use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\Api\AndinApiController;
 
 /*
 |--------------------------------------------------------------------------

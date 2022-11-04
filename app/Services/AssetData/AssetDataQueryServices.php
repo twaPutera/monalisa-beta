@@ -6,11 +6,9 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
+use App\Models\PeminjamanAsset;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
-use App\Models\DetailPeminjamanAsset;
-use App\Models\PemindahanAsset;
-use App\Models\PeminjamanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 

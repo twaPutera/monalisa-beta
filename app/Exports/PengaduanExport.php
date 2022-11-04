@@ -3,17 +3,16 @@
 namespace App\Exports;
 
 use App\Models\LogPengaduanAsset;
-use App\Models\Pengaduan;
 use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Services\UserSso\UserSsoQueryServices;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
@@ -57,7 +56,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             'log_pengaduan_assets.status',
             'log_pengaduan_assets.created_at as log_terakhir',
             'log_pengaduan_assets.message_log',
-            'log_pengaduan_assets.created_by as dilakukan_oleh'
+            'log_pengaduan_assets.created_by as dilakukan_oleh',
         ]);
 
         if (isset($this->id_lokasi) && $this->id_lokasi != 'root') {
@@ -123,10 +122,10 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $name,
             $item->catatan_pengaduan,
             $item->catatan_admin,
-            $item->status == "dilaporkan" ? 'laporan masuk' : $item->status,
+            $item->status == 'dilaporkan' ? 'laporan masuk' : $item->status,
             $item->log_terakhir,
             $item->message_log,
-            $dilakukan_oleh
+            $dilakukan_oleh,
         ];
     }
 

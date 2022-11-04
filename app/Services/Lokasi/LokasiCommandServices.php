@@ -3,9 +3,9 @@
 namespace App\Services\Lokasi;
 
 use App\Models\Lokasi;
+use App\Models\AssetData;
 use App\Http\Requests\Lokasi\LokasiStoreRequest;
 use App\Http\Requests\Lokasi\LokasiUpdateRequest;
-use App\Models\AssetData;
 
 class LokasiCommandServices
 {
@@ -28,7 +28,7 @@ class LokasiCommandServices
         $request->validated();
 
         $lokasi = Lokasi::findOrFail($id);
-        $lokasi->id_parent_lokasi = $request->id_parent_lokasi == "root" ? null : $request->id_parent_lokasi;
+        $lokasi->id_parent_lokasi = $request->id_parent_lokasi == 'root' ? null : $request->id_parent_lokasi;
         $lokasi->kode_lokasi = $request->kode_lokasi;
         $lokasi->nama_lokasi = $request->nama_lokasi;
         $lokasi->keterangan = $request->keterangan;

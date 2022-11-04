@@ -19,7 +19,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (!empty($request->id_asset)) {
+        if (! empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
@@ -50,7 +50,7 @@ class PengaduanCommandServices
         $request->validated();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (!empty($request->id_asset)) {
+        if (! empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }

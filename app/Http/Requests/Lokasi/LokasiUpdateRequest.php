@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Lokasi;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
 class LokasiUpdateRequest extends FormRequest
 {

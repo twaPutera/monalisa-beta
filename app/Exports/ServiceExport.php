@@ -4,15 +4,15 @@ namespace App\Exports;
 
 use App\Models\LogServiceAsset;
 use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Services\UserSso\UserSsoQueryServices;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
@@ -62,9 +62,8 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             'log_service_assets.status',
             'log_service_assets.created_at as log_terakhir',
             'log_service_assets.message_log',
-            'log_service_assets.created_by'
+            'log_service_assets.created_by',
         ]);
-
 
         if (isset($this->status_service)) {
             if ($this->status_service != 'all') {
@@ -127,7 +126,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             $item->status,
             $item->log_terakhir,
             $item->message_log,
-            $name
+            $name,
         ];
     }
 

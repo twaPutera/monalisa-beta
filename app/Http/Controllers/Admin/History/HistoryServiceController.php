@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin\History;
 
+use Illuminate\Http\Request;
 use App\Exports\ServiceExport;
 use App\Http\Controllers\Controller;
-use App\Services\AssetService\AssetServiceDatatableServices;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\AssetService\AssetServiceDatatableServices;
 
 class HistoryServiceController extends Controller
 {

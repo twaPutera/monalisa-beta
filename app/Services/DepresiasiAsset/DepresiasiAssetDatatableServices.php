@@ -2,8 +2,8 @@
 
 namespace App\Services\DepresiasiAsset;
 
-use App\Models\DepresiasiAsset;
 use Illuminate\Http\Request;
+use App\Models\DepresiasiAsset;
 use Yajra\DataTables\DataTables;
 
 class DepresiasiAssetDatatableServices

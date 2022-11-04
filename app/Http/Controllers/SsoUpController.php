@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\SsoUpHelper;
-use App\Http\Middleware\SsoUpMiddleware;
 use Illuminate\Http\Request;
+use App\Http\Middleware\SsoUpMiddleware;
 
 /**
  * Created by Erlang Parasu 2021.

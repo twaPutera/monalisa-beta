@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\User;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
