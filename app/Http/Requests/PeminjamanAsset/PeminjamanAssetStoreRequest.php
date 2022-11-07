@@ -33,6 +33,7 @@ class PeminjamanAssetStoreRequest extends FormRequest
             'id_jenis_asset.*' => 'required|uuid',
             'data_jenis_asset' => 'required|array',
             'data_jenis_asset.*.jumlah' => 'required|numeric|min:1',
+            'is_it' => 'nullable|in:1,0',
         ];
     }
 

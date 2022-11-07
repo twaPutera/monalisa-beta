@@ -68,7 +68,7 @@ class PeminjamanAssetDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                if ($item->peminjaman_asset->status == 'diproses') {
+                if ($item->peminjaman_asset->status == 'disetujui') {
                     $element .= '<form action="' . route('admin.peminjaman.detail-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
                     $element .= csrf_field();
                     $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">

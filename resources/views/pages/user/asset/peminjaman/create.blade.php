@@ -24,6 +24,7 @@
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+            console.log(errors);
             if (!errors.success) {
                 changeTextToast('toastDanger', errors.message);
                 toastbox('toastDanger', 2000)
@@ -46,6 +47,11 @@
         $(document).ready(function() {
             generateSelect2GroupKategori();
             generateSelect2Kategori();
+            $('#is_it').select2({
+                placeholder: 'Pilih IT',
+                allowClear: true,
+                width: '100%',
+            });
         });
     </script>
     <script>
@@ -135,6 +141,16 @@
                 <label class="text-dark" for="kelompokAsset"><strong>Kelompok Asset</strong></label>
                 <select name="" class="form-control py-3" id="kelompokAsset">
 
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group boxed">
+            <div class="input-wrapper">
+                <label class="text-dark" for=""><strong>Jenis Peminjaman</strong></label>
+                <select name="is_it" class="form-control py-3" id="is_it">
+                    <option value="0">Non IT</option>
+                    <option value="1">IT</option>
                 </select>
             </div>
         </div>
