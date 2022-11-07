@@ -3,17 +3,17 @@
 namespace App\Exports;
 
 use App\Models\AssetData;
-use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithTitle;
+use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Services\UserSso\UserSsoQueryServices;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
@@ -38,17 +38,17 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
         $query->leftJoin('kategori_assets', 'kategori_assets.id', '=', 'asset_data.id_kategori_asset');
         $query->leftJoin('detail_peminjaman_assets', 'asset_data.id', '=', 'detail_peminjaman_assets.id_asset');
         $query->leftJoin('detail_pemindahan_assets', 'asset_data.id', '=', 'detail_pemindahan_assets.id_asset');
-        $query->leftJoin("log_asset_opnames", function ($join) {
-            $join->on("asset_data.id", "=", "log_asset_opnames.id_asset_data")
-                ->where('log_asset_opnames.created_at', '=', DB::raw("(select max(`created_at`) from log_asset_opnames)"));
+        $query->leftJoin('log_asset_opnames', function ($join) {
+            $join->on('asset_data.id', '=', 'log_asset_opnames.id_asset_data')
+                ->where('log_asset_opnames.created_at', '=', DB::raw('(select max(`created_at`) from log_asset_opnames)'));
         });
-        $query->leftJoin("peminjaman_assets", function ($join) {
-            $join->on("peminjaman_assets.id", "=", "detail_peminjaman_assets.id_peminjaman_asset")
-                ->where('peminjaman_assets.created_at', '=', DB::raw("(select max(`created_at`) from peminjaman_assets)"));
+        $query->leftJoin('peminjaman_assets', function ($join) {
+            $join->on('peminjaman_assets.id', '=', 'detail_peminjaman_assets.id_peminjaman_asset')
+                ->where('peminjaman_assets.created_at', '=', DB::raw('(select max(`created_at`) from peminjaman_assets)'));
         });
-        $query->leftJoin("pemindahan_assets", function ($join) {
-            $join->on("pemindahan_assets.id", "=", "detail_pemindahan_assets.id_pemindahan_asset")
-                ->where('pemindahan_assets.created_at', '=', DB::raw("(select max(`created_at`) from pemindahan_assets)"));
+        $query->leftJoin('pemindahan_assets', function ($join) {
+            $join->on('pemindahan_assets.id', '=', 'detail_pemindahan_assets.id_pemindahan_asset')
+                ->where('pemindahan_assets.created_at', '=', DB::raw('(select max(`created_at`) from pemindahan_assets)'));
         });
         $query->select([
             'asset_data.kode_asset',
@@ -119,13 +119,13 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             $opname_by = isset($find_opname) ? $find_opname->name : 'Not Found';
         }
         $peminjam = $item->json_peminjam_asset ? json_decode($item->json_peminjam_asset) : 'Not Found';
-        $peminjam_name = $peminjam->name ?? "Not Found";
+        $peminjam_name = $peminjam->name ?? 'Not Found';
 
         $penyerah = $item->json_penyerah_asset ? json_decode($item->json_penyerah_asset) : 'Not Found';
-        $penyerah_name = $penyerah->nama ?? "Not Found";
+        $penyerah_name = $penyerah->nama ?? 'Not Found';
 
         $penerima = $item->json_penerima_asset ? json_decode($item->json_penerima_asset) : 'Not Found';
-        $penerima_name = $penerima->nama ?? "Not Found";
+        $penerima_name = $penerima->nama ?? 'Not Found';
         return [
             $this->number += 1,
             $item->kode_asset,
@@ -151,7 +151,7 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             $peminjam_name,
             $item->tanggal_pemindahan,
             $penyerah_name,
-            $penerima_name
+            $penerima_name,
         ];
     }
 

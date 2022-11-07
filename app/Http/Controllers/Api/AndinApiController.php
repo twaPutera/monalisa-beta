@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Services\API\AndinApiServices;
 
 class AndinApiController extends Controller
@@ -21,19 +21,19 @@ class AndinApiController extends Controller
             $data = collect($this->andinApiServices->findAllMemorandum($request))->map(function ($item) {
                 return [
                     'id' => $item['id'],
-                    'text' => $item['nomor_surat']
+                    'text' => $item['nomor_surat'],
                 ];
             });
 
             return response()->json([
                 'success' => true,
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

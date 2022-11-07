@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Admin\UserManagement;
 
+use App\Imports\UserImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Services\User\UserQueryServices;
 use App\Services\User\UserCommandServices;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Services\User\UserDatatableServices;
-use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\User\UserImportRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\UserChangePasswordRequest;
-use App\Imports\UserImport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -159,7 +159,6 @@ class UserController extends Controller
                 'success' => true,
                 'message' => 'User has been imported successfully',
             ], 200);
-
         } catch (\Maatwebsite\Excel\Validators\ValidationException $th) {
             DB::rollback();
             $failures = $th->failures();

@@ -2,13 +2,14 @@
 
 namespace App\Services\PeminjamanAsset;
 
-use App\Helpers\DateIndoHelpers;
 use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PeminjamanAsset;
+use App\Helpers\DateIndoHelpers;
+use App\Jobs\PeminjamanDueDateJob;
 use App\Models\DetailPeminjamanAsset;
 use App\Models\RequestPeminjamanAsset;
 use App\Models\PerpanjanganPeminjamanAsset;
@@ -19,7 +20,6 @@ use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
-use App\Jobs\PeminjamanDueDateJob;
 
 class PeminjamanAssetCommandServices
 {
@@ -144,7 +144,6 @@ class PeminjamanAssetCommandServices
         $peminjam = json_decode($peminjaman->json_peminjam_asset);
 
         if ($request->status == 'dipinjam') {
-
             $detail_peminjaman = DetailPeminjamanAsset::where('id_peminjaman_asset', $peminjaman->id)->get();
             foreach ($detail_peminjaman as $detail) {
                 $message_log = 'Asset Dipinjam pada tanggal ' . date('d/m/Y', strtotime($peminjaman->tanggal_peminjaman)) . ' oleh ' . $peminjam->name;

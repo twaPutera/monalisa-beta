@@ -6,7 +6,6 @@ use App\Models\LogAsset;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
-use App\Services\AssetOpname\AssetOpnameQueryServices;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -99,7 +98,7 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (!isset($request->is_pemutihan)) {
+        if (! isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
         // $query->orderBy('created_at', 'ASC');
@@ -180,7 +179,6 @@ class AssetDataDatatableServices
             $query->where('id_kategori_asset', $request->id_kategori_asset);
         }
 
-
         $query->where('is_pemutihan', 0);
         return DataTables::of($query)
             ->addIndexColumn()
@@ -234,7 +232,7 @@ class AssetDataDatatableServices
             ->addColumn('user_peminjaman', function ($item) {
                 $peminjaman = $item->detail_peminjaman_asset->sortByDesc('created_at')->first();
                 $peminjam = $peminjaman ? json_decode($peminjaman->peminjaman_asset->json_peminjam_asset) : 'Not Found';
-                $name = $peminjam->name ?? "Not Found";
+                $name = $peminjam->name ?? 'Not Found';
                 return $name;
             })
             ->addColumn('tanggal_pemindahan', function ($item) {
@@ -244,13 +242,13 @@ class AssetDataDatatableServices
             ->addColumn('user_penyerah', function ($item) {
                 $pemindahan = $item->detail_pemindahan_asset->sortByDesc('created_at')->first();
                 $penyerah = $pemindahan ? json_decode($pemindahan->pemindahan_asset->json_penyerah_asset) : 'Not Found';
-                $name = $penyerah->nama ?? "Not Found";
+                $name = $penyerah->nama ?? 'Not Found';
                 return $name;
             })
             ->addColumn('user_penerima', function ($item) {
                 $pemindahan = $item->detail_pemindahan_asset->sortByDesc('created_at')->first();
                 $penerima = $pemindahan ? json_decode($pemindahan->pemindahan_asset->json_penerima_asset) : 'Not Found';
-                $name = $penerima->nama ?? "Not Found";
+                $name = $penerima->nama ?? 'Not Found';
                 return $name;
             })
             ->addColumn('owner_name', function ($item) {

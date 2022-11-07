@@ -176,4 +176,129 @@ class AssetServiceDatatableServices
             ->rawColumns(['btn_show_service', 'asset_data', 'action', 'checkbox'])
             ->make(true);
     }
+
+    public function datatableHistoryServices(Request $request)
+    {
+        $query = LogServiceAsset::query()
+            ->with(['service']);
+
+        if (isset($request->id_kategori_asset)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->whereHas('detail_service', function ($query) use ($request) {
+                    $query->whereHas('asset_data', function ($query) use ($request) {
+                        $query->where('id_kategori_asset', $request->id_kategori_asset);
+                    });
+                });
+            });
+        }
+
+        if (isset($request->status_service)) {
+            if ($request->status_service != 'all') {
+                $query->where('status', $request->status_service);
+            }
+        }
+
+        if (isset($request->id_lokasi)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->whereHas('detail_service', function ($query) use ($request) {
+                    $query->where('id_lokasi', $request->id_lokasi);
+                });
+            });
+        }
+
+        if (isset($request->id_asset_data)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->whereHas('detail_service', function ($query) use ($request) {
+                    $query->where('id_asset_data', $request->id_asset_data);
+                });
+            });
+        }
+
+        if (isset($request->awal)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->where('tanggal_selesai', '>=', $request->awal);
+            });
+        }
+
+        if (isset($request->akhir)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->where('tanggal_selesai', '<=', $request->akhir);
+            });
+        }
+
+        if (isset($request->keyword)) {
+            $query->whereHas('service', function ($query) use ($request) {
+                $query->whereHas('detail_service', function ($query) use ($request) {
+                    $query->whereHas('asset_data', function ($query) use ($request) {
+                        $query->where('deskripsi', 'like', '%' . $request->keyword . '%');
+                    });
+                });
+            });
+        }
+
+        $query->orderBy('created_at', 'DESC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('nama_service', function ($item) {
+                return $item->service->kategori_service->nama_service ?? 'Tidak Ada';
+            })
+            ->addColumn('dilakukan_oleh', function ($item) {
+                $name = 'Not Found';
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
+            })
+            ->addColumn('kode_asset', function ($item) {
+                return $item->service->detail_service->asset_data->kode_asset ?? 'Tidak Ada';
+            })
+            ->addColumn('lokasi', function ($item) {
+                return $item->service->detail_service->asset_data->lokasi->nama_lokasi ?? 'Tidak Ada';
+            })
+            ->addColumn('asset_deskripsi', function ($item) {
+                return $item->service->detail_service->asset_data->deskripsi ?? 'Tidak Ada';
+            })
+            ->addColumn('is_inventaris', function ($item) {
+                return $item->service->detail_service->asset_data->is_inventaris ?? 'Tidak Ada';
+            })
+            ->addColumn('tanggal_mulai', function ($item) {
+                return $item->service->tanggal_mulai ?? 'Tidak Ada';
+            })
+            ->addColumn('tanggal_selesai', function ($item) {
+                return $item->service->tanggal_selesai ?? 'Tidak Ada';
+            })
+            ->addColumn('permasalahan', function ($item) {
+                return $item->service->detail_service->permasalahan ?? 'Tidak Ada';
+            })
+            ->addColumn('tindakan', function ($item) {
+                return $item->service->detail_service->tindakan ?? 'Tidak Ada';
+            })
+            ->addColumn('catatan', function ($item) {
+                return $item->service->detail_service->catatan ?? 'Tidak Ada';
+            })
+            ->addColumn('keterangan', function ($item) {
+                return $item->service->keterangan ?? 'Tidak Ada';
+            })
+            ->addColumn('status_service', function ($item) {
+                return $item->status ?? 'Tidak Ada';
+            })
+            ->addColumn('log_terakhir', function ($item) {
+                return $item->created_at ?? 'Tidak Ada';
+            })
+            ->addColumn('aktifitas', function ($item) {
+                return $item->message_log ?? 'Tidak Ada';
+            })
+            ->addColumn('nama_group', function ($item) {
+                return $item->service->detail_service->asset_data->kelas_asset->nama_kelas ?? 'Tidak Ada';
+            })
+            ->addColumn('nama_kategori', function ($item) {
+                return $item->service->detail_service->asset_data->kategori_asset->nama_kategori ?? 'Tidak Ada';
+            })
+
+            ->make(true);
+    }
 }

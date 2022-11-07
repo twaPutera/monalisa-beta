@@ -70,7 +70,7 @@ class DepresiasiHelpers
                 'id',
                 'nilai_buku_asset',
                 'nilai_depresiasi',
-                'nilai_perolehan'
+                'nilai_perolehan',
             ])
             ->where('is_pemutihan', '0')
             ->where('is_inventaris', '0')

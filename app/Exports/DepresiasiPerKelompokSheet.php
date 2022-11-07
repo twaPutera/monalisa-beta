@@ -2,18 +2,17 @@
 
 namespace App\Exports;
 
-use App\Helpers\DepresiasiHelpers;
 use App\Models\AssetData;
+use App\Helpers\DepresiasiHelpers;
 use App\Models\GroupKategoriAsset;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class DepresiasiPerKelompokSheet implements FromCollection, WithTitle, WithHeadings, WithMapping, ShouldAutoSize, WithEvents, WithStyles
@@ -65,7 +64,7 @@ class DepresiasiPerKelompokSheet implements FromCollection, WithTitle, WithHeadi
             ->where('group_kategori_assets.id', $this->group->id)
             ->where('is_inventaris', '0')
             ->where('is_pemutihan', '0')
-            ->get()->map(function ($item) use(&$i) {
+            ->get()->map(function ($item) use (&$i) {
                 $item->no = $i;
                 $sisa_bulan = DepresiasiHelpers::getSisaBulanDepresiasi($item->tanggal_akhir_depresiasi, $item->id);
                 $beban_penyusutan = $item->nilai_depresiasi * $sisa_bulan;
@@ -89,8 +88,8 @@ class DepresiasiPerKelompokSheet implements FromCollection, WithTitle, WithHeadi
     public function headings(): array
     {
         return [
-           ['No', 'Kode Akun', 'Kode Aset', 'Rincian Kode Aset', '', 'Deskripsi Aset', 'Tanggal Perolehan', 'Lokasi', 'Nilai Perolehan', 'Satuan', 'Status Akunting', 'Umur Manfaat Komersial', 'Spesifikasi', 'Mulai', '', 'Akhir', 'Bbn Penyusutan Per Tahun', 'Akm. Penyusutan Awal Tahun', 'Nilai Buku Awal Tahun', 'Beban Penyusutan', 'Nilai Buku Akhir Tahun', 'Nilai Buku Saat Ini'],
-           ['', '', '', 'Kelompok Aset', 'Sub Kelompok Aset', '', '', '', '', '', '', '', '', 'Tahun', 'Bulan', 'Tahun', 'Bulan', '', '', '', '', ''],
+            ['No', 'Kode Akun', 'Kode Aset', 'Rincian Kode Aset', '', 'Deskripsi Aset', 'Tanggal Perolehan', 'Lokasi', 'Nilai Perolehan', 'Satuan', 'Status Akunting', 'Umur Manfaat Komersial', 'Spesifikasi', 'Mulai', '', 'Akhir', 'Bbn Penyusutan Per Tahun', 'Akm. Penyusutan Awal Tahun', 'Nilai Buku Awal Tahun', 'Beban Penyusutan', 'Nilai Buku Akhir Tahun', 'Nilai Buku Saat Ini'],
+            ['', '', '', 'Kelompok Aset', 'Sub Kelompok Aset', '', '', '', '', '', '', '', '', 'Tahun', 'Bulan', 'Tahun', 'Bulan', '', '', '', '', ''],
         ];
     }
 
@@ -135,7 +134,7 @@ class DepresiasiPerKelompokSheet implements FromCollection, WithTitle, WithHeadi
     {
         return [
             // Handle by a closure.
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->mergeCells('A1:A2');
                 $event->sheet->mergeCells('B1:B2');
                 $event->sheet->mergeCells('C1:C2');

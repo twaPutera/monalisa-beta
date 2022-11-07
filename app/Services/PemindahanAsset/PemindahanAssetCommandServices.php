@@ -54,19 +54,19 @@ class PemindahanAssetCommandServices
             'jabatan' => $request->jabatan_penerima,
             'unit_kerja' => $request->unit_kerja_penerima,
             'guid' => null,
-            'nama' => "Tidak Ada",
-            'email' => "Tidak Ada",
-            'no_hp' => "Tidak Ada",
-            'no_induk' => "Tidak Ada",
+            'nama' => 'Tidak Ada',
+            'email' => 'Tidak Ada',
+            'no_hp' => 'Tidak Ada',
+            'no_induk' => 'Tidak Ada',
         ];
         $data_penyerah_array = [
             'jabatan' => $request->jabatan_penyerah,
             'unit_kerja' => $request->unit_kerja_penyerah,
             'guid' => null,
-            'nama' => "Tidak Ada",
-            'email' => "Tidak Ada",
-            'no_hp' => "Tidak Ada",
-            'no_induk' => "Tidak Ada",
+            'nama' => 'Tidak Ada',
+            'email' => 'Tidak Ada',
+            'no_hp' => 'Tidak Ada',
+            'no_induk' => 'Tidak Ada',
         ];
         $array_penyerah_array = [];
         $array_penerima_array = [];
@@ -92,7 +92,7 @@ class PemindahanAssetCommandServices
             $data_penerima = $this->userQueryServices->findById($request->penerima_asset);
             $data_penyerah = $this->userQueryServices->findById($request->penyerah_asset);
 
-            if(isset($data_penerima)){
+            if (isset($data_penerima)) {
                 $array_penerima_array = [
                     'guid' => $data_penerima->guid,
                     'nama' => $data_penerima->name,
@@ -102,7 +102,7 @@ class PemindahanAssetCommandServices
                 ];
             }
 
-            if(isset($data_penyerah)){
+            if (isset($data_penyerah)) {
                 $array_penyerah_array = [
                     'guid' => $data_penyerah->guid,
                     'nama' => $data_penyerah->name,

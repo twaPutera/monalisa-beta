@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\SsoUpHelper;
-use App\Models\AdminUser;
-use App\Models\User;
 use Closure;
+use App\Models\User;
+use App\Helpers\SsoUpHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +15,8 @@ class SsoUpMiddleware
 {
     /**
      * Handle an incoming request.
+     *
+     * @param mixed $custom_guard
      *
      * @return mixed
      */

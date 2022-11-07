@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\History;
 
+use Illuminate\Http\Request;
 use App\Exports\SummaryAssetExport;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SummaryAssetController extends Controller
