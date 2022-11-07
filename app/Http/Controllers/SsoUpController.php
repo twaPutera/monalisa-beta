@@ -13,6 +13,10 @@ class SsoUpController extends Controller
 {
     public function handleToken(Request $request)
     {
+        if (!config('sso-up.enabled')) {
+            return redirect()->route('login');
+        }
+
         logger('SsoUpController_handleToken:', [
             'headers' => getallheaders(),
             '_POST' => $_POST,
