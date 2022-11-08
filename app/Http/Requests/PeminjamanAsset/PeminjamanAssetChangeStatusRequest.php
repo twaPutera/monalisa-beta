@@ -25,6 +25,7 @@ class PeminjamanAssetChangeStatusRequest extends FormRequest
     {
         return [
             'status' => 'required|string|in:disetujui,ditolak,dipinjam,overdue,selesai',
+            'keterangan_pengembalian' => 'nullable|string',
         ];
     }
 }
