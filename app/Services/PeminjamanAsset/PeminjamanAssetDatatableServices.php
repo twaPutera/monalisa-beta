@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\PeminjamanAsset;
 use Yajra\DataTables\DataTables;
 use App\Models\DetailPeminjamanAsset;
+use App\Models\LogPeminjamanAsset;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PeminjamanAssetDatatableServices
 {
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
+    }
+
     public function datatable(Request $request)
     {
         $query = PeminjamanAsset::query()
@@ -79,6 +88,59 @@ class PeminjamanAssetDatatableServices
                 return $element;
             })
             ->rawColumns(['action', 'asset_data'])
+            ->make(true);
+    }
+
+    public function logPeminjamanDatatable(Request $request)
+    {
+        $query = LogPeminjamanAsset::query()
+            ->select([
+                'log_peminjaman_assets.*',
+                'peminjaman_assets.code',
+            ])
+            ->join('peminjaman_assets', 'peminjaman_assets.id', '=', 'log_peminjaman_assets.peminjaman_asset_id');
+
+        $filter = $request->toArray();
+
+        if (isset($request->searchKeyword)) {
+            $query->whereHas('peminjaman_asset', function ($query) use($request) {
+                $query->where('code', 'like', '%' . $request->searchKeyword . '%');
+            });
+        }
+
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+        }
+
+        if (isset($request->peminjaman_asset_id)) {
+            $query->where('peminjaman_asset_id', $request->peminjaman_asset_id);
+        }
+
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if (0 == $order_column_index || 1 == $order_column_index) {
+            $query->orderBy('created_at', $order_column_dir);
+        }
+
+        if (2 == $order_column_index) {
+            $query->orderBy('peminjaman_assets.code', $order_column_dir);
+        }
+
+        return DataTables::of($query)
+            ->addColumn('created_by_name', function ($item) {
+                $name = '-';
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+
+                return $name;
+            })
+            ->addIndexColumn()
             ->make(true);
     }
 }
