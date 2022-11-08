@@ -74,7 +74,14 @@ class KeluhanDatatableServices
                 $query->where('status_pengaduan', $request->status_pengaduan);
             }
         }
-        $query->orderBy('tanggal_pengaduan', 'DESC');
+        $filter = $request->toArray();
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if ($order_column_index == 2) {
+            $query->orderBy('tanggal_pengaduan', $order_column_dir);
+        }
+        // $query->orderBy('tanggal_pengaduan', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {

@@ -184,6 +184,7 @@ class PeminjamanAssetCommandServices
 
         if ($request->status == 'selesai') {
             $peminjaman->rating = $request->rating;
+            $peminjaman->keterangan_pengembalian = $request->keterangan_pengembalian;
         }
 
         $peminjaman->save();
@@ -203,7 +204,7 @@ class PeminjamanAssetCommandServices
         if ($request->status == 'dipinjam') {
             $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah dipinjamkan ke ' . $peminjam->name;
         } else if ($request->status == 'selesai') {
-            $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah selesai dipinjamkan ke ' . $peminjam->name;
+            $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah selesai dipinjamkan ke ' . $peminjam->name . ' dengan rating ' . $request->rating;
         }
 
         $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);

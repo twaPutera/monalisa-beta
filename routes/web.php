@@ -168,6 +168,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
 
         Route::group(['prefix' => 'history-peminjaman'], function () {
             Route::get('/', [HistoryPeminjamanController::class, 'index'])->name('admin.report.history-peminjaman.index');
+            Route::get('/datatable', [HistoryPeminjamanController::class, 'datatable'])->name('admin.report.history-peminjaman.datatable');
             Route::get('/download/export', [HistoryPeminjamanController::class, 'download'])->name('admin.report.history-peminjaman.download-export');
         });
 
