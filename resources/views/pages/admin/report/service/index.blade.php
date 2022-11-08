@@ -33,7 +33,7 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: true,
+                orderable: true,
                 scrollX: true,
                 serverSide: true,
                 ajax: {
@@ -64,6 +64,10 @@
                         data: 'tanggal_selesai'
                     },
                     {
+                        name: 'log_terakhir',
+                        data: 'log_terakhir'
+                    },
+                    {
                         name: 'kode_asset',
                         data: 'kode_asset'
                     },
@@ -80,47 +84,54 @@
                     },
                     {
                         name: 'nama_group',
-                        data: 'nama_group'
+                        data: 'nama_group',
+                        orderable:false,
                     },
                     {
                         name: 'nama_kategori',
-                        data: 'nama_kategori'
+                        data: 'nama_kategori',
+                        orderable:false,
                     },
                     {
                         name: 'lokasi',
-                        data: 'lokasi'
+                        data: 'lokasi',
+                        orderable:false,
                     },
                     {
                         name: 'permasalahan',
-                        data: 'permasalahan'
+                        data: 'permasalahan',
+                        orderable:false,
                     },
                     {
                         name: 'tindakan',
-                        data: 'tindakan'
+                        data: 'tindakan',
+                        orderable:false,
                     },
                     {
                         name: 'catatan',
-                        data: 'catatan'
+                        data: 'catatan',
+                        orderable:false,
                     },
                     {
                         name: 'keterangan',
-                        data: 'keterangan'
+                        data: 'keterangan',
+                        orderable:false,
                     },
                     {
                         name: 'status_service',
-                        data: 'status_service'
+                        data: 'status_service',
+                        orderable:false,
                     },
-                    {
-                        name: 'log_terakhir',
-                        data: 'log_terakhir'
-                    },
+
                     {
                         name: 'aktifitas',
-                        data: 'aktifitas'
+                        data: 'aktifitas',
+                        orderable:false,
                     },
                     {
                         name: 'dilakukan_oleh',
-                        data: 'dilakukan_oleh'
+                        data: 'dilakukan_oleh',
+                        orderable:false,
                     },
                 ],
                 columnDefs: [{
@@ -130,13 +141,13 @@
                         },
                     },
                     {
-                        targets: [14],
+                        targets: [3],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 13,
+                        targets: 14,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -349,6 +360,7 @@
                                     <th>No</th>
                                     <th>Tgl. Mulai</th>
                                     <th>Tgl. Selesai</th>
+                                    <th>Log Terakhir Pada</th>
                                     <th>Kode Asset</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Tipe</th>
@@ -360,7 +372,6 @@
                                     <th>Catatan</th>
                                     <th>Keterangan Service</th>
                                     <th>Status Service</th>
-                                    <th>Log Terakhir</th>
                                     <th>Aktifitas</th>
                                     <th>Dilakukan Oleh</th>
                                 </tr>

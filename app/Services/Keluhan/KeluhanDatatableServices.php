@@ -78,16 +78,16 @@ class KeluhanDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return ! empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return ! empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
+                return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return ! empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
+                return !empty($item->lokasi->nama_lokasi) ? $item->lokasi->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return ! empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
@@ -108,10 +108,10 @@ class KeluhanDatatableServices
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return ! empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
+                return !empty($item->status_pengaduan) ? $item->status_pengaduan : '-';
             })
             ->addColumn('catatan_admin', function ($item) {
-                return ! empty($item->catatan_admin) ? $item->catatan_admin : '-';
+                return !empty($item->catatan_admin) ? $item->catatan_admin : '-';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -136,72 +136,101 @@ class KeluhanDatatableServices
     public function datatableHistoryPengaduan(Request $request)
     {
         $query = LogPengaduanAsset::query();
-        $query->with(['pengaduan', 'pengaduan.image']);
+        $filter = $request->toArray();
+        $query->join('pengaduans', 'log_pengaduan_assets.id_pengaduan', '=', 'pengaduans.id');
+        $query->leftJoin('lokasis', 'pengaduans.id_lokasi', '=', 'lokasis.id');
+        $query->leftJoin('asset_data', 'pengaduans.id_asset_data', '=', 'asset_data.id');
+        $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
+        $query->leftJoin('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
+        $query->select([
+            'pengaduans.id as id_pengaduan',
+            'pengaduans.tanggal_pengaduan',
+            'asset_data.deskripsi',
+            'group_kategori_assets.nama_group',
+            'kategori_assets.nama_kategori',
+            'lokasis.nama_lokasi',
+            'pengaduans.created_by',
+            'pengaduans.catatan_pengaduan',
+            'pengaduans.catatan_admin',
+            'log_pengaduan_assets.status',
+            'log_pengaduan_assets.created_at as log_terakhir',
+            'log_pengaduan_assets.message_log',
+            'log_pengaduan_assets.created_by as dilakukan_oleh',
+        ]);
 
         if (isset($request->id_lokasi)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->where('id_lokasi', $request->id_lokasi);
-            });
+            $query->where('pengaduans.id_lokasi', $request->id_lokasi);
         }
         if (isset($request->id_kategori_asset)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->whereHas('asset_data', function ($query) use ($request) {
-                    $query->where('id_kategori_asset', $request->id_kategori_asset);
-                });
-            });
+            $query->where('asset_data.id_kategori_asset', $request->id_kategori_asset);
         }
 
         if (isset($request->awal)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->where('tanggal_pengaduan', '>=', $request->awal);
-            });
+            $query->where('pengaduans.tanggal_pengaduan', '>=', $request->awal);
         }
 
         if (isset($request->akhir)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->where('tanggal_pengaduan', '<=', $request->akhir);
-            });
+            $query->where('pengaduans.tanggal_pengaduan', '<=', $request->akhir);
         }
 
         if (isset($request->keyword)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->where('catatan_pengaduan', 'like', '%' . $request->keyword . '%');
-            });
+            $query->where('pengaduans.catatan_pengaduan', 'like', '%' . $request->keyword . '%');
         }
 
         if (isset($request->id_asset_data)) {
-            $query->whereHas('pengaduan', function ($query) use ($request) {
-                $query->where('id_asset_data', $request->id_asset_data);
-            });
+            $query->where('pengaduans.id_asset_data', $request->id_asset_data);
         }
 
         if (isset($request->status_pengaduan)) {
             if ($request->status_pengaduan != 'all') {
-                $query->where('status', $request->status_pengaduan);
+                $query->where('log_pengaduan_assets.status', $request->status_pengaduan);
             }
         }
-        $query->orderBy('created_at', 'DESC');
+
+        // SORT
+
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+        if (1 == $order_column_index) {
+            $query->orderBy('pengaduans.tanggal_pengaduan', $order_column_dir);
+        }
+        if (2 == $order_column_index) {
+            $query->orderBy('log_pengaduan_assets.created_at', $order_column_dir);
+        }
+        if (3 == $order_column_index) {
+            $query->orderBy('asset_data.deskripsi', $order_column_dir);
+        }
+        if (4 == $order_column_index) {
+            $query->orderBy('lokasis.nama_lokasi', $order_column_dir);
+        }
+        if (5 == $order_column_index) {
+            $query->orderBy('pengaduans.catatan_pengaduan', $order_column_dir);
+        }
+        if (6 == $order_column_index) {
+            $query->orderBy('log_pengaduan_assets.status', $order_column_dir);
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
-                return ! empty($item->pengaduan->tanggal_pengaduan) ? $item->pengaduan->tanggal_pengaduan : '-';
+                return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
-                return ! empty($item->pengaduan->asset_data->deskripsi) ? $item->pengaduan->asset_data->deskripsi : '-';
+                return !empty($item->deskripsi) ? $item->deskripsi : '-';
             })
             ->addColumn('lokasi_asset', function ($item) {
-                return ! empty($item->pengaduan->lokasi->nama_lokasi) ? $item->pengaduan->lokasi->nama_lokasi : '-';
+                return !empty($item->nama_lokasi) ? $item->nama_lokasi : '-';
             })
             ->addColumn('catatan_pengaduan', function ($item) {
-                return ! empty($item->pengaduan->catatan_pengaduan) ? $item->pengaduan->catatan_pengaduan : '-';
+                return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
                 if (config('app.sso_siska')) {
-                    $user = $item->pengaduan->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->pengaduan->created_by);
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
                     $name = isset($user[0]) ? collect($user[0]) : null;
                 } else {
-                    $user = $this->userQueryServices->findById($item->pengaduan->created_by);
+                    $user = $this->userQueryServices->findById($item->created_by);
                     $name = isset($user) ? $user->name : 'Not Found';
                 }
                 return $name;
@@ -209,26 +238,26 @@ class KeluhanDatatableServices
             ->addColumn('gambar_pengaduan', function ($item) {
                 $data = '';
                 $data .= '<button type="button" onclick="showKeluhanImage(this)"';
-                $data .= 'data-url_detail="' . route('admin.keluhan.get-image', $item->pengaduan->id) . '"';
+                $data .= 'data-url_detail="' . route('admin.keluhan.get-image', $item->id_pengaduan) . '"';
                 $data .= 'class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $data;
             })
             ->addColumn('status_pengaduan', function ($item) {
-                return ! empty($item->status) ? $item->status : '-';
+                return !empty($item->status) ? $item->status : '-';
             })
             ->addColumn('message_log', function ($item) {
-                return ! empty($item->message_log) ? $item->message_log : '-';
+                return !empty($item->message_log) ? $item->message_log : '-';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return ! empty($item->created_at) ? $item->created_at : '-';
+                return !empty($item->log_terakhir) ? $item->log_terakhir : '-';
             })
             ->addColumn('dilakukan_oleh', function ($item) {
                 $name = 'Not Found';
                 if (config('app.sso_siska')) {
-                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $user = $item->dilakukan_oleh == null ? null : $this->userSsoQueryServices->getUserByGuid($item->dilakukan_oleh);
                     $name = isset($user[0]) ? collect($user[0]) : null;
                 } else {
-                    $user = $this->userQueryServices->findById($item->created_by);
+                    $user = $this->userQueryServices->findById($item->dilakukan_oleh);
                     $name = isset($user) ? $user->name : 'Not Found';
                 }
                 return $name;
