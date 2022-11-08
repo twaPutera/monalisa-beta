@@ -48,9 +48,7 @@
         const generateTemplateApproval = (data) => {
             return `
                 <a href="#" data-link_detail="${data.link_detail}" data-link_perpanjangan="${data.link_perpanjangan}" onclick="showDetailPeminjaman(this)" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
-                    <p class="text-dark mb-0 asset-deskripsi">${data.request_peminjaman_asset.map((item) => (
-                        ' ' + item.kategori_asset.nama_kategori
-                    ))}</p>
+                    <p class="text-dark mb-0 asset-deskripsi">${data.code}</p>
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center" style="width: 60%;">
                             <div class="" style="">
@@ -114,6 +112,11 @@
                                 $('#formPerpanjangan').attr('action', url_perpanjangan);
                                 $('#btnShowPerpanjangan').show();
                             }
+                        } else if(data.status == 'selesai') {
+                            $('#formPerpanjangan').attr('action', "");
+                            $('#btnShowPerpanjangan').hide();
+                            $('#keteranganPengembalian').text(data.keterangan_pengembalian);
+                            $('#rating').text(data.rating);
                         } else {
                             $('#formPerpanjangan').attr('action', "");
                             $('#btnShowPerpanjangan').hide();

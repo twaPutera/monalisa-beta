@@ -48,6 +48,16 @@
                             <p class="text-dark mb-1"><strong>Alasan Peminjaman</strong></p>
                             <p id="alasanPeminjaman">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi, aperiam! Illum nobis ad sapiente debitis id? Non officia mollitia eum, cupiditate nemo unde, odio aliquam voluptatibus qui magni, fugiat harum?</p>
                         </div>
+                        <div class="mt-2">
+                            <p class="text-dark mb-1"><strong>Rating Pengembalian</strong></p>
+                            <p id="rating" class="text-dark"></p>
+                        </div>
+                        <div class="form-group boxed">
+                            <div class="input-wrapper">
+                                <label class="text-dark" for=""><strong>Keterangan Pengembalian</strong></label>
+                                <p id="keteranganPengembalian"></p>
+                            </div>
+                        </div>
                         <hr>
                         <div class="containerPerpanjanganForm slide-bottom mt-3" style="display: none;">
                             <form action="" method="POST" class="form-submit" id="formPerpanjangan">
