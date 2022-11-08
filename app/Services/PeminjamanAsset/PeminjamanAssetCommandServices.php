@@ -199,11 +199,11 @@ class PeminjamanAssetCommandServices
             }
         }
 
-        $log_message = "";
+        $log_message = '';
 
         if ($request->status == 'dipinjam') {
             $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah dipinjamkan ke ' . $peminjam->name;
-        } else if ($request->status == 'selesai') {
+        } elseif ($request->status == 'selesai') {
             $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah selesai dipinjamkan ke ' . $peminjam->name . ' dengan rating ' . $request->rating;
         }
 

@@ -92,59 +92,74 @@
                         data: 'nilai_perolehan'
                     },
                     {
-                        data: 'nama_lokasi'
+                        data: 'nama_lokasi',
+                        orderable: false,
                     },
                     {
-                        data: 'owner_name'
+                        data: 'owner_name',
+                        orderable: false,
                     },
                     {
-                        data: 'register_oleh'
+                        data: 'register_oleh',
+                        orderable: false,
                     },
                     {
-                        data: 'nama_satuan'
+                        data: 'nama_satuan',
+                        orderable: false,
                     },
                     {
-                        data: 'nama_vendor'
+                        data: 'nama_vendor',
+                        orderable: false,
                     },
                     {
                         name: 'tanggal_opname',
-                        data: 'tanggal_opname'
+                        data: 'tanggal_opname',
+                        orderable: false,
                     },
                     {
                         name: 'catatan_opname',
-                        data: 'catatan_opname'
+                        data: 'catatan_opname',
+                        orderable: false,
                     },
                     {
                         name: 'user_opname',
-                        data: 'user_opname'
+                        data: 'user_opname',
+                        orderable: false,
                     },
                     {
                         name: 'tanggal_peminjaman',
-                        data: 'tanggal_peminjaman'
+                        data: 'tanggal_peminjaman',
+                        orderable: false,
                     },
                     {
                         name: 'tanggal_pengembalian',
-                        data: 'tanggal_pengembalian'
+                        data: 'tanggal_pengembalian',
+                        orderable: false,
                     },
                     {
                         name: 'status_peminjaman',
-                        data: 'status_peminjaman'
+                        data: 'status_peminjaman',
+                        orderable: false,
                     },
                     {
                         name: 'user_peminjaman',
-                        data: 'user_peminjaman'
+                        data: 'user_peminjaman',
+                        orderable: false,
                     },
                     {
                         name: 'tanggal_pemindahan',
-                        data: 'tanggal_pemindahan'
+                        data: 'tanggal_pemindahan',
+                        orderable: false,
                     },
                     {
                         name: 'user_penyerah',
-                        data: 'user_penyerah'
+                        data: 'user_penyerah',
+                        orderable: false,
                     },
                     {
                         name: 'user_penerima',
-                        data: 'user_penerima'
+                        data: 'user_penerima',
+                        orderable: false,
                     }
                 ],
                 columnDefs: [{

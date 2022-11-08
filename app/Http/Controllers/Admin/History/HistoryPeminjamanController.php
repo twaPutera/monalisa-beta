@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\History;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\PeminjamanAsset\PeminjamanAssetDatatableServices;
-use Illuminate\Http\Request;
 
 class HistoryPeminjamanController extends Controller
 {

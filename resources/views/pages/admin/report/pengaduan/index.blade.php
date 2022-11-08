@@ -20,7 +20,7 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: true,
+                orderable: true,
                 scrollX: true,
                 serverSide: true,
                 ajax: {
@@ -47,45 +47,49 @@
                         data: 'tanggal_keluhan'
                     },
                     {
-                        data: 'nama_asset',
-                        data: 'nama_asset'
-                    },
-                    {
-                        data: 'lokasi_asset',
-                        data: 'lokasi_asset'
-                    },
-                    {
-                        data: 'catatan_pengaduan',
-                        data: 'catatan_pengaduan'
-                    },
-                    {
-                        data: 'gambar_pengaduan',
-                        data: 'gambar_pengaduan'
-                    },
-                    {
-                        data: 'created_by_name',
-                        data: 'created_by_name'
-                    },
-                    {
-                        data: 'status_pengaduan',
-                        data: 'status_pengaduan'
-                    },
-                    {
-                        data: 'log_terakhir',
+                        name: 'log_terakhir',
                         data: 'log_terakhir'
                     },
                     {
-                        data: 'message_log',
-                        data: 'message_log'
+                        name: 'nama_asset',
+                        data: 'nama_asset'
                     },
                     {
+                        name: 'lokasi_asset',
+                        data: 'lokasi_asset'
+                    },
+                    {
+                        name: 'catatan_pengaduan',
+                        data: 'catatan_pengaduan'
+                    },
+                    {
+                        name: 'status_pengaduan',
+                        data: 'status_pengaduan',
+                    },
+                    {
+                        name: 'gambar_pengaduan',
+                        data: 'gambar_pengaduan',
+                        orderable: false
+                    },
+                    {
+                        name: 'created_by_name',
+                        data: 'created_by_name',
+                        orderable: false
+                    },
+                    {
+                        name: 'message_log',
+                        data: 'message_log',
+                        orderable: false
+                    },
+                    {
+                        name: 'dilakukan_oleh',
                         data: 'dilakukan_oleh',
-                        data: 'dilakukan_oleh'
+                        orderable: false
                     },
 
                 ],
                 columnDefs: [{
-                        targets: 7,
+                        targets: 6,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "dilaporkan") {
@@ -108,7 +112,7 @@
                         },
                     },
                     {
-                        targets: [8],
+                        targets: [2],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
@@ -348,13 +352,13 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th>Tanggal Pengaduan</th>
+                                    <th>Log Terakhir</th>
                                     <th>Nama Asset</th>
                                     <th>Lokasi Asset</th>
                                     <th>Catatan Pengaduan</th>
+                                    <th>Status Pengaduan</th>
                                     <th>Gambar Pengaduan</th>
                                     <th>Dilaporkan Oleh</th>
-                                    <th>Status Pengaduan</th>
-                                    <th>Log Terakhir</th>
                                     <th>Aktifitas</th>
                                     <th>Dilakukan Oleh</th>
                                 </tr>

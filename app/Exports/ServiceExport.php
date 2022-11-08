@@ -84,7 +84,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         }
 
         if (isset($this->awal)) {
-            $query->where('services.tanggal_selesai', '>=', $this->awal);
+            $query->where('services.tanggal_mulai', '>=', $this->awal);
         }
 
         if (isset($this->akhir)) {

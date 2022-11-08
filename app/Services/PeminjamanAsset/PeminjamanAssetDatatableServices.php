@@ -5,8 +5,8 @@ namespace App\Services\PeminjamanAsset;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanAsset;
 use Yajra\DataTables\DataTables;
-use App\Models\DetailPeminjamanAsset;
 use App\Models\LogPeminjamanAsset;
+use App\Models\DetailPeminjamanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -103,7 +103,7 @@ class PeminjamanAssetDatatableServices
         $filter = $request->toArray();
 
         if (isset($request->searchKeyword)) {
-            $query->whereHas('peminjaman_asset', function ($query) use($request) {
+            $query->whereHas('peminjaman_asset', function ($query) use ($request) {
                 $query->where('code', 'like', '%' . $request->searchKeyword . '%');
             });
         }

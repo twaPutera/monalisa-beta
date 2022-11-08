@@ -179,68 +179,92 @@ class AssetServiceDatatableServices
 
     public function datatableHistoryServices(Request $request)
     {
-        $query = LogServiceAsset::query()
-            ->with(['service']);
+        $query = LogServiceAsset::query();
+        $filter = $request->toArray();
+        $query->join('services', 'log_service_assets.id_service', '=', 'services.id');
+        $query->join('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
+        $query->join('detail_services', 'detail_services.id_service', '=', 'services.id');
+        $query->join('asset_data', 'detail_services.id_asset_data', '=', 'asset_data.id');
+        $query->join('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
+        $query->join('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
+        $query->join('lokasis', 'detail_services.id_lokasi', '=', 'lokasis.id');
+        $query->select([
+            'services.tanggal_mulai',
+            'services.tanggal_selesai',
+            'asset_data.kode_asset',
+            'asset_data.is_inventaris',
+            'kategori_services.nama_service',
+            'asset_data.deskripsi',
+            'kategori_assets.nama_kategori',
+            'lokasis.nama_lokasi',
+            'asset_data.status_kondisi',
+            'group_kategori_assets.nama_group',
+            'detail_services.permasalahan',
+            'detail_services.tindakan',
+            'detail_services.catatan',
+            'services.keterangan',
+            'log_service_assets.status',
+            'log_service_assets.created_at as log_terakhir',
+            'log_service_assets.message_log',
+            'log_service_assets.created_by',
+        ]);
 
         if (isset($request->id_kategori_asset)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->whereHas('detail_service', function ($query) use ($request) {
-                    $query->whereHas('asset_data', function ($query) use ($request) {
-                        $query->where('id_kategori_asset', $request->id_kategori_asset);
-                    });
-                });
-            });
+            $query->where('asset_data.id_kategori_asset', $request->id_kategori_asset);
         }
 
         if (isset($request->status_service)) {
             if ($request->status_service != 'all') {
-                $query->where('status', $request->status_service);
+                $query->where('log_service_assets.status', $request->status_service);
             }
         }
 
         if (isset($request->id_lokasi)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->whereHas('detail_service', function ($query) use ($request) {
-                    $query->where('id_lokasi', $request->id_lokasi);
-                });
-            });
+            $query->where('detail_services.id_lokasi', $request->id_lokasi);
         }
 
         if (isset($request->id_asset_data)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->whereHas('detail_service', function ($query) use ($request) {
-                    $query->where('id_asset_data', $request->id_asset_data);
-                });
-            });
+            $query->where('detail_services.id_asset_data', $request->id_asset_data);
         }
 
         if (isset($request->awal)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->where('tanggal_selesai', '>=', $request->awal);
-            });
+            $query->where('services.tanggal_mulai', '>=', $request->awal);
         }
 
         if (isset($request->akhir)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->where('tanggal_selesai', '<=', $request->akhir);
-            });
+            $query->where('services.tanggal_selesai', '<=', $request->akhir);
         }
 
         if (isset($request->keyword)) {
-            $query->whereHas('service', function ($query) use ($request) {
-                $query->whereHas('detail_service', function ($query) use ($request) {
-                    $query->whereHas('asset_data', function ($query) use ($request) {
-                        $query->where('deskripsi', 'like', '%' . $request->keyword . '%');
-                    });
-                });
-            });
+            $query->where('asset_data.deskripsi', 'like', '%' . $request->keyword . '%');
         }
 
-        $query->orderBy('created_at', 'DESC');
+        // SORT
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+        if (1 == $order_column_index) {
+            $query->orderBy('services.tanggal_mulai', $order_column_dir);
+        }
+        if (2 == $order_column_index) {
+            $query->orderBy('services.tanggal_selesai', $order_column_dir);
+        }
+        if (3 == $order_column_index) {
+            $query->orderBy('log_service_assets.created_at', $order_column_dir);
+        }
+        if (4 == $order_column_index) {
+            $query->orderBy('asset_data.kode_asset', $order_column_dir);
+        }
+        if (5 == $order_column_index) {
+            $query->orderBy('asset_data.deskripsi', $order_column_dir);
+        }
+        if (6 == $order_column_index) {
+            $query->orderBy('asset_data.is_inventaris', $order_column_dir);
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_service', function ($item) {
-                return $item->service->kategori_service->nama_service ?? 'Tidak Ada';
+                return $item->nama_service ?? 'Tidak Ada';
             })
             ->addColumn('dilakukan_oleh', function ($item) {
                 $name = 'Not Found';
@@ -254,49 +278,49 @@ class AssetServiceDatatableServices
                 return $name;
             })
             ->addColumn('kode_asset', function ($item) {
-                return $item->service->detail_service->asset_data->kode_asset ?? 'Tidak Ada';
+                return $item->kode_asset ?? 'Tidak Ada';
             })
             ->addColumn('lokasi', function ($item) {
-                return $item->service->detail_service->asset_data->lokasi->nama_lokasi ?? 'Tidak Ada';
+                return $item->nama_lokasi ?? 'Tidak Ada';
             })
             ->addColumn('asset_deskripsi', function ($item) {
-                return $item->service->detail_service->asset_data->deskripsi ?? 'Tidak Ada';
+                return $item->deskripsi ?? 'Tidak Ada';
             })
             ->addColumn('is_inventaris', function ($item) {
-                return $item->service->detail_service->asset_data->is_inventaris ?? 'Tidak Ada';
+                return $item->is_inventaris ?? 'Tidak Ada';
             })
             ->addColumn('tanggal_mulai', function ($item) {
-                return $item->service->tanggal_mulai ?? 'Tidak Ada';
+                return $item->tanggal_mulai ?? 'Tidak Ada';
             })
             ->addColumn('tanggal_selesai', function ($item) {
-                return $item->service->tanggal_selesai ?? 'Tidak Ada';
+                return $item->tanggal_selesai ?? 'Tidak Ada';
             })
             ->addColumn('permasalahan', function ($item) {
-                return $item->service->detail_service->permasalahan ?? 'Tidak Ada';
+                return $item->permasalahan ?? 'Tidak Ada';
             })
             ->addColumn('tindakan', function ($item) {
-                return $item->service->detail_service->tindakan ?? 'Tidak Ada';
+                return $item->tindakan ?? 'Tidak Ada';
             })
             ->addColumn('catatan', function ($item) {
-                return $item->service->detail_service->catatan ?? 'Tidak Ada';
+                return $item->catatan ?? 'Tidak Ada';
             })
             ->addColumn('keterangan', function ($item) {
-                return $item->service->keterangan ?? 'Tidak Ada';
+                return $item->keterangan ?? 'Tidak Ada';
             })
             ->addColumn('status_service', function ($item) {
                 return $item->status ?? 'Tidak Ada';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return $item->created_at ?? 'Tidak Ada';
+                return $item->log_terakhir ?? 'Tidak Ada';
             })
             ->addColumn('aktifitas', function ($item) {
                 return $item->message_log ?? 'Tidak Ada';
             })
             ->addColumn('nama_group', function ($item) {
-                return $item->service->detail_service->asset_data->kelas_asset->nama_kelas ?? 'Tidak Ada';
+                return $item->nama_group ?? 'Tidak Ada';
             })
             ->addColumn('nama_kategori', function ($item) {
-                return $item->service->detail_service->asset_data->kategori_asset->nama_kategori ?? 'Tidak Ada';
+                return $item->nama_kategori ?? 'Tidak Ada';
             })
 
             ->make(true);
