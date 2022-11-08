@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\History;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Exports\PeminjamanAssetExport;
 use App\Services\PeminjamanAsset\PeminjamanAssetDatatableServices;
 
 class HistoryPeminjamanController extends Controller
@@ -23,5 +24,10 @@ class HistoryPeminjamanController extends Controller
     public function datatable(Request $request)
     {
         return $this->peminjamanAssetDatatableServices->logPeminjamanDatatable($request);
+    }
+
+    public function export(Request $request)
+    {
+        return (new PeminjamanAssetExport($request->start_date ?? date('Y-m-d'), $request->end_date ?? date('Y-m-d')))->download('laporan-peminjaman.xlsx');
     }
 }

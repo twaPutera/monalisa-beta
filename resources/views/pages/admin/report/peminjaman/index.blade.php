@@ -92,6 +92,13 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+
+        const exportPeminjaman = () => {
+            let start_date = $('#exportStartDate').val();
+            let end_date = $('#exportEndDate').val();
+            let url = "{{ route('admin.report.history-peminjaman.download-export') }}" + '?start_date=' + start_date + '&end_date=' + end_date;
+            window.open(url, '_blank');
+        }
     </script>
 @endsection
 @section('main-content')
@@ -111,7 +118,7 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
                                 <button type="button" onclick="openModalByClass('modalFilterPeminjamanAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
-                                <button onclick="openModalByClass('modalExport')" class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>Export Excel</button>
+                                <button onclick="openModalByClass('modalExportPeminjamanAsset')" class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>Export Excel</button>
                             </div>
                         </div>
                     </div>
@@ -146,4 +153,5 @@
         </div>
     </div>
     @include('pages.admin.report.peminjaman._modal_filter_service')
+    @include('pages.admin.report.peminjaman._modal_export')
 @endsection
