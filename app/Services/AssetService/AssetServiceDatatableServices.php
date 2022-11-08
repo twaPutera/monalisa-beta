@@ -239,8 +239,6 @@ class AssetServiceDatatableServices
             $query->where('asset_data.deskripsi', 'like', '%' . $request->keyword . '%');
         }
 
-
-
         // SORT
         $order_column_index = $filter['order'][0]['column'] ?? 0;
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
