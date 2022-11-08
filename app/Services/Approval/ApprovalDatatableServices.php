@@ -12,7 +12,8 @@ class ApprovalDatatableServices
 {
     public function datatable(Request $request)
     {
-        $query = Approval::query();
+        $query = Approval::query()
+            ->select('approvals.*');
 
         if (isset($request->guid_approver)) {
             $query->where('guid_approver', $request->guid_approver);
@@ -30,7 +31,16 @@ class ApprovalDatatableServices
             $query->where('is_approve', $request->is_approve);
         }
 
-        $query->orderBy('created_at', 'ASC');
+        if ($request->has('is_it')) {
+            $query->leftjoin('peminjaman_assets', 'peminjaman_assets.id', '=', 'approvals.approvable_id')
+                ->leftjoin('perpanjangan_peminjaman_assets', 'perpanjangan_peminjaman_assets.id', '=', 'approvals.approvable_id')
+                ->where(function ($query) use ($request) {
+                    $query->where('peminjaman_assets.is_it', $request->is_it)
+                        ->orWhere('perpanjangan_peminjaman_assets.is_it', $request->is_it);
+                });
+        }
+
+        $query->orderBy('approvals.created_at', 'DESC');
 
         return DataTables::of($query)
             ->addIndexColumn()

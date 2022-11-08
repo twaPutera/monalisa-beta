@@ -28,6 +28,7 @@
                         d.approvable_types = ['App\\Models\\PeminjamanAsset',
                             'App\\Models\\PerpanjanganPeminjamanAsset'
                         ];
+                        d.is_it = $('#is_it').val();
                     }
                 },
                 columns: [{
@@ -272,6 +273,11 @@
     </script>
 @endsection
 @section('main-content')
+    @if($user->role == 'manager_it' || $user->role == 'staff_it')
+        <input type="hidden" value="1" id="is_it">
+    @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
+        <input type="hidden" value="0" id="is_it">
+    @endif
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="kt-portlet shadow-custom">

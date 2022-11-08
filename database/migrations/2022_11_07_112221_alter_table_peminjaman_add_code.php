@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AlterTableAssetDataRemoveColumnType extends Migration
+class AlterTablePeminjamanAddCode extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterTableAssetDataRemoveColumnType extends Migration
      */
     public function up()
     {
-        Schema::table('asset_data', function (Blueprint $table) {
-            $table->dropColumn('type');
+        Schema::table('peminjaman_assets', function (Blueprint $table) {
+            $table->string('code')->nullable()->after('id');
         });
     }
 

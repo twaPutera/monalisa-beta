@@ -32,8 +32,10 @@
                         <select name="role" class="form-control" id="">
                             <option value="user">User Aset</option>
                             <option value="admin">Admin Aset</option>
-                            <option value="staff">Staff Aset</option>
-                            <option value="manager">Manager Aset</option>
+                            <option value="staff_asset">Staff Aset</option>
+                            <option value="staff_it">Staff IT</option>
+                            <option value="manager_asset">Manager Aset</option>
+                            <option value="manager_it">Manager IT</option>
                         </select>
                     </div>
                     <div class="form-group">

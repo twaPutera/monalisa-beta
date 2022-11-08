@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Sso\SsoDataController;
+use App\Http\Controllers\Api\AndinApiController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
@@ -11,14 +12,19 @@ use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 use App\Http\Controllers\Admin\Services\ServicesController;
+use App\Http\Controllers\Admin\History\DepresiasiController;
 use App\Http\Controllers\Admin\Setting\KelasAssetController;
 use App\Http\Controllers\Admin\Setting\SatuanAssetController;
+use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\Setting\SistemConfigController;
 use App\Http\Controllers\Admin\Setting\KategoriAssetController;
+use App\Http\Controllers\Admin\History\HistoryServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriServiceController;
 use App\Http\Controllers\Admin\Setting\SatuanInventoriController;
 use App\Http\Controllers\Admin\Approval\HistoryApprovalController;
+use App\Http\Controllers\Admin\History\HistoryPengaduanController;
 use App\Http\Controllers\Admin\ListingAsset\MasterAssetController;
+use App\Http\Controllers\Admin\History\HistoryPeminjamanController;
 use App\Http\Controllers\Admin\ListingAsset\AssetServiceController;
 use App\Http\Controllers\Admin\Setting\KategoriInventoriController;
 use App\Http\Controllers\Admin\Setting\GroupKategoriAssetController;
@@ -38,13 +44,8 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
-use App\Http\Controllers\Admin\History\DepresiasiController;
-use App\Http\Controllers\Admin\History\HistoryPengaduanController;
-use App\Http\Controllers\Admin\History\HistoryServiceController;
-use App\Http\Controllers\Admin\History\SummaryAssetController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\Api\AndinApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,17 +63,14 @@ Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.re
 
 Route::get('/callback', [SsoController::class, 'callback']);
 
-Route::get('/', function () {
-    // return redirect()->route('sso.redirect');
-    return redirect()->route('login');
-});
+Route::get('/', 'SsoUpController@handleToken');
 
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->middleware('guest');
-Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware('auth');
-Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware('auth');
+Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware(['sso_up:web', 'auth']);
+Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware(['sso_up:web', 'auth']);
 
-Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:manager|staff|admin']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:manager_asset|manager_it|staff_asset|staff_it|admin']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/getDaftarApproval', [AdminDashboardController::class, 'getDaftarApproval'])->name('admin.dashboard.approval');
     Route::group(['prefix' => 'summary'], function () {
@@ -149,7 +147,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/datatable', [MasterAssetController::class, 'log_opname_dt'])->name('admin.listing-asset.log-opname.datatable');
             Route::get('/show/{id}', [MasterAssetController::class, 'log_opname_show'])->name('admin.listing-asset.log-opname.show');
         });
-
     });
 
     #Report
@@ -166,10 +163,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::group(['prefix' => 'history-pengaduan'], function () {
             Route::get('/', [HistoryPengaduanController::class, 'index'])->name('admin.report.history-pengaduan.index');
             Route::get('/download/export', [HistoryPengaduanController::class, 'download'])->name('admin.report.history-pengaduan.download-export');
+            Route::get('/datatable', [HistoryPengaduanController::class, 'datatable'])->name('admin.report.history-pengaduan.datatable');
         });
+
+        Route::group(['prefix' => 'history-peminjaman'], function () {
+            Route::get('/', [HistoryPeminjamanController::class, 'index'])->name('admin.report.history-peminjaman.index');
+            Route::get('/download/export', [HistoryPeminjamanController::class, 'download'])->name('admin.report.history-peminjaman.download-export');
+        });
+
         Route::group(['prefix' => 'history-service'], function () {
             Route::get('/', [HistoryServiceController::class, 'index'])->name('admin.report.history-service.index');
             Route::get('/download/export', [HistoryServiceController::class, 'download'])->name('admin.report.history-service.download-export');
+            Route::get('/datatable', [HistoryServiceController::class, 'datatable'])->name('admin.report.history-service.datatable');
         });
     });
 
@@ -378,7 +383,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     });
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:user|staff']], function () {
+Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:user|staff_asset|staff_it']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::get('/profile', [UserDashboardController::class, 'profile'])->name('user.dashboard.profile');
     Route::get('/dashboard/get-summary-dashboard', [UserDashboardController::class, 'getDashboardData'])->name('user.get-summary-dashboard');
@@ -400,7 +405,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
         });
-        Route::group(['prefix' => 'peminjaman', ], function () {
+        Route::group(['prefix' => 'peminjaman',], function () {
             Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');
             Route::get('/detail/{id}', [UserPeminjamanAssetController::class, 'detail'])->name('user.asset-data.peminjaman.detail');
             Route::get('/get-all-data', [UserPeminjamanAssetController::class, 'getAllData'])->name('user.asset-data.peminjaman.get-all-data');

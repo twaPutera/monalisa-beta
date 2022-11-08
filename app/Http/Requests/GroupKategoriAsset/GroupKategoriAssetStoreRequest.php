@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\GroupKategoriAsset;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class GroupKategoriAssetStoreRequest extends FormRequest
 {

@@ -39,4 +39,14 @@
             </span>
             <span class="kt-nav__link-text">History Service</span> </a>
     </li>
+    <li class="kt-nav__item">
+        <a
+            @if (\Request::segment(3) == 'history-peminjaman') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.report.history-peminjaman.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-print"></i>
+            </span>
+            <span class="kt-nav__link-text">History Peminjaman</span> </a>
+    </li>
 </ul>

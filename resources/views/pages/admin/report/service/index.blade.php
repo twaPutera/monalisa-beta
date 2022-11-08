@@ -9,6 +9,19 @@
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 @endsection
+@section('custom_css')
+    <style>
+        div.dataTables_wrapper {
+            width: 200% !important;
+        }
+
+        #imgPreviewAsset {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+@endsection
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
@@ -24,11 +37,12 @@
                 scrollX: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                    url: "{{ route('admin.report.history-service.datatable') }}",
                     data: function(d) {
                         d.awal = $('.datepickerAwal').val();
                         d.akhir = $('.datepickerAkhir').val();
-                        d.status_service = "selesai";
+                        d.status_service = $('#statusService').val();
+                        d.id_asset_data = $('#assetDataService').val();
                         d.id_lokasi = $('#lokasiAssetCreateService').val();
                         d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.keyword = $('#searchServices').val();
@@ -42,15 +56,16 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "action",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'action'
-                    },
-                    {
                         name: 'tanggal_mulai',
                         data: 'tanggal_mulai'
+                    },
+                    {
+                        name: 'tanggal_selesai',
+                        data: 'tanggal_selesai'
+                    },
+                    {
+                        name: 'kode_asset',
+                        data: 'kode_asset'
                     },
                     {
                         name: 'asset_deskripsi',
@@ -72,22 +87,56 @@
                         data: 'nama_kategori'
                     },
                     {
+                        name: 'lokasi',
+                        data: 'lokasi'
+                    },
+                    {
+                        name: 'permasalahan',
+                        data: 'permasalahan'
+                    },
+                    {
+                        name: 'tindakan',
+                        data: 'tindakan'
+                    },
+                    {
+                        name: 'catatan',
+                        data: 'catatan'
+                    },
+                    {
+                        name: 'keterangan',
+                        data: 'keterangan'
+                    },
+                    {
                         name: 'status_service',
                         data: 'status_service'
                     },
                     {
-                        name: 'tanggal_selesai',
-                        data: 'tanggal_selesai'
+                        name: 'log_terakhir',
+                        data: 'log_terakhir'
+                    },
+                    {
+                        name: 'aktifitas',
+                        data: 'aktifitas'
+                    },
+                    {
+                        name: 'dilakukan_oleh',
+                        data: 'dilakukan_oleh'
                     },
                 ],
                 columnDefs: [{
-                        targets: [2, 8],
+                        targets: [1, 2],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 7,
+                        targets: [14],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateTimeIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: 13,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -140,8 +189,15 @@
                 padding: '10px',
                 allowClear: true,
             })
+            $('#assetDataService').select2({
+                width: '100%',
+                placeholder: 'Pilih Asset',
+                padding: '10px',
+                allowClear: true,
+            })
             generateLocationServiceSelect();
             generateLocationAsset();
+            generateAssetServiceSelect();
             exportData();
         });
         const filterTableService = () => {
@@ -152,10 +208,14 @@
         const exportData = () => {
             let awal = $('.datepickerAwal').val();
             let akhir = $('.datepickerAkhir').val();
+            let status_service = $('#statusService').val();
             let id_lokasi = $('#lokasiAssetCreateService').val();
+            let id_asset_data = $('#assetDataService').val();
             let id_kategori_asset = $('#listKategoriAssetLocation').val();
             $('#tgl_awal_export').val(awal);
+            $('#status_service_export').val(status_service);
             $('#tgl_akhir_export').val(akhir);
+            $('#id_asset_data_export').val(id_asset_data);
             $('#id_lokasi_export').val(id_lokasi);
             $('#id_kategori_asset_export').val(id_kategori_asset);
         }
@@ -197,7 +257,24 @@
                 }
             })
         }
-
+        const generateAssetServiceSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('#assetDataService');
+                        select.empty();
+                        select.append(`<option value="">Pilih Asset</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
         $('.datepickerAwal').datepicker({
             todayHighlight: true,
             width: '100%',
@@ -210,21 +287,6 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
-        const detailService = (button) => {
-            const url_detail = $(button).data('url_detail');
-            $.ajax({
-                url: url_detail,
-                type: 'GET',
-                dataType: 'html',
-                success: function(response) {
-                    const modal = $('.modalDetailInventarisData');
-                    const detail = modal.find('.modalDetailBodyData');
-                    detail.empty();
-                    detail.append(response);
-                    modal.modal('show');
-                }
-            })
-        }
     </script>
 @endsection
 @section('main-content')
@@ -247,6 +309,8 @@
                                 <form action="{{ route('admin.report.history-service.download-export') }}" method="get">
                                     <div class="d-flex align-items-center mt-2 mb-2">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi_export">
+                                        <input type="hidden" name="id_asset_data" id="id_asset_data_export">
+                                        <input type="hidden" name="status_service" id="status_service_export">
                                         <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <input type="hidden" name="tgl_awal" id="tgl_awal_export">
                                         <input type="hidden" name="tgl_akhir" id="tgl_akhir_export">
@@ -283,14 +347,22 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>#</th>
                                     <th>Tgl. Mulai</th>
+                                    <th>Tgl. Selesai</th>
+                                    <th>Kode Asset</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Tipe</th>
                                     <th>Kelompok</th>
                                     <th>Jenis</th>
-                                    <th>Status</th>
-                                    <th>Tgl. Selesai</th>
+                                    <th>Lokasi</th>
+                                    <th>Permasalahan</th>
+                                    <th>Tindakan</th>
+                                    <th>Catatan</th>
+                                    <th>Keterangan Service</th>
+                                    <th>Status Service</th>
+                                    <th>Log Terakhir</th>
+                                    <th>Aktifitas</th>
+                                    <th>Dilakukan Oleh</th>
                                 </tr>
                             </thead>
                             <tbody>

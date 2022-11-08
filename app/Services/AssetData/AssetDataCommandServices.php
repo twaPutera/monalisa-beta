@@ -66,6 +66,7 @@ class AssetDataCommandServices
         $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset*12));
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
+        $asset->is_it = isset($request->is_it) ? $request->is_it : '0';
         $asset->is_inventaris = $min_asset_value > $request->nilai_perolehan ? '1' : '0';
         $asset->tanggal_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($request->tanggal_perolehan);
         $asset->tanggal_akhir_depresiasi = DepresiasiHelpers::getAkhirTanggalDepresiasi($asset->tanggal_awal_depresiasi, $kategori_asset->umur_asset);

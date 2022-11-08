@@ -149,7 +149,7 @@ class MasterInventarisController extends Controller
             DB::beginTransaction();
             $listing_inventaris = $this->inventarisDataCommandServices->updateStok($id, $request);
             DB::commit();
-            if (!$listing_inventaris) {
+            if (! $listing_inventaris) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Jumlah Stok Tidak Mencukupi',

@@ -31,6 +31,21 @@
                     <input type="text" name="tanggal_akhir" readonly class="form-control datepickerAkhir mr-2"
                         placeholder="Tanggal Akhir">
                 </div>
+                <div class="form-group col-md-6 col-6">
+                    <label for="">Status Pengaduan</label>
+                    <select name="" class="form-control" id="statusPengaduan">
+                        <option value="all" selected>Semua Pengaduan</option>
+                        <option value="dilaporkan">Laporan Masuk</option>
+                        <option value="diproses">Proses</option>
+                        <option value="selesai">Selesai</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6 col-6">
+                    <label for="">Asset Data</label>
+                    <select name="" class="form-control" id="assetDataService">
+
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

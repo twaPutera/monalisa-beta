@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableAssetDataRemoveColumnType extends Migration
+class AlterTableAssetAddFlagIt extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AlterTableAssetDataRemoveColumnType extends Migration
     public function up()
     {
         Schema::table('asset_data', function (Blueprint $table) {
-            $table->dropColumn('type');
+            $table->string('is_it', 2)->default('0');
         });
     }
 

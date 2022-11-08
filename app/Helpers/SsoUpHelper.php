@@ -24,9 +24,8 @@ class SsoUpHelper
         $config = $this->config;
         if ('production' == ($config['mode'] ?? 'dev')) {
             return self::BASE_URL_PROD;
-        } else {
-            return self::BASE_URL_TEST;
         }
+        return self::BASE_URL_TEST;
     }
 
     public function getLoginUrl($redirect_url)

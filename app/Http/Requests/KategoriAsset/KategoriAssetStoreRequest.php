@@ -3,7 +3,6 @@
 namespace App\Http\Requests\KategoriAsset;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class KategoriAssetStoreRequest extends FormRequest
 {

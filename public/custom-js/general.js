@@ -207,6 +207,16 @@ const formatDateIntoIndonesia = (data) => {
     return `${day} ${arrayMonth[month]} ${year}`;
 };
 
+const formatDateTimeIntoIndonesia = (data) => {
+    let date = new Date(data);
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    return `${day} ${arrayMonth[month]} ${year} pada jam ${hour}:${minute}`;
+};
+
 const sumDiffFromTwoDate = (date1, date2) => {
     let diff = date1.getTime() - date2.getTime();
     return Math.ceil(diff / (1000 * 3600 * 24));
@@ -225,7 +235,6 @@ const sumDiffAndTimeFromTwoDate = (date1, date2) => {
     diff -= minutes * 1000 * 60;
 
     seconds = Math.floor(diff / 1000);
-
 
     //  Set Duration
     var sDuration = days + " Hari " + hours + " Jam " + minutes + " Menit";

@@ -2,13 +2,15 @@
 
 namespace App\Services\PeminjamanAsset;
 
-use App\Helpers\DateIndoHelpers;
 use Exception;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PeminjamanAsset;
+use App\Helpers\DateIndoHelpers;
+use App\Jobs\PeminjamanDueDateJob;
+use App\Models\LogPeminjamanAsset;
 use App\Models\DetailPeminjamanAsset;
 use App\Models\RequestPeminjamanAsset;
 use App\Models\PerpanjanganPeminjamanAsset;
@@ -19,7 +21,6 @@ use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
-use App\Jobs\PeminjamanDueDateJob;
 
 class PeminjamanAssetCommandServices
 {
@@ -43,6 +44,7 @@ class PeminjamanAssetCommandServices
         // }
 
         $peminjaman = new PeminjamanAsset();
+        $peminjaman->code = self::generateCode();
         $peminjaman->guid_peminjam_asset = config('app.sso_siska') ? $user->guid : $user->id;
         $peminjaman->json_peminjam_asset = json_encode($user);
         $peminjaman->tanggal_peminjaman = $request->tanggal_peminjaman;
@@ -52,6 +54,7 @@ class PeminjamanAssetCommandServices
         $peminjaman->alasan_peminjaman = $request->alasan_peminjaman;
         $peminjaman->status = 'pending';
         $peminjaman->created_by = config('app.sso_siska') ? $user->guid : $user->id;
+        $peminjaman->is_it = isset($request->is_it) ? $request->is_it : '0';
         $peminjaman->save();
 
         foreach ($request->id_jenis_asset as $id_jenis_asset) {
@@ -69,7 +72,22 @@ class PeminjamanAssetCommandServices
         $approval->approvable_id = $peminjaman->id;
         $approval->save();
 
+        $log_message = 'Peminjaman Asset baru dibuat oleh ' . $user->name;
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
+
         return $peminjaman;
+    }
+
+    private static function generateCode()
+    {
+        $code = 'PMA-' . date('Ymd') . '-' . rand(1000, 9999);
+        $check_code = PeminjamanAsset::where('code', $code)->first();
+
+        if ($check_code) {
+            return self::generateCode();
+        }
+
+        return $code;
     }
 
     public function changeApprovalStatus(PeminjamanApprovalUpdate $request, $id)
@@ -88,7 +106,11 @@ class PeminjamanAssetCommandServices
         $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
 
+        $log_message = 'Approval peminjaman asset dengan kode ' . $peminjaman->code . ' telah ditolak oleh ' . $user->name;
+
         if ($request->status == 'disetujui') {
+            $log_message = 'Approval peminjaman asset dengan kode ' . $peminjaman->code . ' telah disetujui oleh ' . $user->name;
+
             $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
             $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
 
@@ -100,6 +122,8 @@ class PeminjamanAssetCommandServices
             $approval->qr_path = $qr_name;
         }
 
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
+
         $approval->save();
 
         return $peminjaman;
@@ -109,7 +133,11 @@ class PeminjamanAssetCommandServices
     {
         $request->validated();
 
+        $user = SsoHelpers::getUserLogin();
+
         $peminjaman = PeminjamanAsset::findOrFail($request->id_peminjaman_asset);
+
+        $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah ditambahkan detail dengan rincian ';
 
         foreach ($request->id_asset as $id_asset) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id_asset)->first();
@@ -118,7 +146,13 @@ class PeminjamanAssetCommandServices
             $detail_peminjaman->json_asset_data = json_encode($asset_data);
             $detail_peminjaman->id_asset = $id_asset;
             $detail_peminjaman->save();
+
+            $log_message .= ', ' . $asset_data->deskripsi;
         }
+
+        $log_message .= ' oleh ' . $user->name;
+
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
         $request = self::getRequestQuota($peminjaman->id);
 
@@ -127,7 +161,15 @@ class PeminjamanAssetCommandServices
 
     public function deleteDetailPeminjaman(string $id)
     {
+        $user = SsoHelpers::getUserLogin();
+
         $detail_peminjaman = DetailPeminjamanAsset::findOrFail($id);
+        $asset = json_decode($detail_peminjaman->json_asset_data);
+
+        $log_message = 'Detail peminjaman dengan kode ' . $detail_peminjaman->peminjaman_asset->code . ' telah dihapus detail dengan rincian ' . $asset->deskripsi . ' oleh ' . $user->name;
+
+        $this->storeLogPeminjamanAsset($detail_peminjaman->peminjaman_asset->id, $log_message);
+
         $detail_peminjaman->delete();
 
         $request = self::getRequestQuota($detail_peminjaman->id_peminjaman_asset);
@@ -139,18 +181,32 @@ class PeminjamanAssetCommandServices
     {
         $peminjaman = PeminjamanAsset::findOrFail($id);
         $peminjaman->status = $request->status;
+
+        if ($request->status == 'selesai') {
+            $peminjaman->rating = $request->rating;
+        }
+
         $peminjaman->save();
 
         $peminjam = json_decode($peminjaman->json_peminjam_asset);
 
         if ($request->status == 'dipinjam') {
-
             $detail_peminjaman = DetailPeminjamanAsset::where('id_peminjaman_asset', $peminjaman->id)->get();
             foreach ($detail_peminjaman as $detail) {
                 $message_log = 'Asset Dipinjam pada tanggal ' . date('d/m/Y', strtotime($peminjaman->tanggal_peminjaman)) . ' oleh ' . $peminjam->name;
                 $this->assetDataCommandServices->insertLogAsset($detail->id_asset, $message_log);
             }
         }
+
+        $log_message = "";
+
+        if ($request->status == 'dipinjam') {
+            $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah dipinjamkan ke ' . $peminjam->name;
+        } else if ($request->status == 'selesai') {
+            $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah selesai dipinjamkan ke ' . $peminjam->name;
+        }
+
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
         return $peminjaman;
     }
@@ -172,6 +228,7 @@ class PeminjamanAssetCommandServices
         $perpanjangan->alasan_perpanjangan = $request->alasan_perpanjangan;
         $perpanjangan->status = 'pending';
         $perpanjangan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
+        $perpanjangan->is_it = $peminjaman->is_it;
         $perpanjangan->save();
 
         $approval = new Approval();
@@ -179,6 +236,10 @@ class PeminjamanAssetCommandServices
         $approval->approvable_id = $perpanjangan->id;
         $peminjaman->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $approval->save();
+
+        $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah diajukan perpanjangan dengan tanggal ' . date('d/m/Y', strtotime($request->tanggal_expired_perpanjangan)) . ' oleh ' . $user->name;
+
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
         return $perpanjangan;
     }
@@ -192,8 +253,11 @@ class PeminjamanAssetCommandServices
         $perpanjangan->status = $request->status;
         $perpanjangan->save();
 
+        $peminjaman = $perpanjangan->peminjaman_asset;
+
+        $log_message = 'Peminjaman dengan kode ' . $perpanjangan->peminjaman_asset->code . ' telah ditolak perpanjangannya oleh ' . $user->name;
         if ($request->status == 'disetujui') {
-            $peminjaman = $perpanjangan->peminjaman_asset;
+            $log_message = 'Peminjaman dengan kode ' . $perpanjangan->peminjaman_asset->code . ' telah disetujui perpanjangannya oleh ' . $user->name;
             $peminjaman->tanggal_pengembalian = $perpanjangan->tanggal_expired_perpanjangan;
             $peminjaman->save();
 
@@ -202,6 +266,8 @@ class PeminjamanAssetCommandServices
 
             PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
         }
+
+        $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
         $approval = $perpanjangan->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
@@ -224,5 +290,16 @@ class PeminjamanAssetCommandServices
             )
             ->get();
         return $request;
+    }
+
+    public function storeLogPeminjamanAsset($peminjaman_asset_id, $message)
+    {
+        $user = SsoHelpers::getUserLogin();
+
+        $log = new LogPeminjamanAsset();
+        $log->peminjaman_asset_id = $peminjaman_asset_id;
+        $log->log_message = $message;
+        $log->created_by = config('app.sso_siska') ? $user->guid : $user->id;
+        $log->save();
     }
 }

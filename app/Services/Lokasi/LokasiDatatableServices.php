@@ -17,7 +17,7 @@ class LokasiDatatableServices
             $query->where('id_parent_lokasi', $id_parent_lokasi);
         }
 
-        if (!isset($request->id_parent_lokasi)) {
+        if (! isset($request->id_parent_lokasi)) {
             $query->where('id_parent_lokasi', null);
         }
 

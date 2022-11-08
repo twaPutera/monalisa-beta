@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\SsoUpHelper;
-use App\Http\Middleware\SsoUpMiddleware;
 use Illuminate\Http\Request;
+use App\Http\Middleware\SsoUpMiddleware;
 
 /**
  * Created by Erlang Parasu 2021.
@@ -13,6 +13,10 @@ class SsoUpController extends Controller
 {
     public function handleToken(Request $request)
     {
+        if (!config('sso-up.enabled')) {
+            return redirect()->route('login');
+        }
+
         logger('SsoUpController_handleToken:', [
             'headers' => getallheaders(),
             '_POST' => $_POST,
@@ -44,7 +48,7 @@ class SsoUpController extends Controller
                 ]);
                 logger('SsoUpController_handleToken:', ['sso_login_success', $username]);
 
-                return response()->redirectToRoute('root.index');
+                return response()->redirectToRoute('login.redirect');
             }
         } catch (\Throwable $th) {
             // throw $th;
@@ -60,7 +64,7 @@ class SsoUpController extends Controller
 
             $helper = new SsoUpHelper(config('sso-up'));
             if ($helper->isLoggedIn($token, $username)) {
-                return response()->redirectToRoute('root.index');
+                return response()->redirectToRoute('login.redirect');
             }
 
             SsoUpMiddleware::trySessionSsoLogout();
