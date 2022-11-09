@@ -109,7 +109,7 @@ class PeminjamanAssetDatatableServices
         }
 
         if (isset($request->start_date) && isset($request->end_date)) {
-            $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            $query->whereBetween('log_peminjaman_assets.created_at', [$request->start_date, $request->end_date]);
         }
 
         if (isset($request->peminjaman_asset_id)) {
