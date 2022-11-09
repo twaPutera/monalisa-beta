@@ -2,15 +2,15 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\PeminjamanAsset;
 use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, WithEvents
 {
@@ -71,7 +71,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                     $item->code,
                     $log->created_at,
                     $name,
-                    $log->log_message
+                    $log->log_message,
                 ];
             } else {
                 $data[] = [
@@ -79,7 +79,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                     '',
                     $log->created_at,
                     $name,
-                    $log->log_message
+                    $log->log_message,
                 ];
                 $this->temp_row_num++;
                 $end = $this->temp_row_num;
@@ -100,7 +100,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
             'Kode Peminjaman',
             'Tanggal',
             'Pembuat',
-            'Log'
+            'Log',
         ];
     }
 
@@ -109,7 +109,6 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
         return [
             // Handle by a closure.
             AfterSheet::class => function (AfterSheet $event) {
-
                 //set heading bold and center
                 $event->sheet->getStyle('A1:E1')->applyFromArray([
                     'font' => [
@@ -120,12 +119,12 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                     ],
                 ]);
 
-                foreach($this->array_merge_cell['no'] as $key => $value) {
+                foreach ($this->array_merge_cell['no'] as $key => $value) {
                     $event->sheet->mergeCells('A'.$value['start'].':A'.$value['end']);
                     $event->sheet->getStyle('A'.$value['start'].':A'.$value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 }
 
-                foreach($this->array_merge_cell['code'] as $key => $value) {
+                foreach ($this->array_merge_cell['code'] as $key => $value) {
                     $event->sheet->mergeCells('B'.$value['start'].':B'.$value['end']);
                     $event->sheet->getStyle('B'.$value['start'].':B'.$value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 }

@@ -2,11 +2,10 @@
 
 namespace App\Exports\SheetAsset;
 
-use App\Models\AssetData;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldAutoSize
 {
@@ -34,7 +33,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                 'peminjaman' =>  'iya',
                 'sparepart' => 'tidak',
                 'notif' => '(Hapus Baris Ini Sebelum Mengisi Data)',
-            ]
+            ],
         ]);
         return $data_asset;
     }
@@ -43,7 +42,6 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
     {
         return 'Data Asset Baru';
     }
-
 
     public function headings(): array
     {
