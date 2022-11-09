@@ -3,46 +3,39 @@
 namespace App\Exports\SheetAsset;
 
 use App\Models\AssetData;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
+class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldAutoSize
 {
-    public function query()
+    public function collection()
     {
-        $data_asset = AssetData::select(
-            'asset_data.kode_asset',
-            'asset_data.deskripsi',
-            'asset_data.tgl_register',
-            'asset_data.tanggal_perolehan',
-            'asset_data.nilai_perolehan',
-            'asset_data.jenis_penerimaan',
-            'asset_data.no_memo_surat',
-            'asset_data.no_po',
-            'asset_data.no_sp3',
-            'asset_data.no_seri',
-            // 'asset_data.nilai_buku_asset',
-            // 'asset_data.nilai_depresiasi',
-            'vendors.kode_vendor',
-            'kelas_assets.no_akun',
-            'kategori_assets.kode_kategori',
-            'satuan_assets.kode_satuan',
-            'lokasis.kode_lokasi',
-            'asset_data.spesifikasi',
-            // 'asset_data.umur_manfaat_fisikal',
-            // 'asset_data.umur_manfaat_komersial',
-            'asset_data.status_kondisi',
-            'asset_data.is_pinjam',
-            'asset_data.is_sparepart'
-        )
-            ->join('vendors', 'vendors.id', '=', 'asset_data.id_vendor')
-            ->join('kelas_assets', 'kelas_assets.id', '=', 'asset_data.id_kelas_asset')
-            ->join('kategori_assets', 'kategori_assets.id', '=', 'asset_data.id_kategori_asset')
-            ->join('satuan_assets', 'satuan_assets.id', '=', 'asset_data.id_satuan_asset')
-            ->join('lokasis', 'lokasis.id', '=', 'asset_data.id_lokasi')
-            ->where('asset_data.id', '0')
-            ->orderBy('asset_data.created_at', 'ASC');
+        $data_asset = collect([
+            [
+                'kode_asset' => 'Asset001',
+                'deskripsi' => 'Contoh Asset',
+                'tanggal_register' => '22-06-2022',
+                'tanggal_perolehan' => '25-08-2022',
+                'nilai_perolehan' => '250000',
+                'jenis_perolehan' => 'PO',
+                'no_memo' => '4123/UP-SU3/MEMO/AK.00/X/2022',
+                'no_po' => '4123/UP-SU3/PO/AK.00/X/2022',
+                'no_sp3' => '4123/UP-SU3/SP3/AK.00/X/2022',
+                'no_seri' => 'Seri 2022',
+                'kode_vendor' => 'Vendor001 (Diambil dari Sheet Vendor)',
+                'no_akun' => 'Akun001 (Diambil dari Sheet Kode Akun)',
+                'kode_jenis' => 'JenisAsset001 (Diambil dari Sheet Kode Jenis Asset)',
+                'kode_satuan' => 'Satuan001 (Diambil dari Sheet Kode Lokasi Asset)',
+                'kode_lokasi' => 'Lokasi001 (Diambil dari Sheet Kode Lokasi Asset)',
+                'spesifikasi' => 'Contoh Spesifikasi Asset',
+                'kondisi' => 'bagus',
+                'peminjaman' =>  'iya',
+                'sparepart' => 'tidak',
+                'notif' => '(Hapus Baris Ini Sebelum Mengisi Data)',
+            ]
+        ]);
         return $data_asset;
     }
 
@@ -50,6 +43,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
     {
         return 'Data Asset Baru';
     }
+
 
     public function headings(): array
     {
@@ -60,7 +54,7 @@ class DataAssetSheet implements FromQuery, WithTitle, WithHeadings
             'Tanggal Perolehan',
             'Nilai Perolehan',
             'Jenis Perolehan (PO/Hibah)',
-            'No Memo Surat',
+            'No Memorandum',
             'No PO',
             'No SP3',
             'No Seri Asset',

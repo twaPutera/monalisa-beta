@@ -85,53 +85,53 @@
                     {
                         name: 'nama_group',
                         data: 'nama_group',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'nama_kategori',
                         data: 'nama_kategori',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'lokasi',
                         data: 'lokasi',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'permasalahan',
                         data: 'permasalahan',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'tindakan',
                         data: 'tindakan',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'catatan',
                         data: 'catatan',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'keterangan',
                         data: 'keterangan',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'status_service',
                         data: 'status_service',
-                        orderable:false,
+                        orderable: false,
                     },
 
                     {
                         name: 'aktifitas',
                         data: 'aktifitas',
-                        orderable:false,
+                        orderable: false,
                     },
                     {
                         name: 'dilakukan_oleh',
                         data: 'dilakukan_oleh',
-                        orderable:false,
+                        orderable: false,
                     },
                 ],
                 columnDefs: [{
@@ -210,6 +210,10 @@
             generateLocationAsset();
             generateAssetServiceSelect();
             exportData();
+            $("#searchServices").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableService();
+            });
         });
         const filterTableService = () => {
             exportData();

@@ -24,7 +24,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.report.depresiasi.datatable') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.bulan_depresiasi = $('.monthpicker').val();
                         d.tahun_depresiasi = $('.yearpicker').val();
                         d.group_kategori_asset = $('#groupAssetCreate').val();
@@ -93,6 +93,10 @@
 
             generateMonthPicker();
             generateYearPicker();
+            $("#searchDepresiasi").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableAsset();
+            });
         });
 
         $('.modalFilterAsset').on('shown.bs.modal', function() {
@@ -204,8 +208,11 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
-                                <button onclick="openModalByClass('modalExport')" class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>Export Excel</button>
+                                <button type="button" onclick="openModalByClass('modalFilterAsset')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                <button onclick="openModalByClass('modalExport')"
+                                    class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i
+                                        class="fas fa-print"></i>Export Excel</button>
                             </div>
                         </div>
                     </div>
@@ -216,7 +223,8 @@
                             <input type="text" id="searchDepresiasi" class="form-control form-control-sm"
                                 placeholder="Search for...">
                             <div class="input-group-append">
-                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
+                                    type="button"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>

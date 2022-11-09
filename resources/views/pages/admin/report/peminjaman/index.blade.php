@@ -2,7 +2,8 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
@@ -23,14 +24,13 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.report.history-peminjaman.datatable') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.start_date = $('#filterStartDate').val();
                         d.end_date = $('#filterEndDate').val();
                         d.searchKeyword = $('#searchDepresiasi').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -74,6 +74,11 @@
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //
             });
+
+            $("#searchDepresiasi").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableAsset();
+            });
         });
 
         const filterTableAsset = () => {
@@ -96,7 +101,8 @@
         const exportPeminjaman = () => {
             let start_date = $('#exportStartDate').val();
             let end_date = $('#exportEndDate').val();
-            let url = "{{ route('admin.report.history-peminjaman.download-export') }}" + '?start_date=' + start_date + '&end_date=' + end_date;
+            let url = "{{ route('admin.report.history-peminjaman.download-export') }}" + '?start_date=' + start_date +
+                '&end_date=' + end_date;
             window.open(url, '_blank');
         }
     </script>
@@ -117,8 +123,11 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <button type="button" onclick="openModalByClass('modalFilterPeminjamanAsset')" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
-                                <button onclick="openModalByClass('modalExportPeminjamanAsset')" class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i class="fas fa-print"></i>Export Excel</button>
+                                <button type="button" onclick="openModalByClass('modalFilterPeminjamanAsset')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                <button onclick="openModalByClass('modalExportPeminjamanAsset')"
+                                    class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i
+                                        class="fas fa-print"></i>Export Excel</button>
                             </div>
                         </div>
                     </div>
@@ -126,9 +135,11 @@
                 <div class="kt-portlet__body">
                     <div class="d-flex align-items-center">
                         <div class="input-group mr-3" style="width: 250px;">
-                            <input type="text" id="searchDepresiasi" class="form-control form-control-sm" placeholder="Search for...">
+                            <input type="text" id="searchDepresiasi" class="form-control form-control-sm"
+                                placeholder="Search for...">
                             <div class="input-group-append">
-                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
+                                    type="button"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>

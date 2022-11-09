@@ -266,6 +266,10 @@
             generateLocationServiceSelect();
             generateLocationAsset();
             exportData();
+            $("#searchAsset").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableService();
+            });
         });
 
         const exportData = () => {

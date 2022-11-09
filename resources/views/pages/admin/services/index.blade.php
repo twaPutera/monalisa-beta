@@ -149,6 +149,10 @@
             generateAssetServiceSelect();
             generateMonthPicker();
             generateYearPicker();
+            $("#searchServices").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableService();
+            });
         });
 
         const filterTableService = () => {

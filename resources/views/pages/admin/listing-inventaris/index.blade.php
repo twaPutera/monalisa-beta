@@ -390,5 +390,4 @@
     @include('pages.admin.listing-inventaris.components.modal._modal_create')
     @include('pages.admin.listing-inventaris.components.modal._modal_edit')
     @include('pages.admin.listing-inventaris.components.modal._modal_edit_stok')
-    @include('pages.admin.listing-inventaris.components.modal._modal_detail')
 @endsection

@@ -84,7 +84,6 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
-                console.log(formElement, errors);
                 for (let key in errors) {
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
@@ -228,7 +227,6 @@
                 },
                 footerCallback: function(row, data, start, end, display) {
                     let totalRecord = data.length;
-                    console.log(totalRecord);
                     let target = $('#totalFilterAktif');
                     target.empty();
                     target.append("Total " + totalRecord);
@@ -241,11 +239,18 @@
                 format: 'yyyy-mm-dd',
                 autoclose: true,
             });
+
+
+            $("#searchAsset").on("keydown", function(event) {
+                if (event.which == 13)
+                    filterTableAsset();
+            });
         });
 
         const filterTableAsset = () => {
             table.DataTable().ajax.reload();
         }
+
 
         const showAsset = (button) => {
             const url = $(button).data('url_detail');
@@ -392,7 +397,7 @@
                         <input type="text" id="searchAsset" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
+                            <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
                                 type="button"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
