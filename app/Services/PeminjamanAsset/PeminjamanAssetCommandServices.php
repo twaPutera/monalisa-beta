@@ -21,9 +21,12 @@ use App\Http\Requests\PeminjamanAsset\PeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\DetailPeminjamanAssetStoreRequest;
 use App\Http\Requests\PeminjamanAsset\PeminjamanAssetChangeStatusRequest;
 use App\Http\Requests\PeminjamanAsset\PerpanjanganPeminjamanStoreRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class PeminjamanAssetCommandServices
 {
+    // TODO: Implement Notifikasi
     protected $userSsoQueryServices;
     protected $assetDataCommandServices;
 
@@ -100,6 +103,8 @@ class PeminjamanAssetCommandServices
         $peminjaman->status = $request->status;
         $peminjaman->save();
 
+        $peminjam = User::find($peminjaman->guid_peminjam_asset);
+
         $approval = $peminjaman->approval;
         $approval->tanggal_approval = date('Y-m-d H:i:s');
         $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
@@ -107,9 +112,21 @@ class PeminjamanAssetCommandServices
         $approval->keterangan = $request->keterangan;
 
         $log_message = 'Approval peminjaman asset dengan kode ' . $peminjaman->code . ' telah ditolak oleh ' . $user->name;
+        $notifikasi = [
+            'title' => 'Peminjaman Asset',
+            'message' => 'Peminjaman Asset dengan kode ' . $peminjaman->code . ' telah ditolak oleh ' . $user->name,
+            'url' => route('user.asset-data.peminjaman.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
 
         if ($request->status == 'disetujui') {
             $log_message = 'Approval peminjaman asset dengan kode ' . $peminjaman->code . ' telah disetujui oleh ' . $user->name;
+            $notifikasi = [
+                'title' => 'Peminjaman Asset',
+                'message' => 'Peminjaman Asset dengan kode ' . $peminjaman->code . ' telah disetujui oleh ' . $user->name,
+                'url' => route('user.asset-data.peminjaman.index'),
+                'date' => date('d/m/Y H:i'),
+            ];
 
             $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
             $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
@@ -121,6 +138,8 @@ class PeminjamanAssetCommandServices
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
             $approval->qr_path = $qr_name;
         }
+
+        $peminjam->notify(new UserNotification($notifikasi));
 
         $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
