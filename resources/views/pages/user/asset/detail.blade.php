@@ -89,6 +89,8 @@
                             $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
                         } elseif ($asset_data->status_kondisi == 'tidak-lengkap') {
                             $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                        } else {
+                            $kondisi = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                         }
                     @endphp
                     <div class="col text-end">
