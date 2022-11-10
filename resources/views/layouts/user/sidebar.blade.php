@@ -1,15 +1,15 @@
 <div class="modal fade panelbox panelbox-left" id="sidebarPanel" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body p-0">
+            <div class="modal-body p-0" style="background: #ECECF4;">
                 <!-- profile box -->
                 <div class="profileBox pt-2 pb-2">
                     <div class="image-wrapper">
-                        <img src="/assets/user/img/sample/avatar/avatar1.jpg" alt="image" class="imaged  w36">
+                        <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff" alt="image" class="imaged  w36">
                     </div>
                     <div class="in">
                         <strong>{{ $user->name }}</strong>
-                        <div class="text-primary"><strong>Jenis Role</strong></div>
+                        <div class="text-primary"><strong>{{ $user->role }}</strong></div>
                     </div>
                     <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
                         <ion-icon name="close-outline"></ion-icon>

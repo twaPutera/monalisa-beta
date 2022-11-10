@@ -212,9 +212,9 @@
 @endsection
 @section('button-menu')
     <div class="d-flex justify-content-center">
-        <button class="btn btn-danger border-radius-sm px-3 me-2" type="button">
+        <a class="btn btn-danger border-radius-sm px-3 me-2" href="{{ route('user.asset-data.peminjaman.index') }}">
             <span class="">Batal</span>
-        </button>
+        </a>
         <button onclick="submitForm()" class="btn btn-success border-radius-sm px-3" type="button">
             <span class="">Simpan</span>
         </button>

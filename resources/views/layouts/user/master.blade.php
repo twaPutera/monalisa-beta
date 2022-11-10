@@ -28,9 +28,8 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-settings.html" class="headerButton">
-                <img src="/assets/user/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('user.dashboard.profile') }}" class="headerButton">
+                <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff" alt="image" class="imaged w32">
             </a>
         </div>
     </div>
