@@ -157,11 +157,11 @@
                     const modal = $('.modalEditKeluhanData');
                     const form = modal.find('form');
                     if (response.data.status_pengaduan === "dilaporkan") {
-                        var status = '<button class="btn btn-warning btn-sm">Laporan Masuk</button>';
+                        var status = '<badger class="badge badge-warning">Laporan Masuk</badger>';
                     } else if (response.data.status_pengaduan === "diproses") {
-                        var status = '<button class="btn btn-info btn-sm">Diproses</button>';
+                        var status = '<badger class="badge badge-info">Diproses</badger>';
                     } else if (response.data.status_pengaduan === "selesai") {
-                        var status = '<button class="btn btn-success btn-sm">Selesai</button>';
+                        var status = '<badger class="badge badge-success">Selesai</badger>';
                     }
                     form.attr('action', url_update);
                     if (response.data.asset_data != null) {
