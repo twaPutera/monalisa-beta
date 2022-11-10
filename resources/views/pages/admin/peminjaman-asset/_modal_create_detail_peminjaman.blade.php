@@ -37,6 +37,7 @@
                                     #
                                 </th>
                                 <th class="text-center">Kode Asset</th>
+                                <th class="text-center">Deskripsi</th>
                                 <th>Jenis Asset</th>
                                 <th>Lokasi Asset</th>
                                 <th>Nomor Seri</th>

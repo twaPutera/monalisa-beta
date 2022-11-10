@@ -149,7 +149,13 @@
                     {
                         data: 'is_inventaris',
                         render: function(type) {
-                            return type == 1 ? 'Inventaris' : 'Aset';
+                            return type == '1' ? 'Inventaris' : 'Aset';
+                        }
+                    },
+                    {
+                        data: 'is_it',
+                        render: function(type) {
+                            return type == '1' ? 'Barang IT' : 'Barang Aset';
                         }
                     },
                     {
@@ -183,14 +189,15 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [{
-                        targets: 8,
+                columnDefs: [
+                    {
+                        targets: 9,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
                     },
                     {
-                        targets: 7,
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'rusak') {
@@ -211,7 +218,7 @@
                         }
                     },
                     {
-                        targets: 9,
+                        targets: 10,
                         render: function(data, type, full, meta) {
                             return formatNumber(data);
                         }
@@ -431,6 +438,7 @@
                                     <th width="150px">Kode</th>
                                     <th width="200px">Deskripsi</th>
                                     <th width="200px">Tipe</th>
+                                    <th width="200px">Barang IT</th>
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Jenis Asset</th>
                                     <th width="180px">Status Kondisi</th>

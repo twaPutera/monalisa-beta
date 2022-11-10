@@ -39,6 +39,9 @@
                         data: 'tanggal_pengembalian'
                     },
                     {
+                        data: 'rating'
+                    },
+                    {
                         data: 'status'
                     },
                     {
@@ -48,7 +51,7 @@
                 columnDefs: [
                     //Custom template data
                     {
-                        targets: [5],
+                        targets: [6],
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'disetujui') {
@@ -77,7 +80,7 @@
                         },
                     },
                     {
-                        targets: [6],
+                        targets: [7],
                         render: function(data, type, full, meta) {
                             let element =
                                 '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
@@ -144,6 +147,7 @@
                                     <th>Nama Peminjam</th>
                                     <th>Tanggal Peminjaman</th>
                                     <th>Tanggal Pengembalian</th>
+                                    <th>Rating</th>
                                     <th>Status Peminjaman</th>
                                     <th>Status Approval</th>
                                 </tr>

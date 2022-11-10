@@ -18,10 +18,12 @@ use App\Services\SistemConfig\SistemConfigQueryServices;
 class AssetDataCommandServices
 {
     protected $sistemConfigServices;
+
     public function __construct()
     {
         $this->sistemConfigServices = new SistemConfigQueryServices();
     }
+
     public function store(AssetStoreRequest $request)
     {
         $request->validated();
@@ -136,6 +138,7 @@ class AssetDataCommandServices
         $asset->spesifikasi = $request->spesifikasi;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
+        $asset->is_it = isset($request->is_it) ? $request->is_it : '0';
         // $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->save();
 

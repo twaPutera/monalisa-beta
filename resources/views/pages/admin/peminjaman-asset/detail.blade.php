@@ -182,6 +182,10 @@
                         data: 'kode_asset'
                     },
                     {
+                        name: 'deskripsi',
+                        data: 'deskripsi'
+                    },
+                    {
                         name: 'nama_kategori',
                         data: 'nama_kategori'
                     },
