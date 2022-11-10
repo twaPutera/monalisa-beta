@@ -46,6 +46,7 @@ use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPem
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\User\AssetPengaduanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -418,6 +419,11 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
         Route::group(['prefix' => 'opname'], function () {
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');
             Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('user.asset-data.opname.store');
+        });
+
+        Route::group(['prefix' => 'pengaduan'], function () {
+            Route::get('/create/{id}', [AssetPengaduanController::class, 'create'])->name('user.asset-data.pengaduan.index');
+            Route::post('/store/{id}', [AssetPengaduanController::class, 'store'])->name('user.asset-data.pengaduan.store');
         });
     });
     Route::group(['prefix' => 'approval'], function () {

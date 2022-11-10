@@ -31,13 +31,19 @@ class AssetOpnameCommandServices
         $asset_data->status_akunting = $request->status_akunting;
         $asset_data->save();
         if ($request->hasFile('gambar_asset')) {
-            $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
-            $path = storage_path('app/images/asset-opname');
+            $path = storage_path('app/images/asset');
+            if (isset($asset_data->image[0])) {
+                $pathOld = $path . '/' . $asset_data->image[0]->path;
+                FileHelpers::removeFile($pathOld);
+                $asset_data->image[0]->delete();
+            }
+
+            $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $asset_data->kode_asset);
             $filenamesave = FileHelpers::saveFile($request->file('gambar_asset'), $path, $filename);
 
             $asset_images = new AssetImage();
-            $asset_images->imageable_type = get_class($opname_log);
-            $asset_images->imageable_id = $opname_log->id;
+            $asset_images->imageable_type = get_class($asset_data);
+            $asset_images->imageable_id = $asset_data->id;
             $asset_images->path = $filenamesave;
             $asset_images->save();
         }
@@ -46,7 +52,7 @@ class AssetOpnameCommandServices
 
     protected static function generateNameImage($extension, $kodeasset)
     {
-        $name = 'asset-opname-' . $kodeasset . '-' . time() . '.' . $extension;
+        $name = 'asset-' . $kodeasset . '-' . time() . '.' . $extension;
         return $name;
     }
 }
