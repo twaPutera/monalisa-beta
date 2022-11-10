@@ -357,6 +357,32 @@
                 </div>
 
                 <div class="kt-portlet__body">
+                    <div class="mb-3 row">
+                        <div class="col-md-3 col-12">
+                            <div class="p-3 border-primary border rounded">
+                                <p>Total Penerimaan</p>
+                                <h5 class="text-right text-primary">Rp. 5.000.000</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="p-3 border-danger border rounded">
+                                <p>Total Depresiasi</p>
+                                <h5 class="text-right text-danger">Rp. 5.000.000</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="p-3 border-success border rounded">
+                                <p>Total Value Aset</p>
+                                <h5 class="text-right text-success">Rp. 5.000.000</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="p-3 border-warning border rounded">
+                                <p>Average Depresiasi</p>
+                                <h5 class="text-right text-warning">30%</h5>
+                            </div>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center">
                             <div class="input-group mr-3" style="width: 250px;">
