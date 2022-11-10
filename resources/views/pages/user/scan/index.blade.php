@@ -74,19 +74,18 @@
         <h2 style="color: #6F6F6F;"></h2>
         <div class="mt-2">
             <div class="row justify-content-between">
-                <div class="col-xl-5 col-lg-5 mb-3 col-md-5 col-sm-5 col-12">
+                <div class="col-md-5 col-12">
+                    {{-- Scan Div --}}
                     <div id="reader"></div>
-                    <!-- Row start -->
                 </div>
-                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-12">
+                <div class="col-md-7 col-12">
+                    {{-- Info Div --}}
                     <div class="row gutters">
                         <div class="col-12">
                             <div class="form-section-header light-bg">Hasil Scan
                             </div>
-
                         </div>
                         <div class="col-12">
-
                             <div class="alert alert-danger" id="resultError">Data Tidak Ditemukan, Arahkan Kamera
                                 Pada Kode
                                 QR Yang Dimiliki Asset</div>
