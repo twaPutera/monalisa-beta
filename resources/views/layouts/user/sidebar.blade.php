@@ -40,16 +40,14 @@
                             Pinjam
                         </div>
                     </a>
-                    @if ($user->role == 'staff')
-                        <a href="{{ route('user.scan-qr.index') }}" class="action-button">
-                            <div class="in">
-                                <div class="iconbox">
-                                    <ion-icon name="grid-outline"></ion-icon>
-                                </div>
-                                Scan
+                    <a href="{{ route('user.scan-qr.index') }}" class="action-button">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="grid-outline"></ion-icon>
                             </div>
-                        </a>
-                    @endif
+                            Scan
+                        </div>
+                    </a>
                 </div>
                 <!-- * action group -->
 
