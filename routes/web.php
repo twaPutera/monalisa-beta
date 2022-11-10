@@ -153,6 +153,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     Route::group(['prefix' => 'report'], function () {
         Route::group(['prefix' => 'summary-asset'], function () {
             Route::get('/', [SummaryAssetController::class, 'index'])->name('admin.report.summary-asset.index');
+            Route::get('/get-summary-overview', [SummaryAssetController::class, 'getSummaryAsset'])->name('admin.report.summary-asset.get-summary-overview');
             Route::get('/download/export', [SummaryAssetController::class, 'download'])->name('admin.report.summary-asset.download-export');
         });
         Route::group(['prefix' => 'depresiasi'], function () {

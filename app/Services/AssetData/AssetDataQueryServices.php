@@ -239,7 +239,7 @@ class AssetDataQueryServices
         return $data;
     }
 
-    public function getValueAsset()
+    public function getValueAsset(Request $request)
     {
         $nilai_beli_asset = AssetData::query()
             ->where('is_pemutihan', '0')
@@ -252,9 +252,9 @@ class AssetDataQueryServices
         $nilai_depresiasi = $nilai_beli_asset - $nilai_value_asset;
 
         return [
-            'nilai_beli_asset' => $nilai_beli_asset,
-            'nilai_value_asset' => $nilai_value_asset,
-            'nilai_depresiasi' => $nilai_depresiasi,
+            'nilai_beli_asset' => (int) $nilai_beli_asset,
+            'nilai_value_asset' => (int) $nilai_value_asset,
+            'nilai_depresiasi' => (int) $nilai_depresiasi,
         ];
     }
 
@@ -334,5 +334,28 @@ class AssetDataQueryServices
         }
 
         return $data;
+    }
+
+    public function getAvgDepresiasiAsset()
+    {
+        $asset = AssetData::query()
+            ->select([
+                'id',
+                'nilai_perolehan',
+                'nilai_buku_asset',
+            ])
+            ->where('is_pemutihan', '0')
+            ->where('nilai_buku_asset', '>', '0')
+            ->get();
+
+        $avg_depresiiasi = 0;
+
+        foreach ($asset as $item) {
+            $avg_depresiiasi += $item->nilai_buku_asset / $item->nilai_perolehan;
+        }
+
+        $avg_depresiiasi = $avg_depresiiasi / $asset->count();
+
+        return $avg_depresiiasi * 100;
     }
 }

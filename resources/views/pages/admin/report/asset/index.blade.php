@@ -270,6 +270,8 @@
                 if (event.which == 13)
                     filterTableService();
             });
+
+            getSummaryOverview();
         });
 
         const exportData = () => {
@@ -321,6 +323,22 @@
                 }
             })
         }
+
+        const getSummaryOverview = () => {
+            $.ajax({
+                url: '{{ route("admin.report.summary-asset.get-summary-overview") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        $('#totalPenerimaan').text(`Rp. ${formatNumber(response.data.asset.nilai_beli_asset)}`);
+                        $('#totalValue').text(`Rp. ${formatNumber(response.data.asset.nilai_value_asset)}`);
+                        $('#totalDepresiasi').text(`Rp. ${formatNumber(response.data.asset.nilai_depresiasi)}`);
+                        $('#avgDepresiasi').text(`${response.data.avg_depresiasi} %`);
+                    }
+                }
+            })
+        }
     </script>
 @endsection
 @section('main-content')
@@ -361,25 +379,25 @@
                         <div class="col-md-3 col-12">
                             <div class="p-3 border-primary border rounded">
                                 <p>Total Penerimaan</p>
-                                <h5 class="text-right text-primary">Rp. 5.000.000</h5>
+                                <h5 class="text-right text-primary" id="totalPenerimaan">Rp. 5.000.000</h5>
                             </div>
                         </div>
                         <div class="col-md-3 col-12">
                             <div class="p-3 border-danger border rounded">
                                 <p>Total Depresiasi</p>
-                                <h5 class="text-right text-danger">Rp. 5.000.000</h5>
+                                <h5 class="text-right text-danger" id="totalDepresiasi">Rp. 5.000.000</h5>
                             </div>
                         </div>
                         <div class="col-md-3 col-12">
                             <div class="p-3 border-success border rounded">
                                 <p>Total Value Aset</p>
-                                <h5 class="text-right text-success">Rp. 5.000.000</h5>
+                                <h5 class="text-right text-success" id="totalValue">Rp. 5.000.000</h5>
                             </div>
                         </div>
                         <div class="col-md-3 col-12">
                             <div class="p-3 border-warning border rounded">
                                 <p>Average Depresiasi</p>
-                                <h5 class="text-right text-warning">30%</h5>
+                                <h5 class="text-right text-warning" id="avgDepresiasi">30%</h5>
                             </div>
                         </div>
                     </div>
