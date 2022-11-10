@@ -92,13 +92,13 @@
                             <span>Status Kondisi Terakhir </span> <br>
                         </div>
                         @if ($asset_data->status_kondisi == 'bagus')
-                            <button class="btn btn-success">Bagus</button>
+                            <div class="badge badge-success">Bagus</div>
                         @elseif($asset_data->status_kondisi == 'rusak')
-                            <button class="btn btn-danger">Rusak</button>
+                            <div class="badge badge-danger">Rusak</div>
                         @elseif($asset_data->status_kondisi == 'maintenance')
-                            <button class="btn btn-info">Maintenance</button>
+                            <div class="badge badge-info">Maintenance</div>
                         @else
-                            <button class="btn btn-warning">Tidak Lengkap</button>
+                            <div class="badge badge-warning">Tidak Lengkap</div>
                         @endif
                     </div>
                 </div>
