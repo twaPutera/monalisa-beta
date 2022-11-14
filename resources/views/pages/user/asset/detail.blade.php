@@ -89,6 +89,8 @@
                             $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
                         } elseif ($asset_data->status_kondisi == 'tidak-lengkap') {
                             $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                        } else {
+                            $kondisi = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                         }
                     @endphp
                     <div class="col text-end">
@@ -107,6 +109,8 @@
                                 $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
                             } elseif ($asset_data->is_pemutihan == 1) {
                                 $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                            } else {
+                                $pemutihan = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                             }
                         @endphp
                         {!! $pemutihan !!}
@@ -200,6 +204,11 @@
 @section('button-menu')
     @if ($asset_data->is_pemutihan != 1)
         <div class="d-flex justify-content-center">
+            <a class="btn btn-warning border-radius-sm px-3 me-2"
+                href="{{ route('user.asset-data.pengaduan.index', $asset_data->id) }}">
+                <ion-icon name="add-outline"></ion-icon>
+                <span class="">Pengaduan</span>
+            </a>
             <a class="btn btn-primary border-radius-sm px-3 me-2"
                 href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
                 <ion-icon name="add-outline"></ion-icon>
