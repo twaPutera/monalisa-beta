@@ -161,6 +161,7 @@ class KeluhanDatatableServices
         $query->select([
             'pengaduans.id as id_pengaduan',
             'pengaduans.tanggal_pengaduan',
+            'pengaduans.prioritas',
             'asset_data.deskripsi',
             'group_kategori_assets.nama_group',
             'kategori_assets.nama_kategori',
@@ -239,6 +240,9 @@ class KeluhanDatatableServices
             })
             ->addColumn('catatan_pengaduan', function ($item) {
                 return !empty($item->catatan_pengaduan) ? $item->catatan_pengaduan : '-';
+            })
+            ->addColumn('prioritas_pengaduan', function ($item) {
+                return !empty($item->prioritas) ? $item->prioritas : '-';
             })
             ->addColumn('created_by_name', function ($item) {
                 $name = 'Not Found';
