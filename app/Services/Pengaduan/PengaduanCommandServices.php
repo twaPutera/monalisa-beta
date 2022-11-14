@@ -26,6 +26,7 @@ class PengaduanCommandServices
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
+        $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
 
@@ -58,6 +59,7 @@ class PengaduanCommandServices
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
+        $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
 
@@ -89,6 +91,7 @@ class PengaduanCommandServices
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
+        $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->save();
 
         $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Perubahan Laporan');

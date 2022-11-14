@@ -29,6 +29,15 @@
                         <option value="selesai">Selesai</option>
                     </select>
                 </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Prioritas Pengaduan</label>
+                    <select name="prioritas_pengaduan" class="form-control" id="prioritasPengaduanFilter">
+                        <option value="all" selected>Semua Prioritas</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

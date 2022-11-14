@@ -31,7 +31,7 @@
     </script>
 @endsection
 @section('back-button')
-    <a href="{{ route('user.dashboard.index') }}" class="headerButton">
+    <a href="{{ route('user.pengaduan.index') }}" class="headerButton">
         <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
     </a>
 @endsection
@@ -126,6 +126,27 @@
                     <div class="col">
                         <p class="mb-0 text-green text-end">
                             {{ App\Helpers\DateIndoHelpers::formatDateToIndo($pengaduan->tanggal_pengaduan) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Prioritas</p>
+                    </div>
+                    @php
+                        if ($pengaduan->prioritas == 'high') {
+                            $prioritas = '<span class="badge badge-danger px-3">High</span>';
+                        } elseif ($pengaduan->prioritas == 'medium') {
+                            $prioritas = '<span class="badge badge-warning px-3">Medium</span>';
+                        } elseif ($pengaduan->prioritas == 'low') {
+                            $prioritas = '<span class="badge badge-info px-3">Low</span>';
+                        } else {
+                            $prioritas = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
+                        }
+                    @endphp
+                    <div class="col text-end">
+                        {!! $prioritas !!}
                     </div>
                 </div>
             </div>

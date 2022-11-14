@@ -147,7 +147,16 @@
                     </i>
                 </div>
             </div>
-
+            <div class="form-group boxed">
+                <div class="input-wrapper">
+                    <label class="text-dark" for="asset-select"><strong>Prioritas</strong></label>
+                    <select name="prioritas" class="form-control">
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Catatan Aduan</strong></label>

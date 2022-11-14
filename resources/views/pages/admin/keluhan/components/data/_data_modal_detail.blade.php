@@ -7,6 +7,11 @@
                 </td>
             </tr>
             <tr>
+                <td width="40%">Prioritas Pengaduan</td>
+                <td><strong>{{ isset($listing_keluhan->prioritas) ? ucWords($listing_keluhan->prioritas) : 'Tidak Ada' }}</strong>
+                </td>
+            </tr>
+            <tr>
                 <td width="40%">Nama Asset</td>
                 <td><strong>{{ $listing_keluhan->asset_data->deskripsi ?? '-' }}</strong>
                 </td>

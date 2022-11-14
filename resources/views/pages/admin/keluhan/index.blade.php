@@ -26,6 +26,7 @@
                         d.id_lokasi = $('#lokasiAssetCreateService').val();
                         d.id_asset = $('#listAssetLocation').val();
                         d.status_pengaduan = $("#statusPengaduanFilter").val();
+                        d.prioritas_pengaduan = $("#prioritasPengaduanFilter").val();
                     }
                 },
                 columns: [{
@@ -47,52 +48,77 @@
                         data: 'tanggal_keluhan'
                     },
                     {
-                        data: 'nama_asset',
+                        name: 'nama_asset',
                         data: 'nama_asset'
                     },
                     {
-                        data: 'lokasi_asset',
+                        name: 'lokasi_asset',
                         data: 'lokasi_asset'
                     },
                     {
-                        data: 'catatan_pengaduan',
+                        name: 'prioritas_pengaduan',
+                        data: 'prioritas_pengaduan'
+                    },
+                    {
+                        name: 'catatan_pengaduan',
                         data: 'catatan_pengaduan'
                     },
                     {
-                        data: 'gambar_pengaduan',
+                        name: 'gambar_pengaduan',
                         data: 'gambar_pengaduan'
                     },
                     {
-                        data: 'created_by_name',
+                        name: 'created_by_name',
                         data: 'created_by_name'
                     },
                     {
-                        data: 'status_pengaduan',
+                        name: 'status_pengaduan',
                         data: 'status_pengaduan'
                     },
                     {
-                        data: 'catatan_admin',
+                        name: 'catatan_admin',
                         data: 'catatan_admin'
                     },
 
                 ],
                 columnDefs: [{
-                    targets: 8,
-                    render: function(data, type, full, meta) {
-                        let element = "";
-                        if (data == "dilaporkan") {
-                            element +=
-                                `<span class="kt-badge kt-badge--warning kt-badge--inline">Laporan Masuk</span>`;
-                        } else if (data == "diproses") {
-                            element +=
-                                `<span class="kt-badge kt-badge--info kt-badge--inline">Diproses</span>`;
-                        } else if (data == "selesai") {
-                            element +=
-                                `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
-                        }
-                        return element;
+                        targets: 9,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "dilaporkan") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Laporan Masuk</span>`;
+                            } else if (data == "diproses") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Diproses</span>`;
+                            } else if (data == "selesai") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                            }
+                            return element;
+                        },
                     },
-                }],
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "high") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == "medium") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == "low") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                ],
             });
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -163,6 +189,16 @@
                     } else if (response.data.status_pengaduan === "selesai") {
                         var status = '<div class="badge badge-success">Selesai</div>';
                     }
+
+                    if (response.data.prioritas === "high") {
+                        var prioritas = 'High';
+                    } else if (response.data.prioritas === "medium") {
+                        var prioritas = 'Medium';
+                    } else if (response.data.prioritas === "low") {
+                        var prioritas = 'Low';
+                    } else {
+                        var prioritas = 'Tidak Ada';
+                    }
                     form.attr('action', url_update);
                     if (response.data.asset_data != null) {
                         form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
@@ -180,6 +216,7 @@
                             .nama_lokasi);
                     }
                     form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
+                    form.find('input[name=prioritas_pengaduan]').val(prioritas);
                     form.find('#status_laporan').empty();
                     form.find('#status_laporan').append(status);
                     form.find('textarea[name=catatan_pengaduan]').val(response.data.catatan_pengaduan);
@@ -244,6 +281,7 @@
                                     <th>Tanggal Pengaduan</th>
                                     <th>Nama Asset</th>
                                     <th>Lokasi Asset</th>
+                                    <th>Prioritas Pengaduan</th>
                                     <th>Catatan Pengaduan</th>
                                     <th>Gambar Pengaduan</th>
                                     <th>Dilaporkan Oleh</th>

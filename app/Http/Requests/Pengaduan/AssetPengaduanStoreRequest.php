@@ -25,6 +25,7 @@ class AssetPengaduanStoreRequest extends FormRequest
     {
         return [
             'tanggal_pengaduan' => 'required|date',
+            'prioritas' => 'required|in:high,medium,low',
             'alasan_pengaduan' => 'required|max:255|string',
             'file_asset_service' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
