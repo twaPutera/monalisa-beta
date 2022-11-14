@@ -67,7 +67,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
             }
             if ($key == 0) {
                 $data[] = [
-                    $key+1,
+                    $this->number += 1,
                     $item->code,
                     $log->created_at,
                     $name,

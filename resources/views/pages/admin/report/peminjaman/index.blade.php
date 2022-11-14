@@ -117,7 +117,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Depresiasi Aset
+                            History Peminjaman
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
