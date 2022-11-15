@@ -102,13 +102,13 @@
                         targets: 5,
                         render: function(data, type, full, meta) {
                             let element = "";
-                            if (data == "high") {
+                            if (data == 10) {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
-                            } else if (data == "medium") {
+                            } else if (data == 5) {
                                 element +=
                                     `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
-                            } else if (data == "low") {
+                            } else if (data == 1) {
                                 element +=
                                     `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
                             } else {
@@ -190,11 +190,11 @@
                         var status = '<div class="badge badge-success">Selesai</div>';
                     }
 
-                    if (response.data.prioritas === "high") {
+                    if (response.data.prioritas == 10) {
                         var prioritas = 'High';
-                    } else if (response.data.prioritas === "medium") {
+                    } else if (response.data.prioritas == 5) {
                         var prioritas = 'Medium';
-                    } else if (response.data.prioritas === "low") {
+                    } else if (response.data.prioritas == 1) {
                         var prioritas = 'Low';
                     } else {
                         var prioritas = 'Tidak Ada';

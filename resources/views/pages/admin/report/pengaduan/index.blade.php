@@ -125,13 +125,13 @@
                         targets: 5,
                         render: function(data, type, full, meta) {
                             let element = "";
-                            if (data == "high") {
+                            if (data == 10) {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
-                            } else if (data == "medium") {
+                            } else if (data == 5) {
                                 element +=
                                     `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
-                            } else if (data == "low") {
+                            } else if (data == 1) {
                                 element +=
                                     `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
                             } else {

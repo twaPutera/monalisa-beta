@@ -135,11 +135,11 @@
                         <p class="mb-0 text-green">Prioritas</p>
                     </div>
                     @php
-                        if ($pengaduan->prioritas == 'high') {
+                        if ($pengaduan->prioritas == 10) {
                             $prioritas = '<span class="badge badge-danger px-3">High</span>';
-                        } elseif ($pengaduan->prioritas == 'medium') {
+                        } elseif ($pengaduan->prioritas == 5) {
                             $prioritas = '<span class="badge badge-warning px-3">Medium</span>';
-                        } elseif ($pengaduan->prioritas == 'low') {
+                        } elseif ($pengaduan->prioritas == 1) {
                             $prioritas = '<span class="badge badge-info px-3">Low</span>';
                         } else {
                             $prioritas = '<span class="badge badge-secondary px-3">Tidak Ada</span>';

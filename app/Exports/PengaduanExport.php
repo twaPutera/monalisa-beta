@@ -113,6 +113,17 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $user_melakukan = $item->dilakukan_oleh == null ? null : $this->userQueryServices->findById($item->dilakukan_oleh);
             $dilakukan_oleh = isset($user_melakukan) ? $user_melakukan->name : 'Not Found';
         }
+
+        if ($item->prioritas == 10) {
+            $prioritas = 'High';
+        } elseif ($item->prioritas == 5) {
+            $prioritas = 'Medium';
+        } elseif ($item->prioritas == 1) {
+            $prioritas = 'Low';
+        } else {
+            $prioritas = 'Tidak Ada';
+        }
+        
         return [
             $this->number += 1,
             $item->tanggal_pengaduan,
@@ -121,7 +132,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $item->nama_kategori ?? '-',
             $item->nama_lokasi ?? '-',
             $name,
-            $item->prioritas ? ucWords($item->prioritas) : 'Tidak Ada',
+            $prioritas,
             $item->catatan_pengaduan,
             $item->catatan_admin,
             $item->status == 'dilaporkan' ? 'laporan masuk' : $item->status,

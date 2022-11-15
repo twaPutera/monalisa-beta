@@ -33,9 +33,9 @@
                     <label for="">Prioritas Pengaduan</label>
                     <select name="prioritas_pengaduan" class="form-control" id="prioritasPengaduanFilter">
                         <option value="all" selected>Semua Prioritas</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
+                        <option value="10">High</option>
+                        <option value="5">Medium</option>
+                        <option value="1">Low</option>
                     </select>
                 </div>
             </div>
