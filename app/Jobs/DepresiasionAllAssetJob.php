@@ -31,9 +31,6 @@ class DepresiasionAllAssetJob implements ShouldQueue
      */
     public function handle()
     {
-        logger(__METHOD__, ['handle']);
-        return; // DEBUG
-
         $assets = DepresiasiHelpers::getDataAssetDepresiasi();
 
         foreach ($assets as $asset) {
