@@ -27,6 +27,7 @@ class PengaduanUpdateRequest extends FormRequest
             'id_lokasi' => 'required|exists:lokasis,id',
             'id_asset' => 'nullable|exists:asset_data,id',
             'tanggal_pengaduan' => 'required|date',
+            'prioritas' => 'required|in:10,5,1',
             'alasan_pengaduan' => 'required|max:255|string',
             'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];

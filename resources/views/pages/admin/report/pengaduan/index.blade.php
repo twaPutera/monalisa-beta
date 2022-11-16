@@ -59,6 +59,10 @@
                         data: 'lokasi_asset'
                     },
                     {
+                        name: 'prioritas_pengaduan',
+                        data: 'prioritas_pengaduan'
+                    },
+                    {
                         name: 'catatan_pengaduan',
                         data: 'catatan_pengaduan'
                     },
@@ -89,7 +93,7 @@
 
                 ],
                 columnDefs: [{
-                        targets: 6,
+                        targets: 7,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "dilaporkan") {
@@ -117,6 +121,26 @@
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                            }
+                            return element;
+                        },
+                    }
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -359,6 +383,7 @@
                                     <th>Log Terakhir</th>
                                     <th>Nama Asset</th>
                                     <th>Lokasi Asset</th>
+                                    <th>Prioritas Pengaduan</th>
                                     <th>Catatan Pengaduan</th>
                                     <th>Status Pengaduan</th>
                                     <th>Gambar Pengaduan</th>

@@ -87,6 +87,17 @@
                     </div>
                 </div>
                 <div class="form-group boxed">
+                    <div class="input-wrapper">
+                        <label class="text-dark" for=""><strong>Tanggal Perencanaan Servis</strong></label>
+                        <input type="date" name="tanggal_services" class="form-control" id=""
+                            placeholder="Text Input">
+                        <i class="clear-input">
+                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
+                            </ion-icon>
+                        </i>
+                    </div>
+                </div>
+                <div class="form-group boxed">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <span>Status Kondisi Terakhir </span> <br>
@@ -125,7 +136,7 @@
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Gambar Pengaduan</strong></label>
+                        <label class="text-dark" for=""><strong>Gambar Asset Terbaru</strong></label>
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span id="preview-file-text">No File Choosen</span> <br>

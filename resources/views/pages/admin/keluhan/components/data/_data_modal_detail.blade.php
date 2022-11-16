@@ -7,6 +7,22 @@
                 </td>
             </tr>
             <tr>
+                <td width="40%">Prioritas Pengaduan</td>
+                @php
+                    if ($listing_keluhan->prioritas == 10) {
+                        $prioritas = 'High';
+                    } elseif ($listing_keluhan->prioritas == 5) {
+                        $prioritas = 'Medium';
+                    } elseif ($listing_keluhan->prioritas == 1) {
+                        $prioritas = 'Low';
+                    } else {
+                        $prioritas = 'Tidak Ada';
+                    }
+                @endphp
+                <td><strong>{{ $prioritas }}</strong>
+                </td>
+            </tr>
+            <tr>
                 <td width="40%">Nama Asset</td>
                 <td><strong>{{ $listing_keluhan->asset_data->deskripsi ?? '-' }}</strong>
                 </td>

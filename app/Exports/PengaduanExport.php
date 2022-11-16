@@ -46,6 +46,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
         $query->leftJoin('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
         $query->select([
             'pengaduans.tanggal_pengaduan',
+            'pengaduans.prioritas',
             'asset_data.deskripsi',
             'group_kategori_assets.nama_group',
             'kategori_assets.nama_kategori',
@@ -112,6 +113,17 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $user_melakukan = $item->dilakukan_oleh == null ? null : $this->userQueryServices->findById($item->dilakukan_oleh);
             $dilakukan_oleh = isset($user_melakukan) ? $user_melakukan->name : 'Not Found';
         }
+
+        if ($item->prioritas == 10) {
+            $prioritas = 'High';
+        } elseif ($item->prioritas == 5) {
+            $prioritas = 'Medium';
+        } elseif ($item->prioritas == 1) {
+            $prioritas = 'Low';
+        } else {
+            $prioritas = 'Tidak Ada';
+        }
+        
         return [
             $this->number += 1,
             $item->tanggal_pengaduan,
@@ -120,6 +132,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             $item->nama_kategori ?? '-',
             $item->nama_lokasi ?? '-',
             $name,
+            $prioritas,
             $item->catatan_pengaduan,
             $item->catatan_admin,
             $item->status == 'dilaporkan' ? 'laporan masuk' : $item->status,
@@ -131,7 +144,7 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Pengaduan Masuk', 'Nama Asset Yang Diadukan', 'Kelompok Asset', 'Jenis Asset', 'Nama Lokasi Yang Diadukan', 'Dilaporkan Oleh', 'Catatan Pengaduan', 'Catatan Admin', 'Status Pengaduan', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
+        return ['No', 'Tanggal Pengaduan Masuk', 'Nama Asset Yang Diadukan', 'Kelompok Asset', 'Jenis Asset', 'Nama Lokasi Yang Diadukan', 'Dilaporkan Oleh', 'Prioritas', 'Catatan Pengaduan', 'Catatan Admin', 'Status Pengaduan', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)

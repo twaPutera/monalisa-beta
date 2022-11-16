@@ -25,6 +25,10 @@
                             <input type="text" class="form-control" disabled name="lokasi_asset">
                         </div>
                         <div class="form-group">
+                            <label for="">Prioritas Pengaduan</label>
+                            <input type="text" class="form-control" disabled name="prioritas_pengaduan">
+                        </div>
+                        <div class="form-group">
                             <label for="">Dilaporkan Oleh</label>
                             <input type="text" class="form-control" disabled name="diajukan_oleh">
                         </div>
