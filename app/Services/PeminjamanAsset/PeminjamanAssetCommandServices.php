@@ -128,11 +128,6 @@ class PeminjamanAssetCommandServices
                 'date' => date('d/m/Y H:i'),
             ];
 
-            $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
-            $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
-
-            PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
-
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/peminjaman/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
@@ -216,6 +211,11 @@ class PeminjamanAssetCommandServices
                 $message_log = 'Asset Dipinjam pada tanggal ' . date('d/m/Y', strtotime($peminjaman->tanggal_peminjaman)) . ' oleh ' . $peminjam->name;
                 $this->assetDataCommandServices->insertLogAsset($detail->id_asset, $message_log);
             }
+
+            $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
+            $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
+
+            PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
         }
 
         $log_message = '';
