@@ -21,6 +21,7 @@ class PengaduanCommandServices
 
         $asset_pengaduan = new Pengaduan();
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        $asset_pengaduan->kode_pengaduan =  "ADUAN-" . date('ymd') . "-" . date('his');
         $asset_pengaduan->id_asset_data = $asset_data->id;
         $asset_pengaduan->id_lokasi = $asset_data->lokasi->id ?? NULL;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
@@ -55,6 +56,7 @@ class PengaduanCommandServices
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
+        $asset_pengaduan->kode_pengaduan =  "ADUAN-" . date('ymd') . "-" . date('his');
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;

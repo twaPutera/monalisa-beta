@@ -123,7 +123,9 @@ class AssetServiceDatatableServices
                 }
                 return $name;
             })
-
+            ->addColumn('kode_services', function ($item) {
+                return $item->kode_services ?? 'Tidak Ada';
+            })
             ->addColumn('deskripsi_service', function ($item) {
                 return $item->detail_service->catatan ?? 'Tidak Ada';
             })
@@ -147,7 +149,7 @@ class AssetServiceDatatableServices
             ->addColumn('action', function ($item) {
                 $element = '';
                 if ($item->status_service != 'selesai') {
-                    $element .= '<button type="button" onclick="editService(this)" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
+                    $element .= '<button type="button" onclick="editService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
                     $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
                 } else {
                     $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
@@ -189,6 +191,7 @@ class AssetServiceDatatableServices
         $query->join('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
         $query->join('lokasis', 'detail_services.id_lokasi', '=', 'lokasis.id');
         $query->select([
+            'services.kode_services',
             'services.tanggal_mulai',
             'services.tanggal_selesai',
             'asset_data.kode_asset',
@@ -276,6 +279,9 @@ class AssetServiceDatatableServices
                     $name = isset($user) ? $user->name : 'Not Found';
                 }
                 return $name;
+            })
+            ->addColumn('kode_services', function ($item) {
+                return $item->kode_services ?? 'Tidak Ada';
             })
             ->addColumn('kode_asset', function ($item) {
                 return $item->kode_asset ?? 'Tidak Ada';

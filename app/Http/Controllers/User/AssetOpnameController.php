@@ -9,17 +9,21 @@ use App\Helpers\StatusAssetDataHelpers;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetOpname\AssetOpnameCommandServices;
 use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
+use App\Services\AssetOpname\AssetOpnameQueryServices;
 
 class AssetOpnameController extends Controller
 {
     protected $assetDataQueryServices;
+    protected $assetOpnameQueryServices;
     protected $assetOpnameCommandServices;
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices,
-        AssetOpnameCommandServices $assetOpnameCommandServices
+        AssetOpnameCommandServices $assetOpnameCommandServices,
+        AssetOpnameQueryServices $assetOpnameQueryServices
     ) {
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetOpnameCommandServices = $assetOpnameCommandServices;
+        $this->assetOpnameQueryServices = $assetOpnameQueryServices;
     }
     public function create(string $id)
     {
@@ -34,6 +38,13 @@ class AssetOpnameController extends Controller
     public function store(AssetOpnameStoreRequest $request, string $id)
     {
         try {
+            $find = $this->assetOpnameQueryServices->findPerencanaanByTanggal($request->tanggal_services, $id);
+            if ($find) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tanggal Perencanaan Services Sudah Ada',
+                ], 500);
+            }
             DB::beginTransaction();
             $data =  $this->assetOpnameCommandServices->store($request, $id);
             DB::commit();

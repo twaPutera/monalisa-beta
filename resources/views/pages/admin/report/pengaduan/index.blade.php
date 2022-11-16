@@ -5,6 +5,13 @@
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
+@section('custom_css')
+    <style>
+        div.dataTables_wrapper {
+            width: 200% !important;
+        }
+    </style>
+@endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
@@ -45,6 +52,10 @@
                     {
                         name: 'tanggal_keluhan',
                         data: 'tanggal_keluhan'
+                    },
+                    {
+                        name: 'kode_pengaduan',
+                        data: 'kode_pengaduan'
                     },
                     {
                         name: 'log_terakhir',
@@ -93,7 +104,7 @@
 
                 ],
                 columnDefs: [{
-                        targets: 7,
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "dilaporkan") {
@@ -116,13 +127,13 @@
                         },
                     },
                     {
-                        targets: [2],
+                        targets: [3],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 5,
+                        targets: 6,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == 10) {
@@ -380,6 +391,7 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th>Tanggal Pengaduan</th>
+                                    <th>Kode Pengaduan</th>
                                     <th>Log Terakhir</th>
                                     <th>Nama Asset</th>
                                     <th>Lokasi Asset</th>

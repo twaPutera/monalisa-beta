@@ -93,6 +93,9 @@ class KeluhanDatatableServices
             ->addColumn('tanggal_keluhan', function ($item) {
                 return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
             })
+            ->addColumn('kode_pengaduan', function ($item) {
+                return !empty($item->kode_pengaduan) ? $item->kode_pengaduan : '-';
+            })
             ->addColumn('nama_asset', function ($item) {
                 return !empty($item->asset_data->deskripsi) ? $item->asset_data->deskripsi : '-';
             })
@@ -159,6 +162,7 @@ class KeluhanDatatableServices
         $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
         $query->leftJoin('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
         $query->select([
+            'pengaduans.kode_pengaduan',
             'pengaduans.id as id_pengaduan',
             'pengaduans.tanggal_pengaduan',
             'pengaduans.prioritas',
@@ -231,6 +235,9 @@ class KeluhanDatatableServices
             ->addIndexColumn()
             ->addColumn('tanggal_keluhan', function ($item) {
                 return !empty($item->tanggal_pengaduan) ? $item->tanggal_pengaduan : '-';
+            })
+            ->addColumn('kode_pengaduan', function ($item) {
+                return !empty($item->kode_pengaduan) ? $item->kode_pengaduan : '-';
             })
             ->addColumn('nama_asset', function ($item) {
                 return !empty($item->deskripsi) ? $item->deskripsi : '-';

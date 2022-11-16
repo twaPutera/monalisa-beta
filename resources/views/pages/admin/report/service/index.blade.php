@@ -60,6 +60,10 @@
                         data: 'tanggal_mulai'
                     },
                     {
+                        name: 'kode_services',
+                        data: 'kode_services'
+                    },
+                    {
                         name: 'tanggal_selesai',
                         data: 'tanggal_selesai'
                     },
@@ -135,19 +139,19 @@
                     },
                 ],
                 columnDefs: [{
-                        targets: [1, 2],
+                        targets: [1, 3],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: [3],
+                        targets: [4],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 14,
+                        targets: 15,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -363,6 +367,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Tgl. Mulai</th>
+                                    <th>Kode Services</th>
                                     <th>Tgl. Selesai</th>
                                     <th>Log Terakhir Pada</th>
                                     <th>Kode Asset</th>

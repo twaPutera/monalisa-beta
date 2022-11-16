@@ -88,13 +88,19 @@
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Tanggal Perencanaan Servis</strong></label>
+                        <label class="text-dark" for=""><strong>Tanggal Perencanaan Service</strong></label>
                         <input type="date" name="tanggal_services" class="form-control" id=""
                             placeholder="Text Input">
                         <i class="clear-input">
                             <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
                             </ion-icon>
                         </i>
+                    </div>
+                </div>
+                <div class="form-group boxed">
+                    <div class="input-wrapper">
+                        <label class="text-dark" for=""><strong>Catatan Perencanaan Service</strong></label>
+                        <textarea name="keterangan_services" class="form-control" id="" cols="30" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group boxed">
@@ -162,7 +168,8 @@
 @endsection
 @section('button-menu')
     <div class="d-flex justify-content-center">
-        <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="btn btn-danger border-radius-sm px-3 me-2">
+        <a href="{{ route('user.asset-data.detail', $asset_data->id) }}"
+            class="btn btn-danger border-radius-sm px-3 me-2">
             <span class="">Batal</span>
         </a>
         <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="submit">

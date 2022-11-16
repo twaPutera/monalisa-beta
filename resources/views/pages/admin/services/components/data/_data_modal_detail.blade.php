@@ -7,6 +7,11 @@
                 </td>
             </tr>
             <tr>
+                <td width="40%">Kode Services</td>
+                <td><strong>{{ $listing_asset_service->kode_services ?? '-' }}</strong>
+                </td>
+            </tr>
+            <tr>
                 <td width="40%">Tanggal Selesai</td>
                 <td><strong>{{ $listing_asset_service->tanggal_selesai ?? '-' }}</strong>
                 </td>

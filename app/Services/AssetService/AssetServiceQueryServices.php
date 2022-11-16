@@ -2,6 +2,8 @@
 
 namespace App\Services\AssetService;
 
+use App\Helpers\DateIndoHelpers;
+use App\Models\PerencanaanServices;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
@@ -39,6 +41,28 @@ class AssetServiceQueryServices
         return $services;
     }
 
+    public function getDataAssetPerencanaanServiceSelect2(Request $request)
+    {
+        $data = PerencanaanServices::query();
+
+        if (isset($request->keyword)) {
+            $data->where('keterangan', 'like', '%' . $request->keyword . '%');
+        }
+
+        $data->where('id_asset_data', $request->id_asset);
+        $data->where('status', 'perencanaan'); //To get all data asset is perencanaan
+        $data = $data->orderby('keterangan', 'asc')
+            ->get();
+
+        $results = [];
+        foreach ($data as $item) {
+            $results[] = [
+                'id' => $item->id,
+                'text' => "Tanggal " . DateIndoHelpers::formatDateToIndo($item->tanggal_perencanaan) . ' (' . $item->keterangan . ')',
+            ];
+        }
+        return $results;
+    }
     public function getDataChartServices(Request $request)
     {
         $status_backlog = Service::query()

@@ -26,12 +26,26 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="">Opsi Tanggal Service</label>
+                            <select name="select_service_date" class="form-control" onchange="selectServiceDate(this.value)" id="">
+                                <option value="">Pilih Tanggal Service</option>
+                                <option value="baru">Tanggal Service Baru</option>
+                                <option value="perencanaan">Berdasarkan Perencanaan Service</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none" id="tanggalBaru">
                             <label for="">Tanggal Service</label>
                             <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate"
                                 readonly name="tanggal_mulai_service">
                         </div>
+                        <div class="form-group d-none" id="tanggalPerencanaan">
+                            <label for="">Tanggal Service</label>
+                            <select name="tanggal_mulai_perencanaan" class="form-control" id="listAssetServicesDate">
+
+                            </select>
+                        </div>
                         <div class="form-group">
-                            <label for="">Tanggal Selesai</label>
+                            <label for="">Tanggal Selesai Service</label>
                             <input type="text" class="form-control datepickerCreateSelesai" readonly
                                 name="tanggal_selesai_service">
                         </div>

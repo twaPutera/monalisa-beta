@@ -3,6 +3,7 @@
 namespace App\Services\AssetOpname;
 
 use App\Models\LogAssetOpname;
+use App\Models\PerencanaanServices;
 
 class AssetOpnameQueryServices
 {
@@ -18,5 +19,11 @@ class AssetOpnameQueryServices
             return $item;
         });
         return $data;
+    }
+
+    public function findPerencanaanByTanggal($tanggal, $id_asset)
+    {
+        $find = PerencanaanServices::where('tanggal_perencanaan', $tanggal)->where('id_asset_data', $id_asset)->where('status', 'perencanaan')->first();
+        return $find;
     }
 }

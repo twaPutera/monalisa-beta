@@ -226,6 +226,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::get('/detail/{id}', [ServicesController::class, 'detail'])->name('admin.services.detail');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
+        Route::get('/get-data-perencanaan-service', [ServicesController::class, 'getDataPerencanaanService'])->name('admin.services.get-data-perencanaan-service');
     });
 
     # Keluhan
@@ -407,6 +408,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('user.asset-data.service.getDataSelect2');
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
+            Route::get('/get-data-perencanaan-service', [UserAssetServicesController::class, 'getDataPerencanaanService'])->name('user.services.get-data-perencanaan-service');
+        
         });
         Route::group(['prefix' => 'peminjaman',], function () {
             Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');
