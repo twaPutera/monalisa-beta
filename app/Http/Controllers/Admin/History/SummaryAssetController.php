@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin\History;
 use Illuminate\Http\Request;
 use App\Exports\SummaryAssetExport;
 use App\Http\Controllers\Controller;
-use App\Services\AssetData\AssetDataQueryServices;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\AssetData\AssetDataQueryServices;
 
 class SummaryAssetController extends Controller
 {
@@ -36,7 +36,7 @@ class SummaryAssetController extends Controller
                 'success' => true,
                 'data' => [
                     'asset' => $nilai_asset,
-                    'avg_depresiasi' => number_format($avg_depresiasi, 2, ',', '.')
+                    'avg_depresiasi' => number_format($avg_depresiasi, 2, ',', '.'),
                 ],
             ], 200);
         } catch (\Throwable $th) {

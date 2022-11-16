@@ -2,10 +2,10 @@
 
 namespace App\Services\AssetService;
 
-use App\Helpers\DateIndoHelpers;
-use App\Models\PerencanaanServices;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Helpers\DateIndoHelpers;
+use App\Models\PerencanaanServices;
 
 class AssetServiceQueryServices
 {
@@ -58,7 +58,7 @@ class AssetServiceQueryServices
         foreach ($data as $item) {
             $results[] = [
                 'id' => $item->id,
-                'text' => "Tanggal " . DateIndoHelpers::formatDateToIndo($item->tanggal_perencanaan) . ' (' . $item->keterangan . ')',
+                'text' => 'Tanggal ' . DateIndoHelpers::formatDateToIndo($item->tanggal_perencanaan) . ' (' . $item->keterangan . ')',
             ];
         }
         return $results;

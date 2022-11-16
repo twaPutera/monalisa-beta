@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Models\DetailPeminjamanAsset;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use App\Models\PeminjamanAsset;
-use App\Models\User;
+use App\Models\DetailPeminjamanAsset;
 use Illuminate\Queue\SerializesModels;
+use App\Notifications\UserNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Notifications\UserPeminjamanDueDateNotifMail;
-use App\Notifications\UserNotification;
 
 class PeminjamanDueDateJob implements ShouldQueue
 {

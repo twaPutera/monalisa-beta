@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AndinApiController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
+use App\Http\Controllers\User\AssetPengaduanController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
 use App\Http\Controllers\Admin\Keluhan\KeluhanController;
@@ -46,7 +47,6 @@ use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPem
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\User\AssetPengaduanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -409,7 +409,6 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
             Route::get('/get-data-perencanaan-service', [UserAssetServicesController::class, 'getDataPerencanaanService'])->name('user.services.get-data-perencanaan-service');
-        
         });
         Route::group(['prefix' => 'peminjaman',], function () {
             Route::get('/', [UserPeminjamanAssetController::class, 'index'])->name('user.asset-data.peminjaman.index');

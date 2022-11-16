@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Helpers\StatusAssetDataHelpers;
 use App\Services\AssetData\AssetDataQueryServices;
+use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Services\AssetOpname\AssetOpnameCommandServices;
 use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
-use App\Services\AssetOpname\AssetOpnameQueryServices;
 
 class AssetOpnameController extends Controller
 {

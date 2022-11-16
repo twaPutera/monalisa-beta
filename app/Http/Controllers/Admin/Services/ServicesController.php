@@ -55,7 +55,8 @@ class ServicesController extends Controller
         return view('pages.admin.services.index', compact('data'));
     }
 
-    public function getDataPerencanaanService(Request $request){
+    public function getDataPerencanaanService(Request $request)
+    {
         try {
             $data = $this->assetServiceQueryServices->getDataAssetPerencanaanServiceSelect2($request);
             return response()->json([

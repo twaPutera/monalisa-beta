@@ -7,10 +7,10 @@ use App\Models\Pengaduan;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
-use App\Http\Requests\Pengaduan\AssetPengaduanStoreRequest;
 use App\Models\LogPengaduanAsset;
 use App\Http\Requests\Pengaduan\PengaduanStoreRequest;
 use App\Http\Requests\Pengaduan\PengaduanUpdateRequest;
+use App\Http\Requests\Pengaduan\AssetPengaduanStoreRequest;
 
 class PengaduanCommandServices
 {
@@ -21,9 +21,9 @@ class PengaduanCommandServices
 
         $asset_pengaduan = new Pengaduan();
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
-        $asset_pengaduan->kode_pengaduan =  "ADUAN-" . date('ymd') . "-" . date('his');
+        $asset_pengaduan->kode_pengaduan =  'ADUAN-' . date('ymd') . '-' . date('his');
         $asset_pengaduan->id_asset_data = $asset_data->id;
-        $asset_pengaduan->id_lokasi = $asset_data->lokasi->id ?? NULL;
+        $asset_pengaduan->id_lokasi = $asset_data->lokasi->id ?? null;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
@@ -52,11 +52,11 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (!empty($request->id_asset)) {
+        if (! empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
-        $asset_pengaduan->kode_pengaduan =  "ADUAN-" . date('ymd') . "-" . date('his');
+        $asset_pengaduan->kode_pengaduan =  'ADUAN-' . date('ymd') . '-' . date('his');
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
@@ -85,7 +85,7 @@ class PengaduanCommandServices
         $request->validated();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (!empty($request->id_asset)) {
+        if (! empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }

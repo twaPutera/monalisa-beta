@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Pengaduan\AssetPengaduanStoreRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\Pengaduan\PengaduanCommandServices;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Pengaduan\AssetPengaduanStoreRequest;
 
 class AssetPengaduanController extends Controller
 {
-
     protected $assetDataQueryServices;
     protected $assetServiceCommandServices;
 
