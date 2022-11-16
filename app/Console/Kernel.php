@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(DepresiasionAllAssetJob::class)->monthlyOn(15, '01:00');
+        $schedule->job(DepresiasionAllAssetJob::class)->everyMinute();
     }
 
     /**
