@@ -209,46 +209,11 @@
                         <div class="kt-portlet__head px-4">
                             <div class="kt-portlet__head-label">
                                 <h3 class="kt-portlet__head-title">
-                                    Asset Data
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="kt-portlet__body">
-                            <div style="height: 115px;">
-                                <h6>Total Asset Data</h6>
-                                <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
-                            </div>
-                            <div style="height: 115px;">
-                                <h6>Last Change</h6>
-                                <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <div class="kt-portlet shadow-custom">
-                        <div class="kt-portlet__head px-4">
-                            <div class="kt-portlet__head-label">
-                                <h3 class="kt-portlet__head-title">
-                                    Asset Summary
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="kt-portlet__body px-0">
-                            <div id="chartAssetSummary" style="height: 260px; margin-top: -30px;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <div class="kt-portlet shadow-custom">
-                        <div class="kt-portlet__head px-4">
-                            <div class="kt-portlet__head-label">
-                                <h3 class="kt-portlet__head-title">
                                     Asset Value
                                 </h3>
                             </div>
                         </div>
-                        <div class="kt-portlet__body">
+                        <div class="kt-portlet__body" style="height: 280px;">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
                                     <span
@@ -278,6 +243,41 @@
                                     <p class="mb-0 text-dark">Value Asset</p>
                                 </div>
                                 <h2 class="text-dark mb-0"><strong id="totalValueAsset">0 Jt</strong></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="kt-portlet shadow-custom">
+                        <div class="kt-portlet__head px-4">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Asset Summary
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body px-0">
+                            <div id="chartAssetSummary" style="height: 260px; margin-top: -30px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="kt-portlet shadow-custom">
+                        <div class="kt-portlet__head px-4">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Asset Data
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body">
+                            <div>
+                                <h6>Total Asset Data</h6>
+                                <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
+                            </div>
+                            <div>
+                                <h6>Last Change</h6>
+                                <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
                             </div>
                         </div>
                     </div>
