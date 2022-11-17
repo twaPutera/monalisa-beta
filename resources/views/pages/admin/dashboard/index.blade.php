@@ -6,6 +6,7 @@
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/echarts/echarts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection
 @section('custom_js')
     <script>
@@ -85,28 +86,6 @@
                     }
                 ],
             });
-            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
-                if (data.success) {
-                    $(formElement).trigger('reset');
-                    $(formElement).find(".invalid-feedback").remove();
-                    $(formElement).find(".is-invalid").removeClass("is-invalid");
-                    let modal = $(formElement).closest('.modal');
-                    modal.modal('hide');
-                    table.DataTable().ajax.reload();
-                    showToastSuccess('Sukses', data.message);
-                }
-            });
-            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-                //if validation not pass
-                if (!errors.success) {
-                    showToastError('Gagal', errors.message);
-                }
-                for (let key in errors) {
-                    let element = formElement.find(`[name=${key}]`);
-                    clearValidation(element);
-                    showValidation(element, errors[key][0]);
-                }
-            });
         });
     </script>
     <script>
@@ -128,7 +107,7 @@
                 ajax: {
                     url: "{{ route('admin.services.datatable-perencanaan-service') }}",
                     data: function(d) {
-                        d.status = 'pending';
+                        d.status = 'perencanaan';
                         d.limit = 10;
                     }
                 },
@@ -141,6 +120,10 @@
                         name: 'DT_RowIndex'
                     },
                     {
+                        name: 'id',
+                        data: 'id'
+                    },
+                    {
                         name: 'tanggal_perencanaan',
                         data: 'tanggal_perencanaan'
                     },
@@ -151,10 +134,21 @@
 
                 ],
                 order: [
-                    [1, 'desc']
+                    [2, 'desc']
                 ],
                 columnDefs: [
-
+                    {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            element +=
+                                `<button onclick="addServicesFromPerencanaan(this)" data-url_show="{{ route('admin.services.find-perencanaan-service', ':id') }}" class="btn btn-sm btn-primary btn-icon" title="View details">` +
+                                `<i class="la la-eye"></i>` +
+                                `</button>`;
+                            element = element.replace(/:id/g, data);
+                            return element;
+                        },
+                    }
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -164,8 +158,9 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
-                    table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
+                    datatableCriticalAduan.DataTable().ajax.reload();
+                    datatablePerencanaanServices.ajax.reload();
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -180,6 +175,56 @@
                 }
             });
         });
+
+        const addServicesFromPerencanaan = (element) => {
+            const url_show = $(element).data('url_show');
+            $.ajax({
+                url: url_show,
+                data: {
+                    relations: ['asset_data', 'log_asset_opaname']
+                },
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        const data = response.data;
+                        $('#assetLokasiIdServices').val(data.asset_data.id_lokasi);
+                        $('#idPerencanaanServices').val(data.id);
+                        $('#assetIdServices').val(data.asset_data.id);
+                        $('#assetNameServices').val(data.asset_data.deskripsi);
+                        $('#tanggalServices').val(data.tanggal_perencanaan);
+                        $('#permasalahanServices').val(data.keterangan);
+                        $('#modalCreateAssetService').on('shown.bs.modal', function() {
+                            generateSelect2KategoriService();
+                        }).modal('show');
+                    }
+                },
+            })
+        }
+
+        const generateSelect2KategoriService = () => {
+            $('#kategoriServiceCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Kategori Service',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-service.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
     </script>
     <script>
         $(document).ready(function() {
@@ -451,11 +496,11 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
-                    <div>
+                    <div style="height: 115px;">
                         <h6>Total Asset Data</h6>
                         <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
                     </div>
-                    <div>
+                    <div style="height: 115px;">
                         <h6>Last Change</h6>
                         <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
                     </div>
@@ -472,7 +517,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body px-0">
-                    <div id="chartAssetKondisi" style="height: 180px; margin-top: -30px;"></div>
+                    <div id="chartAssetKondisi" style="height: 260px; margin-top: -30px;"></div>
                 </div>
             </div>
         </div>
@@ -519,7 +564,8 @@
                         <table class="table table-striped" id="datatablePerencanaanServices">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th width="50px">No</th>
+                                    <th width="50px">#</th>
                                     <th>Tanggal Services</th>
                                     <th>Nama Aset</th>
                                 </tr>
@@ -581,4 +627,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.dashboard._modal_create_service')
 @endsection

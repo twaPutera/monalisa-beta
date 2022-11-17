@@ -14,4 +14,9 @@ class PerencanaanServices extends Model
     {
         return $this->belongsTo(AssetData::class, 'id_asset_data', 'id');
     }
+
+    public function log_asset_opaname()
+    {
+        return $this->belongsTo(LogAssetOpname::class, 'id_log_opname', 'id');
+    }
 }

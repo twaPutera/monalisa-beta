@@ -176,4 +176,22 @@ class ServicesController extends Controller
     {
         return $this->assetServiceDatatableServices->datatablePerencanaanServices($request);
     }
+
+    public function findPerencanaanServicesById($id, Request $request)
+    {
+        try {
+            $data = $this->assetServiceQueryServices->findPerencanaanServicesById($id, $request);
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengambil data perencanaan service',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }

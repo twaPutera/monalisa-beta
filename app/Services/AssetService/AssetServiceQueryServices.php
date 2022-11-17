@@ -41,6 +41,19 @@ class AssetServiceQueryServices
         return $services;
     }
 
+    public function findPerencanaanServicesById(string $id, $request = null)
+    {
+        $data = PerencanaanServices::query();
+
+        if (isset($request->relations)) {
+            $data->with($request->relations);
+        }
+
+        $data = $data->where('id', $id)
+            ->firstOrFail();
+        return $data;
+    }
+
     public function getDataAssetPerencanaanServiceSelect2(Request $request)
     {
         $data = PerencanaanServices::query();
