@@ -80,6 +80,11 @@ class KeluhanDatatableServices
                 $query->where('prioritas', $request->prioritas_pengaduan);
             }
         }
+
+        if (isset($request->limit)) {
+            $query->limit($request->limit);
+        }
+
         $filter = $request->toArray();
         $order_column_index = $filter['order'][0]['column'] ?? 0;
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';

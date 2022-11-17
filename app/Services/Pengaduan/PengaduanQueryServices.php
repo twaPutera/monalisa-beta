@@ -23,6 +23,10 @@ class PengaduanQueryServices
             $pengaduan->where('created_by', $request->created_by);
         }
 
+        if (isset($request->limit)) {
+            $pengaduan->limit($request->limit);
+        }
+
         $pengaduan = $pengaduan->orderby('tanggal_pengaduan', 'DESC')->get();
 
         return $pengaduan;
