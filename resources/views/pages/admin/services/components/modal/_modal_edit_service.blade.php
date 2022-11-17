@@ -27,9 +27,25 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="">Opsi Tanggal Service</label>
+                            <select name="select_service_date" class="form-control"
+                                onchange="selectServiceDateUpdate(this.value)" id="">
+                                <option value="">Pilih Tanggal Service</option>
+                                <option value="baru" selected>Tanggal Service Baru</option>
+                                <option value="perencanaan">Berdasarkan Perencanaan Service</option>
+                            </select>
+                        </div>
+                        <div class="form-group d-none tanggalBaru">
                             <label for="">Tanggal Service</label>
                             <input type="text" class="form-control datepickerCreate" readonly
                                 name="tanggal_mulai_service">
+                        </div>
+                        <div class="form-group d-none tanggalPerencanaan">
+                            <label for="">Tanggal Service</label>
+                            <select name="tanggal_mulai_perencanaan" class="form-control listAssetServicesDateUpdate"
+                                id="listAssetServicesDateUpdate">
+
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">Tanggal Selesai</label>
@@ -76,8 +92,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="">Kondisi Asset</label>
                                 <div>
-                                    <select name="status_kondisi" class="form-control" style="width: 200px"
-                                        id="">
+                                    <select name="status_kondisi" class="form-control" style="width: 200px" id="">
                                         <option value="baik" selected>Baik</option>
                                         <option value="rusak">Rusak</option>
                                     </select>
@@ -97,8 +112,8 @@
                                 </div>
                                 <label for="file_asset_service_update" class="btn btn-primary">
                                     Upload
-                                    <input type="file" id="file_asset_service_update"
-                                        accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none" name="file_asset_service">
+                                    <input type="file" id="file_asset_service_update" accept=".jpeg,.png,.jpg,.gif,.svg"
+                                        class="d-none" name="file_asset_service">
                                 </label>
                             </div>
                         </div>

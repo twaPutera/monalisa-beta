@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTablePengaduanAddPrioritas extends Migration
+class AlterTablePerencanaanServicesAddColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AlterTablePengaduanAddPrioritas extends Migration
      */
     public function up()
     {
-        Schema::table('pengaduans', function (Blueprint $table) {
-            $table->string('prioritas', 100)->after('status_pengaduan')->nullable();
+        Schema::table('perencanaan_services', function (Blueprint $table) {
+            $table->string('keterangan')->after('tanggal_perencanaan');
+            $table->foreignUuid('id_log_opname')->after('tanggal_perencanaan');
+            $table->foreign('id_log_opname')->references('id')->on('log_asset_opnames');
         });
     }
 

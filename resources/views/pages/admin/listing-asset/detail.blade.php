@@ -373,16 +373,19 @@
                     }
                 }
             });
-
+            $('#listAssetServicesDate').select2({
+                width: '100%',
+                placeholder: 'Pilih Tanggal Services',
+                allowClear: true,
+            })
             setHeightPropertiAsset();
-
             getPositionPenyerah();
-
+            selectServiceDate('root');
+            selectTanggalServices();
             // generateOptionUnit();
 
             // generateOptionPosition();
         });
-
         const generateNewOwnerAsset = () => {
             $('#newOwnership').select2({
                 width: '100%',
@@ -408,6 +411,20 @@
                 },
             });
         }
+        const selectServiceDate = (v) => {
+            const tanggalBaru = $('#tanggalBaru');
+            const tanggalPerencanaan = $('#tanggalPerencanaan');
+            if (v == "baru") {
+                tanggalBaru.removeClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            } else if (v == "perencanaan") {
+                tanggalPerencanaan.removeClass('d-none');
+                tanggalBaru.addClass('d-none');
+            } else {
+                tanggalBaru.addClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            }
+        }
 
         const generateOptionUnit = () => {
             $.ajax({
@@ -422,6 +439,27 @@
                             option += `<option value="${element.id}">${element.text}</option>`;
                         });
                         $('.unitKerjaSelect').html(option);
+                    }
+                }
+            })
+        }
+
+        const selectTanggalServices = () => {
+            $.ajax({
+                url: '{{ route('admin.services.get-data-perencanaan-service') }}',
+                type: 'GET',
+                data: {
+                    id_asset: "{{ $asset->id }}",
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $('#listAssetServicesDate').html(option);
                     }
                 }
             })
@@ -688,7 +726,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-
+                                        
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';

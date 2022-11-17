@@ -7,8 +7,8 @@ use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\LogAssetOpname;
-use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
 use App\Models\PerencanaanServices;
+use App\Http\Requests\AssetOpname\AssetOpnameStoreRequest;
 
 class AssetOpnameCommandServices
 {
@@ -36,6 +36,8 @@ class AssetOpnameCommandServices
         $perencanan_services->id_asset_data = $asset_data->id;
         $perencanan_services->status = 'perencanaan';
         $perencanan_services->tanggal_perencanaan = $request->tanggal_services;
+        $perencanan_services->keterangan = $request->keterangan_services;
+        $perencanan_services->id_log_opname = $opname_log->id;
         $perencanan_services->save();
 
         if ($request->hasFile('gambar_asset')) {

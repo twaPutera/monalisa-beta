@@ -23,7 +23,6 @@ class PengaduanStoreRequest extends FormRequest
      */
     public function rules()
     {
-        
         return [
             'id_lokasi' => 'required|exists:lokasis,id',
             'id_asset' => 'nullable|exists:asset_data,id',

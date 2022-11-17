@@ -9,6 +9,7 @@ use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\DetailService;
 use App\Models\LogServiceAsset;
+use App\Models\PerencanaanServices;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
@@ -22,10 +23,20 @@ class AssetServiceCommandServices
         $request->validated();
         $user = SsoHelpers::getUserLogin();
 
+        if ($request->select_service_date == 'baru') {
+            $tanggal_mulai = $request->tanggal_mulai_service;
+        } else {
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan->status = 'realisasi';
+            $perencanaan->save();
+
+            $tanggal_mulai = $perencanaan->tanggal_perencanaan;
+        }
         $asset_service = new Service();
+        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
+        $asset_service->tanggal_mulai = $tanggal_mulai;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
@@ -62,11 +73,20 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if ($request->select_service_date == 'baru') {
+            $tanggal_mulai = $request->tanggal_mulai_service;
+        } else {
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan->status = 'realisasi';
+            $perencanaan->save();
 
+            $tanggal_mulai = $perencanaan->tanggal_perencanaan;
+        }
         $asset_service = new Service();
+        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
+        $asset_service->tanggal_mulai = $tanggal_mulai;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
@@ -103,11 +123,20 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if ($request->select_service_date == 'baru') {
+            $tanggal_mulai = $request->tanggal_mulai_service;
+        } else {
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan->status = 'realisasi';
+            $perencanaan->save();
 
+            $tanggal_mulai = $perencanaan->tanggal_perencanaan;
+        }
         $asset_service = new Service();
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
+        $asset_service->tanggal_mulai = $tanggal_mulai;
+        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
@@ -145,11 +174,27 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if ($request->select_service_date == 'baru') {
+            $tanggal_mulai = $request->tanggal_mulai_service;
+        } else {
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan->status = 'realisasi';
+            $perencanaan->save();
 
+            $tanggal_mulai = $perencanaan->tanggal_perencanaan;
+        }
         $asset_service = Service::findOrFail($id);
+        $perencanaan_change = PerencanaanServices::where('tanggal_perencanaan', $asset_service->tanggal_mulai)->where('status', 'realisasi')->where('id_asset_data', $request->id_asset)->first();
+        if (! empty($perencanaan_change)) {
+            if ($perencanaan_change->id != $request->tanggal_mulai_perencanaan) {
+                $perencanaan_change->status = 'perencanaan';
+                $perencanaan_change->save();
+            }
+        }
+
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset_service->tanggal_mulai = $request->tanggal_mulai_service;
+        $asset_service->tanggal_mulai = $tanggal_mulai;
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;

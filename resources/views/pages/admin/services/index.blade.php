@@ -63,6 +63,10 @@
                         data: 'tanggal_mulai'
                     },
                     {
+                        name: 'kode_services',
+                        data: 'kode_services'
+                    },
+                    {
                         name: 'asset_data.deskripsi',
                         data: 'asset_data.deskripsi'
                     },
@@ -89,13 +93,13 @@
                     },
                 ],
                 columnDefs: [{
-                        targets: [2, 8],
+                        targets: [2, 9],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 7,
+                        targets: 8,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "on progress") {
@@ -149,16 +153,13 @@
             generateAssetServiceSelect();
             generateMonthPicker();
             generateYearPicker();
+            selectServiceDate('root');
+            selectServiceDateUpdate('baru');
             $("#searchServices").on("keydown", function(event) {
                 if (event.which == 13)
                     filterTableService();
             });
         });
-
-        const filterTableService = () => {
-            table.DataTable().ajax.reload();
-        }
-
         const generateMonthPicker = () => {
             $('.monthpicker').datepicker({
                 format: "mm",
@@ -176,6 +177,10 @@
                 minViewMode: 'years',
                 autoclose: true,
             });
+        }
+
+        const filterTableService = () => {
+            table.DataTable().ajax.reload();
         }
     </script>
     <script>
@@ -278,6 +283,7 @@
         const editService = (button) => {
             const url_edit = $(button).data('url_edit');
             const url_update = $(button).data('url_update');
+            const id_asset = $(button).data('id_asset');
             $.ajax({
                 url: url_edit,
                 type: 'GET',
@@ -298,6 +304,7 @@
                     form.find('textarea[name=tindakan]').val(response.data.detail_service.tindakan);
                     form.find('textarea[name=catatan]').val(response.data.detail_service.tindakan);
                     modal.on('shown.bs.modal', function(e) {
+                        generatePerencanaanServiceSelect(id_asset);
                         $('#kategoriServiceUpdate option[value="' + response.data
                             .id_kategori_service + '"]').attr('selected', 'selected');
                         $('#kategoriServiceUpdate').select2({
@@ -329,6 +336,13 @@
                             allowClear: true,
                             parent: $(this)
                         });
+
+                        $('#listAssetServicesDateUpdate').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Tanggal Services',
+                            allowClear: true,
+                            parent: $(this)
+                        });
                     })
                     modal.modal('show');
                 }
@@ -353,7 +367,55 @@
                 }
             })
         }
-
+        const generatePerencanaanServiceSelect = (value) => {
+            $.ajax({
+                url: "{{ route('admin.services.get-data-perencanaan-service') }}",
+                type: 'GET',
+                dataType: 'json',
+                data:{
+                    id_asset: value,
+                },
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.listAssetServicesDateUpdate');
+                        select.empty();
+                        select.append(`<option value="">Pilih Tanggal Service</option>`);
+                        response.data.forEach((item) => {
+                            select.append(
+                                `<option value="${item.id}">${item.text}</option>`);
+                        });
+                    }
+                }
+            })
+        }
+        const selectServiceDate = (v) => {
+            const tanggalBaru = $('#tanggalBaru');
+            const tanggalPerencanaan = $('#tanggalPerencanaan');
+            if (v == "baru") {
+                tanggalBaru.removeClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            } else if (v == "perencanaan") {
+                tanggalPerencanaan.removeClass('d-none');
+                tanggalBaru.addClass('d-none');
+            } else {
+                tanggalBaru.addClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            }
+        }
+        const selectServiceDateUpdate = (v) => {
+            const tanggalBaru = $('.tanggalBaru');
+            const tanggalPerencanaan = $('.tanggalPerencanaan');
+            if (v == "baru") {
+                tanggalBaru.removeClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            } else if (v == "perencanaan") {
+                tanggalPerencanaan.removeClass('d-none');
+                tanggalBaru.addClass('d-none');
+            } else {
+                tanggalBaru.addClass('d-none');
+                tanggalPerencanaan.addClass('d-none');
+            }
+        }
         const generateLocationServiceSelect = () => {
             $.ajax({
                 url: "{{ route('admin.setting.lokasi.get-select2') }}",
@@ -515,6 +577,7 @@
                                     <th>No</th>
                                     <th width="100px">#</th>
                                     <th>Tgl. Mulai</th>
+                                    <th>Kode Services</th>
                                     <th>Deskripsi Asset</th>
                                     <th>Tipe</th>
                                     <th>Kelompok</th>

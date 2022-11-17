@@ -26,6 +26,7 @@ class AssetOpnameStoreRequest extends FormRequest
         return [
             'tanggal_opname' => 'required|date',
             'tanggal_services' => 'required|date',
+            'keterangan_services' => 'required|string|max:100',
             'status_kondisi' => 'required|string|max:50',
             'status_akunting' => 'required|string|max:100',
             'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

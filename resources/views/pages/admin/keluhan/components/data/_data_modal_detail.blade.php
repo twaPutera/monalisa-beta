@@ -7,6 +7,11 @@
                 </td>
             </tr>
             <tr>
+                <td width="40%">Kode Pengaduan</td>
+                <td><strong>{{ $listing_keluhan->kode_pengaduan ?? '-' }}</strong>
+                </td>
+            </tr>
+            <tr>
                 <td width="40%">Prioritas Pengaduan</td>
                 @php
                     if ($listing_keluhan->prioritas == 10) {

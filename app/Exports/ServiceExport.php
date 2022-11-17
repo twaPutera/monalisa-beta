@@ -48,6 +48,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         $query->join('lokasis', 'detail_services.id_lokasi', '=', 'lokasis.id');
         $query->select([
             'services.tanggal_mulai',
+            'services.kode_services',
             'services.tanggal_selesai',
             'asset_data.kode_asset',
             'asset_data.deskripsi',
@@ -112,6 +113,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
         return [
             $this->number += 1,
             $item->tanggal_mulai,
+            $item->kode_services,
             $item->tanggal_selesai,
             $item->kode_asset,
             $item->deskripsi,
@@ -132,7 +134,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Mulai', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
+        return ['No', 'Tanggal Mulai', 'Kode Services', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)
