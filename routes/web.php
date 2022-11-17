@@ -227,6 +227,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
         Route::get('/get-data-perencanaan-service', [ServicesController::class, 'getDataPerencanaanService'])->name('admin.services.get-data-perencanaan-service');
+        Route::get('/datatable-perencanaan-service', [ServicesController::class, 'datatablePerencanaanServices'])->name('admin.services.datatable-perencanaan-service');
     });
 
     # Keluhan

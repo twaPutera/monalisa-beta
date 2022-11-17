@@ -9,16 +9,15 @@
 @endsection
 @section('custom_js')
     <script>
-        var table = $('#datatableCriticalAduan');
+        var datatableCriticalAduan = $('#datatableCriticalAduan');
         $(document).ready(function() {
-            table.DataTable({
+            datatableCriticalAduan.DataTable({
                 responsive: true,
                 searchDelay: 500,
                 processing: true,
                 searching: false,
                 bLengthChange: false,
                 // set limit item per page
-                pageLength: 3,
                 orderable: true,
                 paging: false,
                 info: false,
@@ -84,6 +83,78 @@
                             return element;
                         },
                     }
+                ],
+            });
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    $(formElement).trigger('reset');
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
+                    table.DataTable().ajax.reload();
+                    showToastSuccess('Sukses', data.message);
+                }
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        var datatablePerencanaanServices = $('#datatablePerencanaanServices');
+        $(document).ready(function() {
+            datatablePerencanaanServices.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                // set limit item per page
+                // pageLength: 3,
+                orderable: true,
+                paging: false,
+                info: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.services.datatable-perencanaan-service') }}",
+                    data: function(d) {
+                        d.status = 'pending';
+                        d.limit = 10;
+                    }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        name: 'tanggal_perencanaan',
+                        data: 'tanggal_perencanaan'
+                    },
+                    {
+                        name: 'asset_deskripsi',
+                        data: 'asset_deskripsi',
+                    },
+
+                ],
+                order: [
+                    [1, 'desc']
+                ],
+                columnDefs: [
+
                 ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
@@ -439,13 +510,13 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Upcoming Services
+                            Perencanaan Services
                         </h3>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="datatablePerencanaanServices">
                             <thead>
                                 <tr>
                                     <th>No</th>

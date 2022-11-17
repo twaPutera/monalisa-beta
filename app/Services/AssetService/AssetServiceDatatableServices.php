@@ -7,6 +7,7 @@ use App\Models\Service;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\LogServiceAsset;
+use App\Models\PerencanaanServices;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use Yajra\DataTables\Contracts\DataTable;
@@ -330,5 +331,41 @@ class AssetServiceDatatableServices
             })
 
             ->make(true);
+    }
+
+    public function datatablePerencanaanServices(Request $request)
+    {
+        $query = PerencanaanServices::query()
+            ->select([
+                'perencanaan_services.*',
+                'asset_data.kode_asset',
+                'asset_data.deskripsi as asset_deskripsi',
+            ])
+            ->join('asset_data', 'asset_data.id', '=', 'perencanaan_services.id_asset_data');
+
+        if (isset($request->id_asset_data)) {
+            $query->where('id_asset_data', $request->id_asset_data);
+        }
+
+        if (isset($request->id_log_opname)) {
+            $query->where('id_log_opname', $request->id_log_opname);
+        }
+
+        if (isset($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        if (isset($request->tanggal_perencanaan)) {
+            $query->where('tanggal_perencanaan', $request->tanggal_perencanaan);
+        }
+
+        if (isset($request->limit)) {
+            $query->limit($request->limit);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->make(true);
+
     }
 }

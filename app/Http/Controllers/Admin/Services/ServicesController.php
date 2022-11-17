@@ -171,4 +171,9 @@ class ServicesController extends Controller
             ], 500);
         }
     }
+
+    public function datatablePerencanaanServices(Request $request)
+    {
+        return $this->assetServiceDatatableServices->datatablePerencanaanServices($request);
+    }
 }
