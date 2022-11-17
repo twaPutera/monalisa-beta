@@ -19,4 +19,9 @@ class LogAssetOpname extends Model
     {
         return $this->morphMany(AssetImage::class, 'imageable');
     }
+
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class, 'id_lokasi', 'id');
+    }
 }

@@ -137,6 +137,9 @@
                         data: 'tanggal_mulai'
                     },
                     {
+                        data: 'kode_services'
+                    },
+                    {
                         name: 'nama_service',
                         data: 'nama_service'
                     },
@@ -240,6 +243,14 @@
                     },
                     {
                         data: 'status_akhir',
+                    },
+                    {
+                        name: 'lokasi_awal',
+                        data: 'lokasi_awal',
+                    },
+                    {
+                        name: 'lokasi_akhir',
+                        data: 'lokasi_akhir',
                     },
                     {
                         data: 'keterangan',
@@ -894,6 +905,8 @@
                                             <th>Kode Opname</th>
                                             <th>Status Awal</th>
                                             <th>Status Akhir</th>
+                                            <th>Lokasi Awal</th>
+                                            <th>Lokasi Akhir</th>
                                             <th>Catatan</th>
                                             <th>User</th>
                                             <th>#</th>
@@ -910,6 +923,7 @@
                                     <thead>
                                         <tr>
                                             <th>Tanggal</th>
+                                            <th>Kode Services</th>
                                             <th>Jenis Service</th>
                                             <th>Status Service</th>
                                             <th>Catatan</th>

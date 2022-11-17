@@ -6,6 +6,7 @@ use App\Models\LogAsset;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
+use App\Models\Lokasi;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -325,6 +326,13 @@ class AssetDataDatatableServices
                 $element = '';
                 $element .= '<button type="button" onclick="showOpname(this)" data-url_detail="' . route('admin.listing-asset.log-opname.show', $item->id) . '" class="btn btn-sm btn-icon"><i class="fa fa-image"></i></button>';
                 return $element;
+            })
+            ->addColumn('lokasi_awal', function ($item) {
+                $lokasi = Lokasi::where('id', $item->lokasi_sebelumnya)->first();
+                return $lokasi->nama_lokasi ?? 'Tidak Ada';
+            })
+            ->addColumn('lokasi_akhir', function ($item) {
+                return $item->lokasi->nama_lokasi ?? 'Tidak Ada';
             })
             ->rawColumns(['action'])
             ->make(true);

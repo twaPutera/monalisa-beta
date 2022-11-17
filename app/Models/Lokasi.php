@@ -20,4 +20,9 @@ class Lokasi extends Model
     {
         return $this->hasMany(Pengaduan::class, 'id_lokasi', 'id');
     }
+
+    public function log_asset_opname()
+    {
+        return $this->hasMany(LogAssetOpname::class, 'id_lokasi', 'id');
+    }
 }
