@@ -1,8 +1,231 @@
 @extends('layouts.admin.main.master')
+@section('plugin_css')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+@endsection
 @section('plugin_js')
+    <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/echarts/echarts.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection
 @section('custom_js')
+    <script>
+        var datatableCriticalAduan = $('#datatableCriticalAduan');
+        $(document).ready(function() {
+            datatableCriticalAduan.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                // set limit item per page
+                orderable: true,
+                paging: false,
+                info: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.keluhan.datatable') }}",
+                    data: function(d) {
+                        d.status_pengaduan = 'dilaporkan';
+                        d.limit = 10;
+                    }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        name: 'tanggal_pengaduan',
+                        data: 'tanggal_pengaduan'
+                    },
+                    {
+                        name: 'created_by_name',
+                        data: 'created_by_name',
+                        orderable: false
+                    },
+                    {
+                        name: 'prioritas',
+                        data: 'prioritas',
+                        orderable: true
+                    },
+                    {
+                        name: 'lokasi_asset',
+                        data: 'lokasi_asset',
+                        orderable: false
+                    },
+
+                ],
+                order: [
+                    [3, 'asc']
+                ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                ],
+            });
+        });
+    </script>
+    <script>
+        var datatablePerencanaanServices = $('#datatablePerencanaanServices');
+        $(document).ready(function() {
+            datatablePerencanaanServices.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                // set limit item per page
+                // pageLength: 3,
+                orderable: true,
+                paging: false,
+                info: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.services.datatable-perencanaan-service') }}",
+                    data: function(d) {
+                        d.status = 'perencanaan';
+                        d.limit = 10;
+                    }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        name: 'id',
+                        data: 'id'
+                    },
+                    {
+                        name: 'tanggal_perencanaan',
+                        data: 'tanggal_perencanaan'
+                    },
+                    {
+                        name: 'asset_deskripsi',
+                        data: 'asset_deskripsi',
+                    },
+
+                ],
+                order: [
+                    [2, 'desc']
+                ],
+                columnDefs: [
+                    {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            element +=
+                                `<button onclick="addServicesFromPerencanaan(this)" data-url_show="{{ route('admin.services.find-perencanaan-service', ':id') }}" class="btn btn-sm btn-primary btn-icon" title="View details">` +
+                                `<i class="la la-eye"></i>` +
+                                `</button>`;
+                            element = element.replace(/:id/g, data);
+                            return element;
+                        },
+                    }
+                ],
+            });
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    $(formElement).trigger('reset');
+                    $(formElement).find(".invalid-feedback").remove();
+                    $(formElement).find(".is-invalid").removeClass("is-invalid");
+                    let modal = $(formElement).closest('.modal');
+                    modal.modal('hide');
+                    showToastSuccess('Sukses', data.message);
+                    datatableCriticalAduan.DataTable().ajax.reload();
+                    datatablePerencanaanServices.ajax.reload();
+                }
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
+                for (let key in errors) {
+                    let element = formElement.find(`[name=${key}]`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
+            });
+        });
+
+        const addServicesFromPerencanaan = (element) => {
+            const url_show = $(element).data('url_show');
+            $.ajax({
+                url: url_show,
+                data: {
+                    relations: ['asset_data', 'log_asset_opaname']
+                },
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        const data = response.data;
+                        $('#assetLokasiIdServices').val(data.asset_data.id_lokasi);
+                        $('#idPerencanaanServices').val(data.id);
+                        $('#assetIdServices').val(data.asset_data.id);
+                        $('#assetNameServices').val(data.asset_data.deskripsi);
+                        $('#tanggalServices').val(data.tanggal_perencanaan);
+                        $('#permasalahanServices').val(data.keterangan);
+                        $('#modalCreateAssetService').on('shown.bs.modal', function() {
+                            generateSelect2KategoriService();
+                        }).modal('show');
+                    }
+                },
+            })
+        }
+
+        const generateSelect2KategoriService = () => {
+            $('#kategoriServiceCreate').select2({
+                width: '100%',
+                placeholder: 'Pilih Kategori Service',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.setting.kategori-service.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             getSummaryData();
@@ -261,39 +484,96 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-12">
-                    <div class="kt-portlet shadow-custom">
-                        <div class="kt-portlet__head px-4">
-                            <div class="kt-portlet__head-label">
-                                <h3 class="kt-portlet__head-title">
-                                    Asset Data
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="kt-portlet__body">
-                            <div>
-                                <h6>Total Asset Data</h6>
-                                <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
-                            </div>
-                            <div>
-                                <h6>Last Change</h6>
-                                <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
-                            </div>
-                        </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Asset Data
+                        </h3>
                     </div>
                 </div>
-                <div class="col-md-6 col-12">
-                    <div class="kt-portlet shadow-custom">
-                        <div class="kt-portlet__head px-4">
-                            <div class="kt-portlet__head-label">
-                                <h3 class="kt-portlet__head-title">
-                                    Kondisi Asset
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="kt-portlet__body px-0">
-                            <div id="chartAssetKondisi" style="height: 180px; margin-top: -30px;"></div>
-                        </div>
+                <div class="kt-portlet__body">
+                    <div style="height: 115px;">
+                        <h6>Total Asset Data</h6>
+                        <h1 class="text-dark text-right"><strong id="totalAssetSummary">0</strong></h1>
+                    </div>
+                    <div style="height: 115px;">
+                        <h6>Last Change</h6>
+                        <p class="text-primary text-right"><strong id="lastUpdateAsset">-</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Kondisi Asset
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body px-0">
+                    <div id="chartAssetKondisi" style="height: 260px; margin-top: -30px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Pengaduan Status Tertinggi
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body ">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatableCriticalAduan">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tanggal Aduan</th>
+                                    <th>Nama Pembuat</th>
+                                    <th>Level Aduan</th>
+                                    <th>Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Perencanaan Services
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatablePerencanaanServices">
+                            <thead>
+                                <tr>
+                                    <th width="50px">No</th>
+                                    <th width="50px">#</th>
+                                    <th>Tanggal Services</th>
+                                    <th>Nama Aset</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -311,6 +591,8 @@
                     <div id="chartPenerimaanAsset" style="margin-top: -30px; height: 310px;"></div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-6 col-12">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -345,4 +627,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.dashboard._modal_create_service')
 @endsection

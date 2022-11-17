@@ -12,7 +12,7 @@
     <script>
         $(document).ready(function() {
             getAllDataPeminjaman('pendingContainer', ['pending']);
-            getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'overdue', 'ditolak']);
+            getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'duedate', 'ditolak']);
             getAllDataPeminjaman('selesaiContainer', ['selesai']);
         })
     </script>
