@@ -3,9 +3,11 @@
 @section('pluggin-css')
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
 @endsection
 @section('pluggin-js')
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection
 @section('custom-js')
     <script>
@@ -46,6 +48,23 @@
                 }
             }
         });
+        $(document).ready(function() {
+            getDataOptionSelect();
+            setTimeout(() => {
+                generateSelect2Lokasi();
+            }, 200);
+        });
+
+        const selectServicePerencanaan = (v) => {
+            const perencanaanService = $('#perencanaanService');
+            if (v == "aktif") {
+                perencanaanService.removeClass('d-none');
+            } else if (v == "nonaktif") {
+                perencanaanService.addClass('d-none');
+            } else {
+                perencanaanService.addClass('d-none');
+            }
+        }
         $('#gambar_asset').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-text').text(file.name);
@@ -56,7 +75,34 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+        const getDataOptionSelect = () => {
+            $.ajax({
+                url: "{{ route('user.pengaduan.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const select = $('.select2Lokasi');
+                    select.empty();
+                    response.data.forEach(element => {
+                        let selected = '';
+                        if (element.id == "{{ $asset_data->lokasi->id }}") {
+                            selected = 'selected';
+                        }
+                        select.append(
+                            `<option ${selected} value="${element.id}">${element.text}</option>`
+                        );
+                    });
+                }
+            })
+        }
 
+        const generateSelect2Lokasi = () => {
+            $('.select2Lokasi').select2({
+                'placeholder': 'Pilih Lokasi',
+                'allowClear': true,
+                'width': '100%'
+            })
+        }
         const submitForm = () => {
             $('.form-submit').submit();
         }
@@ -88,21 +134,42 @@
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Tanggal Perencanaan Service</strong></label>
-                        <input type="date" name="tanggal_services" class="form-control" id=""
-                            placeholder="Text Input">
-                        <i class="clear-input">
-                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
-                            </ion-icon>
-                        </i>
+                        <label class="text-dark" for=""><strong>Opsi Perencanaan Service</strong></label>
+                        <select name="status_perencanaan" class="form-control mr-3" id="status_perencanaan"
+                            onchange="selectServicePerencanaan(this.value)">
+                            <option value="nonaktif">Tidak Aktif</option>
+                            <option value="aktif">Aktif</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="perencanaanService" class="d-none">
+                    <div class="form-group boxed">
+                        <div class="input-wrapper">
+                            <label class="text-dark" for=""><strong>Tanggal Perencanaan Service</strong></label>
+                            <input type="date" value="{{ date('Y-m-d') }}" name="tanggal_services" class="form-control"
+                                id="" placeholder="Text Input">
+                            <i class="clear-input">
+                                <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
+                                </ion-icon>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="form-group boxed">
+                        <div class="input-wrapper">
+                            <label class="text-dark" for=""><strong>Catatan Perencanaan Service</strong></label>
+                            <textarea name="keterangan_services" class="form-control" id="" cols="30" rows="5"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Catatan Perencanaan Service</strong></label>
-                        <textarea name="keterangan_services" class="form-control" id="" cols="30" rows="5"></textarea>
+                        <label class="text-dark" for="lokasi-select"><strong>Lokasi Asset</strong></label>
+                        <select name="id_lokasi" class="form-control py-3 select2Lokasi" id="lokasi-select">
+
+                        </select>
                     </div>
                 </div>
+
                 <div class="form-group boxed">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -150,8 +217,8 @@
                             </div>
                             <label for="gambar_asset" class="btn btn-primary">
                                 Upload
-                                <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none"
-                                    name="gambar_asset">
+                                <input type="file" id="gambar_asset" accept=".jpeg,.png,.jpg,.gif,.svg"
+                                    class="d-none" name="gambar_asset">
                             </label>
                         </div>
                     </div>

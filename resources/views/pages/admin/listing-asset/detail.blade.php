@@ -233,6 +233,9 @@
                         width: '150px'
                     },
                     {
+                        data: 'kode_opname',
+                    },
+                    {
                         data: 'status_awal',
                     },
                     {
@@ -888,6 +891,7 @@
                                     <thead>
                                         <tr>
                                             <th>Tanggal</th>
+                                            <th>Kode Opname</th>
                                             <th>Status Awal</th>
                                             <th>Status Akhir</th>
                                             <th>Catatan</th>

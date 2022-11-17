@@ -117,6 +117,11 @@
                         orderable: false,
                     },
                     {
+                        name: 'kode_opname',
+                        data: 'kode_opname',
+                        orderable: false,
+                    },
+                    {
                         name: 'catatan_opname',
                         data: 'catatan_opname',
                         orderable: false,
@@ -163,7 +168,7 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: [9, 16, 19, 20, 23],
+                        targets: [9, 16, 20, 21, 24],
                         render: function(data, type, full, meta) {
                             if (data != '-') {
                                 return formatDateIntoIndonesia(data);
@@ -178,7 +183,7 @@
                         }
                     },
                     {
-                        targets: 21,
+                        targets: 22,
                         render: function(data, type, full, meta) {
                             let element = '-';
                             if (data == 'disetujui') {
@@ -437,6 +442,7 @@
                                     <th width="150px">Satuan</th>
                                     <th width="150px">Vendor</th>
                                     <th width="150px">Tgl. Opname Terakhir</th>
+                                    <th width="150px">Kode Opname Terakhir</th>
                                     <th width="150px">Catatan Opname Terakhir</th>
                                     <th width="150px">User Opname Terakhir</th>
                                     <th width="150px">Tgl. Peminjaman Terakhir</th>

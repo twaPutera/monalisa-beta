@@ -26,7 +26,7 @@ class AssetServiceCommandServices
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
-            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'pending')->first();
             $perencanaan->status = 'realisasi';
             $perencanaan->save();
 
@@ -76,7 +76,7 @@ class AssetServiceCommandServices
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
-            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'pending')->first();
             $perencanaan->status = 'realisasi';
             $perencanaan->save();
 
@@ -126,7 +126,7 @@ class AssetServiceCommandServices
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
-            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'pending')->first();
             $perencanaan->status = 'realisasi';
             $perencanaan->save();
 
@@ -177,7 +177,7 @@ class AssetServiceCommandServices
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
-            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'perencanaan')->first();
+            $perencanaan = PerencanaanServices::where('id', $request->tanggal_mulai_perencanaan)->where('status', 'pending')->first();
             $perencanaan->status = 'realisasi';
             $perencanaan->save();
 
@@ -187,7 +187,7 @@ class AssetServiceCommandServices
         $perencanaan_change = PerencanaanServices::where('tanggal_perencanaan', $asset_service->tanggal_mulai)->where('status', 'realisasi')->where('id_asset_data', $request->id_asset)->first();
         if (! empty($perencanaan_change)) {
             if ($perencanaan_change->id != $request->tanggal_mulai_perencanaan) {
-                $perencanaan_change->status = 'perencanaan';
+                $perencanaan_change->status = 'pending';
                 $perencanaan_change->save();
             }
         }

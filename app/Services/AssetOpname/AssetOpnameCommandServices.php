@@ -19,9 +19,12 @@ class AssetOpnameCommandServices
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
+        $opname_log->kode_opname =  'OPNAME-' . date('ymd') . '-' . date('his');
         $opname_log->tanggal_opname = $request->tanggal_opname;
         $opname_log->status_awal = $asset_data->status_kondisi;
         $opname_log->status_akhir = $request->status_kondisi;
+        $opname_log->id_lokasi = $request->id_lokasi;
+        $opname_log->lokasi_sebelumnya = $asset_data->lokasi->id;
         $opname_log->akuntan_awal = $asset_data->status_akunting;
         $opname_log->akuntan_akhir = $request->status_akunting;
         $opname_log->keterangan = $request->catatan;
@@ -29,16 +32,19 @@ class AssetOpnameCommandServices
         $opname_log->save();
 
         $asset_data->status_kondisi = $request->status_kondisi;
+        $asset_data->id_lokasi = $request->id_lokasi;
         $asset_data->status_akunting = $request->status_akunting;
         $asset_data->save();
 
-        $perencanan_services = new PerencanaanServices();
-        $perencanan_services->id_asset_data = $asset_data->id;
-        $perencanan_services->status = 'perencanaan';
-        $perencanan_services->tanggal_perencanaan = $request->tanggal_services;
-        $perencanan_services->keterangan = $request->keterangan_services;
-        $perencanan_services->id_log_opname = $opname_log->id;
-        $perencanan_services->save();
+        if ($request->status_perencanaan == 'aktif') {
+            $perencanan_services = new PerencanaanServices();
+            $perencanan_services->id_asset_data = $asset_data->id;
+            $perencanan_services->status = 'pending';
+            $perencanan_services->tanggal_perencanaan = $request->tanggal_services;
+            $perencanan_services->keterangan = $request->keterangan_services;
+            $perencanan_services->id_log_opname = $opname_log->id;
+            $perencanan_services->save();
+        }
 
         if ($request->hasFile('gambar_asset')) {
             $path = storage_path('app/images/asset');

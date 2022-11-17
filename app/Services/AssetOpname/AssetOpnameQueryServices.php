@@ -23,7 +23,7 @@ class AssetOpnameQueryServices
 
     public function findPerencanaanByTanggal($tanggal, $id_asset)
     {
-        $find = PerencanaanServices::where('tanggal_perencanaan', $tanggal)->where('id_asset_data', $id_asset)->where('status', 'perencanaan')->first();
+        $find = PerencanaanServices::where('tanggal_perencanaan', $tanggal)->where('id_asset_data', $id_asset)->where('status', 'pending')->first();
         return $find;
     }
 }

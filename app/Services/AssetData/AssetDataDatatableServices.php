@@ -98,7 +98,7 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (! isset($request->is_pemutihan)) {
+        if (!isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
         // $query->orderBy('created_at', 'ASC');
@@ -200,6 +200,10 @@ class AssetDataDatatableServices
             ->addColumn('tanggal_opname', function ($item) {
                 $opname = $item->log_asset_opname->sortByDesc('created_at')->first();
                 return $opname->tanggal_opname ?? '-';
+            })
+            ->addColumn('kode_opname', function ($item) {
+                $opname = $item->log_asset_opname->sortByDesc('created_at')->first();
+                return $opname->kode_opname ?? '-';
             })
             ->addColumn('catatan_opname', function ($item) {
                 $opname = $item->log_asset_opname->sortByDesc('created_at')->first();

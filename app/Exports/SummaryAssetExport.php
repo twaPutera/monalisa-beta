@@ -65,6 +65,7 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             'asset_data.register_oleh',
             'satuan_assets.nama_satuan',
             'vendors.nama_vendor',
+            'log_asset_opnames.kode_opname',
             'log_asset_opnames.tanggal_opname',
             'log_asset_opnames.keterangan',
             'log_asset_opnames.created_by as opname_by',
@@ -143,6 +144,7 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             $item->nama_satuan,
             $item->nama_vendor,
             $item->tanggal_opname,
+            $item->kode_opname,
             $item->keterangan,
             $opname_by,
             $item->tanggal_peminjaman,
@@ -157,7 +159,7 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
 
     public function headings(): array
     {
-        return ['No', 'Kode Asset', 'Deskripsi Asset', 'Tipe Asset', 'Asset Group', 'Jenis Asset', 'Status Kondisi', 'Status Akunting', 'Tgl Perolehan', 'Nilai Perolehan', 'Lokasi', 'Ownership', 'Register Oleh', 'Satuan', 'Vendor', 'Tgl Opname Terakhir', 'Catatan Opname Terakhir', 'User Opname Terakhir', 'Tgl Peminjaman Terakhir', 'Tgl Pengembalian Peminjaman Terakhir', 'Status Peminjaman Terakhir', 'User Peminjaman Terakhir', 'Tgl Pemindahan Asset Terakhir', 'User Penyerah Asset', 'User Penerima Asset'];
+        return ['No', 'Kode Asset', 'Deskripsi Asset', 'Tipe Asset', 'Asset Group', 'Jenis Asset', 'Status Kondisi', 'Status Akunting', 'Tgl Perolehan', 'Nilai Perolehan', 'Lokasi', 'Ownership', 'Register Oleh', 'Satuan', 'Vendor', 'Tgl Opname Terakhir', 'Kode Opname', 'Catatan Opname Terakhir', 'User Opname Terakhir', 'Tgl Peminjaman Terakhir', 'Tgl Pengembalian Peminjaman Terakhir', 'Status Peminjaman Terakhir', 'User Peminjaman Terakhir', 'Tgl Pemindahan Asset Terakhir', 'User Penyerah Asset', 'User Penerima Asset'];
     }
 
     public function styles(Worksheet $sheet)

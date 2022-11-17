@@ -50,7 +50,7 @@ class AssetServiceQueryServices
         }
 
         $data->where('id_asset_data', $request->id_asset);
-        $data->where('status', 'perencanaan'); //To get all data asset is perencanaan
+        $data->where('status', 'pending'); //To get all data asset is pending
         $data = $data->orderby('keterangan', 'asc')
             ->get();
 
