@@ -40,6 +40,12 @@ class PeminjamanAssetQueryServices
         return $peminjaman;
     }
 
+    public function countDataByGuidPeminjamAsset($guid_peminjam_asset)
+    {
+        $peminjaman = PeminjamanAsset::where('guid_peminjam_asset', $guid_peminjam_asset)->count();
+        return $peminjaman;
+    }
+
     public function findById(string $id)
     {
         $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval', 'perpanjangan_peminjaman_asset'])->find($id);

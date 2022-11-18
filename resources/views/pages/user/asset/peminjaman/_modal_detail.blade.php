@@ -83,7 +83,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="mt-2 text-center">
+                        <div class="mt-2 text-center mb-3">
                             <button onclick="showHideFormPerpanjangan(this)" style="display: none;" id="btnShowPerpanjangan" class="btn btn-warning border-radius-sm px-3" type="button">
                                 <span class="">Ajukan Perpanjangan</span>
                             </button>

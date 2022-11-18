@@ -55,6 +55,12 @@ class PengaduanQueryServices
         return $log_pengaduan;
     }
 
+    public function countDataByCreatedById($created_by)
+    {
+        $pengaduan = Pengaduan::where('created_by', $created_by)->count();
+        return $pengaduan;
+    }
+
     public function findById(string $id)
     {
         return Pengaduan::with(['image' => function ($q) {

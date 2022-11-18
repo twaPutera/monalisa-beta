@@ -48,39 +48,35 @@ class AssetOpnameCommandServices
         }
 
         if ($request->hasFile('gambar_asset')) {
-            for ($i = 1; $i <= 2; $i++) {
-                if ($i == 1) {
-                    // Save In Asset
-                    $path = storage_path('app/images/asset');
-                    if (isset($asset_data->image[0])) {
-                        $pathOld = $path . '/' . $asset_data->image[0]->path;
-                        FileHelpers::removeFile($pathOld);
-                        $asset_data->image[0]->delete();
-                    }
-
-                    $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $asset_data->kode_asset);
-                    $filenamesave = FileHelpers::saveFile($request->file('gambar_asset'), $path, $filename);
-
-                    $asset_images = new AssetImage();
-                    $asset_images->imageable_type = get_class($asset_data);
-                    $asset_images->imageable_id = $asset_data->id;
-                    $asset_images->path = $filenamesave;
-                    $asset_images->save();
-                } else if ($i == 2) {
-                    // Save In Opname
-                    $filename_opname = self::generateNameImageLogAsset($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
-                    $path_opname = storage_path('app/images/asset-opname');
-                    // $filenamesave_opname = FileHelpers::saveFile($request->file('gambar_asset'), $path_opname, $filename_opname);
-
-                    dd($path_opname);
-
-                    // $asset_images = new AssetImage();
-                    // $asset_images->imageable_type = get_class($opname_log);
-                    // $asset_images->imageable_id = $opname_log->id;
-                    // $asset_images->path = $filenamesave_opname;
-                    // $asset_images->save();
-                }
+            $path = storage_path('app/images/asset');
+            if (isset($asset_data->image[0])) {
+                $pathOld = $path . '/' . $asset_data->image[0]->path;
+                FileHelpers::removeFile($pathOld);
+                $asset_data->image[0]->delete();
             }
+
+            $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $asset_data->kode_asset);
+            $filenamesave = FileHelpers::saveFile($request->file('gambar_asset'), $path, $filename);
+
+            $fullpath = $path . '/' . $filenamesave;
+
+            $asset_images = new AssetImage();
+            $asset_images->imageable_type = get_class($asset_data);
+            $asset_images->imageable_id = $asset_data->id;
+            $asset_images->path = $filenamesave;
+            $asset_images->save();
+
+
+            $filename_opname = self::generateNameImageLogAsset($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
+            $path_opname = storage_path('app/images/asset-opname');
+
+            \File::copy($fullpath, $path_opname . '/' . $filename_opname);
+
+            $asset_images = new AssetImage();
+            $asset_images->imageable_type = get_class($opname_log);
+            $asset_images->imageable_id = $opname_log->id;
+            $asset_images->path = $filename_opname;
+            $asset_images->save();
         }
         return $opname_log;
     }
