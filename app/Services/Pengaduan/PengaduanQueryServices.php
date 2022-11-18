@@ -19,6 +19,10 @@ class PengaduanQueryServices
             $pengaduan->where('status_pengaduan', $request->status_pengaduan);
         }
 
+        if (isset($request->arrayStatus)) {
+            $pengaduan->whereIn('status_pengaduan', $request->arrayStatus);
+        }
+
         if ($request->has('created_by')) {
             $pengaduan->where('created_by', $request->created_by);
         }
@@ -27,7 +31,13 @@ class PengaduanQueryServices
             $pengaduan->limit($request->limit);
         }
 
-        $pengaduan = $pengaduan->orderby('tanggal_pengaduan', 'DESC')->get();
+        if (isset($request->orderby)) {
+            $pengaduan->orderBy($request->orderby['field'], $request->orderby['sort']);
+        } else {
+            $pengaduan->orderBy('tanggal_pengaduan', 'desc');
+        }
+
+        $pengaduan = $pengaduan->get();
 
         return $pengaduan;
     }

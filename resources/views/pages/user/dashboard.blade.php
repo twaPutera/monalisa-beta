@@ -66,6 +66,127 @@
             })
         }
     </script>
+    <script>
+        const getAllDataPeminjaman = (idContainer, status) => {
+            $.ajax({
+                url: '{{ route("user.asset-data.peminjaman.get-all-data") }}',
+                data: {
+                    guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
+                    with: ['request_peminjaman_asset.kategori_asset'],
+                    statusArray: status,
+                    limit: 5,
+                    orderby: {
+                        field: 'tanggal_pengembalian',
+                        sort: 'desc',
+                    },
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $(response.data).each(function (index, value) {
+                                $('#' + idContainer).append(generateTemplatePeminjaman(value));
+                            })
+                        } else {
+                            $('#' + idContainer).append(`
+                                <div class="section text-center mt-2">
+                                    <h4 class="text-grey">Tidak Ada Data</h4>
+                                </div>
+                            `);
+                        }
+                    }
+                }
+            })
+        }
+
+        const generateTemplatePeminjaman = (data) => {
+            return `
+                <a href="#" data-link_detail="${data.link_detail}" data-link_perpanjangan="${data.link_perpanjangan}" onclick="showDetailPeminjaman(this)" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                    <p class="text-dark mb-0 asset-deskripsi">${data.code}</p>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" style="width: 60%;">
+                            <div class="" style="">
+                                <p class="text-primary mb-0 asset-deskripsi"><i>${data.status === 'pending' ? "Menunggu" : data.status === 'dipinjam' ? 'Dipinjam' : data.status === 'duedate' ? "Terlambat" : "Selesai"}</i></p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
+                            <div class="me-1 text-end">
+                                <span class="text-grey text-end">${data.tanggal_pengembalian}</span>
+                            </div>
+                            <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
+                                <ion-icon name="chevron-forward-outline"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        $(document).ready(function () {
+            getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'duedate', 'pending']);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            getDataPengaduan('pengaduanContainer', ['diproses', 'dilaporkan']);
+        });
+        const getDataPengaduan = (idContainer, status) => {
+            $.ajax({
+                url: '{{ route('user.pengaduan.get-all-data') }}',
+                data: {
+                    created_by: "{{ $user->guid ?? $user->id }}",
+                    with: ['asset_data', 'asset_data.lokasi', 'lokasi'],
+                    arrayStatus: status,
+                    limit: 5,
+                    orderby: {
+                        field: 'created_at',
+                        sort: 'asc',
+                    },
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $(response.data).each(function(index, value) {
+                                $('#' + idContainer).append(generateTemplatePengaduan(value));
+                            })
+                        } else {
+                            $('#' + idContainer).append(`
+                                <div class="section text-center mt-2">
+                                    <h4 class="text-grey">Tidak Ada Data</h4>
+                                </div>
+                            `);
+                        }
+                    }
+                }
+            })
+        }
+
+        const generateTemplatePengaduan = (data) => {
+            return `
+                <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                    <p class="text-dark mb-0 asset-deskripsi">${data.asset_data != null ? data.asset_data.deskripsi : 'Pengaduan'} - ${ data.asset_data != null ? data.asset_data.lokasi.nama_lokasi : data.lokasi.nama_lokasi} </p>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" style="width: 60%;">
+                            <div class="" style="">
+                                <p class="text-primary mb-0 asset-deskripsi" style="text-transform:capitalize"><i>${data.status_pengaduan}</i></p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
+                            <div class="me-1 text-end">
+                                <span class="text-grey text-end">${data.tanggal_pengaduan}</span>
+                            </div>
+                            <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
+                                <ion-icon name="chevron-forward-outline"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+    </script>
 @endsection
 @section('content')
     <div class="section wallet-card-section pt-1">
@@ -88,7 +209,7 @@
                 <div class="item">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
                         <div class="icon-wrapper bg-primary">
-                            2
+                            0
                         </div>
                         <strong>Aset</strong>
                     </a>
@@ -103,8 +224,8 @@
                 </div>
                 <div class="item">
                     <a href="app-cards.html">
-                        <div class="icon-wrapper bg-info">
-                            1
+                        <div class="icon-wrapper bg-info" id="totalPeminjaman">
+                            0
                         </div>
                         <strong>Peminjaman</strong>
                     </a>
@@ -115,13 +236,13 @@
     </div>
     <div class="section mt-2">
         <div class="d-flex justify-content-between">
-            <h2 class="text-grey"><strong>Daftar Aset Anda</strong></h2>
-            <h2 class="text-grey"><strong id="countAsset">(2)</strong></h2>
+            <h2 class="text-grey"><strong>Pengaduan</strong></h2>
+            {{-- <h2 class="text-grey"><strong id="countPengaduan">(2)</strong></h2> --}}
         </div>
     </div>
     <div class="section mt-2">
         <div class="card p-1 bg-light-grey border-radius-sm">
-            <div class="card-body p-1 bg-light-grey" id="assetContainer">
+            <div class="card-body p-1 bg-light-grey" id="pengaduanContainer">
 
                 {{-- <a href="#" class="mb-2 bg-white px-2 py-2 d-flex justify-content-between border-radius-sm border border-primary">
                 <div class="d-flex align-items-center">
@@ -145,5 +266,14 @@
             </a> --}}
             </div>
         </div>
+    </div>
+    <div class="section mt-2">
+        <div class="d-flex justify-content-start">
+            <h2 class="text-grey"><strong>Peminjaman Deadline Terdekat</strong></h2>
+            {{-- <h2 class="text-grey"><strong id="countPeminjaman">(2)</strong></h2> --}}
+        </div>
+    </div>
+    <div class="section mt-2">
+        <div class="" id="dipinjamContainer"></div>
     </div>
 @endsection
