@@ -40,6 +40,11 @@
                         name: 'DT_RowIndex'
                     },
                     {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false
+                    },
+                    {
                         name: 'tanggal_pengaduan',
                         data: 'tanggal_pengaduan'
                     },
@@ -61,11 +66,19 @@
 
                 ],
                 order: [
-                    [3, 'asc']
+                    [4, 'asc']
                 ],
                 columnDefs: [
                     {
-                        targets: 3,
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return '<button data-url_edit="{{ route("admin.keluhan.edit", ":id_edit") }}" data-url_update="{{ route("admin.keluhan.update", ":id_update") }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
+                                        <i class="la la-eye"></i>\
+                                    </button>'.replace(':id_edit', data).replace(':id_update', data);
+                        },
+                    },
+                    {
+                        targets: 4,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == 10) {
@@ -87,6 +100,60 @@
                 ],
             });
         });
+
+        const editPengaduan = (button) => {
+            const url_edit = $(button).data('url_edit');
+            const url_update = $(button).data('url_update');
+            $.ajax({
+                url: url_edit,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const modal = $('.modalEditKeluhanData');
+                    const form = modal.find('form');
+                    if (response.data.status_pengaduan === "dilaporkan") {
+                        var status = '<div class="badge badge-warning">Laporan Masuk</div>';
+                    } else if (response.data.status_pengaduan === "diproses") {
+                        var status = '<div class="badge badge-info">Diproses</div>';
+                    } else if (response.data.status_pengaduan === "selesai") {
+                        var status = '<div class="badge badge-success">Selesai</div>';
+                    }
+
+                    if (response.data.prioritas == 10) {
+                        var prioritas = 'High';
+                    } else if (response.data.prioritas == 5) {
+                        var prioritas = 'Medium';
+                    } else if (response.data.prioritas == 1) {
+                        var prioritas = 'Low';
+                    } else {
+                        var prioritas = 'Tidak Ada';
+                    }
+                    form.attr('action', url_update);
+                    if (response.data.asset_data != null) {
+                        form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
+                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
+                            .nama_lokasi);
+                        form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
+                            .group_kategori_asset.nama_group);
+                        form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
+                            .nama_kategori);
+                    } else {
+                        form.find('input[name=nama_asset]').val("-");
+                        form.find('input[name=kelompok_asset]').val("-");
+                        form.find('input[name=jenis_asset]').val("-");
+                        form.find('input[name=lokasi_asset]').val(response.data.lokasi
+                            .nama_lokasi);
+                    }
+                    form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
+                    form.find('input[name=prioritas_pengaduan]').val(prioritas);
+                    form.find('#status_laporan').empty();
+                    form.find('#status_laporan').append(status);
+                    form.find('textarea[name=catatan_pengaduan]').val(response.data.catatan_pengaduan);
+                    form.find('input[name=diajukan_oleh]').val(response.data.created_by_name);
+                    modal.modal('show');
+                }
+            })
+        }
     </script>
     <script>
         var datatablePerencanaanServices = $('#datatablePerencanaanServices');
@@ -107,7 +174,7 @@
                 ajax: {
                     url: "{{ route('admin.services.datatable-perencanaan-service') }}",
                     data: function(d) {
-                        d.status = 'perencanaan';
+                        d.status = 'pending';
                         d.limit = 10;
                     }
                 },
@@ -536,6 +603,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>#</th>
                                     <th>Tanggal Aduan</th>
                                     <th>Nama Pembuat</th>
                                     <th>Level Aduan</th>
@@ -628,4 +696,5 @@
         </div>
     </div>
     @include('pages.admin.dashboard._modal_create_service')
+    @include('pages.admin.keluhan.components.modal._modal_edit_keluhan')
 @endsection

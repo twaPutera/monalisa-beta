@@ -16,8 +16,8 @@ class AlterTableOpnameAddColumn extends Migration
         Schema::table('log_asset_opnames', function (Blueprint $table) {
             $table->string('kode_opname')->after('tanggal_opname');
             $table->uuid('lokasi_sebelumnya')->after('tanggal_opname');
-            $table->foreignUuid('id_lokasi')->after('tanggal_opname');
-            $table->foreign('id_lokasi')->references('id')->on('lokasis');
+            // $table->foreignUuid('id_lokasi')->after('tanggal_opname');
+            // $table->foreign('id_lokasi')->references('id')->on('lokasis');
         });
     }
 
