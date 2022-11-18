@@ -13,36 +13,55 @@
                 @csrf
                 <div class="modal-body row">
                     <div class="col-md-4 col-6">
-                        <div class="form-group">
-                            <label for="">Pilih Lokasi</label>
-                            <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
 
-                            </select>
-                        </div>
                         <div class="form-group">
-                            <label for="">Pilih Asset</label>
-                            <select name="id_asset" class="form-control" id="listAssetLocation">
-
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Opsi Tanggal Service</label>
-                            <select name="select_service_date" class="form-control" onchange="selectServiceDate(this.value)" id="">
-                                <option value="">Pilih Tanggal Service</option>
-                                <option value="baru">Tanggal Service Baru</option>
+                            <label for="">Opsi Service</label>
+                            <select name="select_service_date" class="form-control"
+                                onchange="selectServiceDate(this.value)" id="">
+                                <option value="">Pilih Opsi Service</option>
+                                <option value="baru">Services Baru</option>
                                 <option value="perencanaan">Berdasarkan Perencanaan Service</option>
                             </select>
                         </div>
-                        <div class="form-group d-none" id="tanggalBaru">
-                            <label for="">Tanggal Service</label>
-                            <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate"
-                                readonly name="tanggal_mulai_service">
-                        </div>
-                        <div class="form-group d-none" id="tanggalPerencanaan">
-                            <label for="">Tanggal Service</label>
-                            <select name="tanggal_mulai_perencanaan" class="form-control" id="listAssetServicesDate">
+                        <div id="tanggalBaru" class="d-none">
+                            <div class="form-group">
+                                <label for="">Pilih Lokasi</label>
+                                <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
 
-                            </select>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Pilih Asset</label>
+                                <select name="id_asset" class="form-control" id="listAssetLocation">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tanggal Service</label>
+                                <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate"
+                                    readonly name="tanggal_mulai_service">
+                            </div>
+                        </div>
+                        <div id="tanggalPerencanaan" class="d-none">
+                            <div class="form-group">
+                                <label for="">Tanggal Service</label>
+                                <select name="tanggal_mulai_perencanaan" class="form-control"
+                                    id="listAssetServicesDate">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Pilih Lokasi</label>
+                                <select class="form-control" disabled id="lokasiAssetCreateServicePerencanaan">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Pilih Asset</label>
+                                <select class="form-control" disabled id="listAssetLocationPerencanaan">
+
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">Tanggal Selesai Service</label>

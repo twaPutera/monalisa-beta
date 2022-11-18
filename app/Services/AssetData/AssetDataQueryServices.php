@@ -9,6 +9,7 @@ use App\Helpers\QrCodeHelpers;
 use App\Models\PeminjamanAsset;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
+use App\Models\PerencanaanServices;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -114,10 +115,18 @@ class AssetDataQueryServices
             }
         }
 
+        if (isset($request->id_asset)) {
+            $perencanaan = PerencanaanServices::where('id',$request->id_asset)->first();
+            if($perencanaan){
+                $data->where('id', $perencanaan->id_asset_data);
+            }
+        }
+
+
+
         $data->where('is_pemutihan', 0); //To get all data asset is not pemutihan
         $data = $data->orderby('deskripsi', 'asc')
             ->get();
-
         $results = [];
         foreach ($data as $item) {
             $results[] = [

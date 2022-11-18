@@ -62,7 +62,10 @@ class AssetServiceQueryServices
             $data->where('keterangan', 'like', '%' . $request->keyword . '%');
         }
 
-        $data->where('id_asset_data', $request->id_asset);
+        if (isset($request->id_asset)) {
+            $data->where('id_asset_data', $request->id_asset);
+        }
+
         $data->where('status', 'pending'); //To get all data asset is pending
         $data = $data->orderby('keterangan', 'asc')
             ->get();

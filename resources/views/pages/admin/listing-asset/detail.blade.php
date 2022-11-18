@@ -253,6 +253,9 @@
                         data: 'lokasi_akhir',
                     },
                     {
+                        data: 'kritikal',
+                    },
+                    {
                         data: 'keterangan',
                     },
                     {
@@ -269,6 +272,26 @@
                         targets: 0,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
+                        },
+                    },
+                    {
+                        targets: 6,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `-`;
+                            }
+                            return element;
                         },
                     }
                     //Custom template data
@@ -907,6 +930,7 @@
                                             <th>Status Akhir</th>
                                             <th>Lokasi Awal</th>
                                             <th>Lokasi Akhir</th>
+                                            <th>Tingkat Kritikal</th>
                                             <th>Catatan</th>
                                             <th>User</th>
                                             <th>#</th>
