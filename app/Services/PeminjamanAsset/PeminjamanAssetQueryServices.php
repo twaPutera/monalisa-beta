@@ -27,6 +27,14 @@ class PeminjamanAssetQueryServices
             $peminjaman->where('guid_peminjam_asset', $request->guid_peminjam_asset);
         }
 
+        if (isset($request->limit)) {
+            $peminjaman->limit($request->limit);
+        }
+
+        if (isset($request->orderby)) {
+            $peminjaman->orderBy($request->orderby['field'], $request->orderby['sort']);
+        }
+
         $peminjaman = $peminjaman->orderby('tanggal_peminjaman', 'DESC')->get();
 
         return $peminjaman;
