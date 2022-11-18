@@ -5,14 +5,28 @@
             generateAssetSelect2Create('listAssetLocation', 'root');
             generateSelect2KategoriService('kategoriServiceCreate');
             generateAssetServiceDateSelect2Create('listAssetServicesDate');
+            $('#listAssetLocationPerencanaan').select2({
+                width: '100%',
+                placeholder: 'Pilih Asset',
+                allowClear: true,
+                parent: $(this)
+            });
+
+            $('#lokasiAssetCreateServicePerencanaan').select2({
+                width: '100%',
+                placeholder: 'Pilih Lokasi',
+                allowClear: true,
+                parent: $(this)
+            });
         }, 2000);
     });
     $('#lokasiAssetCreateService').on('change', function() {
         generateAssetSelect2Create('listAssetLocation', $(this).val());
     });
 
-    $('#listAssetLocation').on('change', function() {
-        generateAssetServiceDateSelect2Create('listAssetServicesDate', $(this).val());
+    $('#listAssetServicesDate').on('change', function() {
+        generateAssetFromPerencanaan($(this).val());
+        generateLokasiFromPerencanaan($(this).val());
     });
 
     $('#listAssetLocationUpdate').on('change', function() {
@@ -26,6 +40,47 @@
     $('#listAssetLocation').on('change', function() {
         generateSelect2Lokasi('lokasiAssetCreateService');
     });
+
+    const generateAssetFromPerencanaan = (value) => {
+        $.ajax({
+            url: "{{ route('admin.listing-asset.get-all-data-asset-select2') }}",
+            type: 'GET',
+            dataType: 'json',
+            data:{
+                id_asset: value,
+            },
+            success: function(response) {
+                if (response.success) {
+                    const select = $('#listAssetLocationPerencanaan');
+                    select.empty();
+                    response.data.forEach((item) => {
+                        select.append(
+                            `<option value="${item.id}" selected>${item.text}</option>`);
+                    });
+                }
+            }
+        })
+    }
+    const generateLokasiFromPerencanaan = (value) => {
+        $.ajax({
+            url: "{{ route('admin.setting.lokasi.get-select2') }}",
+            type: 'GET',
+            dataType: 'json',
+            data:{
+                id_asset: value,
+            },
+            success: function(response) {
+                if (response.success) {
+                    const select = $('#lokasiAssetCreateServicePerencanaan');
+                    select.empty();
+                    response.data.forEach((item) => {
+                        select.append(
+                            `<option value="${item.id}" selected>${item.text}</option>`);
+                    });
+                }
+            }
+        })
+    }
 
     const generateSelect2Lokasi = (id) => {
         $('#' + id).select2({
@@ -92,7 +147,6 @@
                 data: function(params) {
                     return {
                         keyword: params.term, // search term
-                        id_asset: idAsset,
                     };
                 },
                 processResults: function(data, params) {

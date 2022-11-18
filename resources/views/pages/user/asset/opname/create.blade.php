@@ -197,6 +197,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="form-group boxed">
                     <div class="input-wrapper">
                         <label class="text-dark" for=""><strong>Status Akunting Aset</strong></label>
@@ -204,6 +205,16 @@
                             @foreach ($list_status as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group boxed">
+                    <div class="input-wrapper">
+                        <label class="text-dark" for="asset-select"><strong>Tingkat Kritikal</strong></label>
+                        <select name="kritikal" class="form-control">
+                            <option value="10">High</option>
+                            <option value="5">Medium</option>
+                            <option value="1">Low</option>
                         </select>
                     </div>
                 </div>

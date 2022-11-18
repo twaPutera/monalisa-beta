@@ -29,6 +29,7 @@ class AssetOpnameStoreRequest extends FormRequest
             'tanggal_services' => 'required_if:status_perencanaan,aktif|date|date_format:Y-m-d',
             'keterangan_services' => 'required_if:status_perencanaan,aktif|max:100',
             'status_perencanaan' => 'required|in:nonaktif,aktif',
+            'kritikal' => 'required|in:10,5,1',
             'status_kondisi' => 'required|string|max:50',
             'status_akunting' => 'required|string|max:100',
             'gambar_asset' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

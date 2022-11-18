@@ -28,7 +28,7 @@ class ServicesUpdateRequest extends FormRequest
             'id_asset' => 'required|uuid|exists:asset_data,id',
             'select_service_date' => 'required|in:baru,perencanaan',
             'tanggal_mulai_service' => 'required_if:select_service_date,baru|date|date_format:Y-m-d',
-            'tanggal_mulai_perencanaan' => 'required_if:select_service_date,perencanaan|exists:perencanaan_services,id',
+            'tanggal_mulai_perencanaan' => 'required_if:select_service_date,perencanaan|exists:perencanaan_services,id|nullable',
             'tanggal_selesai_service' => 'required_if:status_service,selesai',
             'permasalahan' => 'required|string|max:255',
             'id_kategori_service' => 'required|uuid|exists:kategori_services,id',
