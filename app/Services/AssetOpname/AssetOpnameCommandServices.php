@@ -69,11 +69,7 @@ class AssetOpnameCommandServices
 
             $filename_opname = self::generateNameImageLogAsset($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
             $path_opname = storage_path('app/images/asset-opname');
-            dd([
-                file_exists($fullpath),
-                file_exists($path_opname . '/' . $filename_opname),
-                \File::copy($fullpath, __DIR__ . '/' . $filename_opname),
-            ]);
+
             \File::copy($fullpath, $path_opname . '/' . $filename_opname);
 
             $asset_images = new AssetImage();
