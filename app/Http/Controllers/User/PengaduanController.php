@@ -10,6 +10,8 @@ use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\Pengaduan\PengaduanCommandServices;
 use App\Http\Requests\Pengaduan\PengaduanStoreRequest;
 use App\Http\Requests\Pengaduan\PengaduanUpdateRequest;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PengaduanController extends Controller
 {
@@ -19,6 +21,8 @@ class PengaduanController extends Controller
         PengaduanCommandServices $pengaduanCommandServices,
         PengaduanQueryServices $pengaduanQueryServices
     ) {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
         $this->pengaduanCommandServices = $pengaduanCommandServices;
         $this->pengaduanQueryServices = $pengaduanQueryServices;
     }
@@ -80,7 +84,39 @@ class PengaduanController extends Controller
             ], 500);
         }
     }
+    public function getAllDataLog(Request $request)
+    {
+        try {
+            $pengaduan = $this->pengaduanQueryServices->findAllLog($request)->map(function ($item) {
+                $name = '-';
+                if (config('app.sso_siska')) {
+                    $user = $item->created_by == null ? null : $this->userSsoQueryServices->getUserByGuid($item->created_by);
+                    $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+                } else {
+                    $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                $item->status = ucwords($item->status);
+                $item->dilakukan_oleh = $name;
+                $item->tanggal_log = date('d/m/Y', strtotime($item->created_at));
+                return $item;
+            });
 
+            return response()->json([
+                'success' => true,
+                'message' => 'Data pengaduan asset berhasil didapatkan',
+                'data' => $pengaduan,
+            ], 200);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => 'Data pengaduan asset gagal didapatkan',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
+    }
     public function getAllData(Request $request)
     {
         try {

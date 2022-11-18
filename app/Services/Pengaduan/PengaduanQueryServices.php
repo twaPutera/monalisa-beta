@@ -2,6 +2,7 @@
 
 namespace App\Services\Pengaduan;
 
+use App\Models\LogPengaduanAsset;
 use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 
@@ -40,6 +41,18 @@ class PengaduanQueryServices
         $pengaduan = $pengaduan->get();
 
         return $pengaduan;
+    }
+
+    public function findAllLog(Request $request)
+    {
+        $log_pengaduan = LogPengaduanAsset::query();
+        if (isset($request->with)) {
+            $log_pengaduan->with($request->with);
+        }
+        $log_pengaduan->orderBy('created_at', 'desc');
+        $log_pengaduan->where('id_pengaduan', $request->id_pengaduan);
+        $log_pengaduan = $log_pengaduan->get();
+        return $log_pengaduan;
     }
 
     public function findById(string $id)

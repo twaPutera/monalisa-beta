@@ -445,6 +445,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
         Route::post('/store', [UserPengaduanController::class, 'store'])->name('user.pengaduan.store');
         Route::post('/destroy/{id}', [UserPengaduanController::class, 'destroy'])->name('user.pengaduan.destroy');
         Route::get('/get-all-data', [UserPengaduanController::class, 'getAllData'])->name('user.pengaduan.get-all-data');
+        Route::get('/get-all-data-log', [UserPengaduanController::class, 'getAllDataLog'])->name('user.pengaduan.get-all-data-log');
         Route::get('/detail/{id}', [UserPengaduanController::class, 'detail'])->name('user.pengaduan.detail');
         Route::get('/download-gambar', [UserPengaduanController::class, 'download'])->name('user.pengaduan.download-gambar');
     });
