@@ -65,24 +65,35 @@
         const gambarPengaduanSaya = () => {
             $('#gambarPengaduanSaya').submit();
         }
+        const generateStatusPeminjaman = (status) => {
+            let template = '';
+            if (status == 'dilaporkan') {
+                template = '<span class="badge badge-warning">Dilaporkan</span>';
+            } else if (status == 'diproses') {
+                template = '<span class="badge badge-primary">Diproses</span>';
+            } else if (status == 'selesai') {
+                template = '<span class="badge badge-success">Selesai</span>';
+            } 
+
+            return template;
+
+        }
+
         const generateTemplateApproval = (data) => {
             return `
             <a href="#" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
-                <p class="text-dark mb-0 asset-deskripsi">Diterima oleh ${data.dilakukan_oleh != null ? data.dilakukan_oleh : 'Tidak Ada'} - Status Pengaduan ${ data.status != null ? data.status : 'Tidak Ada'} </p>
-                <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center" style="width: 60%;">
-                        <div class="" style="">
-                            <p class="text-primary mb-0 asset-deskripsi" style="text-transform:capitalize"><i>${data.message_log}</i></p>
+                <div class="py-2 px-2">
+                    <div class="border-bottom d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-dark mb-0"><strong>Tanggal Perpanjangan</strong></p>
+                            <p class="mb-0">${data.tanggal_log}</p>
                         </div>
+                        ${generateStatusPeminjaman(data.status)}
                     </div>
-                    <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
-                        <div class="me-1 text-end">
-                            <span class="text-grey text-end">${data.tanggal_log}</span>
-                        </div>
-
-                    </div>
+                    <p class="mb-0">${data.message_log}</p>
                 </div>
             </a>
+            
         `;
         }
     </script>
@@ -238,8 +249,7 @@
                                 <p class="mb-0 text-green">Status Pengaduan</p>
                             </div>
                             <div class="col text-end">
-                                <span
-                                    class="badge badge-success px-3">{{ ucWords($pengaduan->status_pengaduan) }}</span>
+                                <span class="badge badge-success px-3">{{ ucWords($pengaduan->status_pengaduan) }}</span>
                                 {{-- <p class="mb-0 text-green text-end">Baik</p> --}}
                             </div>
                         </div>

@@ -96,7 +96,6 @@ class PengaduanController extends Controller
                     $user = $item->created_by == null ? null : $this->userQueryServices->findById($item->created_by);
                     $name = isset($user) ? $user->name : 'Not Found';
                 }
-                $item->status = ucwords($item->status);
                 $item->dilakukan_oleh = $name;
                 $item->tanggal_log = date('d/m/Y', strtotime($item->created_at));
                 return $item;
