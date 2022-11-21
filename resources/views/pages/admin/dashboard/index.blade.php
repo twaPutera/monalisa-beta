@@ -101,6 +101,97 @@
             });
         });
 
+        var datatableAduanTerbaru = $('#datatableAduanTerbaru');
+        $(document).ready(function() {
+            datatableAduanTerbaru.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                // set limit item per page
+                orderable: true,
+                paging: false,
+                info: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.keluhan.datatable') }}",
+                    data: function(d) {
+                        d.status_pengaduan = 'dilaporkan';
+                        d.limit = 10;
+                    }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false
+                    },
+                    {
+                        name: 'tanggal_pengaduan',
+                        data: 'tanggal_pengaduan'
+                    },
+                    {
+                        name: 'created_by_name',
+                        data: 'created_by_name',
+                        orderable: false
+                    },
+                    {
+                        name: 'prioritas',
+                        data: 'prioritas',
+                        orderable: true
+                    },
+                    {
+                        name: 'lokasi_asset',
+                        data: 'lokasi_asset',
+                        orderable: false
+                    },
+
+                ],
+                order: [
+                    [2, 'desc']
+                ],
+                columnDefs: [
+                    {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return '<button data-url_edit="{{ route("admin.keluhan.edit", ":id_edit") }}" data-url_update="{{ route("admin.keluhan.update", ":id_update") }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
+                                        <i class="la la-eye"></i>\
+                                    </button>'.replace(':id_edit', data).replace(':id_update', data);
+                        },
+                    },
+                    {
+                        targets: 4,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                ],
+            });
+        });
+
         const editPengaduan = (button) => {
             const url_edit = $(button).data('url_edit');
             const url_update = $(button).data('url_update');
@@ -267,6 +358,65 @@
                 },
             })
         }
+
+        var datatableServicesOnProgress = $('#datatableServicesOnProgress');
+        $(document).ready(function() {
+            datatableServicesOnProgress.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                ordering: false,
+                serverSide: true,
+                bLengthChange: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
+                    data: function(d) {
+                        d.status_service = 'on progress';
+                    }
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                    {
+                        name: 'kode_services',
+                        data: 'kode_services'
+                    },
+                    {
+                        name: 'tanggal_mulai',
+                        data: 'tanggal_mulai'
+                    },
+                    {
+                        name: 'asset_data.deskripsi',
+                        data: 'asset_data.deskripsi'
+                    },
+                ],
+                columnDefs: [
+                    {
+                        targets: [3],
+                        render: function(data, type, full, meta) {
+                            return data != null ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    //Custom template data
+                ],
+                order: [
+                    [3, 'desc']
+                ],
+            });
+        });
 
         const generateSelect2KategoriService = () => {
             $('#kategoriServiceCreate').select2({
@@ -634,6 +784,65 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="50px">#</th>
+                                    <th>Tanggal Services</th>
+                                    <th>Nama Aset</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            10 Pengaduan Terbaru
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body ">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatableAduanTerbaru">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Tanggal Aduan</th>
+                                    <th>Nama Pembuat</th>
+                                    <th>Level Aduan</th>
+                                    <th>Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            10 Services sedang berlangsung
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatableServicesOnProgress">
+                            <thead>
+                                <tr>
+                                    <th width="50px">No</th>
+                                    <th width="50px">#</th>
+                                    <th>Kode Services</th>
                                     <th>Tanggal Services</th>
                                     <th>Nama Aset</th>
                                 </tr>

@@ -32,8 +32,8 @@
                 ordering: false,
                 serverSide: true,
                 bLengthChange: false,
-                paging: false,
-                info: false,
+                paging: true,
+                info: true,
                 ajax: {
                     url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                     data: function(d) {
