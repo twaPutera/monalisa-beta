@@ -476,7 +476,8 @@
                         const dataSummaryAsset = response.data.dataSummaryChartAsset.map((item) => {
                             return {
                                 name: item.name,
-                                value: Math.ceil((item.value / response.data.countAsset) * 100),
+                                value: item.value,
+                                persen: Math.ceil((item.value / response.data.countAsset) * 100),
                             }
                         });
 
@@ -484,7 +485,8 @@
                             item) => {
                             return {
                                 name: item.name,
-                                value: Math.ceil((item.value / response.data.countAsset) * 100),
+                                value: item.value,
+                                persen: Math.ceil((item.value / response.data.countAsset) * 100),
                             }
                         });
 
