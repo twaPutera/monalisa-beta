@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <div class="d-flex justify-content-between align-items-center">
                             <label for="">Unduh Format File Import</label>
-                            <a href="{{ route('admin.listing-asset.download-template-import') }}"
+                            <a href="{{ route('admin.listing-asset.download-template-import') }}" target="_blank"
                                 class="btn btn-sm btn-icon btn-success"><i class="fa fa-file"></i></a>
                         </div>
                     </div>

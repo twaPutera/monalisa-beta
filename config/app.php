@@ -27,6 +27,8 @@ return [
 
     'sso_public_key' => env('SSO_PUBLIC_KEY', null),
 
+    'is_force_https' => env('FORCE_HTTPS', false),
+
     'access_token_cookie_name' => env('ACCESS_TOKEN_COOKIE_NAME', 'access_token'),
 
     'jwt_cookie_name' => env('JWT_COOKIE_NAME', 'jwt_token'),
