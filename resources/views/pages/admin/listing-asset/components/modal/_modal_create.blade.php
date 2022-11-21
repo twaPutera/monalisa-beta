@@ -161,6 +161,7 @@
                                             <option value="rusak">Rusak</option>
                                             <option value="maintenance">Maintenance</option>
                                             <option value="tidak-lengkap">Tidak Lengkap</option>
+                                            <option value="pengembangan">Pengembangan</option>
                                         </select>
                                     </div>
                                 </div>

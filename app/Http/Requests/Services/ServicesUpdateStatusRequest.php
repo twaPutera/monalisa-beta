@@ -4,7 +4,7 @@ namespace App\Http\Requests\Services;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServicesUpdateRequest extends FormRequest
+class ServicesUpdateStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class ServicesUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'tindakan' => 'required|string|max:255',
-            'catatan' => 'required|string|max:255',
+            'tanggal_selesai_service' => 'required_if:status_service,selesai',
+            'status_service' => 'required|in:onprogress,backlog,selesai',
+            'keterangan_service' => 'required|string|max:255',
+            'status_kondisi' => 'required|in:baik,rusak',
+            'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

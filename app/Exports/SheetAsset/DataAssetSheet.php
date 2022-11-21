@@ -66,7 +66,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             'Spesifikasi Asset',
             // 'Umur Manfaat Fisikal',
             // 'Umur Manfaat Komersial',
-            'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap)',
+            'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap/pengembangan)',
             'Status Peminjaman (iya/tidak)',
             'Status Sparepart (iya/tidak)',
         ];

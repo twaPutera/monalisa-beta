@@ -98,7 +98,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '15' => 'required|string',
             // '18' => 'nullable|numeric',
             // '19' => 'nullable|numeric',
-            '16' => 'required|string|in:bagus,rusak,maintenance,tidak-lengkap',
+            '16' => 'required|string|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
             '17' => 'required|string|in:iya,tidak',
             '18' => 'required|string|in:iya,tidak',
         ];

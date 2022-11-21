@@ -291,20 +291,12 @@
                 success: function(response) {
                     const modal = $('.modalEditAssetService');
                     const form = modal.find('form');
-                    if (response.data.status_service == "on progress") {
-                        var status_service = "onprogress";
-                    } else {
-                        var status_service = response.data.status_service;
-                    }
                     form.attr('action', url_update);
                     form.find('input[name=tanggal_mulai_service]').val(response.data.tanggal_mulai);
-                    form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
                     form.find('textarea[name=permasalahan]').val(response.data.detail_service.permasalahan);
-                    form.find('textarea[name=keterangan_service]').val(response.data.keterangan);
                     form.find('textarea[name=tindakan]').val(response.data.detail_service.tindakan);
                     form.find('textarea[name=catatan]').val(response.data.detail_service.tindakan);
                     modal.on('shown.bs.modal', function(e) {
-                        generatePerencanaanServiceSelect(id_asset);
                         $('#kategoriServiceUpdate option[value="' + response.data
                             .id_kategori_service + '"]').attr('selected', 'selected');
                         $('#kategoriServiceUpdate').select2({
@@ -313,11 +305,6 @@
                             allowClear: true,
                             parent: $(this)
                         });
-                        $('#status_service option[value="' + response.data
-                            .status_service + '"]').attr('selected', 'selected');
-
-                        $('#service_kondisi option[value="' + response.data
-                            .status_kondisi + '"]').attr('selected', 'selected');
 
                         $('#lokasiAssetUpdateService option[value="' + response.data
                             .detail_service.id_lokasi + '"]').attr('selected', 'selected');
@@ -337,12 +324,38 @@
                             parent: $(this)
                         });
 
-                        $('#listAssetServicesDateUpdate').select2({
-                            width: '100%',
-                            placeholder: 'Pilih Tanggal Services',
-                            allowClear: true,
-                            parent: $(this)
-                        });
+                    })
+                    modal.modal('show');
+                }
+            })
+        }
+
+        const editStatusService = (button) => {
+            const url_edit_status = $(button).data('url_edit_status');
+            const url_update_status = $(button).data('url_update_status');
+            const id_asset = $(button).data('id_asset');
+            $.ajax({
+                url: url_edit_status,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const modal = $('.modalEditStatusAssetService');
+                    const form = modal.find('form');
+                    form.trigger('reset');
+                    form.attr('action', url_update_status);
+                    form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
+                    form.find('textarea[name=keterangan_service]').val(response.data.keterangan);
+                    modal.on('shown.bs.modal', function(e) {
+                        if (response.data.status_service === "on progress") {
+                            var status_service = "onprogress";
+                        } else {
+                            var status_service = response.data.status_service;
+                        }
+                        $('#status_service option[value="' + status_service + '"]')
+                            .prop('selected', true);
+
+                        $('#service_kondisi option[value="' + response.data.status_kondisi + '"]')
+                            .prop('selected', true);
                     })
                     modal.modal('show');
                 }
@@ -367,28 +380,6 @@
                 }
             })
         }
-        const generatePerencanaanServiceSelect = (value) => {
-            $.ajax({
-                url: "{{ route('admin.services.get-data-perencanaan-service') }}",
-                type: 'GET',
-                dataType: 'json',
-                data:{
-                    id_asset: value,
-                },
-                success: function(response) {
-                    if (response.success) {
-                        const select = $('.listAssetServicesDateUpdate');
-                        select.empty();
-                        select.append(`<option value="">Pilih Tanggal Service</option>`);
-                        response.data.forEach((item) => {
-                            select.append(
-                                `<option value="${item.id}">${item.text}</option>`);
-                        });
-                    }
-                }
-            })
-        }
-
 
         const selectServiceDate = (v) => {
             const tanggalBaru = $('#tanggalBaru');
@@ -599,5 +590,6 @@
     </div>
     @include('pages.admin.services.components.modal._modal_create_service')
     @include('pages.admin.services.components.modal._modal_edit_service')
+    @include('pages.admin.services.components.modal._modal_edit_status_service')
     @include('pages.admin.services.components.modal._modal_detail_service')
 @endsection

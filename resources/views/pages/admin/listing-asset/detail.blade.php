@@ -723,6 +723,8 @@
                                             $kondisi = '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>';
                                         } elseif ($asset->status_kondisi == 'tidak-lengkap') {
                                             $kondisi = '<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>';
+                                        } elseif ($asset->status_kondisi == 'pengembangan') {
+                                            $kondisi = '<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>';
                                         } else {
                                             $kondisi = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>';
                                         }

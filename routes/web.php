@@ -223,8 +223,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::get('/datatable-log', [ServicesController::class, 'datatableLog'])->name('admin.services.datatable.log');
         Route::post('/store', [ServicesController::class, 'store'])->name('admin.services.store');
         Route::get('/edit/{id}', [ServicesController::class, 'edit'])->name('admin.services.edit');
+        Route::get('/edit-status/{id}', [ServicesController::class, 'editStatus'])->name('admin.services.edit.status');
         Route::get('/detail/{id}', [ServicesController::class, 'detail'])->name('admin.services.detail');
         Route::post('/update/{id}', [ServicesController::class, 'update'])->name('admin.services.update');
+        Route::post('/update-status/{id}', [ServicesController::class, 'updateStatus'])->name('admin.services.update.status');
         Route::get('/get-data-chart', [ServicesController::class, 'getDataChartServices'])->name('admin.services.get-data-chart');
         Route::get('/get-data-perencanaan-service', [ServicesController::class, 'getDataPerencanaanService'])->name('admin.services.get-data-perencanaan-service');
         Route::get('/datatable-perencanaan-service', [ServicesController::class, 'datatablePerencanaanServices'])->name('admin.services.datatable-perencanaan-service');

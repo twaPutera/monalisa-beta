@@ -130,7 +130,8 @@
                                     <div class="d-flex align-items-center mt-4">
                                         <span class="kt-switch kt-switch--sm kt-switch--icon">
                                             <label class="mb-0">
-                                                <input type="checkbox" {{ $asset->is_it == 1 ? 'checked' : '' }} value="1" name="is_it">
+                                                <input type="checkbox" {{ $asset->is_it == 1 ? 'checked' : '' }}
+                                                    value="1" name="is_it">
                                                 <span></span>
                                             </label>
                                         </span>
@@ -145,7 +146,8 @@
                                     <label for="">No Memorandum</label>
                                     <select name="id_surat_memo_andin" class="form-control" id="memorandumAndin">
                                         @if (isset($asset->id_surat_memo_andin))
-                                            <option selected="selected" value="{{ $asset->id_surat_memo_andin }}">{{ $asset->no_memo_surat }}</option>
+                                            <option selected="selected" value="{{ $asset->id_surat_memo_andin }}">
+                                                {{ $asset->no_memo_surat }}</option>
                                         @endif
                                     </select>
                                     <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
@@ -190,6 +192,9 @@
                                                 <option
                                                     {{ $asset->status_kondisi == 'tidak-lengkap' ? 'selected' : '' }}
                                                     value="tidak-lengkap">Tidak Lengkap</option>
+                                                <option
+                                                    {{ $asset->status_kondisi == 'pengembangan' ? 'selected' : '' }}
+                                                    value="pengembangan">Pengembangan</option>
                                             </select>
                                         </div>
                                     </div>

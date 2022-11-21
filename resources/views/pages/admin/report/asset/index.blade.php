@@ -224,6 +224,9 @@
                             } else if (data == 'tidak-lengkap') {
                                 element =
                                     `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            } else if (data == 'pengembangan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
                             } else {
                                 element =
                                     `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;

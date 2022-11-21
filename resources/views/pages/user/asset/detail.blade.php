@@ -88,7 +88,9 @@
                         } elseif ($asset_data->status_kondisi == 'maintenance') {
                             $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
                         } elseif ($asset_data->status_kondisi == 'tidak-lengkap') {
-                            $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                            $kondisi = '<span class="badge badge-dark px-3">Tidak Lengkap</span>';
+                        } elseif ($asset_data->status_kondisi == 'pengembangan') {
+                            $kondisi = '<span class="badge badge-info px-3">Pengembangan</span>';
                         } else {
                             $kondisi = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                         }

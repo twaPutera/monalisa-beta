@@ -180,9 +180,11 @@
                         @elseif($asset_data->status_kondisi == 'rusak')
                             <div class="badge badge-danger">Rusak</div>
                         @elseif($asset_data->status_kondisi == 'maintenance')
-                            <div class="badge badge-info">Maintenance</div>
+                            <div class="badge badge-warning">Maintenance</div>
+                        @elseif($asset_data->status_kondisi == 'pengembangan')
+                            <div class="badge badge-info">Pengembangan</div>
                         @else
-                            <div class="badge badge-warning">Tidak Lengkap</div>
+                            <div class="badge badge-dark">Tidak Lengkap</div>
                         @endif
                     </div>
                 </div>
@@ -194,6 +196,7 @@
                             <option value="rusak">Rusak</option>
                             <option value="maintenance">Maintenance</option>
                             <option value="tidak-lengkap">Tidak Lengkap</option>
+                            <option value="pengembangan">Pengembangan</option>
                         </select>
                     </div>
                 </div>

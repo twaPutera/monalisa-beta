@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Lokasi\LokasiQueryServices;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
+use App\Http\Requests\Services\ServicesUpdateStatusRequest;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
 use App\Services\AssetService\AssetServiceDatatableServices;
@@ -47,7 +48,7 @@ class ServicesController extends Controller
         foreach ($allLokasi as $itemLokasi) {
             foreach ($allDetail as $itemServices) {
                 if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {
-                    $data['namaLokasi'] =  ! empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : 'Tidak Ada';
+                    $data['namaLokasi'] =  !empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : 'Tidak Ada';
                     $data['totalLokasi'] = $itemServices->where('id_lokasi', $itemLokasi->id)->count();
                 }
             }
@@ -133,11 +134,51 @@ class ServicesController extends Controller
         }
     }
 
+    public function editStatus(string $id)
+    {
+        try {
+            $service = $this->assetServiceQueryServices->findById($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengambil data service',
+                'data' => $service,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
     public function update(ServicesUpdateRequest $request, string $id)
     {
         try {
             DB::beginTransaction();
             $asset_service = $this->assetServiceCommandServices->updateServices($id, $request);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah service asset',
+                'data' => $asset_service,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function updateStatus(ServicesUpdateStatusRequest $request, string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $asset_service = $this->assetServiceCommandServices->updateStatusServices($id, $request);
             DB::commit();
             return response()->json([
                 'success' => true,

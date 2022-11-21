@@ -189,8 +189,7 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 9,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
@@ -209,6 +208,9 @@
                             } else if (data == 'tidak-lengkap') {
                                 element =
                                     `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            } else if (data == 'pengembangan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
                             } else {
                                 element =
                                     `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
@@ -282,6 +284,9 @@
                         } else if (asset.status_kondisi == 'tidak-lengkap') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                        }else if (asset.status_kondisi == 'pengembangan') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
                         } else {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;

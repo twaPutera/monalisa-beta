@@ -73,7 +73,7 @@
                 template = '<span class="badge badge-primary">Diproses</span>';
             } else if (status == 'selesai') {
                 template = '<span class="badge badge-success">Selesai</span>';
-            } 
+            }
 
             return template;
 
@@ -182,7 +182,9 @@
                                     } elseif ($pengaduan->asset_data->status_kondisi == 'maintenance') {
                                         $kondisi = '<span class="badge badge-warning px-3">Maintenance</span>';
                                     } elseif ($pengaduan->asset_data->status_kondisi == 'tidak-lengkap') {
-                                        $kondisi = '<span class="badge badge-info px-3">Tidak Lengkap</span>';
+                                        $kondisi = '<span class="badge badge-dark px-3">Tidak Lengkap</span>';
+                                    } elseif ($pengaduan->asset_data->status_kondisi == 'pengembangan') {
+                                        $kondisi = '<span class="badge badge-info px-3">Pengembangan</span>';
                                     }
                                 @endphp
                                 <div class="col text-end">

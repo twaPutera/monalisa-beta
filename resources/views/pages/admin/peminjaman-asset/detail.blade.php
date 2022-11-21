@@ -60,12 +60,12 @@
             color: #000;
         }
 
-        .rating:not(:hover) label input:checked ~ .icon,
-        .rating:hover label:hover input ~ .icon {
+        .rating:not(:hover) label input:checked~.icon,
+        .rating:hover label:hover input~.icon {
             color: #09f;
         }
 
-        .rating label input:focus:not(:checked) ~ .icon:last-child {
+        .rating label input:focus:not(:checked)~.icon:last-child {
             color: #000;
             text-shadow: 0 0 5px #09f;
         }
@@ -142,7 +142,8 @@
                         return {
                             id: item.id,
                             nama_kategori: item.nama_kategori,
-                            jumlah: item.id == data.asset_data.id_kategori_asset ? (parseInt(item.jumlah) - 1) : item.jumlah,
+                            jumlah: item.id == data.asset_data.id_kategori_asset ? (parseInt(
+                                item.jumlah) - 1) : item.jumlah,
                         };
                     });
                 }
@@ -169,8 +170,7 @@
                         d.is_pinjam = '1';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         name: 'id',
                         data: 'id',
                         class: 'text-center',
@@ -203,8 +203,7 @@
                     },
 
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: [0],
                         render: function(data, type, full, meta) {
                             return `<input type="checkbox" class="check-item" data-id_kategori_asset="${full.id_kategori_asset}" onclick="checkIfQuotaExists(this)" onchange="checklistAsset(this)" name="id_asset[]" value="${data}">`;
@@ -216,13 +215,20 @@
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'bagus') {
-                                element = `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
                             } else if (data == 'rusak') {
-                                element = `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
                             } else if (data == 'maintenance') {
-                                element = `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
                             } else if (data == 'tidak-lengkap') {
-                                element = `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                                element =
+                                    `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
+                            } else if (data == 'pengembangan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
                             }
 
                             return element;
@@ -230,10 +236,10 @@
                     }
                     //Custom template data
                 ],
-                "drawCallback": function (settings) {
+                "drawCallback": function(settings) {
                     console.log('drawCallback:');
 
-                    setTimeout(function () {
+                    setTimeout(function() {
                         rerenderCheckbox();
                     }, 100);
                 },
@@ -249,13 +255,12 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.report.history-peminjaman.datatable') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.searchKeyword = $('#searchDepresiasi').val();
                         d.peminjaman_asset_id = "{{ $peminjaman->id }}";
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -290,7 +295,8 @@
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
-                    if (data.data.command == 'storeManyDetailPeminjaman' || data.data.command == 'deleteDetailPeminjaman') {
+                    if (data.data.command == 'storeManyDetailPeminjaman' || data.data.command ==
+                        'deleteDetailPeminjaman') {
                         arrayKategori = data.data.quota;
                     }
                     if (data.data.command == 'changeStatus') {
@@ -356,7 +362,7 @@
         const rerenderCheckbox = () => {
             let jsonTempAsset = JSON.parse($('#jsonTempAsset').val());
             if (jsonTempAsset.length > 0) {
-                jsonTempAsset.forEach(function (user_id) {
+                jsonTempAsset.forEach(function(user_id) {
                     $(`input[name="id_asset[]"][value="${user_id}"]`).prop('checked', true);
                 })
             }
@@ -366,7 +372,7 @@
             table2.DataTable().ajax.reload();
         }
 
-        $('input[name="rating"]').on('change', function () {
+        $('input[name="rating"]').on('change', function() {
             let rating = $(this).val();
             console.log(rating);
             if (rating < 4) {
@@ -391,23 +397,32 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                @if($peminjaman->status == 'disetujui')
-                                    <form action="{{ route('admin.peminjaman.detail-asset.change-status', $peminjaman->id) }}" class="form-confirm d-inline" method="POST">
+                                @if ($peminjaman->status == 'disetujui')
+                                    <form
+                                        action="{{ route('admin.peminjaman.detail-asset.change-status', $peminjaman->id) }}"
+                                        class="form-confirm d-inline" method="POST">
                                         @csrf
                                         <input type="hidden" name="status" value="dipinjam">
-                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-check mr-2"></i> Proses</button>
+                                        <button type="submit" class="btn btn-sm btn-primary"><i
+                                                class="fas fa-check mr-2"></i> Proses</button>
                                     </form>
                                 @elseif($peminjaman->status == 'ditolak')
-                                    <button class="btn btn-sm btn-danger" style="pointer-events: none;"><i class="fas fa-times mr-2"></i> Ditolak</button>
+                                    <button class="btn btn-sm btn-danger" style="pointer-events: none;"><i
+                                            class="fas fa-times mr-2"></i> Ditolak</button>
                                 @elseif($peminjaman->status == 'diproses')
-                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Diproses</button>
+                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i
+                                            class="fas fa-check mr-2"></i> Diproses</button>
                                 @elseif($peminjaman->status == 'dipinjam')
-                                    <button type="button" onclick="openModalByClass('modalPengembalian')" class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
+                                    <button type="button" onclick="openModalByClass('modalPengembalian')"
+                                        class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
                                 @elseif($peminjaman->status == 'overdue')
-                                    <button class="btn btn-sm btn-warning" style="pointer-events: none;"><i class="fas fa-calendar-times mr-2"></i> Terlambat</button>
-                                    <button type="button" onclick="openModalByClass('modalPengembalian')" class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
+                                    <button class="btn btn-sm btn-warning" style="pointer-events: none;"><i
+                                            class="fas fa-calendar-times mr-2"></i> Terlambat</button>
+                                    <button type="button" onclick="openModalByClass('modalPengembalian')"
+                                        class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
                                 @elseif($peminjaman->status == 'selesai')
-                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i class="fas fa-check mr-2"></i> Selesai</button>
+                                    <button class="btn btn-sm btn-success" style="pointer-events: none;"><i
+                                            class="fas fa-check mr-2"></i> Selesai</button>
                                 @endif
                             </div>
                         </div>
@@ -427,65 +442,81 @@
                                 <div class="kt-portlet__body">
                                     <div class="form-group">
                                         <label for="nama">Kode Peminjaman</label>
-                                        <input type="text" class="form-control" id="codePeminjam" readonly name="nama" placeholder="Kode" value="{{ $peminjaman->code }}">
+                                        <input type="text" class="form-control" id="codePeminjam" readonly name="nama"
+                                            placeholder="Kode" value="{{ $peminjaman->code }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">Nama Peminjam</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama" placeholder="Nama" value="{{ $peminjam->name }}">
+                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama"
+                                            placeholder="Nama" value="{{ $peminjam->name }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Peminjaman</label>
                                         <div class="d-flex">
-                                            <input type="date" class="form-control w-75" id="tanggalPeminjam" readonly name="" value="{{ $peminjaman->tanggal_peminjaman }}">
-                                            <input type="text" class="form-control w-25" id="jamMulai" readonly name="" value="{{ $peminjaman->jam_mulai ?? "-" }}">
+                                            <input type="date" class="form-control w-75" id="tanggalPeminjam" readonly
+                                                name="" value="{{ $peminjaman->tanggal_peminjaman }}">
+                                            <input type="text" class="form-control w-25" id="jamMulai" readonly
+                                                name="" value="{{ $peminjaman->jam_mulai ?? '-' }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Pengembalian</label>
                                         <div class="d-flex">
-                                            <input type="date" class="form-control w-75" id="tanggalPengembalian" readonly name="" value="{{ $peminjaman->tanggal_pengembalian }}">
-                                            <input type="text" class="form-control w-25" id="jamAkhir" readonly name="" value="{{ $peminjaman->jam_selesai ?? "-" }}">
+                                            <input type="date" class="form-control w-75" id="tanggalPengembalian"
+                                                readonly name="" value="{{ $peminjaman->tanggal_pengembalian }}">
+                                            <input type="text" class="form-control w-25" id="jamAkhir" readonly
+                                                name="" value="{{ $peminjaman->jam_selesai ?? '-' }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Alasan Peminjaman</label>
                                         <textarea name="" class="form-control" readonly id="alasanPeminjaman" cols="30" rows="10">{{ $peminjaman->alasan_peminjaman }}</textarea>
                                     </div>
-                                    @if($peminjaman->status == 'selesai')
+                                    @if ($peminjaman->status == 'selesai')
                                         <div>
                                             <label for="nama">Rating</label>
                                             <div>
                                                 <div class="rating">
                                                     <label>
-                                                        <input type="radio" @if($peminjaman->rating == 1) checked @endif disabled name="rating" value="1" />
+                                                        <input type="radio"
+                                                            @if ($peminjaman->rating == 1) checked @endif disabled
+                                                            name="rating" value="1" />
                                                         <span class="icon">★</span>
-                                                      </label>
-                                                      <label>
-                                                        <input type="radio" @if($peminjaman->rating == 2) checked @endif disabled name="rating" value="2" />
-                                                        <span class="icon">★</span>
-                                                        <span class="icon">★</span>
-                                                      </label>
-                                                      <label>
-                                                        <input type="radio" @if($peminjaman->rating == 3) checked @endif disabled name="rating" value="3" />
-                                                        <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio"
+                                                            @if ($peminjaman->rating == 2) checked @endif disabled
+                                                            name="rating" value="2" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
-                                                      </label>
-                                                      <label>
-                                                        <input type="radio" @if($peminjaman->rating == 4) checked @endif disabled name="rating" value="4" />
-                                                        <span class="icon">★</span>
-                                                        <span class="icon">★</span>
-                                                        <span class="icon">★</span>
-                                                        <span class="icon">★</span>
-                                                      </label>
-                                                      <label>
-                                                        <input type="radio" @if($peminjaman->rating == 5) checked @endif disabled name="rating" value="5" />
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio"
+                                                            @if ($peminjaman->rating == 3) checked @endif disabled
+                                                            name="rating" value="3" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio"
+                                                            @if ($peminjaman->rating == 4) checked @endif disabled
+                                                            name="rating" value="4" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
-                                                      </label>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio"
+                                                            @if ($peminjaman->rating == 5) checked @endif disabled
+                                                            name="rating" value="5" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -592,9 +623,11 @@
                                     <div class="kt-portlet__head-toolbar">
                                         <div class="kt-portlet__head-wrapper">
                                             <div class="kt-portlet__head-actions">
-                                                @if($peminjaman->status == 'disetujui')
-                                                    <button type="button" onclick="openModalByClass('modalCreateDetailPeminjaman')"
-                                                        class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Data </button>
+                                                @if ($peminjaman->status == 'disetujui')
+                                                    <button type="button"
+                                                        onclick="openModalByClass('modalCreateDetailPeminjaman')"
+                                                        class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah
+                                                        Data </button>
                                                 @endif
                                             </div>
                                         </div>
@@ -602,7 +635,8 @@
                                 </div>
                                 <div class="kt-portlet__body">
                                     <div class="table-responsive">
-                                        <table class="table dt_table table-striped table-bordered" id="tableDetailPeminjaman">
+                                        <table class="table dt_table table-striped table-bordered"
+                                            id="tableDetailPeminjaman">
                                             <thead>
                                                 <tr>
                                                     <th width="50px">No</th>

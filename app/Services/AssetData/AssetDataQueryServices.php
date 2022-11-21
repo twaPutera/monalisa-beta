@@ -116,8 +116,8 @@ class AssetDataQueryServices
         }
 
         if (isset($request->id_asset)) {
-            $perencanaan = PerencanaanServices::where('id',$request->id_asset)->first();
-            if($perencanaan){
+            $perencanaan = PerencanaanServices::where('id', $request->id_asset)->first();
+            if ($perencanaan) {
                 $data->where('id', $perencanaan->id_asset_data);
             }
         }
@@ -296,7 +296,7 @@ class AssetDataQueryServices
 
     public function getDataChartSummaryAssetByStatus(Request $request)
     {
-        $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap'];
+        $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $data = [];
         foreach ($status as $item) {
             $count_asset = AssetData::query()
