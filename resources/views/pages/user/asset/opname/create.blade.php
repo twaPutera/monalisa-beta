@@ -124,8 +124,8 @@
                 <div class="form-group boxed">
                     <div class="input-wrapper">
                         <label class="text-dark" for=""><strong>Tanggal Opname</strong></label>
-                        <input type="date" name="tanggal_opname" class="form-control" id=""
-                            placeholder="Text Input">
+                        <input type="date" name="tanggal_opname" value="{{ date('Y-m-d') }}" class="form-control"
+                            id="" placeholder="Text Input">
                         <i class="clear-input">
                             <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle">
                             </ion-icon>
