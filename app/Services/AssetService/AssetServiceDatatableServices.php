@@ -158,6 +158,15 @@ class AssetServiceDatatableServices
                 }
                 return $element;
             })
+            ->addColumn('dashboard', function ($item) {
+                $element = '';
+                if ($item->status_service != 'selesai') {
+                    $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
+                } else {
+                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                }
+                return $element;
+            })
             ->addColumn('asset_data', function ($item) {
                 $asset = AssetData::query()
                     ->join('kategori_assets', 'kategori_assets.id', '=', 'asset_data.id_kategori_asset')
@@ -177,7 +186,7 @@ class AssetServiceDatatableServices
                 $element .= '<input type="checkbox" name="id[]" value="' . $item->id . '">';
                 return $element;
             })
-            ->rawColumns(['btn_show_service', 'asset_data', 'action', 'checkbox'])
+            ->rawColumns(['btn_show_service', 'asset_data', 'action', 'checkbox', 'dashboard'])
             ->make(true);
     }
 
