@@ -26,7 +26,12 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 
     public function model(array $row)
     {
-        $id_vendor = Vendor::where('kode_vendor', $row[10])->first();
+        $get_vendor = Vendor::where('kode_vendor', $row[10])->first();
+        if ($get_vendor == null) {
+            $id_vendor = null;
+        } else {
+            $id_vendor = $get_vendor->id;
+        }
         $id_kelas = KelasAsset::where('no_akun', $row[11])->first();
         $id_kategori = KategoriAsset::where('kode_kategori', $row[12])->first();
         $id_satuan = SatuanAsset::where('kode_satuan', $row[13])->first();
@@ -37,33 +42,40 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $path = storage_path('app/images/qr-code/' . $qr_name);
         $qr_code = QrCodeHelpers::generateQrCode($row[0], $path);
 
+        // Depresiasi
+        $tgl_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($row[2]);
+        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($row[3], ($id_kategori->umur_asset * 12));
+        $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($row[2], ($id_kategori->umur_asset * 12));
+
+
         $data_asset = AssetData::create([
-            'id_vendor' => $id_vendor->id,
+            'id_vendor' => $id_vendor,
             'id_lokasi' => $id_lokasi->id,
             'id_kelas_asset' => $id_kelas->id,
             'id_kategori_asset' => $id_kategori->id,
             'id_satuan_asset' => $id_satuan->id,
             'kode_asset' => $row[0],
             'deskripsi' => $row[1],
-            'tanggal_perolehan' => $row[3],
-            'nilai_perolehan' => $row[4],
-            'jenis_penerimaan' => $row[5],
-            'tgl_register' => $row[2],
+            'tanggal_perolehan' => $row[2],
+            'nilai_perolehan' => $row[3],
+            'jenis_penerimaan' => $row[4],
+            'tgl_register' => date('Y-m-d'),
             'register_oleh' => config('app.sso_siska') ? $user->guid : $user->id,
-            'no_memo_surat' => $row[6],
-            'no_po' => $row[7],
-            'no_sp3' => $row[8],
+            'no_memo_surat' => $row[5],
+            'no_po' => $row[6],
+            'no_sp3' => $row[7],
+            'nilai_buku_asset' => $row[9],
             'status_kondisi' => $row[16],
-            'no_seri' => $row[9],
+            'no_seri' => $row[8],
             'spesifikasi' => $row[15],
-            'nilai_buku_asset' => $row[4],
             'is_pinjam' => $row[17] == 'iya' ? 1 : 0,
             'is_sparepart' => $row[18]  == 'iya' ? 1 : 0,
-            'nilai_depresiasi' => DepresiasiHelpers::getNilaiDepresiasi($row[4], $id_kategori->umur_asset),
-            // 'umur_manfaat_fisikal' => $row[18],
-            'umur_manfaat_komersial' => $id_kategori->umur_asset,
+            'nilai_depresiasi' => $nilai_depresiasi,
+            'umur_manfaat_komersial' => $umur_manfaat_komersial,
             'created_by' => config('app.sso_siska') ? $user->guid : $user->id,
             'qr_code' => $qr_name,
+            'tanggal_awal_depresiasi' => $tgl_awal_depresiasi,
+            'tanggal_akhir_depresiasi' => DepresiasiHelpers::getAkhirTanggalDepresiasi($tgl_awal_depresiasi, $id_kategori->umur_asset),
         ]);
         return $data_asset;
     }
@@ -71,7 +83,6 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
     public function prepareForValidation($data, $index)
     {
         $data['2'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['2'])->format('Y-m-d');
-        $data['3'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['3'])->format('Y-m-d');
         return $data;
     }
 
@@ -81,14 +92,13 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '0' => 'required|unique:asset_data,kode_asset|max:255',
             '1' => 'required|string|max:255',
             '2' => 'required|date_format:Y-m-d',
-            '3' => 'required|date_format:Y-m-d',
-            '4' => 'required|numeric',
-            '5' => 'required|string|in:PO,Hibah',
+            '3' => 'required|numeric',
+            '4' => 'required|string|in:PO,Hibah',
+            '5' => 'nullable|string|max:50',
             '6' => 'nullable|string|max:50',
             '7' => 'nullable|string|max:50',
-            '8' => 'nullable|string|max:50',
-            '9' => 'required|string|max:50',
-            // '10' => 'required|numeric',
+            '8' => 'required|string|max:50',
+            '9' => 'required|numeric',
             // '11' => 'required|numeric',
             '10' => 'nullable|exists:vendors,kode_vendor',
             '11' => 'required|exists:kelas_assets,no_akun',
@@ -109,15 +119,14 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         return [
             '0' => 'Kode Asset',
             '1' => 'Deskripsi Asset',
-            '2' => 'Tanggal Register',
-            '3' => 'Tanggal Perolehan',
-            '4' => 'Nilai Perolehan',
-            '5' => 'Jenis Perolehan',
-            '6' => 'No Memo',
-            '7' => 'No PO',
-            '8' => 'No SP3',
-            '9' => 'No Seri Asset',
-            // '10' => 'Nilai Buku Asset',
+            '2' => 'Tanggal Perolehan',
+            '3' => 'Nilai Perolehan',
+            '4' => 'Jenis Perolehan',
+            '5' => 'No Memo',
+            '6' => 'No PO',
+            '7' => 'No SP3',
+            '8' => 'No Seri Asset',
+            '9' => 'Nilai Buku Asset',
             // '11' => 'Nilai Depresiasi',
             '10' => 'Kode Vendor',
             '11' => 'No Akun',

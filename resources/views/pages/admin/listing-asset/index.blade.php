@@ -293,15 +293,15 @@
                         }
 
 
-                        if (asset.is_pemutihan == 0) {
-                            var pemutihan =
-                                `<h6 class="text-center text-danger" style="font-size: 24px"><i
-                                    class="fas fa-times-circle"></i></h6>`;
-                        } else if (asset.is_pemutihan == 1) {
-                            var pemutihan =
-                                `<h6 class="text-center text-success" style="font-size: 24px"><i
-                                    class="fas fa-check-circle"></i></h6>`;
-                        }
+                        // if (asset.is_pemutihan == 0) {
+                        //     var pemutihan =
+                        //         `<h6 class="text-center text-danger" style="font-size: 24px"><i
+                        //             class="fas fa-times-circle"></i></h6>`;
+                        // } else if (asset.is_pemutihan == 1) {
+                        //     var pemutihan =
+                        //         `<h6 class="text-center text-success" style="font-size: 24px"><i
+                        //             class="fas fa-check-circle"></i></h6>`;
+                        // }
 
                         if (asset.is_pinjam == 0) {
                             var pinjam =
@@ -332,8 +332,8 @@
                         $('#assetNamePreview').text(asset.deskripsi);
                         $('#assetKondisi').empty();
                         $('#assetKondisi').append(kondisi);
-                        $('#assetPemutihan').empty();
-                        $('#assetPemutihan').append(pemutihan);
+                        // $('#assetPemutihan').empty();
+                        // $('#assetPemutihan').append(pemutihan);
                         // $('#assetPinjam').empty();
                         // $('#assetPinjam').append(pinjam);
                         $('#opnameCekBy').empty();
@@ -474,12 +474,12 @@
                                 <h6 class="text-right">No Item Selected</h6>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
+                        {{-- <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6>Status Pemutihan</h6>
                             <div id="assetPemutihan">
                                 <h6 class="text-right">No Item Selected</h6>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
                             <h6 class="">Catatan</h6>
                             <h6 class="text-right" id="catatanOpname">No Item Selected</h6>
