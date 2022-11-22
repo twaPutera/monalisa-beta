@@ -344,7 +344,6 @@
                     form.trigger('reset');
                     form.attr('action', url_update_status);
                     form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
-                    form.find('textarea[name=keterangan_service]').val(response.data.keterangan);
                     modal.on('shown.bs.modal', function(e) {
                         if (response.data.status_service === "on progress") {
                             var status_service = "onprogress";

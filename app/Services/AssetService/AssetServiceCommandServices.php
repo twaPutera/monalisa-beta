@@ -41,10 +41,17 @@ class AssetServiceCommandServices
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
-        $asset_service->keterangan = $request->keterangan_service;
         $asset_service->save();
 
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        if ($request->status_service == "selesai") {
+            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+            $asset_data->save();
+        } else {
+            $asset_data->status_kondisi = "maintenance";
+            $asset_data->save();
+        }
+
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -54,7 +61,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -91,10 +98,16 @@ class AssetServiceCommandServices
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
-        $asset_service->keterangan = $request->keterangan_service;
         $asset_service->save();
 
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+        if ($request->status_service == "selesai") {
+            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+            $asset_data->save();
+        } else {
+            $asset_data->status_kondisi = "maintenance";
+            $asset_data->save();
+        }
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -104,7 +117,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -141,11 +154,17 @@ class AssetServiceCommandServices
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
-        $asset_service->keterangan = $request->keterangan_service;
-
         $asset_service->save();
 
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        if ($request->status_service == "selesai") {
+            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+            $asset_data->save();
+        } else {
+            $asset_data->status_kondisi = "maintenance";
+            $asset_data->save();
+        }
+
         $detail_asset_service = new DetailService();
         $detail_asset_service->id_asset_data = $asset_data->id;
         $detail_asset_service->id_lokasi = $asset_data->id_lokasi;
@@ -155,7 +174,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -185,7 +204,7 @@ class AssetServiceCommandServices
         $detail_asset_service->tindakan = $request->tindakan;
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan');
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', "Perubahan Informasi Services");
         return $asset_service;
     }
 
@@ -199,13 +218,19 @@ class AssetServiceCommandServices
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;
-        $asset_service->keterangan = $request->keterangan_service;
         $asset_service->save();
 
         $detail_asset_service = DetailService::where('id_service', $asset_service->id)->firstOrFail();
         $asset_data = AssetData::where('id', $detail_asset_service->id_asset_data)->first();
+        if ($request->status_service == "selesai") {
+            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+            $asset_data->save();
+        } else {
+            $asset_data->status_kondisi = "maintenance";
+            $asset_data->save();
+        }
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Perubahan');
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Perubahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-service');
@@ -232,12 +257,12 @@ class AssetServiceCommandServices
         return $name;
     }
 
-    protected static function storeLog($id_asset, $nama_asset, $status, $log = 'Penambahan')
+    protected static function storeLog($id_asset, $nama_asset, $status, $log, $keterangan)
     {
         $log_asset = new LogServiceAsset();
         $user = SsoHelpers::getUserLogin();
         $log_asset->id_service = $id_asset;
-        $log_asset->message_log = "$log Data Service untuk asset $nama_asset, dilakukan oleh " . Auth::user()->role;
+        $log_asset->message_log = "$log Data Service untuk $nama_asset oleh " . Auth::user()->role . " (Ket : $keterangan )";
         $log_asset->status = $status == 'onprogress' ? 'on progress' : $status;
         $log_asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $log_asset->save();

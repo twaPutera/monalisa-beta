@@ -2,11 +2,14 @@
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 @endsection
 @section('custom_js')
     <script>
@@ -31,8 +34,7 @@
                         d.limit = 10;
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -68,13 +70,101 @@
                 order: [
                     [4, 'asc']
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 1,
                         render: function(data, type, full, meta) {
-                            return '<button data-url_edit="{{ route("admin.keluhan.edit", ":id_edit") }}" data-url_update="{{ route("admin.keluhan.update", ":id_update") }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                        <i class="la la-eye"></i>\
-                                    </button>'.replace(':id_edit', data).replace(':id_update', data);
+                            return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
+                                                <i class="la la-eye"></i>\
+                                            </button>'.replace(':id_edit', data).replace(':id_update', data);
+                        },
+                    },
+                    {
+                        targets: 4,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                ],
+            });
+        });
+
+        var datatableAduanTerbaru = $('#datatableAduanTerbaru');
+        $(document).ready(function() {
+            datatableAduanTerbaru.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                // set limit item per page
+                orderable: true,
+                paging: false,
+                info: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.keluhan.datatable') }}",
+                    data: function(d) {
+                        d.status_pengaduan = 'dilaporkan';
+                        d.limit = 10;
+                    }
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false
+                    },
+                    {
+                        name: 'tanggal_pengaduan',
+                        data: 'tanggal_pengaduan'
+                    },
+                    {
+                        name: 'created_by_name',
+                        data: 'created_by_name',
+                        orderable: false
+                    },
+                    {
+                        name: 'prioritas',
+                        data: 'prioritas',
+                        orderable: true
+                    },
+                    {
+                        name: 'lokasi_asset',
+                        data: 'lokasi_asset',
+                        orderable: false
+                    },
+
+                ],
+                order: [
+                    [2, 'desc']
+                ],
+                columnDefs: [{
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
+                                                <i class="la la-eye"></i>\
+                                            </button>'.replace(':id_edit', data).replace(':id_update', data);
                         },
                     },
                     {
@@ -178,8 +268,7 @@
                         d.limit = 10;
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -203,20 +292,18 @@
                 order: [
                     [2, 'desc']
                 ],
-                columnDefs: [
-                    {
-                        targets: 1,
-                        render: function(data, type, full, meta) {
-                            let element = "";
-                            element +=
-                                `<button onclick="addServicesFromPerencanaan(this)" data-url_show="{{ route('admin.services.find-perencanaan-service', ':id') }}" class="btn btn-sm btn-primary btn-icon" title="View details">` +
-                                `<i class="la la-eye"></i>` +
-                                `</button>`;
-                            element = element.replace(/:id/g, data);
-                            return element;
-                        },
-                    }
-                ],
+                columnDefs: [{
+                    targets: 1,
+                    render: function(data, type, full, meta) {
+                        let element = "";
+                        element +=
+                            `<button onclick="addServicesFromPerencanaan(this)" data-url_show="{{ route('admin.services.find-perencanaan-service', ':id') }}" class="btn btn-sm btn-primary btn-icon" title="View details">` +
+                            `<i class="la la-eye"></i>` +
+                            `</button>`;
+                        element = element.replace(/:id/g, data);
+                        return element;
+                    },
+                }],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
@@ -293,11 +380,11 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "action",
+                        data: "dashboard",
                         class: "text-center",
                         orderable: false,
                         searchable: false,
-                        name: 'action'
+                        name: 'dashboard'
                     },
                     {
                         name: 'kode_services',
@@ -312,8 +399,7 @@
                         data: 'asset_data.deskripsi'
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: [3],
                         render: function(data, type, full, meta) {
                             return data != null ? formatDateIntoIndonesia(data) : '-';
@@ -354,6 +440,12 @@
     </script>
     <script>
         $(document).ready(function() {
+            $('.datepickerCreateSelesai').datepicker({
+                todayHighlight: true,
+                width: '100%',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+            });
             getSummaryData();
         });
 
@@ -477,6 +569,7 @@
             });
         }
 
+
         const generateChartPenerimaanAsset = (data) => {
             echarts.init(document.querySelector("#chartPenerimaanAsset")).setOption({
                 xAxis: {
@@ -503,7 +596,36 @@
                 }]
             });
         }
+        const editStatusService = (button) => {
+            const url_edit_status = $(button).data('url_edit_status');
+            const url_update_status = $(button).data('url_update_status');
+            const id_asset = $(button).data('id_asset');
+            $.ajax({
+                url: url_edit_status,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const modal = $('.modalEditStatusAssetService');
+                    const form = modal.find('form');
+                    form.trigger('reset');
+                    form.attr('action', url_update_status);
+                    form.find('input[name=tanggal_selesai_service]').val(response.data.tanggal_selesai);
+                    modal.on('shown.bs.modal', function(e) {
+                        if (response.data.status_service === "on progress") {
+                            var status_service = "onprogress";
+                        } else {
+                            var status_service = response.data.status_service;
+                        }
+                        $('#status_service option[value="' + status_service + '"]')
+                            .prop('selected', true);
 
+                        $('#service_kondisi option[value="' + response.data.status_kondisi + '"]')
+                            .prop('selected', true);
+                    })
+                    modal.modal('show');
+                }
+            })
+        }
         const generateChartService = (data) => {
             echarts.init(document.querySelector("#chartSummaryService")).setOption({
                 xAxis: {
@@ -817,4 +939,5 @@
     </div>
     @include('pages.admin.dashboard._modal_create_service')
     @include('pages.admin.keluhan.components.modal._modal_edit_keluhan')
+    @include('pages.admin.services.components.modal._modal_edit_status_service')
 @endsection
