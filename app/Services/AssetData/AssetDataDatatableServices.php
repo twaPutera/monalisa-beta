@@ -303,11 +303,30 @@ class AssetDataDatatableServices
 
     public function log_opname_dt(Request $request)
     {
-        $query = LogAssetOpname::query();
+        $filter = $request->toArray();
+        $query = LogAssetOpname::query()
+            ->select([
+                'log_asset_opnames.*',
+                'asset_data.deskripsi',
+                'asset_data.kode_asset',
+            ])
+            ->join('asset_data', 'asset_data.id', '=', 'log_asset_opnames.id_asset_data');
+
         if (isset($request->asset_id)) {
             $query->where('id_asset_data', $request->asset_id);
         }
-        $query->orderBy('created_at', 'ASC');
+
+        if (isset($request->limit)) {
+            $query->limit($request->limit);
+        }
+
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if (3 == $order_column_index) {
+            $query->orderBy('kritikal', $order_column_dir);
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('created_by', function ($item) {
