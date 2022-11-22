@@ -101,97 +101,6 @@
             });
         });
 
-        var datatableAduanTerbaru = $('#datatableAduanTerbaru');
-        $(document).ready(function() {
-            datatableAduanTerbaru.DataTable({
-                responsive: true,
-                searchDelay: 500,
-                processing: true,
-                searching: false,
-                bLengthChange: false,
-                // set limit item per page
-                orderable: true,
-                paging: false,
-                info: false,
-                scrollX: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('admin.keluhan.datatable') }}",
-                    data: function(d) {
-                        d.status_pengaduan = 'dilaporkan';
-                        d.limit = 10;
-                    }
-                },
-                columns: [
-                    {
-                        data: "DT_RowIndex",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'id',
-                        name: 'id',
-                        orderable: false
-                    },
-                    {
-                        name: 'tanggal_pengaduan',
-                        data: 'tanggal_pengaduan'
-                    },
-                    {
-                        name: 'created_by_name',
-                        data: 'created_by_name',
-                        orderable: false
-                    },
-                    {
-                        name: 'prioritas',
-                        data: 'prioritas',
-                        orderable: true
-                    },
-                    {
-                        name: 'lokasi_asset',
-                        data: 'lokasi_asset',
-                        orderable: false
-                    },
-
-                ],
-                order: [
-                    [2, 'desc']
-                ],
-                columnDefs: [
-                    {
-                        targets: 1,
-                        render: function(data, type, full, meta) {
-                            return '<button data-url_edit="{{ route("admin.keluhan.edit", ":id_edit") }}" data-url_update="{{ route("admin.keluhan.update", ":id_update") }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                        <i class="la la-eye"></i>\
-                                    </button>'.replace(':id_edit', data).replace(':id_update', data);
-                        },
-                    },
-                    {
-                        targets: 4,
-                        render: function(data, type, full, meta) {
-                            let element = "";
-                            if (data == 10) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
-                            } else if (data == 5) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
-                            } else if (data == 1) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
-                            } else {
-                                element +=
-                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
-                            }
-                            return element;
-                        },
-                    }
-                ],
-            });
-        });
-
         const editPengaduan = (button) => {
             const url_edit = $(button).data('url_edit');
             const url_update = $(button).data('url_update');
@@ -745,7 +654,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Pengaduan Status Tertinggi
+                            Overview Pengaduan
                         </h3>
                     </div>
                 </div>
@@ -803,7 +712,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            10 Pengaduan Terbaru
+                            10 Kritikal Aset
                         </h3>
                     </div>
                 </div>
