@@ -280,12 +280,13 @@ class MasterAssetController extends Controller
                 'errors' => $errors,
             ], 400);
         } catch (\Throwable $th) {
+            throw $th;
             DB::rollback();
             return response()->json([
                 'success' => false,
                 'form' => 'import',
                 'message' => $th->getMessage(),
-            ], 400);
+            ], 500);
         }
     }
 

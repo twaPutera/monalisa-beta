@@ -80,8 +80,8 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         return [
             '0' => 'required|unique:asset_data,kode_asset|max:255',
             '1' => 'required|string|max:255',
-            '2' => 'required|date_format:Y-m-d',
-            '3' => 'required|date_format:Y-m-d',
+            '2' => 'required|date|date_format:Y-m-d',
+            '3' => 'required|date|date_format:Y-m-d',
             '4' => 'required|numeric',
             '5' => 'required|string|in:PO,Hibah',
             '6' => 'nullable|string|max:50',

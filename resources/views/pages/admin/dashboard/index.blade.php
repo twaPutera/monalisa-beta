@@ -356,6 +356,7 @@
         }
 
         var datatableServicesOnProgress = $('#datatableServicesOnProgress');
+        var tableLogOpname = $('#tableLogOpname');
         $(document).ready(function() {
             datatableServicesOnProgress.DataTable({
                 responsive: true,
@@ -405,6 +406,83 @@
                             return data != null ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
+                    //Custom template data
+                ],
+                order: [
+                    [3, 'desc']
+                ],
+            });
+
+            tableLogOpname.DataTable({
+                responsive: true,
+                processing: true,
+                searching: false,
+                orderable: true,
+                serverSide: true,
+                bLengthChange: false,
+                autoWidth: false,
+                paging: false,
+                info: false,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.log-opname.datatable') }}",
+                    data: function(d) {
+                        d.limit = 10;
+                    }
+                },
+                columns: [
+                    {
+                        data: 'kode_asset',
+                    },
+                    {
+                        data: 'deskripsi',
+                    },
+                    {
+                        data: 'status_akhir',
+                    },
+                    {
+                        data: 'kritikal',
+                        name: 'kritikal',
+                    },
+                    {
+                        data: 'keterangan',
+                    },
+                    {
+                        data: 'id_asset_data',
+                    },
+                ],
+                columnDefs: [
+                    {
+                        targets: 3,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == 10) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                            } else if (data == 5) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                            } else if (data == 1) {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                            } else {
+                                element +=
+                                    `-`;
+                            }
+                            return element;
+                        },
+                    },
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            element +=
+                                `<a href="{{ route('admin.listing-asset.detail', ':id') }}" class="btn btn-sm btn-primary btn-icon btn-icon-md" title="View">
+                                    <i class="la la-eye"></i>
+                                </a>`;
+                            element = element.replace(/:id/g, data);
+                            return element;
+                        },
+                    }
                     //Custom template data
                 ],
                 order: [
@@ -540,31 +618,47 @@
         }
 
         const generateChartAssetKondisi = (data) => {
+            let value = [];
+            let name = [];
+            $(data).each(function (index, item) {
+                value.push(item.value);
+                name.push(item.name);
+            });
             echarts.init(document.querySelector("#chartAssetKondisi")).setOption({
-                title: {
-                    show: false,
+                xAxis: {
+                    type: 'value',
                 },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                padding: 0,
+                yAxis: {
+                    type: 'category',
+                    data: name,
+                },
+                grid: {
+                    left: '10%',
+                    containLabel: true,
+                    top: '0%',
+                    bottom: '0%',
+                    right: '10%',
                 },
                 legend: {
                     show: false,
                 },
-                padding: 0,
-                series: [{
-                    name: 'Jumlah Asset',
-                    type: 'pie',
-                    radius: '60%',
-                    data: data,
-                    // color: ['#45C277', '#FA394C', '#FFC102'],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
+                label: {
+                    show: true,
+                    position: 'inside',
+                    fontWeight: 'bold',
+                    color: '#fff',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
                     }
+                },
+                series: [{
+                    name: 'Kondisi Aset',
+                    data: value,
+                    type: 'bar',
                 }]
             });
         }
@@ -627,6 +721,7 @@
             })
         }
         const generateChartService = (data) => {
+            console.log('Data Service', data);
             echarts.init(document.querySelector("#chartSummaryService")).setOption({
                 xAxis: {
                     type: 'value',
@@ -736,7 +831,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-12">
+        {{-- <div class="col-md-3 col-12">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -756,8 +851,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-3 col-12">
+        </div> --}}
+        <div class="col-md-6 col-12">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -767,124 +862,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body px-0">
-                    <div id="chartAssetKondisi" style="height: 260px; margin-top: -30px;"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Overview Pengaduan
-                        </h3>
-                    </div>
-                </div>
-                <div class="kt-portlet__body ">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="datatableCriticalAduan">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>#</th>
-                                    <th>Tanggal Aduan</th>
-                                    <th>Nama Pembuat</th>
-                                    <th>Level Aduan</th>
-                                    <th>Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Perencanaan Services
-                        </h3>
-                    </div>
-                </div>
-                <div class="kt-portlet__body">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="datatablePerencanaanServices">
-                            <thead>
-                                <tr>
-                                    <th width="50px">No</th>
-                                    <th width="50px">#</th>
-                                    <th>Tanggal Services</th>
-                                    <th>Nama Aset</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            10 Kritikal Aset
-                        </h3>
-                    </div>
-                </div>
-                <div class="kt-portlet__body ">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="datatableAduanTerbaru">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>#</th>
-                                    <th>Tanggal Aduan</th>
-                                    <th>Nama Pembuat</th>
-                                    <th>Level Aduan</th>
-                                    <th>Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            10 Services sedang berlangsung
-                        </h3>
-                    </div>
-                </div>
-                <div class="kt-portlet__body">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="datatableServicesOnProgress">
-                            <thead>
-                                <tr>
-                                    <th width="50px">No</th>
-                                    <th width="50px">#</th>
-                                    <th>Kode Services</th>
-                                    <th>Tanggal Services</th>
-                                    <th>Nama Aset</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
+                    <div id="chartAssetKondisi" style="height: 230px;"></div>
                 </div>
             </div>
         </div>
@@ -898,7 +876,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body p-0">
-                    <div id="chartPenerimaanAsset" style="margin-top: -30px; height: 310px;"></div>
+                    <div id="chartPenerimaanAsset" style="margin-top: -30px; height: 270px;"></div>
                 </div>
             </div>
         </div>
@@ -928,10 +906,126 @@
                             </div>
                         </div>
                         <div class="col-8 p-0 m-0">
-                            <div style="height: 200px;">
-                                <div id="chartSummaryService" style="height: 280px; margin-top: -60px;"></div>
+                            <div style="height: 250px;">
+                                <div id="chartSummaryService" style="height: 300px; margin-top: -60px;"></div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Overview Pengaduan
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-scroll" data-scroll="true" style="height: 300px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatableCriticalAduan">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>#</th>
+                                    <th>Tanggal Aduan</th>
+                                    <th>Nama Pembuat</th>
+                                    <th>Level Aduan</th>
+                                    <th>Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Perencanaan Services
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-scroll" data-scroll="true" style="height: 300px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatablePerencanaanServices">
+                            <thead>
+                                <tr>
+                                    <th width="50px">No</th>
+                                    <th width="50px">#</th>
+                                    <th>Tanggal Services</th>
+                                    <th>Nama Aset</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            10 Kritikal Aset
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-scroll" data-scroll="true" style="height: 300px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0" id="tableLogOpname">
+                            <thead>
+                                <tr>
+                                    <th>Kode Aset</th>
+                                    <th>Deskripsi</th>
+                                    <th>Status Akhir</th>
+                                    <th>Tingkat Kritikal</th>
+                                    <th>Catatan</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            10 Services sedang berlangsung
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-scroll" data-scroll="true" style="height: 300px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="datatableServicesOnProgress">
+                            <thead>
+                                <tr>
+                                    <th width="50px">No</th>
+                                    <th width="50px">#</th>
+                                    <th>Kode Services</th>
+                                    <th>Tanggal Services</th>
+                                    <th>Nama Aset</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
