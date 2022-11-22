@@ -784,6 +784,16 @@
                         <div class="kt-portlet__body" style="height: 280px;">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
+                                    <span style="background-color: #C3D8EC; border-color: #C3D8EC;"
+                                        class="mr-3 kt-badge kt-badge--unified-danger kt-badge--lg kt-badge--rounded kt-badge--bold">
+                                        <i class="fas fa-boxes text-light"></i>
+                                    </span>
+                                    <p class="mb-0 text-dark">Total Aset</p>
+                                </div>
+                                <h2 class="text-dark mb-0"><strong id="totalAssetSummary">0</strong></h2>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
                                     <span
                                         class="mr-3 kt-badge kt-badge--unified-brand kt-badge--lg kt-badge--rounded kt-badge--bold">
                                         <i class="fa fa-money-bill-wave"></i>
