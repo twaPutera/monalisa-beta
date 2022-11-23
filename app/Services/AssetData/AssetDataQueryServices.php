@@ -252,10 +252,12 @@ class AssetDataQueryServices
     {
         $nilai_beli_asset = AssetData::query()
             ->where('is_pemutihan', '0')
+            ->where('status_kondisi', '!=', 'pengembangan')
             ->sum('nilai_perolehan');
 
         $nilai_value_asset = AssetData::query()
             ->where('is_pemutihan', '0')
+            ->where('status_kondisi', '!=', 'pengembangan')
             ->sum('nilai_buku_asset');
 
         $nilai_depresiasi = $nilai_beli_asset - $nilai_value_asset;
@@ -283,6 +285,7 @@ class AssetDataQueryServices
                     $query->where('id_group_kategori_asset', $item->id);
                 })
                 ->where('is_pemutihan', '0')
+                ->where('status_kondisi', '!=', 'pengembangan')
                 ->count();
 
             $data[] = [
@@ -335,6 +338,7 @@ class AssetDataQueryServices
             $count_asset = AssetData::query()
                 ->whereMonth('tgl_register', $key + 1)
                 ->whereYear('tgl_register', date('Y'))
+                ->where('status_kondisi', '!=', 'pengembangan')
                 ->where('is_pemutihan', '0')
                 ->count();
 
@@ -354,6 +358,7 @@ class AssetDataQueryServices
                 'nilai_buku_asset',
             ])
             ->where('is_pemutihan', '0')
+            ->where('status_kondisi', '!=', 'pengembangan')
             ->where('nilai_buku_asset', '>', '0')
             ->get();
 
