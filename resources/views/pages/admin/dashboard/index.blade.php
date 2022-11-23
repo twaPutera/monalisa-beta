@@ -663,7 +663,6 @@
             });
         }
 
-
         const generateChartPenerimaanAsset = (data) => {
             echarts.init(document.querySelector("#chartPenerimaanAsset")).setOption({
                 xAxis: {
@@ -690,6 +689,7 @@
                 }]
             });
         }
+
         const editStatusService = (button) => {
             const url_edit_status = $(button).data('url_edit_status');
             const url_update_status = $(button).data('url_update_status');
@@ -720,6 +720,7 @@
                 }
             })
         }
+
         const generateChartService = (data) => {
             console.log('Data Service', data);
             echarts.init(document.querySelector("#chartSummaryService")).setOption({
@@ -756,6 +757,76 @@
                 }]
             });
         }
+    </script>
+
+    <script>
+        var tableAsetPengambangan = $('#tableAsetPengambangan');
+
+        $(document).ready(function () {
+            tableAsetPengambangan.DataTable({
+                responsive: true,
+                searchDelay: 500,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                ordering: false,
+                paging: false,
+                scrollX: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.datatable') }}",
+                    data: function(d) {
+                        d.status_kondisi = 'pengembangan';
+                    }
+                },
+                columns: [
+                    {
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'kode_asset'
+                    },
+                    {
+                        data: 'deskripsi'
+                    },
+                    {
+                        data: 'group'
+                    },
+                    {
+                        data: 'nama_kategori'
+                    },
+                    {
+                        data: "id",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'id'
+                    },
+                ],
+                columnDefs: [
+                    {
+                        targets: 5,
+                        render: function (data, type, row) {
+                            return `
+                                <a href="{{ route('admin.listing-asset.detail', ':id') }}" class="btn btn-sm btn-icon btn-primary" title="Detail Aset">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            `.replace(':id', data);
+                        }
+                    }
+                ],
+                createdRow: function(row, data, index) {
+
+                },
+                footerCallback: function(row, data, start, end, display) {
+
+                }
+            });
+        });
     </script>
 @endsection
 @section('main-content')
@@ -1034,6 +1105,35 @@
                             </thead>
                             <tbody>
 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="kt-portlet shadow-custom">
+                <div class="kt-portlet__head px-4">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Aset Dalam Pengembangan
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-scroll" data-scroll="true" style="height: 300px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0" id="tableAsetPengambangan">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode Aset</th>
+                                    <th>Deskripsi</th>
+                                    <th>Kelompok</th>
+                                    <th>Jenis</th>
+                                    <th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
