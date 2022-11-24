@@ -374,10 +374,26 @@
 
         $('input[name="rating"]').on('change', function() {
             let rating = $(this).val();
-            console.log(rating);
             if (rating < 4) {
                 $('#keteranganPengembalianContainer').show();
             } else {
+                $('#keteranganPengembalianContainer').hide();
+            }
+        });
+
+        $('#modalPengembalian').on('show.bs.modal', function(e) {
+            const tanggalPengembalian = new Date($('#tanggalPengembalian').val());
+            const today = new Date();
+            const diffTime = Math.abs(today - tanggalPengembalian);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays == 1) {
+                $('input[name="rating"][value="3"]').prop('checked', true);
+                $('#keteranganPengembalianContainer').show();
+            } else if(diffDays > 1) {
+                $('input[name="rating"][value="1"]').prop('checked', true);
+                $('#keteranganPengembalianContainer').show();
+            } else {
+                $('input[name="rating"][value="5"]').prop('checked', true);
                 $('#keteranganPengembalianContainer').hide();
             }
         });
@@ -415,7 +431,7 @@
                                 @elseif($peminjaman->status == 'dipinjam')
                                     <button type="button" onclick="openModalByClass('modalPengembalian')"
                                         class="btn btn-sm btn-danger"><i class="fas fa-check mr-2"></i> Selesaikan</button>
-                                @elseif($peminjaman->status == 'overdue')
+                                @elseif($peminjaman->status == 'duedate')
                                     <button class="btn btn-sm btn-warning" style="pointer-events: none;"><i
                                             class="fas fa-calendar-times mr-2"></i> Terlambat</button>
                                     <button type="button" onclick="openModalByClass('modalPengembalian')"
@@ -480,20 +496,20 @@
                                                     <label>
                                                         <input type="radio"
                                                             @if ($peminjaman->rating == 1) checked @endif disabled
-                                                            name="rating" value="1" />
+                                                            name="ratingView" value="1" />
                                                         <span class="icon">★</span>
                                                     </label>
                                                     <label>
                                                         <input type="radio"
                                                             @if ($peminjaman->rating == 2) checked @endif disabled
-                                                            name="rating" value="2" />
+                                                            name="ratingView" value="2" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
                                                     </label>
                                                     <label>
                                                         <input type="radio"
                                                             @if ($peminjaman->rating == 3) checked @endif disabled
-                                                            name="rating" value="3" />
+                                                            name="ratingView" value="3" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
@@ -501,7 +517,7 @@
                                                     <label>
                                                         <input type="radio"
                                                             @if ($peminjaman->rating == 4) checked @endif disabled
-                                                            name="rating" value="4" />
+                                                            name="ratingView" value="4" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
@@ -510,7 +526,7 @@
                                                     <label>
                                                         <input type="radio"
                                                             @if ($peminjaman->rating == 5) checked @endif disabled
-                                                            name="rating" value="5" />
+                                                            name="ratingView" value="5" />
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>
                                                         <span class="icon">★</span>

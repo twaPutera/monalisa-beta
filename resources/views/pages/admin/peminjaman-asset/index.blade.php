@@ -66,7 +66,7 @@
                             } else if (data == 'dipinjam') {
                                 element =
                                     '<span class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill kt-badge--rounded">Sedang Dipinjam</span>';
-                            } else if (data == 'terlambat') {
+                            } else if (data == 'duedate') {
                                 element =
                                     '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Terlambat</span>';
                             } else if (data == 'diproses') {
