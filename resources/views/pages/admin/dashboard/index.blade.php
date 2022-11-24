@@ -618,10 +618,17 @@
         }
 
         const generateChartAssetKondisi = (data) => {
+            const backgroundArray = ['#228BE6', '#A6CEE3', '#FFC102', '#F03E3E', '#45C277'];
             let value = [];
             let name = [];
             $(data).each(function (index, item) {
-                value.push(item.value);
+                let itemData = {
+                    value: item.value,
+                    itemStyle: {
+                        color: backgroundArray[index],
+                    },
+                }
+                value.push(itemData);
                 name.push(item.name);
             });
             echarts.init(document.querySelector("#chartAssetKondisi")).setOption({

@@ -692,17 +692,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div></div>
                 <div class="d-flex align-items-center">
-                    @if ($asset->is_pemutihan != '1')
-                        <button onclick="openModalByClass('modalCreatePemindahan')"
-                            class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" style="display: none;" id="pemindahan"
-                            type="button">
-                            <i class="fas fa-sync-alt"></i>
-                            Pindahkan Asset</button>
-                        <button onclick="openModalByClass('modalCreateAssetService')" style="display: none;"
-                            id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log" type="button"><i
-                                class="fa fa-plus"></i>
-                            Service</button>
-                    @endif
+
                 </div>
             </div>
             <div class="row">
@@ -765,7 +755,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-                                        
+
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
@@ -895,29 +885,29 @@
                 <div class="col-md-6 col-12">
                     <ul class="nav nav-tabs mb-0" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#" onclick="hideButton()"
-                                data-target="#kt_tabs_1_1">Log
-                                Opname</a>
+                            <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">
+                                Log Opname
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('create-service')"
-                                data-target="#kt_tabs_1_2">Log
-                                Services</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_2">
+                                Log Services
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemindahan')"
-                                data-target="#kt_tabs_1_3">Log
-                                Pemindahan</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_3">
+                                Log Pemindahan
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
-                                data-target="#kt_tabs_1_4">Log
-                                Peminjaman</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_4">Log
+                                Peminjaman
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#" onclick="showButton('pemutihan')"
-                                data-target="#kt_tabs_1_5">Log
-                                Riwayat</a>
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_5">
+                                Log Riwayat
+                            </a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -944,6 +934,13 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
+                            <div class="d-flex justify-content-end my-2">
+                                @if ($asset->is_pemutihan != '1')
+                                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                        <i class="fa fa-plus"></i> Service
+                                    </button>
+                                @endif
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="datatableLogService">
                                     <thead>
@@ -964,6 +961,13 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
+                            <div class="d-flex justify-content-end my-2">
+                                @if ($asset->is_pemutihan != '1')
+                                    <button onclick="openModalByClass('modalCreatePemindahan')" class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                        <i class="fas fa-sync-alt"></i> Pindahkan Asset
+                                    </button>
+                                @endif
+                            </div>
                             <table class="table table-striped mb-0" id="tableLogPemindahan">
                                 <thead>
                                     <tr>
