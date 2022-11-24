@@ -55,6 +55,12 @@ class MasterAssetController extends Controller
         return view('pages.admin.listing-asset.index', compact('list_status'));
     }
 
+    public function indexDraft()
+    {
+        $list_status = StatusAssetDataHelpers::listStatusAssetData();
+        return view('pages.admin.listing-asset.draft-asset.index', compact('list_status'));
+    }
+
     public function datatable(Request $request)
     {
         return $this->assetDataDatatableServices->datatable($request);

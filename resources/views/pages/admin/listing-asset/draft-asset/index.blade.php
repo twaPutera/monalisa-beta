@@ -29,38 +29,6 @@
     <script>
         var table = $('#datatableExample');
         $(document).ready(function() {
-            $('#lokasiTree').jstree({
-                "core": {
-                    "themes": {
-                        "responsive": false
-                    },
-                    // so that create works
-                    "check_callback": function(e) {
-                        console.log(e);
-                    },
-                    'data': {
-                        url: "{{ route('admin.setting.lokasi.get-node-tree') }}"
-                    }
-                },
-                "types": {
-                    "default": {
-                        "icon": "fa fa-map-marker kt-font-success"
-                    },
-                    "file": {
-                        "icon": "fa fa-file  kt-font-success"
-                    }
-                },
-                "plugins": ["dnd", "types", "search", "adv_search"]
-            }).on('changed.jstree', function(e, data) {
-                $('#lokasiFilterAktif').text(data.node.text);
-                $('#lokasiParentId').val(data.selected[0]);
-                table.DataTable().ajax.reload();
-            });
-
-            $('#searchButton').on('click', function() {
-                $('#lokasiTree').jstree('search', $('#searchTree').val());
-            });
-
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
                     $(formElement).find(".invalid-feedback").remove();
@@ -117,13 +85,8 @@
                 ajax: {
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
-                        d.id_lokasi = $('#lokasiParentId').val();
-                        d.id_satuan_asset = $('#satuanAssetFilter').val();
-                        d.id_vendor = $('#vendorAssetFilter').val();
-                        d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
-                        d.is_sparepart = $('#isSparepartFilter').val();
-                        d.is_pemutihan = $('#isPemutihanFilter').val();
+                        d.statusArray = ['draft', 'pengembangan'];
                     }
                 },
                 columns: [{
@@ -369,40 +332,10 @@
     </script>
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
-    @include('pages.admin.listing-asset.components.script-js._script_modal_filter')
 @endsection
 @section('main-content')
-    <input type="hidden" value="" id="lokasiParentId">
     <div class="row">
-        <div class="col-md-2 col-12">
-            <div class="kt-portlet shadow-custom">
-                <div class="kt-portlet__head px-4">
-                    <div class="kt-portlet__head-label">
-                        <h3 class="kt-portlet__head-title">
-                            Tree Lokasi
-                        </h3>
-                    </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <div class="kt-portlet__head-wrapper">
-                            <div class="kt-portlet__head-actions">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-portlet__body scroll-bar">
-                    <div class="input-group mb-2">
-                        <input type="text" id="searchTree" class="form-control" placeholder="Search for...">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary btn-icon" id="searchButton" type="button"><i
-                                    class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    <div id="lokasiTree"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-10 col-12">
+        <div class="col-md-12 col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
@@ -418,20 +351,14 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
-                        class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
-                        Pemutihan</a>
-                    <a href="{{ route('admin.listing-asset.draft.index') }}"
-                        class="btn btn-primary shadow-custom btn-sm mr-2" type="button"><i class="fas fa-file"></i>
-                        Draft Aset</a>
-                    {{-- <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
+                    <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
-                        type="button"><i class="fa fa-plus"></i> Add</button> --}}
+                        type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
             </div>
             <div class="row">
-                <div class="col-8" id="colTable">
+                <div class="col-12" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
                                 Lokasi Asset (<span id="lokasiFilterAktif">Universitas Pertamina</span>)</span></h5>
@@ -465,56 +392,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-4" id="colDetail">
-                    <h5 class="text-primary mb-0 mb-3"><strong class="">Overview</strong></h5>
-                    <div class="detail-asset-box">
-                        <h5 class="title" id="assetNamePreview">ASSET NAME</h5>
-                        <img id="imgPreviewAsset" src="https://via.placeholder.com/400x250?text=Preview Image"
-                            alt="">
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Status Kondisi Asset</h6>
-                            <div id="assetKondisi">
-                                <h6 class="text-right">No Item Selected</h6>
-                            </div>
-                        </div>
-                        {{-- <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Status Pemutihan</h6>
-                            <div id="assetPemutihan">
-                                <h6 class="text-right">No Item Selected</h6>
-                            </div>
-                        </div> --}}
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6 class="">Catatan</h6>
-                            <h6 class="text-right" id="catatanOpname">No Item Selected</h6>
-                        </div>
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Log Terakhir</h6>
-                            <h6 class="text-right" id="lastLogOpnameDate">No Item Selected</h6>
-                        </div>
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Dicek Oleh</h6>
-                            <h6 class="text-right" id="opnameCekBy">No Item Selected</h6>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
-                            <h6 class="mb-0">Status Peminjaman</h6>
-                            <div id="assetPinjam">
-                                <h6 class="text-right">No Item Selected</h6>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                            <h6>Peminjam</h6>
-                            <h6 class="text-right" id="peminjamAsset">No Item Selected</h6>
-                        </div>
-                        <div class="text-right">
-                            <a href="#" class="text-primary" id="linkDetailAsset"><u>Lihat Detail</u></a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     @include('pages.admin.listing-asset.components.modal._modal_create')
-    @include('pages.admin.listing-asset.components.modal._modal_import')
-    @include('pages.admin.listing-asset.components.modal._modal_filter')
-    @include('pages.admin.listing-asset.components.modal._modal_search_asset')
 @endsection

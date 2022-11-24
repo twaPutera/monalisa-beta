@@ -91,6 +91,10 @@ class AssetDataDatatableServices
             }
         }
 
+        if (isset($request->statusArray)) {
+            $query->whereIn('status_kondisi', $request->statusArray);
+        }
+
         if (isset($request->jenis)) {
             $query->where('id_kategori_asset', $request->jenis);
         }
