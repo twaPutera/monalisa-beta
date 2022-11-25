@@ -97,7 +97,7 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: "action",
+                        data: "id",
                         class: "text-center",
                         orderable: false,
                         searchable: false,
@@ -152,7 +152,24 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [{
+                columnDefs: [
+                    {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            element += `<form action="#" method="POST">`;
+                            element += `{{ csrf_field() }}`;
+                            element += `
+                                <button type="button" onclick="edit(this)" data-url_detail="" data-url_update="" class="btn btn-sm btn-icon btn-warning"><i class="fa fa-edit"></i></button>
+                            `;
+                            element += `
+                                <button type="button" onclick="deleteAsset(this)" data-url_delete="" class="btn btn-sm btn-icon btn-danger"><i class="fa fa-trash"></i></button>
+                            `;
+                            element += `</form>`;
+                            return element;
+                        }
+                    },
+                    {
                         targets: 9,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
@@ -174,6 +191,9 @@
                             } else if (data == 'pengembangan') {
                                 element =
                                     `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
+                            } else if (data == 'draft') {
+                                element =
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Draft</span>`;
                             } else {
                                 element =
                                     `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
@@ -221,6 +241,21 @@
 
         const filterTableAsset = () => {
             table.DataTable().ajax.reload();
+        }
+
+        const edit = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == 'success') {
+                        const data = response.data;
+                        console.log(data);
+                    }
+                },
+            })
         }
 
 
@@ -369,7 +404,7 @@
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
-                                    <th width="50px">Aksi</th>
+                                    <th width="100px">Aksi</th>
                                     <th width="150px">Kode</th>
                                     <th width="200px">Deskripsi</th>
                                     <th width="200px">Tipe</th>
@@ -396,4 +431,5 @@
         </div>
     </div>
     @include('pages.admin.listing-asset.components.modal._modal_create')
+    @include('pages.admin.listing-asset.components.modal._modal_import')
 @endsection
