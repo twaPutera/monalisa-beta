@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="">Import CSV Data Asset</label>
+                        <label for="">Import Data Asset (xlsx, xls, csv)</label>
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span id="preview-file-excel-text">No File Choosen</span> <br>
