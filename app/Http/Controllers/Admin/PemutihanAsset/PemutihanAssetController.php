@@ -15,6 +15,7 @@ use App\Services\PemutihanAsset\PemutihanAssetDatatableServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
+use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 
 class PemutihanAssetController extends Controller
 {
@@ -22,9 +23,11 @@ class PemutihanAssetController extends Controller
     protected $assetDataQueryServices;
     protected $pemutihanAssetCommandServices;
     protected $pemutihanAssetQueryServices;
+    protected $peminjamanAssetQueryServices;
     public function __construct(
         PemutihanAssetQueryServices $pemutihanAssetQueryServices,
         PemutihanAssetCommandServices $pemutihanAssetCommandServices,
+        PeminjamanAssetQueryServices $peminjamanAssetQueryServices,
         PemutihanAssetDatatableServices $pemutihanAssetDatatableServices,
         AssetDataQueryServices $assetDataQueryServices
     ) {
@@ -32,6 +35,7 @@ class PemutihanAssetController extends Controller
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->pemutihanAssetCommandServices = $pemutihanAssetCommandServices;
         $this->pemutihanAssetQueryServices = $pemutihanAssetQueryServices;
+        $this->peminjamanAssetQueryServices = $peminjamanAssetQueryServices;
     }
     public function index()
     {
@@ -76,11 +80,19 @@ class PemutihanAssetController extends Controller
         try {
             for ($i = 0; $i < count($request->id_checkbox); $i++) {
                 $id_checkbox = $request->id_checkbox[$i];
-                $findAssetWhere = $this->assetDataQueryServices->findById($id_checkbox);
+                $findAssetWhere = $this->assetDataQueryServices->findById($id_checkbox, ['peminjaman']);
                 if ($findAssetWhere->is_pemutihan == 1) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
+                    ], 500);
+                    break;
+                }
+                $findAssetIsPinjam = $this->peminjamanAssetQueryServices->findByIdAsset($id_checkbox);
+                if ($findAssetIsPinjam != null) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Terdapat item asset yang masih dipinjam',
                     ], 500);
                     break;
                 }
@@ -110,7 +122,7 @@ class PemutihanAssetController extends Controller
                 foreach ($request->file('gambar_asset') as $file) {
                     $extension = $file->getClientOriginalExtension();
                     $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                    if (! in_array($extension, $allowedfileExtension)) {
+                    if (!in_array($extension, $allowedfileExtension)) {
                         return response()->json([
                             'success' => false,
                             'message' => 'Terdapat file yang tidak sesuai dengan format',

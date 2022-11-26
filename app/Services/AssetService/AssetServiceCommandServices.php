@@ -34,7 +34,7 @@ class AssetServiceCommandServices
             $tanggal_mulai = $perencanaan->tanggal_perencanaan;
         }
         $asset_service = new Service();
-        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
+        $asset_service->kode_services =  self::generateCode();
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $tanggal_mulai;
@@ -76,7 +76,17 @@ class AssetServiceCommandServices
         }
         return $asset_service;
     }
+    private static function generateCode()
+    {
+        $code = 'ADS-' . date('Ymd') . '-' . rand(1000, 9999);
+        $check_code = Service::where('kode_service', $code)->first();
 
+        if ($check_code) {
+            return self::generateCode();
+        }
+
+        return $code;
+    }
     public function storeServices(ServicesStoreRequest $request)
     {
         $request->validated();
@@ -91,7 +101,7 @@ class AssetServiceCommandServices
             $tanggal_mulai = $perencanaan->tanggal_perencanaan;
         }
         $asset_service = new Service();
-        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
+        $asset_service->kode_services =  self::generateCode();
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $tanggal_mulai;
@@ -150,7 +160,7 @@ class AssetServiceCommandServices
         $asset_service->id_kategori_service = $request->id_kategori_service;
         $asset_service->guid_pembuat = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_service->tanggal_mulai = $tanggal_mulai;
-        $asset_service->kode_services =  'SERVICES-' . date('ymd') . '-' . date('his');
+        $asset_service->kode_services =  self::generateCode();
         $asset_service->tanggal_selesai = $request->tanggal_selesai_service;
         $asset_service->status_service = $request->status_service == 'onprogress' ? 'on progress' : $request->status_service;
         $asset_service->status_kondisi = $request->status_kondisi;

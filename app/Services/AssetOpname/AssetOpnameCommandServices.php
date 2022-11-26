@@ -19,7 +19,7 @@ class AssetOpnameCommandServices
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
-        $opname_log->kode_opname =  'OPNAME-' . date('ymd') . '-' . date('his');
+        $opname_log->kode_opname =  self::generateCode();
         $opname_log->tanggal_opname = $request->tanggal_opname;
         $opname_log->status_awal = $asset_data->status_kondisi;
         $opname_log->status_akhir = $request->status_kondisi;
@@ -81,6 +81,17 @@ class AssetOpnameCommandServices
         return $opname_log;
     }
 
+    private static function generateCode()
+    {
+        $code = 'ADO-' . date('Ymd') . '-' . rand(1000, 9999);
+        $check_code = LogAssetOpname::where('kode_opname', $code)->first();
+
+        if ($check_code) {
+            return self::generateCode();
+        }
+
+        return $code;
+    }
     protected static function generateNameImage($extension, $kodeasset)
     {
         $name = 'asset-' . $kodeasset . '-' . time() . '.' . $extension;

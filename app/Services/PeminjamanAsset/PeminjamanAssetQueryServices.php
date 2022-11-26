@@ -45,12 +45,22 @@ class PeminjamanAssetQueryServices
         $peminjaman = PeminjamanAsset::where('guid_peminjam_asset', $guid_peminjam_asset)->count();
         return $peminjaman;
     }
+    public function findByIdAsset(string $id)
+    {
+        $peminjaman = PeminjamanAsset::query()
+            ->wherehas('detail_peminjaman_asset', function ($query) use ($id) {
+                $query->where('id_asset', $id);
+            })
+            ->where('status', 'diproses')
+            ->first();
+        return $peminjaman;
+    }
 
     public function findById(string $id)
     {
         $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval', 'perpanjangan_peminjaman_asset'])->find($id);
 
-        if (! isset($peminjaman)) {
+        if (!isset($peminjaman)) {
             throw new Exception('Peminjaman Asset tidak ditemukan');
         }
 

@@ -21,7 +21,7 @@ class PengaduanCommandServices
 
         $asset_pengaduan = new Pengaduan();
         $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
-        $asset_pengaduan->kode_pengaduan =  'ADUAN-' . date('ymd') . '-' . date('his');
+        $asset_pengaduan->kode_pengaduan =  self::generateCode();
         $asset_pengaduan->id_asset_data = $asset_data->id;
         $asset_pengaduan->id_lokasi = $asset_data->lokasi->id ?? null;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
@@ -45,18 +45,28 @@ class PengaduanCommandServices
             $asset_images->save();
         }
     }
+    private static function generateCode()
+    {
+        $code = 'PAA-' . date('Ymd') . '-' . rand(1000, 9999);
+        $check_code = Pengaduan::where('kode_pengaduan', $code)->first();
 
+        if ($check_code) {
+            return self::generateCode();
+        }
+
+        return $code;
+    }
     public function storeUserPengaduan(PengaduanStoreRequest $request)
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
-        $asset_pengaduan->kode_pengaduan =  'ADUAN-' . date('ymd') . '-' . date('his');
+        $asset_pengaduan->kode_pengaduan =  self::generateCode();
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
@@ -85,7 +95,7 @@ class PengaduanCommandServices
         $request->validated();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
