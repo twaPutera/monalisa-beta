@@ -143,6 +143,25 @@ class MasterAssetController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            $this->assetDataCommandServices->delete($id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data asset',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function previewImage(Request $request)
     {
         try {

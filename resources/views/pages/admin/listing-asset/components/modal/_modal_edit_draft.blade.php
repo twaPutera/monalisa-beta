@@ -1,16 +1,16 @@
-<div class="modal fade modalCreateAsset" id="modalCreate" role="dialog" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modalEditDraftAsset" id="modalEditDraftAsset" role="dialog" data-backdrop="static" data-keyboard="false"
     aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Tambah Asset</h5>
+                <h5 class="modal-title" id="">Edit Asset</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
-                action="{{ route('admin.listing-asset.store') }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="" method="POST">
                 @csrf
+                <input type="hidden" name="id" id="idAssetDraft">
                 <div class="modal-body">
                     <div class="kt-scroll ps ps--active-y" data-scroll="true" style="overflow: hidden; height: 70vh;">
                         <div class="row">
@@ -20,13 +20,13 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
-                                <select name="id_group_asset" class="form-control" id="groupAssetCreate">
+                                <select name="id_group_asset" class="form-control" id="groupAssetEdit">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="id_kategori_asset" class="form-control" id="kategoriAssetCreate">
+                                <select name="id_kategori_asset" class="form-control" id="kategoriAssetEdit">
 
                                 </select>
                             </div>
@@ -63,25 +63,25 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Lokasi Asset</label>
-                                <select name="id_lokasi" class="form-control" id="lokasiAssetCreate">
+                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Ownership / Dipindahkan Ke</label>
-                                <select name="ownership" class="form-control" id="ownershipAssetCreate">
+                                <select name="ownership" class="form-control" id="ownershipAssetEdit">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Satuan</label>
-                                <select name="id_satuan_asset" class="form-control" id="satuanAssetCreate">
+                                <select name="id_satuan_asset" class="form-control" id="satuanAssetEdit">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Vendor</label>
-                                <select name="id_vendor" class="form-control" id="vendorAssetCreate">
+                                <select name="id_vendor" class="form-control" id="vendorAssetEdit">
 
                                 </select>
                             </div>
@@ -148,7 +148,7 @@
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
                                     <label for="">Nomor Akun</label>
-                                    <select name="id_kelas_asset" class="form-control" id="kelasAssetCreate">
+                                    <select name="id_kelas_asset" class="form-control" id="kelasAssetEdit">
 
                                     </select>
                                 </div>
@@ -198,7 +198,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>

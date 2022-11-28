@@ -89,7 +89,8 @@
                         d.statusArray = ['draft', 'pengembangan'];
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -156,11 +157,17 @@
                     {
                         targets: 1,
                         render: function(data, type, full, meta) {
+                            let url_detail = "{{ route('admin.listing-asset.show', ':id') }}";
+                            let url_update = "{{ route('admin.listing-asset.update', ':id') }}";
+                            let url_delete = "{{ route('admin.listing-asset.destroy', ':id') }}";
+                            url_detail = url_detail.replace(':id', data);
+                            url_update = url_update.replace(':id', data);
+                            url_delete = url_delete.replace(':id', data);
                             let element = '';
-                            element += `<form action="#" method="POST">`;
+                            element += `<form action="${url_delete}" method="POST">`;
                             element += `{{ csrf_field() }}`;
                             element += `
-                                <button type="button" onclick="edit(this)" data-url_detail="" data-url_update="" class="btn btn-sm btn-icon btn-warning"><i class="fa fa-edit"></i></button>
+                                <button type="button" onclick="edit(this)" data-url_detail="${url_detail}" data-url_update="${url_update}" class="btn btn-sm btn-icon btn-warning"><i class="fa fa-edit"></i></button>
                             `;
                             element += `
                                 <button type="button" onclick="deleteAsset(this)" data-url_delete="" class="btn btn-sm btn-icon btn-danger"><i class="fa fa-trash"></i></button>
@@ -210,12 +217,12 @@
                     }
                 ],
                 createdRow: function(row, data, index) {
-                    $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
-                        "cursor: pointer;");
-                    $(row).on('click', function() {
-                        let id = $(this).data('id');
-                        showAsset(data.action);
-                    });
+                    // $(row).attr('data-id', data.id).addClass('row-asset').attr("style",
+                    //     "cursor: pointer;");
+                    // $(row).on('click', function() {
+                    //     let id = $(this).data('id');
+                    //     showAsset(data.action);
+                    // });
                 },
                 footerCallback: function(row, data, start, end, display) {
                     let totalRecord = data.length;
@@ -245,114 +252,123 @@
 
         const edit = (button) => {
             const url_detail = $(button).data('url_detail');
+            const url_update = $(button).data('url_update');
             $.ajax({
                 url: url_detail,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.status == 'success') {
+                    if (response.success == true) {
                         const data = response.data;
-                        console.log(data);
+                        const modal = $('.modalEditDraftAsset');
+                        const form = modal.find('form');
+                        form.attr('action', url_update);
+                        form.find('input[name="id"]').val(data.asset.id);
+                        form.find('input[name="deskripsi"]').val(data.asset.deskripsi);
+                        form.find('input[name="tanggal_perolehan"]').val(data.asset.tanggal_perolehan);
+                        form.find('input[name="kode_asset"]').val(data.asset.kode_asset);
+                        form.find('input[name="nilai_perolehan"]').val(data.asset.nilai_perolehan);
+                        form.find('input[name="nilai_buku_asset"]').val(data.asset.nilai_buku_asset);
+                        form.find('input[name="no_seri"]').val(data.asset.no_seri);
+                        form.find('input[name="no_inventaris"]').val(data.asset.no_inventaris);
+                        form.find('select[name="id_group_asset"]').append(`<option value="${data.asset.kategori_asset.group_kategori_asset.id}" selected>${data.asset.kategori_asset.group_kategori_asset.nama_group}</option>`);
+                        form.find('select[name="id_kategori_asset"]').append(`<option value="${data.asset.kategori_asset.id}" selected>${data.asset.kategori_asset.nama_kategori}</option>`);
+                        form.find('select[name="id_lokasi"]').append(`<option value="${data.asset.lokasi.id}" selected>${data.asset.lokasi.nama_lokasi}</option>`);
+                        form.find('select[name="id_satuan_asset"]').append(`<option value="${data.asset.satuan_asset.id}" selected>${data.asset.satuan_asset.nama_satuan}</option>`);
+                        form.find('select[name="id_vendor"]').append(`<option value="${data.asset.vendor.id}" selected>${data.asset.vendor.nama_vendor}</option>`);
+                        form.find(`select[name="jenis_penerimaan"] option[value="${data.asset.jenis_penerimaan}"]`).attr('selected', true);
+                        form.find(`select[name="ownership"]`).append(`<option value="${data.asset.ownership}" selected>${data.asset.owner_name}</option>`);
+                        form.find('select[name="id_kelas_asset"]').append(`<option value="${data.asset.kelas_asset.id}" selected>${data.asset.kelas_asset.nama_kelas}</option>`);
+                        form.find(`select[name="status_kondisi"] option[value="${data.asset.status_kondisi}"]`).prop('selected', true);
+                        form.find(`select[name="status_akunting"] option[value="${data.asset.status_akunting}"]`).prop('selected', true);
+                        form.find('input[name="no_po"]').val(data.asset.no_po);
+                        form.find('input[name="no_sp3"]').val(data.asset.no_sp3);
+                        form.find('textarea[name="spesifikasi"]').val(data.asset.spesifikasi);
+
+                        if (data.asset.is_sparepart == '1') {
+                            form.find('input[name="is_sparepart"]').prop('checked', true);
+                        } else {
+                            form.find('input[name="is_sparepart"]').prop('checked', false);
+                        }
+
+                        if (data.asset.is_pinjam == '1') {
+                            form.find('input[name="is_pinjam"]').prop('checked', true);
+                        } else {
+                            form.find('input[name="is_pinjam"]').prop('checked', false);
+                        }
+
+                        if (data.asset.is_it == '1') {
+                            form.find('input[name="is_it"]').prop('checked', true);
+                        } else {
+                            form.find('input[name="is_it"]').prop('checked', false);
+                        }
+
+                        if (data.asset.id_surat_memo_andin) {
+                            form.find('select[name="id_surat_memo_andin"]').append(`<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`);
+                        }
+
+                        modal.on('shown.bs.modal', function() {
+                            // setTimeout(() => {
+                            //     generateGroupSelect2Edit();
+                            //     generateSelect2LokasiEdit();
+                            //     generateKelasAssetEdit();
+                            //     generateSatuanAssetEdit();
+                                // generateVendorAssetEdit();
+                            //     generateOwnerAssetEdit();
+                            //     generateMemorandumAndinSelect2();
+                            // }, 2000);
+                        }).modal('show');
                     }
                 },
             })
         }
 
-
-        const showAsset = (button) => {
-            const url = $(button).data('url_detail');
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'json',
-                beforeSend: function() {
-                    $(".backdrop").show();
-                },
-                success: function(response) {
-                    $(".backdrop").hide();
-                    if (response.success) {
-                        const asset = response.data.asset;
-                        const opname = response.data.asset.log_asset_opname[0];
-                        if (asset.status_kondisi == 'rusak') {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
-                        } else if (asset.status_kondisi == 'maintenance') {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
-                        } else if (asset.status_kondisi == 'tidak-lengkap') {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
-                        }else if (asset.status_kondisi == 'pengembangan') {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
-                        } else {
-                            var kondisi =
-                                `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
-                        }
-
-
-                        // if (asset.is_pemutihan == 0) {
-                        //     var pemutihan =
-                        //         `<h6 class="text-center text-danger" style="font-size: 24px"><i
-                        //             class="fas fa-times-circle"></i></h6>`;
-                        // } else if (asset.is_pemutihan == 1) {
-                        //     var pemutihan =
-                        //         `<h6 class="text-center text-success" style="font-size: 24px"><i
-                        //             class="fas fa-check-circle"></i></h6>`;
-                        // }
-
-                        if (asset.is_pinjam == 0) {
-                            var pinjam =
-                                `<h6 class="text-center text-danger" style="font-size: 24px"><i
-                                    class="fas fa-times-circle"></i></h6>`;
-                        } else if (asset.is_pinjam == 1) {
-                            var pinjam =
-                                `<h6 class="text-center text-success" style="font-size: 24px"><i
-                                    class="fas fa-check-circle"></i></h6>`;
-                        } else {
-                            var pinjam =
-                                `<h6 class="text-center text-secondary" style="font-size: 24px"><i
-                                    class="fas fa-question-circle"></i></h6>`;
-                        }
-
-                        if (asset.peminjam != null) {
-                            $('#peminjamAsset').html(asset.peminjam);
-                            $('#assetPinjam').html(
-                                '<h6 class="text-center text-success" style="font-size: 24px"><i class="fas fa-check-circle"></i></h6>'
-                            );
-                        } else {
-                            $('#peminjamAsset').html('Tidak Ada');
-                            $('#assetPinjam').html(
-                                '<h6 class="text-center text-danger" style="font-size: 24px"><i class="fas fa-times-circle"></i></h6>'
-                            );
-                        }
-
-                        $('#assetNamePreview').text(asset.deskripsi);
-                        $('#assetKondisi').empty();
-                        $('#assetKondisi').append(kondisi);
-                        // $('#assetPemutihan').empty();
-                        // $('#assetPemutihan').append(pemutihan);
-                        // $('#assetPinjam').empty();
-                        // $('#assetPinjam').append(pinjam);
-                        $('#opnameCekBy').empty();
-                        $('#opnameCekBy').append(asset.created_by_opname);
-                        $('#catatanOpname').text(opname ? opname.keterangan : 'Tidak Ada');
-                        $('#lastLogOpnameDate').text(opname ? formatDateIntoIndonesia(opname
-                            .tanggal_opname) : 'Tidak Ada');
-                        if (asset.image.length > 0) {
-                            $('#imgPreviewAsset').attr('src', asset.image[0].link);
-                        } else {
-                            $('#imgPreviewAsset').attr('src',
-                                'https://via.placeholder.com/400x250?text=Preview Image');
-                        }
-                        $('#linkDetailAsset').attr('href', asset.link_detail);
-                    }
-                },
-                error: function(response) {
-                    $(".backdrop").hide();
-                    showToastError('Error', 'Terjadi kesalahan');
+        const deleteAsset = (button) => {
+            const form = $(button).closest('form');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak",
+            }).then((result) => {
+                if (result.value) {
+                    let formData = new FormData(form[0]);
+                    let url = form.attr("action");
+                    let method = form.attr("method");
+                    let enctype = form.attr("enctype");
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        enctype: enctype,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        beforeSend: function () {
+                            $(".backdrop").show();
+                        },
+                        success: function (response) {
+                            $(".backdrop").hide();
+                            if (response.success) {
+                                $("body").trigger("_EventAjaxSuccess", [
+                                    form,
+                                    response,
+                                ]);
+                            } else {
+                                console.log(response);
+                                // showToaster(response.error, "Error");
+                            }
+                        },
+                        error: function (response) {
+                            $(".backdrop").hide();
+                        },
+                    });
                 }
-            })
+            });
         }
 
         $('#gambar_asset').on('change', function() {
@@ -367,6 +383,7 @@
     </script>
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
+    @include('pages.admin.listing-asset.components.script-js._script_modal_edit')
 @endsection
 @section('main-content')
     <div class="row">
@@ -387,7 +404,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
-                        type="button"><i class="fa fa-file"></i> Import CSV</button>
+                        type="button"><i class="fa fa-file"></i> Import Data</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
                         type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
@@ -431,5 +448,6 @@
         </div>
     </div>
     @include('pages.admin.listing-asset.components.modal._modal_create')
+    @include('pages.admin.listing-asset.components.modal._modal_edit_draft')
     @include('pages.admin.listing-asset.components.modal._modal_import')
 @endsection
