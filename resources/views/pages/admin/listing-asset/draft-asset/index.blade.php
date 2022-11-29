@@ -89,8 +89,7 @@
                         d.is_draft = '1';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -153,8 +152,7 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 1,
                         render: function(data, type, full, meta) {
                             let url_detail = "{{ route('admin.listing-asset.show', ':id') }}";
@@ -271,17 +269,58 @@
                         form.find('input[name="nilai_buku_asset"]').val(data.asset.nilai_buku_asset);
                         form.find('input[name="no_seri"]').val(data.asset.no_seri);
                         form.find('input[name="no_inventaris"]').val(data.asset.no_inventaris);
-                        form.find('select[name="id_group_asset"]').append(`<option value="${data.asset.kategori_asset.group_kategori_asset.id}" selected>${data.asset.kategori_asset.group_kategori_asset.nama_group}</option>`);
-                        form.find('select[name="id_kategori_asset"]').append(`<option value="${data.asset.kategori_asset.id}" selected>${data.asset.kategori_asset.nama_kategori}</option>`);
-                        form.find('select[name="id_lokasi"]').append(`<option value="${data.asset.lokasi.id}" selected>${data.asset.lokasi.nama_lokasi}</option>`);
-                        form.find('select[name="id_satuan_asset"]').append(`<option value="${data.asset.satuan_asset.id}" selected>${data.asset.satuan_asset.nama_satuan}</option>`);
-                        form.find('select[name="id_vendor"]').append(`<option value="${data.asset.vendor.id}" selected>${data.asset.vendor.nama_vendor}</option>`);
-                        form.find(`select[name="jenis_penerimaan"] option[value="${data.asset.jenis_penerimaan}"]`).attr('selected', true);
-                        form.find(`select[name="ownership"]`).append(`<option value="${data.asset.ownership}" selected>${data.asset.owner_name}</option>`);
-                        form.find('select[name="id_kelas_asset"]').append(`<option value="${data.asset.kelas_asset.id}" selected>${data.asset.kelas_asset.nama_kelas}</option>`);
-                        form.find(`select[name="status_kondisi"] option[value="${data.asset.status_kondisi}"]`).prop('selected', true);
-                        form.find(`select[name="status_akunting"] option[value="${data.asset.status_akunting}"]`).prop('selected', true);
+                        form.find('select[name="id_group_asset"]').append(
+                            `<option value="${data.asset.kategori_asset.group_kategori_asset.id}" selected>${data.asset.kategori_asset.group_kategori_asset.nama_group}</option>`
+                        );
+                        if (data.asset.kategori_asset != null && data.asset.kategori_asset != '') {
+                            form.find('select[name="id_kategori_asset"]').append(
+                                `<option value="${data.asset.kategori_asset.id}" selected>${data.asset.kategori_asset.nama_kategori}</option>`
+                            );
+                        }
+                        if (data.asset.lokasi != null && data.asset.lokasi != '') {
+                            form.find('select[name="id_lokasi"]').append(
+                                `<option value="${data.asset.lokasi.id}" selected>${data.asset.lokasi.nama_lokasi}</option>`
+                            );
+                        }
+                        if (data.asset.satuan_asset != null && data.asset.satuan_asset != '') {
+                            form.find('select[name="id_satuan_asset"]').append(
+                                `<option value="${data.asset.satuan_asset.id}" selected>${data.asset.satuan_asset.nama_satuan}</option>`
+                            );
+                        }
+                        if (data.asset.vendor != null && data.asset.vendor != '') {
+                            form.find('select[name="id_vendor"]').append(
+                                `<option value="${data.asset.vendor.id}" selected>${data.asset.vendor.nama_vendor}</option>`
+                            );
+                        }
+                        if (data.asset.jenis_penerimaan != null && data.asset.jenis_penerimaan != '') {
+                            form.find(
+                                `select[name="jenis_penerimaan"] option[value="${data.asset.jenis_penerimaan}"]`
+                            ).attr('selected', true);
+                        }
+                        if (data.asset.ownership != null && data.asset.ownership != '') {
+                            form.find(`select[name="ownership"]`).append(
+                                `<option value="${data.asset.ownership}" selected>${data.asset.owner_name}</option>`
+                            );
+                        }
+                        if (data.asset.kelas_asset != null && data.asset.kelas_asset != '') {
+                            form.find('select[name="id_kelas_asset"]').append(
+                                `<option value="${data.asset.kelas_asset.id}" selected>${data.asset.kelas_asset.nama_kelas}</option>`
+                            );
+                        }
+                        if (data.asset.status_kondisi != null && data.asset.status_kondisi != '') {
+                            form.find(
+                                `select[name="status_kondisi"] option[value="${data.asset.status_kondisi}"]`
+                            ).prop('selected', true);
+                        }
+                        if (data.asset.status_akunting != null && data.asset.status_akunting != '') {
+                            form.find(
+                                `select[name="status_akunting"] option[value="${data.asset.status_akunting}"]`
+                            ).prop('selected', true);
+                        }
                         form.find('input[name="no_po"]').val(data.asset.no_po);
+                        form.find('input[name="no_urut"]').val(data.asset.no_urut);
+                        form.find('input[name="cost_center"]').val(data.asset.cost_center);
+                        form.find('input[name="call_center"]').val(data.asset.call_center);
                         form.find('input[name="no_sp3"]').val(data.asset.no_sp3);
                         form.find('textarea[name="spesifikasi"]').val(data.asset.spesifikasi);
 
@@ -304,7 +343,9 @@
                         }
 
                         if (data.asset.id_surat_memo_andin) {
-                            form.find('select[name="id_surat_memo_andin"]').append(`<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`);
+                            form.find('select[name="id_surat_memo_andin"]').append(
+                                `<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`
+                            );
                         }
 
                         modal.on('shown.bs.modal', function() {
@@ -313,7 +354,7 @@
                             //     generateSelect2LokasiEdit();
                             //     generateKelasAssetEdit();
                             //     generateSatuanAssetEdit();
-                                // generateVendorAssetEdit();
+                            // generateVendorAssetEdit();
                             //     generateOwnerAssetEdit();
                             //     generateMemorandumAndinSelect2();
                             // }, 2000);
@@ -348,10 +389,10 @@
                         processData: false,
                         contentType: false,
                         cache: false,
-                        beforeSend: function () {
+                        beforeSend: function() {
                             $(".backdrop").show();
                         },
-                        success: function (response) {
+                        success: function(response) {
                             $(".backdrop").hide();
                             if (response.success) {
                                 $("body").trigger("_EventAjaxSuccess", [
@@ -363,7 +404,7 @@
                                 // showToaster(response.error, "Error");
                             }
                         },
-                        error: function (response) {
+                        error: function(response) {
                             $(".backdrop").hide();
                         },
                     });

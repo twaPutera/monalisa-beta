@@ -152,6 +152,10 @@
                                     <input type="text" class="form-control" name="cost_center">
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Call Center</label>
+                                    <input type="text" class="form-control" name="call_center">
+                                </div>
+                                <div class="form-group">
                                     <label for="">Spesifikasi</label>
                                     <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10"></textarea>
                                 </div>
