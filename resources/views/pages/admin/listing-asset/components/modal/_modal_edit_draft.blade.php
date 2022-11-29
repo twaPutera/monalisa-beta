@@ -1,5 +1,5 @@
-<div class="modal fade modalEditDraftAsset" id="modalEditDraftAsset" role="dialog" data-backdrop="static" data-keyboard="false"
-    aria-labelledby="" aria-hidden="true">
+<div class="modal fade modalEditDraftAsset" id="modalEditDraftAsset" role="dialog" data-backdrop="static"
+    data-keyboard="false" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -89,6 +89,10 @@
                                 <label for="">Nomor Seri</label>
                                 <input type="text" class="form-control" name="no_seri">
                             </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Nomor Urut</label>
+                                <input type="text" class="form-control" name="no_urut">
+                            </div>
                             <div class="col-12">
                                 <div class="row">
                                     <div class="form-group col-md-4 col-6 d-flex">
@@ -127,7 +131,8 @@
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
                                     <label for="">No Memorandum</label>
-                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin" id="">
+                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin"
+                                        id="">
 
                                     </select>
                                     <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
@@ -141,9 +146,15 @@
                                     <input type="text" class="form-control" name="no_sp3">
                                 </div>
                             </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Spesifikasi</label>
-                                <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10"></textarea>
+                            <div class="col-md-4 col-6">
+                                <div class="form-group">
+                                    <label for="">Cost Center/Asset Holder</label>
+                                    <input type="text" class="form-control" name="cost_center">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Spesifikasi</label>
+                                    <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10"></textarea>
+                                </div>
                             </div>
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
@@ -155,7 +166,8 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Kondisi Aset</label>
-                                        <select name="status_kondisi" class="form-control mr-3" style="width: 60%;" id="">
+                                        <select name="status_kondisi" class="form-control mr-3" style="width: 60%;"
+                                            id="">
                                             <option value="draft">Draft</option>
                                             <option value="pengembangan">Pengembangan</option>
                                             {{-- <option value="bagus">Bagus</option>

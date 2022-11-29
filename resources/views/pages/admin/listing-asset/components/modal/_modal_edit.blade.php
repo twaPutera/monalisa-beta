@@ -100,6 +100,11 @@
                                 <input type="text" value="{{ $asset->no_seri }}" class="form-control"
                                     name="no_seri">
                             </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Nomor Urut</label>
+                                <input type="text" value="{{ $asset->no_urut }}" class="form-control"
+                                    name="no_urut">
+                            </div>
                             <div class="row ml-3">
                                 <div class="form-group col-md-4 col-6">
                                     <div class="d-flex align-items-center mt-4">
@@ -163,9 +168,16 @@
                                         name="no_sp3">
                                 </div>
                             </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Spesifikasi</label>
-                                <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10">{{ $asset->spesifikasi }}</textarea>
+                            <div class="col-md-4 col-6">
+                                <div class="form-group">
+                                    <label for="">Cost Center/Asset Holder</label>
+                                    <input type="text" class="form-control" value="{{ $asset->cost_center }}"
+                                        name="cost_center">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Spesifikasi</label>
+                                    <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10">{{ $asset->spesifikasi }}</textarea>
+                                </div>
                             </div>
                             <div class="col-md-4 col-6">
                                 <div class="form-group">

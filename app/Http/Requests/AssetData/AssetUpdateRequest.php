@@ -44,6 +44,8 @@ class AssetUpdateRequest extends FormRequest
             'no_sp3' => 'nullable|string|max:50',
             'status_kondisi' => 'required|string|max:50',
             'no_seri' => 'nullable|string|max:50',
+            'no_urut' => 'nullable|string|max:50',
+            'cost_center' => 'required|string|max:255',
             'spesifikasi' => 'required|string',
             // 'nilai_depresiasi' => 'required_if:status_kondisi,draft|numeric',
             // 'umur_manfaat_fisikal' => 'nullable|numeric',

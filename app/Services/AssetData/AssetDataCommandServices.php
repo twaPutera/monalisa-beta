@@ -58,6 +58,8 @@ class AssetDataCommandServices
         $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
+        $asset->no_urut = $request->no_urut;
+        $asset->cost_center = $request->cost_center;
         $asset->status_kondisi = $request->status_kondisi;
         $asset->status_akunting = $request->status_akunting;
         $asset->no_seri = $request->no_seri;
@@ -65,7 +67,7 @@ class AssetDataCommandServices
         $asset->nilai_depresiasi = $nilai_depresiasi;
         $asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset->qr_code = $qr_name;
-        $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset*12));
+        $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset * 12));
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_it = isset($request->is_it) ? $request->is_it : '0';
@@ -128,6 +130,8 @@ class AssetDataCommandServices
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_seri = $request->no_seri;
+        $asset->no_urut = $request->no_urut;
+        $asset->cost_center = $request->cost_center;
         $asset->spesifikasi = $request->spesifikasi;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
@@ -146,7 +150,7 @@ class AssetDataCommandServices
                 $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
                 $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, ($kategori_asset->umur_asset * 12));
                 $asset->nilai_depresiasi = $nilai_depresiasi;
-                $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset*12));
+                $asset->umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($request->tanggal_perolehan, ($kategori_asset->umur_asset * 12));
                 $asset->tanggal_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($request->tanggal_perolehan);
                 $asset->tanggal_akhir_depresiasi = DepresiasiHelpers::getAkhirTanggalDepresiasi($asset->tanggal_awal_depresiasi, $kategori_asset->umur_asset);
             }

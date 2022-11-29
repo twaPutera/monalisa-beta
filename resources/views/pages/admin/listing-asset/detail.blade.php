@@ -755,7 +755,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-
+                                        
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
@@ -856,8 +856,16 @@
                                         <td><strong>{{ $asset->no_seri ?? '-' }}</strong></td>
                                     </tr>
                                     <tr>
+                                        <td width="40%">No. Urut</td>
+                                        <td><strong>{{ $asset->no_urut ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
                                         <td width="40%">Kode Akun</td>
                                         <td><strong>{{ $asset->kelas_asset->no_akun ?? '-' }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Cost Center/Asset Holder</td>
+                                        <td><strong>{{ $asset->cost_center ?? '-' }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Last Update</td>
@@ -936,7 +944,8 @@
                         <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
                             <div class="d-flex justify-content-end my-2">
                                 @if ($asset->is_pemutihan != '1')
-                                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
+                                        class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
                                         <i class="fa fa-plus"></i> Service
                                     </button>
                                 @endif
@@ -963,7 +972,8 @@
                         <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
                             <div class="d-flex justify-content-end my-2">
                                 @if ($asset->is_pemutihan != '1')
-                                    <button onclick="openModalByClass('modalCreatePemindahan')" class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                    <button onclick="openModalByClass('modalCreatePemindahan')"
+                                        class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
                                         <i class="fas fa-sync-alt"></i> Pindahkan Asset
                                     </button>
                                 @endif
