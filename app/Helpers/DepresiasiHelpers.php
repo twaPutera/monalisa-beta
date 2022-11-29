@@ -76,6 +76,7 @@ class DepresiasiHelpers
             ->where('is_inventaris', '0')
             ->where('nilai_buku_asset', '>', 1)
             ->where('nilai_depresiasi', '>', 0)
+            ->whereNotIn('status_kondisi', ['draft', 'pengembangan'])
             ->get();
         return $asset;
     }

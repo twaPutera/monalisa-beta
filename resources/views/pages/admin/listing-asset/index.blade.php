@@ -124,6 +124,7 @@
                         d.searchKeyword = $('#searchAsset').val();
                         d.is_sparepart = $('#isSparepartFilter').val();
                         d.is_pemutihan = $('#isPemutihanFilter').val();
+                        d.is_draft = '0';
                     }
                 },
                 columns: [{
@@ -235,10 +236,15 @@
                     });
                 },
                 footerCallback: function(row, data, start, end, display) {
-                    let totalRecord = data.length;
+                    //
+                },
+                drawCallback: function() {
+                    var api = this.api();
+                    // var num_rows = api.page.info().recordsTotal;
+                    var records_displayed = api.page.info().recordsDisplay;
                     let target = $('#totalFilterAktif');
                     target.empty();
-                    target.append("Total " + totalRecord);
+                    target.append("Total " + records_displayed);
                 }
             });
 

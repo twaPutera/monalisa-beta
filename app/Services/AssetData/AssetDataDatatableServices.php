@@ -76,6 +76,10 @@ class AssetDataDatatableServices
             $query->where('is_sparepart', $request->is_sparepart);
         }
 
+        if (isset($request->is_draft)) {
+            $query->where('is_draft', $request->is_draft);
+        }
+
         if (isset($request->is_pemutihan)) {
             if ($request->is_pemutihan == 'all') {
                 $query->where('is_pemutihan', 0);

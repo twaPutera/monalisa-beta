@@ -86,7 +86,7 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.searchKeyword = $('#searchAsset').val();
-                        d.statusArray = ['draft', 'pengembangan'];
+                        d.is_draft = '1';
                     }
                 },
                 columns: [
@@ -384,6 +384,7 @@
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
     @include('pages.admin.listing-asset.components.script-js._script_modal_edit')
+    @include('pages.admin.listing-asset.components.script-js._script_modal_filter')
 @endsection
 @section('main-content')
     <div class="row">
@@ -450,4 +451,5 @@
     @include('pages.admin.listing-asset.components.modal._modal_create')
     @include('pages.admin.listing-asset.components.modal._modal_edit_draft')
     @include('pages.admin.listing-asset.components.modal._modal_import')
+    @include('pages.admin.listing-asset.components.modal._modal_filter')
 @endsection

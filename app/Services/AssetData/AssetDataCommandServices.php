@@ -70,6 +70,7 @@ class AssetDataCommandServices
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_it = isset($request->is_it) ? $request->is_it : '0';
         $asset->is_inventaris = $min_asset_value > $request->nilai_perolehan ? '1' : '0';
+        $asset->is_draft = '1';
         $asset->tanggal_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($request->tanggal_perolehan);
         $asset->tanggal_akhir_depresiasi = DepresiasiHelpers::getAkhirTanggalDepresiasi($asset->tanggal_awal_depresiasi, $kategori_asset->umur_asset);
         $asset->save();
