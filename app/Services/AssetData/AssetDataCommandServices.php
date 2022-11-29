@@ -61,6 +61,7 @@ class AssetDataCommandServices
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_urut = $request->no_urut;
         $asset->cost_center = $request->cost_center;
+        $asset->call_center = $request->call_center;
         $asset->status_kondisi = $request->status_kondisi;
         $asset->status_akunting = $request->status_akunting;
         $asset->no_seri = $request->no_seri;
@@ -133,6 +134,7 @@ class AssetDataCommandServices
         $asset->no_seri = $request->no_seri;
         $asset->no_urut = $request->no_urut;
         $asset->cost_center = $request->cost_center;
+        $asset->call_center = $request->call_center;
         $asset->spesifikasi = $request->spesifikasi;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
@@ -210,6 +212,7 @@ class AssetDataCommandServices
         $asset->no_seri = $request->no_seri;
         $asset->no_urut = $request->no_urut;
         $asset->cost_center = $request->cost_center;
+        $asset->call_center = $request->call_center;
         $asset->spesifikasi = $request->spesifikasi;
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
