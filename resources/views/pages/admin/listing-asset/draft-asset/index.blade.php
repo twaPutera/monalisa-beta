@@ -156,7 +156,7 @@
                         targets: 1,
                         render: function(data, type, full, meta) {
                             let url_detail = "{{ route('admin.listing-asset.show', ':id') }}";
-                            let url_update = "{{ route('admin.listing-asset.update', ':id') }}";
+                            let url_update = "{{ route('admin.listing-asset.update.draft', ':id') }}";
                             let url_delete = "{{ route('admin.listing-asset.destroy', ':id') }}";
                             url_detail = url_detail.replace(':id', data);
                             url_update = url_update.replace(':id', data);

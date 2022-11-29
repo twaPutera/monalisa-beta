@@ -15,6 +15,7 @@ use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Http\Requests\AssetData\AssetImportRequest;
+use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
@@ -127,6 +128,27 @@ class MasterAssetController extends Controller
         DB::beginTransaction();
         try {
             $data = $this->assetDataCommandServices->update($request, $id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data asset',
+                'form' => 'editAsset',
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateDraft(AssetUpdateDraftRequest $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $this->assetDataCommandServices->updateDraft($request, $id);
             DB::commit();
             return response()->json([
                 'success' => true,
