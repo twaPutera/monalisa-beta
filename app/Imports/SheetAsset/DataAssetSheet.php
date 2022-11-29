@@ -45,25 +45,30 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         }
         $id_kategori = KategoriAsset::where('kode_kategori', $row[13])->first();
         $id_satuan = SatuanAsset::where('kode_satuan', $row[14])->first();
-        $id_lokasi = Lokasi::where('kode_lokasi', $row[15])->first();
+        $get_lokasi = Lokasi::where('kode_lokasi', $row[15])->first();
+        if ($get_lokasi == null) {
+            $id_lokasi = null;
+        } else {
+            $id_lokasi = $get_lokasi->id;
+        }
         $user = SsoHelpers::getUserLogin();
-
+        $tanggal_perolehan = Carbon::createFromFormat('d/m/Y', $row[3])->format('Y-m-d');
 
         // Depresiasi
-        $tgl_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($row[3]);
+        $tgl_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($tanggal_perolehan);
         $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($row[4], ($id_kategori->umur_asset * 12));
-        $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($row[3], ($id_kategori->umur_asset * 12));
+        $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($tanggal_perolehan, ($id_kategori->umur_asset * 12));
 
 
         $data_asset = AssetData::create([
             'id_vendor' => $id_vendor,
-            'id_lokasi' => $id_lokasi->id,
+            'id_lokasi' => $id_lokasi,
             'id_kelas_asset' => $id_kelas,
             'id_kategori_asset' => $id_kategori->id,
             'id_satuan_asset' => $id_satuan->id,
             'kode_asset' => $row[1],
             'deskripsi' => $row[2],
-            'tanggal_perolehan' => Carbon::parse($row[3])->format('Y-m-d'),
+            'tanggal_perolehan' => $tanggal_perolehan,
             'nilai_perolehan' => $row[4],
             'jenis_penerimaan' => $row[5],
             'nilai_buku_asset' => $row[6],
@@ -92,14 +97,14 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 
     public function prepareForValidation($data, $index)
     {
-        $data['2'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['2'])->format('d/m/Y');
+        $data['3'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['3'])->format('d/m/Y');
         return $data;
     }
 
     public function rules(): array
     {
         return [
-            '0' => 'required|exists:kelas_assets,no_akun',
+            '0' => 'nullable|exists:kelas_assets,no_akun',
             '1' => 'required|unique:asset_data,kode_asset|max:255',
             '2' => 'required|string|max:255',
             '3' => 'required|date_format:d/m/Y',
@@ -117,7 +122,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '14' => 'required|exists:satuan_assets,kode_satuan',
             '15' => 'nullable|exists:lokasis,kode_lokasi',
             '16' => 'required|string|max:255',
-            '17' => 'required|string|max:255',
+            '17' => 'nullable|string|max:255',
             // '18' => 'nullable|numeric',
             // '19' => 'nullable|numeric',
             '18' => 'required|string|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
