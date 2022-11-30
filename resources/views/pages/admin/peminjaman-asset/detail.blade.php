@@ -168,6 +168,7 @@
                         d.id_peminjaman = "{{ $peminjaman->id }}";
                         d.status_kondisi = 'bagus';
                         d.is_pinjam = '1';
+                        d.is_draft = '0';
                     }
                 },
                 columns: [{

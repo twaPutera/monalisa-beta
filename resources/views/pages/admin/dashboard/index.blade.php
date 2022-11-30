@@ -784,6 +784,7 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.status_kondisi = 'pengembangan';
+                        d.is_draft = '0';
                     }
                 },
                 columns: [

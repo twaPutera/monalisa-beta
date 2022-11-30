@@ -42,6 +42,7 @@
                         d.id_lokasi = $('#lokasiAssetCreateService').val();
                         d.id_kategori_asset = $('#listKategoriAssetLocation').val();
                         d.searchKeyword = $('#searchAsset').val();
+                        d.is_draft = '0';
                     }
                 },
                 columns: [{

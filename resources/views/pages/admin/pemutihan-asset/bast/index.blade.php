@@ -100,6 +100,7 @@
                         d.jenis = $('.jenispicker').val();
                         d.status_kondisi = $('.kondisipicker').val();
                         d.searchKeyword = $('#searchAsset').val();
+                        d.is_draft = '0';
                     }
                 },
                 columns: [{
