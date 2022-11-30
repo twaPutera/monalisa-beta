@@ -97,6 +97,7 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.is_pemutihan = 0;
+                        d.is_draft = 0;
                         d.jenis = $('.jenispicker').val();
                         d.status_kondisi = $('.kondisipicker').val();
                         d.searchKeyword = $('#searchAsset').val();
@@ -144,10 +145,10 @@
                     }
                     //Custom template data
                 ],
-                "drawCallback": function (settings) {
+                "drawCallback": function(settings) {
                     console.log('drawCallback:');
 
-                    setTimeout(function () {
+                    setTimeout(function() {
                         rerenderCheckbox();
                     }, 100);
                 },
@@ -371,7 +372,7 @@
             let jsonTempAsset = JSON.parse($('#jsonTempAsset').val());
             console.log(jsonTempAsset);
             if (jsonTempAsset.length > 0) {
-                jsonTempAsset.forEach(function (user_id) {
+                jsonTempAsset.forEach(function(user_id) {
                     $(`input[name="id_checkbox[]"][value="${user_id}"]`).prop('checked', true);
                 })
             }

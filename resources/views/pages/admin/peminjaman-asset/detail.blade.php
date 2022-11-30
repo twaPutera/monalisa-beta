@@ -162,6 +162,7 @@
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
                         d.is_pemutihan = 0;
+                        d.is_draft = 0;
                         d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
                         d.list_peminjaman = true;

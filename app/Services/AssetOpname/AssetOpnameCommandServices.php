@@ -16,7 +16,9 @@ class AssetOpnameCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        $asset_data = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $id)->first();
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
         $opname_log->kode_opname =  self::generateCode();

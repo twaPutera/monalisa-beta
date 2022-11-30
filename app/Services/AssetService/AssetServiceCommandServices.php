@@ -43,7 +43,9 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        $asset_data = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $id)->first();
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();
@@ -110,7 +112,9 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+        $asset_data = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $request->id_asset)->first();
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();
@@ -166,7 +170,9 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        $asset_data = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $id)->first();
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();

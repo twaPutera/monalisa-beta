@@ -106,6 +106,7 @@ class PemutihanAssetDatatableServices
             $query->where('id_kategori_asset', $request->jenis);
         }
         $query->where('is_pemutihan', 0);
+        $query->where('is_draft', '0');
         return DataTables::of($query)
             ->addColumn('id', function ($item) {
                 if (in_array($item->id, $this->assetInPemutihan)) {

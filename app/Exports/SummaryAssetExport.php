@@ -85,6 +85,7 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             $query->where('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
         $query->where('asset_data.is_pemutihan', 0);
+        $query->where('asset_data.is_draft', 0);
         // dd($query->get());
         return $query;
     }

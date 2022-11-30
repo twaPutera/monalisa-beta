@@ -124,7 +124,8 @@ class AssetDataQueryServices
 
 
 
-        $data->where('is_pemutihan', 0); //To get all data asset is not pemutihan
+        $data->where('is_pemutihan', '0'); //To get all data asset is not pemutihan
+        $data->where('is_draft', '0'); // get all data where is publish
         $data = $data->orderby('deskripsi', 'asc')
             ->get();
         $results = [];
@@ -231,6 +232,10 @@ class AssetDataQueryServices
             $data->where('is_pemutihan', $request->is_pemutihan);
         }
 
+        if (isset($request->is_draft)) {
+            $data->where('is_draft', $request->is_draft);
+        }
+
         if (isset($request->status_asset)) {
             $data->where('status_asset', $request->status_asset);
         }
@@ -252,11 +257,13 @@ class AssetDataQueryServices
     {
         $nilai_beli_asset = AssetData::query()
             ->where('is_pemutihan', '0')
+            ->where('is_draft', '0')
             ->where('status_kondisi', '!=', 'pengembangan')
             ->sum('nilai_perolehan');
 
         $nilai_value_asset = AssetData::query()
             ->where('is_pemutihan', '0')
+            ->where('is_draft', '0')
             ->where('status_kondisi', '!=', 'pengembangan')
             ->sum('nilai_buku_asset');
 
@@ -285,6 +292,7 @@ class AssetDataQueryServices
                     $query->where('id_group_kategori_asset', $item->id);
                 })
                 ->where('is_pemutihan', '0')
+                ->where('is_draft', '0')
                 ->where('status_kondisi', '!=', 'pengembangan')
                 ->count();
 
@@ -305,6 +313,7 @@ class AssetDataQueryServices
             $count_asset = AssetData::query()
                 ->where('status_kondisi', $item)
                 ->where('is_pemutihan', '0')
+                ->where('is_draft', '0')
                 ->count();
 
             $data[] = [
@@ -340,6 +349,7 @@ class AssetDataQueryServices
                 ->whereYear('tgl_register', date('Y'))
                 ->where('status_kondisi', '!=', 'pengembangan')
                 ->where('is_pemutihan', '0')
+                ->where('is_draft', '0')
                 ->count();
 
             $data['name'][] = $item;
@@ -358,6 +368,7 @@ class AssetDataQueryServices
                 'nilai_buku_asset',
             ])
             ->where('is_pemutihan', '0')
+            ->where('is_draft', '0')
             ->where('status_kondisi', '!=', 'pengembangan')
             ->where('nilai_buku_asset', '>', '0')
             ->get();
