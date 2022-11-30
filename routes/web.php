@@ -118,6 +118,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
 
         Route::group(['prefix' => 'draft'], function () {
             Route::get('/', [MasterAssetController::class, 'indexDraft'])->name('admin.listing-asset.draft.index');
+            Route::post('/publish-many-asset', [MasterAssetController::class, 'publishManyAsset'])->name('admin.listing-asset.draft.publish-many-asset');
         });
 
         # Asset Image

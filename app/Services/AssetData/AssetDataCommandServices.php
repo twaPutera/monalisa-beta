@@ -13,6 +13,7 @@ use App\Helpers\DepresiasiHelpers;
 use App\Helpers\SistemConfigHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
+use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\SistemConfig\SistemConfigQueryServices;
 
@@ -297,5 +298,18 @@ class AssetDataCommandServices
         }
 
         $asset->delete();
+    }
+
+    public function publishAssetMany(AssetDataPublishRequest $request)
+    {
+        $id_asset = json_decode($request->json_id_asset_selected);
+
+        foreach ($id_asset as $id) {
+            $asset = AssetData::find($id);
+            $asset->is_draft = '0';
+            $asset->save();
+        }
+
+        return $asset;
     }
 }

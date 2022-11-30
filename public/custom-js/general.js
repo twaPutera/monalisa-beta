@@ -151,6 +151,7 @@ $(document).ready(function () {
     $(".dt_table").on("draw.dt", function () {
         formConfirmSubmit();
     });
+    formConfirmSubmit();
 });
 
 const showValidation = (element, message) => {

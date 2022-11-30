@@ -21,6 +21,7 @@ use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Http\Requests\AssetData\AssetDataPublishRequest;
 
 class MasterAssetController extends Controller
 {
@@ -161,6 +162,28 @@ class MasterAssetController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function publishManyAsset(AssetDataPublishRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->publishAssetMany($request);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mempublikasikan data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
             ]);
         }
     }

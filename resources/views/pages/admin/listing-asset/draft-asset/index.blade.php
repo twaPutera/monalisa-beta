@@ -101,6 +101,13 @@
                         class: "text-center",
                         orderable: false,
                         searchable: false,
+                        name: 'checkbox'
+                    },
+                    {
+                        data: "id",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
                         name: 'action'
                     },
                     {
@@ -152,8 +159,15 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [{
+                columnDefs: [
+                    {
                         targets: 1,
+                        render: function(data, type, full, meta) {
+                            return `<input type="checkbox" class="check-item" onchange="checklistAsset(this)" name="id_asset[]" value="${data}">`;
+                        },
+                    },
+                    {
+                        targets: 2,
                         render: function(data, type, full, meta) {
                             let url_detail = "{{ route('admin.listing-asset.show', ':id') }}";
                             let url_update = "{{ route('admin.listing-asset.update.draft', ':id') }}";
@@ -175,13 +189,13 @@
                         }
                     },
                     {
-                        targets: 9,
+                        targets: 10,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
                     },
                     {
-                        targets: 8,
+                        targets: 9,
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'rusak') {
@@ -208,7 +222,7 @@
                         }
                     },
                     {
-                        targets: 10,
+                        targets: 11,
                         render: function(data, type, full, meta) {
                             return formatNumber(data);
                         }
@@ -222,11 +236,20 @@
                     //     showAsset(data.action);
                     // });
                 },
-                footerCallback: function(row, data, start, end, display) {
-                    let totalRecord = data.length;
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    // var num_rows = api.page.info().recordsTotal;
+                    var records_displayed = api.page.info().recordsDisplay;
                     let target = $('#totalFilterAktif');
                     target.empty();
-                    target.append("Total " + totalRecord);
+                    target.append("Total " + records_displayed);
+
+                    setTimeout(function() {
+                        rerenderCheckbox();
+                    }, 100);
+                },
+                footerCallback: function(row, data, start, end, display) {
+                    //
                 }
             });
 
@@ -243,6 +266,25 @@
                     filterTableAsset();
             });
         });
+
+        const checklistAsset = (element) => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val())
+            if ($(element).is(':checked')) {
+                jsonTempAsset.push($(element).val());
+            } else {
+                jsonTempAsset = jsonTempAsset.filter(item => item != $(element).val());
+            }
+            $('#jsonTempAsset').val(JSON.stringify(jsonTempAsset));
+        }
+
+        const rerenderCheckbox = () => {
+            let jsonTempAsset = JSON.parse($('#jsonTempAsset').val());
+            if (jsonTempAsset.length > 0) {
+                jsonTempAsset.forEach(function(user_id) {
+                    $(`input[name="id_asset[]"][value="${user_id}"]`).prop('checked', true);
+                })
+            }
+        }
 
         const filterTableAsset = () => {
             table.DataTable().ajax.reload();
@@ -445,6 +487,11 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
+                    <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm" method="POST">
+                        @csrf
+                        <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
+                        <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i class="fas fa-info-circle mr-2"></i>Publish Aset</button>
+                    </form>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import Data</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
@@ -454,8 +501,7 @@
             <div class="row">
                 <div class="col-12" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
-                                Lokasi Asset (<span id="lokasiFilterAktif">Universitas Pertamina</span>)</span></h5>
+                        <h5 class="mb-0"><strong class="text-primary">Data Asset</strong></h5>
                         <h5 class="text-primary"><strong id="totalFilterAktif">Total 0</strong></h5>
                     </div>
                     <div class="table-responsive custom-scroll">
@@ -463,6 +509,7 @@
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
+                                    <th width="50">#</th>
                                     <th width="100px">Aksi</th>
                                     <th width="150px">Kode</th>
                                     <th width="200px">Deskripsi</th>
