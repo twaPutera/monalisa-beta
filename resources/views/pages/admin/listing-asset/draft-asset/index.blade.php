@@ -85,7 +85,13 @@
                 ajax: {
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
+                        d.id_lokasi = $('#lokasiParentId').val();
+                        d.id_satuan_asset = $('#satuanAssetFilter').val();
+                        d.id_vendor = $('#vendorAssetFilter').val();
+                        d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
+                        d.is_sparepart = $('#isSparepartFilter').val();
+                        d.is_pemutihan = $('#isPemutihanFilter').val();
                         d.is_draft = '1';
                     }
                 },
@@ -159,8 +165,7 @@
                         data: 'nama_vendor'
                     }
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 1,
                         render: function(data, type, full, meta) {
                             return `<input type="checkbox" class="check-item" onchange="checklistAsset(this)" name="id_asset[]" value="${data}">`;
@@ -170,7 +175,8 @@
                         targets: 2,
                         render: function(data, type, full, meta) {
                             let url_detail = "{{ route('admin.listing-asset.show', ':id') }}";
-                            let url_update = "{{ route('admin.listing-asset.update.draft', ':id') }}";
+                            let url_update =
+                                "{{ route('admin.listing-asset.update.draft', ':id') }}";
                             let url_delete = "{{ route('admin.listing-asset.destroy', ':id') }}";
                             url_detail = url_detail.replace(':id', data);
                             url_update = url_update.replace(':id', data);
@@ -487,10 +493,18 @@
                         Filter</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm" method="POST">
+                    <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm"
+                        method="POST">
                         @csrf
                         <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
-                        <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i class="fas fa-info-circle mr-2"></i>Publish Aset</button>
+                        <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
+                                class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
+                    </form>
+                    <form action="{{ route('admin.listing-asset.draft.publish-all-draft-asset') }}" class="form-confirm"
+                        method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
+                                class="fas fa-question-circle mr-2"></i>Publish Semua Aset</button>
                     </form>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import Data</button>

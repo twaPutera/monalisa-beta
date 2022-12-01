@@ -188,6 +188,28 @@ class MasterAssetController extends Controller
         }
     }
 
+    public function publishAllDraftAsset()
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->publishAllDraftAsset();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mempublikasikan data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
     public function destroy($id)
     {
         DB::beginTransaction();

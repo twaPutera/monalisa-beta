@@ -312,4 +312,14 @@ class AssetDataCommandServices
 
         return $asset;
     }
+
+    public function publishAllDraftAsset()
+    {
+        $asset = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
+        foreach ($asset as $data) {
+            $data->is_draft = '0';
+            $data->save();
+        }
+        return $asset;
+    }
 }
