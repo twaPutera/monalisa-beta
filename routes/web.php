@@ -405,6 +405,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/', [UserDashboardController::class, 'notification'])->name('user.notification.index');
         Route::get('/get-data', [UserDashboardController::class, 'getNotificationData'])->name('user.notification.get-data');
+        Route::get('/count', [UserDashboardController::class, 'countNotification'])->name('user.notification.count');
         Route::post('/get-data', [UserDashboardController::class, 'readNotification'])->name('user.notification.read');
     });
     Route::group(['prefix' => 'scan-qr'], function () {

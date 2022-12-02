@@ -26,7 +26,7 @@
         <div class="right">
             <a href="{{ route('user.notification.index') }}" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
-                <span class="badge badge-danger">4</span>
+                <span class="badge badge-danger" id="countNotif">0</span>
             </a>
             <a href="{{ route('user.dashboard.profile') }}" class="headerButton">
                 <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff" alt="image" class="imaged w32">

@@ -30,6 +30,26 @@
         $('#alertDangerBody').text(body);
         $('#DialogIconedDanger').modal('show');
     }
+
+    const countNotif = () => {
+        $.ajax({
+            url: "{{ route('user.notification.count') }}",
+            data: {
+                user_id: "{{ Auth::user()->id }}",
+            },
+            type: "GET",
+            success: function (response) {
+                $('#countNotif').text(response.data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        countNotif();
+    });
 </script>
 
 @yield('custom-js')

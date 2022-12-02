@@ -55,6 +55,22 @@ class DashboardController extends Controller
         return view('pages.user.notification');
     }
 
+    public function countNotification(Request $request)
+    {
+        try {
+            $count = $this->notificationQueryServices->countNotificationUser($request->user_id);
+            return response()->json([
+                'success' => true,
+                'data' => $count,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function getNotificationData(Request $request)
     {
         try {
