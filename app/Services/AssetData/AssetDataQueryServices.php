@@ -6,6 +6,7 @@ use App\Models\AssetData;
 use App\Models\AssetImage;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
+use App\Helpers\SsoHelpers;
 use App\Models\PeminjamanAsset;
 use App\Models\GroupKategoriAsset;
 use App\Models\DetailPemindahanAsset;
@@ -122,7 +123,16 @@ class AssetDataQueryServices
             }
         }
 
-
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $data->where('is_it', 1);
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $data->where('is_it', 0);
+                }
+            }
+        }
 
         $data->where('is_pemutihan', '0'); //To get all data asset is not pemutihan
         $data->where('is_draft', '0'); // get all data where is publish
@@ -138,6 +148,7 @@ class AssetDataQueryServices
 
         return $results;
     }
+
 
     public function getDataAssetForDashboardUser(string $user_id)
     {
@@ -235,7 +246,14 @@ class AssetDataQueryServices
         if (isset($request->is_draft)) {
             $data->where('is_draft', $request->is_draft);
         }
-
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $data->where('is_it', 1);
+            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $data->where('is_it', 0);
+            }
+        }
         if (isset($request->status_asset)) {
             $data->where('status_asset', $request->status_asset);
         }
@@ -255,17 +273,50 @@ class AssetDataQueryServices
 
     public function getValueAsset(Request $request)
     {
-        $nilai_beli_asset = AssetData::query()
-            ->where('is_pemutihan', '0')
-            ->where('is_draft', '0')
-            ->where('status_kondisi', '!=', 'pengembangan')
-            ->sum('nilai_perolehan');
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $nilai_beli_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '1')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_perolehan');
 
-        $nilai_value_asset = AssetData::query()
-            ->where('is_pemutihan', '0')
-            ->where('is_draft', '0')
-            ->where('status_kondisi', '!=', 'pengembangan')
-            ->sum('nilai_buku_asset');
+                $nilai_value_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '1')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_buku_asset');
+            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $nilai_beli_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_perolehan');
+
+                $nilai_value_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_buku_asset');
+            } else {
+                $nilai_beli_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_perolehan');
+
+                $nilai_value_asset = AssetData::query()
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->sum('nilai_buku_asset');
+            }
+        }
 
         $nilai_depresiasi = $nilai_beli_asset - $nilai_value_asset;
 
@@ -286,15 +337,41 @@ class AssetDataQueryServices
             ])
             ->get();
 
+        $user = SsoHelpers::getUserLogin();
         foreach ($group_kategori_asset as $item) {
-            $count_asset = AssetData::query()
-                ->whereHas('kategori_asset', function ($query) use ($item) {
-                    $query->where('id_group_kategori_asset', $item->id);
-                })
-                ->where('is_pemutihan', '0')
-                ->where('is_draft', '0')
-                ->where('status_kondisi', '!=', 'pengembangan')
-                ->count();
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $count_asset = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '1')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->count();
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $count_asset = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->count();
+                } else {
+                    $count_asset = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->count();
+                }
+            }
+
 
             $data[] = [
                 'name' => $item->nama_group,
@@ -309,12 +386,31 @@ class AssetDataQueryServices
     {
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $data = [];
+        $user = SsoHelpers::getUserLogin();
         foreach ($status as $item) {
-            $count_asset = AssetData::query()
-                ->where('status_kondisi', $item)
-                ->where('is_pemutihan', '0')
-                ->where('is_draft', '0')
-                ->count();
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $count_asset = AssetData::query()
+                        ->where('status_kondisi', $item)
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '1')
+                        ->where('is_draft', '0')
+                        ->count();
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $count_asset = AssetData::query()
+                        ->where('status_kondisi', $item)
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '0')
+                        ->where('is_draft', '0')
+                        ->count();
+                } else {
+                    $count_asset = AssetData::query()
+                        ->where('status_kondisi', $item)
+                        ->where('is_pemutihan', '0')
+                        ->where('is_draft', '0')
+                        ->count();
+                }
+            }
 
             $data[] = [
                 'name' => $item,
@@ -342,15 +438,38 @@ class AssetDataQueryServices
             'Nov',
             'Des',
         ];
-
+        $user = SsoHelpers::getUserLogin();
         foreach ($month as $key => $item) {
-            $count_asset = AssetData::query()
-                ->whereMonth('tgl_register', $key + 1)
-                ->whereYear('tgl_register', date('Y'))
-                ->where('status_kondisi', '!=', 'pengembangan')
-                ->where('is_pemutihan', '0')
-                ->where('is_draft', '0')
-                ->count();
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $count_asset = AssetData::query()
+                        ->whereMonth('tgl_register', $key + 1)
+                        ->whereYear('tgl_register', date('Y'))
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '1')
+                        ->where('is_draft', '0')
+                        ->count();
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $count_asset = AssetData::query()
+                        ->whereMonth('tgl_register', $key + 1)
+                        ->whereYear('tgl_register', date('Y'))
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '0')
+                        ->where('is_draft', '0')
+                        ->count();
+                } else {
+                    $count_asset = AssetData::query()
+                        ->whereMonth('tgl_register', $key + 1)
+                        ->whereYear('tgl_register', date('Y'))
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->where('is_pemutihan', '0')
+                        ->where('is_draft', '0')
+                        ->count();
+                }
+            }
+
 
             $data['name'][] = $item;
             $data['value'][] = $count_asset;
@@ -361,18 +480,48 @@ class AssetDataQueryServices
 
     public function getAvgDepresiasiAsset()
     {
-        $asset = AssetData::query()
-            ->select([
-                'id',
-                'nilai_perolehan',
-                'nilai_buku_asset',
-            ])
-            ->where('is_pemutihan', '0')
-            ->where('is_draft', '0')
-            ->where('status_kondisi', '!=', 'pengembangan')
-            ->where('nilai_buku_asset', '>', '0')
-            ->get();
-
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $asset = AssetData::query()
+                    ->select([
+                        'id',
+                        'nilai_perolehan',
+                        'nilai_buku_asset',
+                    ])
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '1')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->where('nilai_buku_asset', '>', '0')
+                    ->get();
+            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $asset = AssetData::query()
+                    ->select([
+                        'id',
+                        'nilai_perolehan',
+                        'nilai_buku_asset',
+                    ])
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('is_it', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->where('nilai_buku_asset', '>', '0')
+                    ->get();
+            } else {
+                $asset = AssetData::query()
+                    ->select([
+                        'id',
+                        'nilai_perolehan',
+                        'nilai_buku_asset',
+                    ])
+                    ->where('is_pemutihan', '0')
+                    ->where('is_draft', '0')
+                    ->where('status_kondisi', '!=', 'pengembangan')
+                    ->where('nilai_buku_asset', '>', '0')
+                    ->get();
+            }
+        }
         $avg_depresiiasi = 0;
 
         foreach ($asset as $item) {

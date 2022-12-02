@@ -93,6 +93,7 @@
                         d.is_sparepart = $('#isSparepartFilter').val();
                         d.is_pemutihan = $('#isPemutihanFilter').val();
                         d.is_draft = '1';
+                        d.global = true;
                     }
                 },
                 columns: [{

@@ -2,6 +2,7 @@
 
 namespace App\Services\PemutihanAsset;
 
+use App\Helpers\SsoHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
 use App\Services\User\UserQueryServices;
@@ -16,13 +17,24 @@ class PemutihanAssetQueryServices
     }
     public function findAll()
     {
-        return PemutihanAsset::all();
+        $query = PemutihanAsset::query();
+        $query->join('detail_pemutihan_assets', 'pemutihan_assets.id', 'detail_pemutihan_assets.id_pemutihan_asset');
+        $query->join('asset_data', 'asset_data.id', 'detail_pemutihan_assets.id_asset_data');
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $query->where('asset_data.is_it', '1');
+            } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $query->where('asset_data.is_it', '0');
+            }
+        }
+        return $query->get();
     }
 
     public function findById(string $id, string $status = null)
     {
         $user = null;
-        if (! empty($status)) {
+        if (!empty($status)) {
             $data = PemutihanAsset::query()
                 ->with(['approval', 'detail_pemutihan_asset', 'detail_pemutihan_asset.asset_data', 'detail_pemutihan_asset.asset_data.lokasi'])
                 ->where('id', $id)

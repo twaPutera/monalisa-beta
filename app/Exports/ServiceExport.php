@@ -59,7 +59,6 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             'detail_services.permasalahan',
             'detail_services.tindakan',
             'detail_services.catatan',
-            'services.keterangan',
             'log_service_assets.status',
             'log_service_assets.created_at as log_terakhir',
             'log_service_assets.message_log',
@@ -124,7 +123,6 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             $item->permasalahan,
             $item->tindakan,
             $item->catatan,
-            $item->keterangan,
             $item->status,
             $item->log_terakhir,
             $item->message_log,
@@ -134,7 +132,7 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Mulai', 'Kode Services', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Keterangan Service', 'Status Service', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
+        return ['No', 'Tanggal Mulai', 'Kode Services', 'Tanggal Selesai', 'Kode Asset', 'Deskripsi Asset', 'Jenis Asset', 'Lokasi Asset', 'Status Kondisi Asset', 'Kelompok Asset', 'Permasalahan', 'Tindakan', 'Catatan', 'Status Service', 'Log Terakhir', 'Aktifitas', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)

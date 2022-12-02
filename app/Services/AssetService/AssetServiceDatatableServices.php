@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetService;
 
+use App\Helpers\SsoHelpers;
 use Carbon\Carbon;
 use App\Models\Service;
 use App\Models\AssetData;
@@ -107,6 +108,24 @@ class AssetServiceDatatableServices
             });
         }
 
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->whereHas('detail_service', function ($query) use ($request) {
+                        $query->whereHas('asset_data', function ($query) use ($request) {
+                            $query->where('is_it', '1');
+                        });
+                    });
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->whereHas('detail_service', function ($query) use ($request) {
+                        $query->whereHas('asset_data', function ($query) use ($request) {
+                            $query->where('is_it', '0');
+                        });
+                    });
+                }
+            }
+        }
         $query->orderBy('services.created_at', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -216,7 +235,6 @@ class AssetServiceDatatableServices
             'detail_services.permasalahan',
             'detail_services.tindakan',
             'detail_services.catatan',
-            'services.keterangan',
             'log_service_assets.status',
             'log_service_assets.created_at as log_terakhir',
             'log_service_assets.message_log',
@@ -321,9 +339,7 @@ class AssetServiceDatatableServices
             ->addColumn('catatan', function ($item) {
                 return $item->catatan ?? 'Tidak Ada';
             })
-            ->addColumn('keterangan', function ($item) {
-                return $item->keterangan ?? 'Tidak Ada';
-            })
+          
             ->addColumn('status_service', function ($item) {
                 return $item->status ?? 'Tidak Ada';
             })

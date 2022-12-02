@@ -89,6 +89,7 @@
                     'data': function(params) {
                         return {
                             'keyword': params.term,
+                            'global': true,
                             'id_lokasi': $('.select2Lokasi').val()
                         }
                     },

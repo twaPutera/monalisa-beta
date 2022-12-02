@@ -23,6 +23,29 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '1')
+                        ->where('id', $id)->first();
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '0')
+                        ->where('id', $id)->first();
+                } else {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('id', $id)->first();
+                }
+            }
+        } else {
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $id)->first();
+        }
 
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
@@ -43,9 +66,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)
-            ->where('is_draft', '0')
-            ->where('id', $id)->first();
+
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();
@@ -81,7 +102,7 @@ class AssetServiceCommandServices
     private static function generateCode()
     {
         $code = 'ADS-' . date('Ymd') . '-' . rand(1000, 9999);
-        $check_code = Service::where('kode_service', $code)->first();
+        $check_code = Service::where('kode_services', $code)->first();
 
         if ($check_code) {
             return self::generateCode();
@@ -93,6 +114,29 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '1')
+                        ->where('id', $request->id_asset)->first();
+                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '0')
+                        ->where('id', $request->id_asset)->first();
+                } else {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('id', $request->id_asset)->first();
+                }
+            }
+        } else {
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $request->id_asset)->first();
+        }
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
@@ -112,9 +156,7 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)
-            ->where('is_draft', '0')
-            ->where('id', $request->id_asset)->first();
+
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();
@@ -151,6 +193,30 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '1')
+                        ->where('id', $id)->first();
+                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('is_it', '0')
+                        ->where('id', $id)->first();
+                } else {
+                    $asset_data = AssetData::where('is_pemutihan', 0)
+                        ->where('is_draft', '0')
+                        ->where('id', $id)->first();
+                }
+            }
+        } else {
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $id)->first();
+        }
+
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
@@ -170,9 +236,6 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        $asset_data = AssetData::where('is_pemutihan', 0)
-            ->where('is_draft', '0')
-            ->where('id', $id)->first();
         if ($request->status_service == "selesai") {
             $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
             $asset_data->save();

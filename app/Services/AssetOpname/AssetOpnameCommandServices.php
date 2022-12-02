@@ -16,9 +16,24 @@ class AssetOpnameCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
+        // if ($user) {
+        //     if ($user->role == 'manager_it' || $user->role == "staff_it") {
+        //         $asset_data = AssetData::where('is_pemutihan', 0)
+        //             ->where('is_draft', '0')
+        //             ->where('is_it', '1')
+        //             ->where('id', $id)->first();
+        //     } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+        //         $asset_data = AssetData::where('is_pemutihan', 0)
+        //             ->where('is_draft', '0')
+        //             ->where('is_it', '0')
+        //             ->where('id', $id)->first();
+        //     } else {
+        //     }
+        // }
         $asset_data = AssetData::where('is_pemutihan', 0)
             ->where('is_draft', '0')
             ->where('id', $id)->first();
+
         $opname_log = new LogAssetOpname();
         $opname_log->id_asset_data = $asset_data->id;
         $opname_log->kode_opname =  self::generateCode();

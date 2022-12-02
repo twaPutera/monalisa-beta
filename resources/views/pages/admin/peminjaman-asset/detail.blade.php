@@ -163,6 +163,7 @@
                     data: function(d) {
                         d.is_pemutihan = 0;
                         d.is_draft = 0;
+                        d.global = true;
                         d.id_kategori_asset = $('#kategoriAssetFilter').val();
                         d.searchKeyword = $('#searchAsset').val();
                         d.list_peminjaman = true;
@@ -390,7 +391,7 @@
             if (diffDays == 1) {
                 $('input[name="rating"][value="3"]').prop('checked', true);
                 $('#keteranganPengembalianContainer').show();
-            } else if(diffDays > 1) {
+            } else if (diffDays > 1) {
                 $('input[name="rating"][value="1"]').prop('checked', true);
                 $('#keteranganPengembalianContainer').show();
             } else {

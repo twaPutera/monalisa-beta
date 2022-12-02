@@ -259,7 +259,7 @@ class AssetDataCommandServices
     {
         $asset = AssetData::find($id);
 
-        if ($asset->status_kondisi != 'draft' && $asset->status_kondisi != 'pengembangan') {
+        if ($asset->is_draft == '0') {
             throw new \Exception('Tidak bisa menghapus asset yang sudah di publish');
         }
 
@@ -281,11 +281,11 @@ class AssetDataCommandServices
 
     public function publishAllDraftAsset()
     {
-        $asset = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
-        foreach ($asset as $data) {
+        $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
+        foreach ($query as $data) {
             $data->is_draft = '0';
             $data->save();
         }
-        return $asset;
+        return $query;
     }
 }
