@@ -402,6 +402,11 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::get('/profile', [UserDashboardController::class, 'profile'])->name('user.dashboard.profile');
     Route::get('/dashboard/get-summary-dashboard', [UserDashboardController::class, 'getDashboardData'])->name('user.get-summary-dashboard');
+    Route::group(['prefix' => 'notification'], function () {
+        Route::get('/', [UserDashboardController::class, 'notification'])->name('user.notification.index');
+        Route::get('/get-data', [UserDashboardController::class, 'getNotificationData'])->name('user.notification.get-data');
+        Route::post('/get-data', [UserDashboardController::class, 'readNotification'])->name('user.notification.read');
+    });
     Route::group(['prefix' => 'scan-qr'], function () {
         Route::get('/', [ScanQrCodeController::class, 'index'])->name('user.scan-qr.index');
         Route::post('find', [ScanQrCodeController::class, 'find'])->name('user.scan-qr.find');

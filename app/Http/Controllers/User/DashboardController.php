@@ -6,17 +6,26 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use App\Services\Notification\NotificationQueryServices;
+use App\Services\Notification\NotificationCommandServices;
 
 class DashboardController extends Controller
 {
     protected $pengaduanQueryServices;
     protected $peminjamanAssetQueryServices;
+    protected $notificationQueryServices;
+    protected $notificationCommandServices;
+
     public function __construct(
         PengaduanQueryServices $pengaduanQueryServices,
-        PeminjamanAssetQueryServices $peminjamanAssetQueryServices
+        PeminjamanAssetQueryServices $peminjamanAssetQueryServices,
+        NotificationQueryServices $notificationQueryServices,
+        NotificationCommandServices $notificationCommandServices
     ) {
         $this->pengaduanQueryServices = $pengaduanQueryServices;
         $this->peminjamanAssetQueryServices = $peminjamanAssetQueryServices;
+        $this->notificationQueryServices = $notificationQueryServices;
+        $this->notificationCommandServices = $notificationCommandServices;
     }
     public function index()
     {
@@ -39,5 +48,44 @@ class DashboardController extends Controller
     public function profile()
     {
         return view('pages.user.profile');
+    }
+
+    public function notification()
+    {
+        return view('pages.user.notification');
+    }
+
+    public function getNotificationData(Request $request)
+    {
+        try {
+            $data = $this->notificationQueryServices->findNotificationUser($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function readNotification(Request $request)
+    {
+        try {
+            $data = $this->notificationCommandServices->readNotification($request->id);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 }
