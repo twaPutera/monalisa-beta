@@ -207,6 +207,17 @@ class PemindahanAssetCommandServices
             $asset = AssetData::find($detail_pemindahan_asset->id_asset);
             $asset->ownership = $pemindahan_asset->guid_penerima_asset;
             $asset->save();
+
+            $admin = User::where('id', $pemindahan_asset->created_by)->first();
+
+            $notifikasi = [
+                'title' => 'Pemindahan Asset',
+                'message' => 'Pemindahan asset dengan nomor surat ' . $pemindahan_asset->no_surat . ' telah disetujui',
+                'url' => route('user.asset-data.pemindahan.detail', $pemindahan_asset->id),
+                'date' => date('d/m/Y H:i'),
+            ];
+
+            $admin->notify(new UserNotification($notifikasi));
         }
 
         return $pemindahan_asset;
