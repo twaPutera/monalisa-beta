@@ -52,6 +52,7 @@ class AssetServicesController extends Controller
     {
         try {
             DB::beginTransaction();
+            $request->request->add(['global' => true]); //add request
             $asset_service = $this->assetServiceCommandServices->storeUserServices($request, $id);
             DB::commit();
             return response()->json([
@@ -62,6 +63,7 @@ class AssetServicesController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollback();
+            dd($th);
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),

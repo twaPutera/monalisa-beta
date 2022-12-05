@@ -49,6 +49,7 @@ class AssetStoreRequest extends FormRequest
             'cost_center' => 'nullable|string|max:255',
             'call_center' => 'nullable|string|max:50',
             'spesifikasi' => 'required|string|max:255',
+            'status_kondisi' => 'required|string|max:50',
             // 'nilai_depresiasi' => 'required|numeric',
             // 'umur_manfaat_fisikal' => 'nullable|numeric',
             // 'umur_manfaat_komersial' => 'nullable|numeric',

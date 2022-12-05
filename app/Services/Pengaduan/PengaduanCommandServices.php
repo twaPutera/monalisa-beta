@@ -20,7 +20,9 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id)->first();
+        $asset_data = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $id)->first();
         $asset_pengaduan->kode_pengaduan =  self::generateCode();
         $asset_pengaduan->id_asset_data = $asset_data->id;
         $asset_pengaduan->id_lokasi = $asset_data->lokasi->id ?? null;
@@ -63,7 +65,9 @@ class PengaduanCommandServices
 
         $asset_pengaduan = new Pengaduan();
         if (!empty($request->id_asset)) {
-            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
         $asset_pengaduan->kode_pengaduan =  self::generateCode();
@@ -96,7 +100,9 @@ class PengaduanCommandServices
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
         if (!empty($request->id_asset)) {
-            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $request->id_asset)->first();
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
         }
         $asset_pengaduan->id_lokasi = $request->id_lokasi;

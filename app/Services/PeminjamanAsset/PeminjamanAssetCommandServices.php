@@ -154,7 +154,9 @@ class PeminjamanAssetCommandServices
         $log_message = 'Peminjaman dengan kode ' . $peminjaman->code . ' telah ditambahkan detail dengan rincian ';
 
         foreach ($request->id_asset as $id_asset) {
-            $asset_data = AssetData::where('is_pemutihan', 0)->where('id', $id_asset)->first();
+            $asset_data = AssetData::where('is_pemutihan', 0)
+                ->where('is_draft', '0')
+                ->where('id', $id_asset)->first();
             $detail_peminjaman = new DetailPeminjamanAsset();
             $detail_peminjaman->id_peminjaman_asset = $peminjaman->id;
             $detail_peminjaman->json_asset_data = json_encode($asset_data);

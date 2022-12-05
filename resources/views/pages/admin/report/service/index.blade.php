@@ -116,11 +116,7 @@
                         data: 'catatan',
                         orderable: false,
                     },
-                    {
-                        name: 'keterangan',
-                        data: 'keterangan',
-                        orderable: false,
-                    },
+                 
                     {
                         name: 'status_service',
                         data: 'status_service',
@@ -379,7 +375,6 @@
                                     <th>Permasalahan</th>
                                     <th>Tindakan</th>
                                     <th>Catatan</th>
-                                    <th>Keterangan Service</th>
                                     <th>Status Service</th>
                                     <th>Aktifitas</th>
                                     <th>Dilakukan Oleh</th>

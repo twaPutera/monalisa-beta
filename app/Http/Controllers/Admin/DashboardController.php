@@ -90,14 +90,14 @@ class DashboardController extends Controller
             $total_peminjaman = $list_peminjaman_asset->where('is_approve', null)->count();
             $total_request_perpanjangan = $list_request_perpanjangan->where('is_approve', null)->count();
 
-            if (Auth::user()->role == 'manager') {
+            if (Auth::user()->role == 'manager_it' || Auth::user()->role == 'manager_asset') {
                 $daftar_approval = $total_pemindahan + $total_peminjaman + $total_pemutihan + $total_request_perpanjangan;
             } else {
                 $daftar_approval = $total_pemindahan + $total_peminjaman + $total_request_perpanjangan;
             }
 
             if ($request->url == 'peminjaman') {
-                $approval_task = $total_all_peminjaman;
+                $approval_task = $total_all_peminjaman + $total_all_request_perpanjangan;
             } elseif ($request->url == 'pemutihan') {
                 $approval_task = $total_all_pemutihan;
             } elseif ($request->url == 'pemindahan') {

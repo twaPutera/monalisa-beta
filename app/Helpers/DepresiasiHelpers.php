@@ -73,6 +73,7 @@ class DepresiasiHelpers
                 'nilai_perolehan',
             ])
             ->where('is_pemutihan', '0')
+            // ->where('is_draft', '0')
             ->where('is_inventaris', '0')
             ->where('nilai_buku_asset', '>', 1)
             ->where('nilai_depresiasi', '>', 0)
@@ -126,6 +127,6 @@ class DepresiasiHelpers
         $diff = self::getDiffOfMonth($date, date('Y-m-d'));
         $umur_asset = $umur - $diff;
 
-        return ($umur_asset/12);
+        return ($umur_asset / 12);
     }
 }

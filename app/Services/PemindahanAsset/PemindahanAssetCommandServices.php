@@ -116,7 +116,9 @@ class PemindahanAssetCommandServices
         $data_penerima_array = array_merge($data_penerima_array, $array_penerima_array);
         $data_penyerah_array = array_merge($data_penyerah_array, $array_penyerah_array);
 
-        $asset = AssetData::where('is_pemutihan', 0)->where('id', $request->asset_id)->first();
+        $asset = AssetData::where('is_pemutihan', 0)
+            ->where('is_draft', '0')
+            ->where('id', $request->asset_id)->first();
         $pemindahan_asset = new PemindahanAsset();
         $pemindahan_asset->no_surat = $request->no_bast;
         $pemindahan_asset->tanggal_pemindahan = $request->tanggal_pemindahan;

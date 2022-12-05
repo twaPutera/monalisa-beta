@@ -75,7 +75,7 @@ class AssetUpdateRequest extends FormRequest
             'no_po' => 'nullable|string|max:50',
             'no_sp3' => 'nullable|string|max:50',
             // 'status_kondisi' => 'required|string|max:50',
-            'no_seri' => 'required|string|max:50',
+            'no_seri' => 'nullable|string|max:50',
             'no_urut' => 'nullable|string|max:50',
             'cost_center' => 'nullable|string|max:255',
             'call_center' => 'nullable|string|max:50',

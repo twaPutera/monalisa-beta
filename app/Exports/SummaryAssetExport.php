@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Helpers\SsoHelpers;
 use App\Models\AssetData;
 use Illuminate\Support\Facades\DB;
 use App\Services\User\UserQueryServices;
@@ -85,6 +86,15 @@ class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyl
             $query->where('asset_data.id_kategori_asset', $this->id_kategori_asset);
         }
         $query->where('asset_data.is_pemutihan', 0);
+        // $user = SsoHelpers::getUserLogin();
+        // if ($user) {
+        //     if ($user->role == 'manager_it' || $user->role == "staff_it") {
+        //         $query->where('is_it', 1);
+        //     } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+        //         $query->where('is_it', 0);
+        //     }
+        // }
+        $query->where('asset_data.is_draft', 0);
         // dd($query->get());
         return $query;
     }

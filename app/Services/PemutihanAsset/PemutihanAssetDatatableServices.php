@@ -2,6 +2,7 @@
 
 namespace App\Services\PemutihanAsset;
 
+use App\Helpers\SsoHelpers;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
 use App\Models\PemutihanAsset;
@@ -21,7 +22,22 @@ class PemutihanAssetDatatableServices
     public function datatable(Request $request)
     {
         $query = PemutihanAsset::query();
-        $query->orderBy('created_at', 'desc');
+        $query->join('detail_pemutihan_assets', 'pemutihan_assets.id', 'detail_pemutihan_assets.id_pemutihan_asset');
+        $query->join('asset_data', 'asset_data.id', 'detail_pemutihan_assets.id_asset_data');
+        $query->select([
+            'pemutihan_assets.*'
+        ]);
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('asset_data.is_it', '1');
+                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->where('asset_data.is_it', '0');
+                }
+            }
+        }
+        $query->orderBy('pemutihan_assets.created_at', 'desc');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('keterangan', function ($item) {
@@ -105,7 +121,18 @@ class PemutihanAssetDatatableServices
         if (isset($request->jenis)) {
             $query->where('id_kategori_asset', $request->jenis);
         }
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('is_it', '1');
+                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->where('is_it', '0');
+                }
+            }
+        }
         $query->where('is_pemutihan', 0);
+        $query->where('is_draft', '0');
         return DataTables::of($query)
             ->addColumn('id', function ($item) {
                 if (in_array($item->id, $this->assetInPemutihan)) {
@@ -154,6 +181,20 @@ class PemutihanAssetDatatableServices
             });
         }
 
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->whereHas('asset_data', function ($q) use ($request) {
+                        $q->where('is_it', '1');
+                    });
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->whereHas('asset_data', function ($q) use ($request) {
+                        $q->where('is_it', '0');
+                    });
+                }
+            }
+        }
         $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
             ->addIndexColumn()

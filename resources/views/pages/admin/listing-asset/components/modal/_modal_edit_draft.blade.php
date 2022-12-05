@@ -172,13 +172,12 @@
                                         <label for="">Status Kondisi Aset</label>
                                         <select name="status_kondisi" class="form-control mr-3" style="width: 60%;"
                                             id="">
-                                            <option value="draft">Draft</option>
                                             <option value="pengembangan">Pengembangan</option>
-                                            {{-- <option value="bagus">Bagus</option>
+                                            <option value="bagus">Bagus</option>
                                             <option value="rusak">Rusak</option>
                                             <option value="maintenance">Maintenance</option>
                                             <option value="tidak-lengkap">Tidak Lengkap</option>
-                                            <option value="pengembangan">Pengembangan</option> --}}
+                                            <option value="pengembangan">Pengembangan</option>
                                         </select>
                                     </div>
                                 </div>

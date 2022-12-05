@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetData;
 
+use App\Helpers\SsoHelpers;
 use App\Models\LogAsset;
 use App\Models\AssetData;
 use Illuminate\Http\Request;
@@ -110,6 +111,17 @@ class AssetDataDatatableServices
         if (!isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
+
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('is_it', '1');
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->where('is_it', '0');
+                }
+            }
+        }
         // $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -167,6 +179,7 @@ class AssetDataDatatableServices
             ->rawColumns(['action', 'checkbox'])
             ->make(true);
     }
+
     public function datatableReport(Request $request)
     {
         $query = AssetData::query()
@@ -187,6 +200,17 @@ class AssetDataDatatableServices
         if (isset($request->id_kategori_asset)) {
             $query->where('id_kategori_asset', $request->id_kategori_asset);
         }
+
+        // $user = SsoHelpers::getUserLogin();
+        // if (!isset($request->global)) {
+        //     if ($user) {
+        //         if ($user->role == 'manager_it' || $user->role == "staff_it") {
+        //             $query->where('is_it', 1);
+        //         } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+        //             $query->where('is_it', 0);
+        //         }
+        //     }
+        // }
 
         $query->where('is_pemutihan', 0);
         return DataTables::of($query)
@@ -326,6 +350,17 @@ class AssetDataDatatableServices
 
         if (isset($request->limit)) {
             $query->limit($request->limit);
+        }
+
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('asset_data.is_it', 1);
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->where('asset_data.is_it', 0);
+                }
+            }
         }
 
         $order_column_index = $filter['order'][0]['column'] ?? 0;

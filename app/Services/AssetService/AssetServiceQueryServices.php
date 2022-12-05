@@ -5,6 +5,7 @@ namespace App\Services\AssetService;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Helpers\DateIndoHelpers;
+use App\Helpers\SsoHelpers;
 use App\Models\PerencanaanServices;
 
 class AssetServiceQueryServices
@@ -82,24 +83,45 @@ class AssetServiceQueryServices
     public function getDataChartServices(Request $request)
     {
         $status_backlog = Service::query()
+            ->join('detail_services', 'services.id', 'detail_services.id_service')
+            ->join('asset_data', 'asset_data.id', 'detail_services.id_asset_data')
             ->where('status_service', 'backlog');
 
         $status_selesai = Service::query()
+            ->join('detail_services', 'services.id', 'detail_services.id_service')
+            ->join('asset_data', 'asset_data.id', 'detail_services.id_asset_data')
             ->where('status_service', 'selesai');
 
         $status_on_progress = Service::query()
+            ->join('detail_services', 'services.id', 'detail_services.id_service')
+            ->join('asset_data', 'asset_data.id', 'detail_services.id_asset_data')
             ->where('status_service', 'on progress');
 
         if (isset($request->year)) {
-            $status_backlog->whereYear('created_at', $request->year);
-            $status_selesai->whereYear('created_at', $request->year);
-            $status_on_progress->whereYear('created_at', $request->year);
+            $status_backlog->whereYear('services.created_at', $request->year);
+            $status_selesai->whereYear('services.created_at', $request->year);
+            $status_on_progress->whereYear('services.created_at', $request->year);
         }
 
         if (isset($request->month)) {
-            $status_backlog->whereMonth('created_at', $request->month);
-            $status_selesai->whereMonth('created_at', $request->month);
-            $status_on_progress->whereMonth('created_at', $request->month);
+            $status_backlog->whereMonth('services.created_at', $request->month);
+            $status_selesai->whereMonth('services.created_at', $request->month);
+            $status_on_progress->whereMonth('services.created_at', $request->month);
+        }
+
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $status_backlog->where('asset_data.is_it', '1');
+                    $status_selesai->where('asset_data.is_it', '1');
+                    $status_on_progress->where('asset_data.is_it', '1');
+                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $status_backlog->where('asset_data.is_it', '0');
+                    $status_selesai->where('asset_data.is_it', '0');
+                    $status_on_progress->where('asset_data.is_it', '0');
+                }
+            }
         }
 
         $on_progress = $status_on_progress->count();
@@ -121,23 +143,36 @@ class AssetServiceQueryServices
 
     public function getDataChartByStatus(Request $request)
     {
-        $status = ['selesai', 'onprogress', 'backlog'];
-        $status_service = ['Done', 'On Progress', 'Backlog', 'Total Services'];
+        $status = ['selesai', 'on progress', 'backlog'];
+        $status_service = ['Selesai', 'Diproses', 'Tertunda', 'Total Services'];
         $color = ['#469B54', '#F03E3E', '#FFC102', '#339AF0'];
 
+        $user = SsoHelpers::getUserLogin();
         foreach ($status as $key => $value) {
-            $query = Service::query()
-                ->where('status_service', $value);
+            $query = Service::query();
+            $query->join('detail_services', 'services.id', 'detail_services.id_service');
+            $query->join('asset_data', 'asset_data.id', 'detail_services.id_asset_data');
+            $query->where('status_service', $value);
 
             if (isset($request->year)) {
-                $query->whereYear('created_at', $request->year);
+                $query->whereYear('services.created_at', $request->year);
             }
 
             if (isset($request->month)) {
-                $query->whereMonth('created_at', $request->month);
+                $query->whereMonth('services.created_at', $request->month);
             }
 
-            $count = $query->count();
+            if (!isset($request->global)) {
+                if ($user) {
+                    if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                        $query->where('asset_data.is_it', '1');
+                    } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                        $query->where('asset_data.is_it', '0');
+                    }
+                }
+            }
+
+            $count = $query->get()->count();
 
             $data['data'][] = [
                 'value' => $count,

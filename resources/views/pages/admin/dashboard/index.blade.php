@@ -74,8 +74,8 @@
                         targets: 1,
                         render: function(data, type, full, meta) {
                             return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                                <i class="la la-eye"></i>\
-                                            </button>'.replace(':id_edit', data).replace(':id_update', data);
+                                                    <i class="la la-eye"></i>\
+                                                </button>'.replace(':id_edit', data).replace(':id_update', data);
                         },
                     },
                     {
@@ -163,8 +163,8 @@
                         targets: 1,
                         render: function(data, type, full, meta) {
                             return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                                <i class="la la-eye"></i>\
-                                            </button>'.replace(':id_edit', data).replace(':id_update', data);
+                                                    <i class="la la-eye"></i>\
+                                                </button>'.replace(':id_edit', data).replace(':id_update', data);
                         },
                     },
                     {
@@ -429,8 +429,7 @@
                         d.limit = 10;
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'kode_asset',
                     },
                     {
@@ -450,8 +449,7 @@
                         data: 'id_asset_data',
                     },
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 3,
                         render: function(data, type, full, meta) {
                             let element = "";
@@ -534,6 +532,7 @@
                 dataType: 'json',
                 data: {
                     'is_pemutihan': '0',
+                    'is_draft': '0',
                 },
                 success: function(response) {
                     console.log(response);
@@ -621,7 +620,7 @@
             const backgroundArray = ['#228BE6', '#A6CEE3', '#FFC102', '#F03E3E', '#45C277'];
             let value = [];
             let name = [];
-            $(data).each(function (index, item) {
+            $(data).each(function(index, item) {
                 let itemData = {
                     value: item.value,
                     itemStyle: {
@@ -769,7 +768,7 @@
     <script>
         var tableAsetPengambangan = $('#tableAsetPengambangan');
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             tableAsetPengambangan.DataTable({
                 responsive: true,
                 searchDelay: 500,
@@ -787,8 +786,7 @@
                         d.is_draft = '0';
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
                         orderable: false,
@@ -815,18 +813,16 @@
                         name: 'id'
                     },
                 ],
-                columnDefs: [
-                    {
-                        targets: 5,
-                        render: function (data, type, row) {
-                            return `
+                columnDefs: [{
+                    targets: 5,
+                    render: function(data, type, row) {
+                        return `
                                 <a href="{{ route('admin.listing-asset.detail', ':id') }}" class="btn btn-sm btn-icon btn-primary" title="Detail Aset">
                                     <i class="fa fa-eye"></i>
                                 </a>
                             `.replace(':id', data);
-                        }
                     }
-                ],
+                }],
                 createdRow: function(row, data, index) {
 
                 },
