@@ -92,6 +92,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'tanggal_awal_depresiasi' => $tgl_awal_depresiasi,
             'tanggal_akhir_depresiasi' => DepresiasiHelpers::getAkhirTanggalDepresiasi($tgl_awal_depresiasi, $id_kategori->umur_asset),
             'is_draft' => 1,
+            'is_it' => $row[21] == "IT" ? 1 : 0,
         ]);
         return $data_asset;
     }
@@ -130,6 +131,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '18' => 'required|string|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
             '19' => 'required|string|in:iya,tidak',
             '20' => 'required|string|in:iya,tidak',
+            '21' => 'required|string|in:IT,Asset',
         ];
     }
 
@@ -161,6 +163,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '18' => 'Status Kondisi Asset',
             '19' => 'Status Peminjaman',
             '20' => 'Status Sparepart',
+            '21' => 'Status Pemilik Barang',
         ];
     }
 }

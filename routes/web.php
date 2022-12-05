@@ -67,7 +67,7 @@ Route::get('/callback', [SsoController::class, 'callback']);
 Route::get('/', 'SsoUpController@handleToken');
 
 Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'loginStore'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'loginStore'])->name('login.action')->middleware('guest');
 Route::get('/redirect', [LoginController::class, 'redirect'])->name('login.redirect')->middleware(['sso_up:web', 'auth']);
 Route::post('/logout', [SsoController::class, 'logoutSso'])->name('sso.logout')->middleware(['sso_up:web', 'auth']);
 
