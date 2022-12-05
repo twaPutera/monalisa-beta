@@ -149,7 +149,7 @@
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
                                     <label for="">No Memorandum</label>
-                                    <select name="id_surat_memo_andin" class="form-control" id="memorandumAndin">
+                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin" id="memorandumAndin">
                                         @if (isset($asset->id_surat_memo_andin))
                                             <option selected="selected" value="{{ $asset->id_surat_memo_andin }}">
                                                 {{ $asset->no_memo_surat }}</option>

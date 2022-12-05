@@ -60,8 +60,8 @@ class PemindahanAssetCommandServices
             'no_induk' => 'Tidak Ada',
         ];
         $data_penyerah_array = [
-            'jabatan' => $request->jabatan_penyerah,
-            'unit_kerja' => $request->unit_kerja_penyerah,
+            'jabatan' => $request->jabatan_penyerah ?? '-',
+            'unit_kerja' => $request->unit_kerja_penyerah ?? '-',
             'guid' => null,
             'nama' => 'Tidak Ada',
             'email' => 'Tidak Ada',

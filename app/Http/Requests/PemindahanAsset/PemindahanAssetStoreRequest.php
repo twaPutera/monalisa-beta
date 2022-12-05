@@ -26,12 +26,12 @@ class PemindahanAssetStoreRequest extends FormRequest
         return [
             'no_bast' => 'required|unique:pemindahan_assets,no_surat',
             'penerima_asset' => 'required|uuid',
-            'penyerah_asset' => 'required|uuid',
+            'penyerah_asset' => 'nullable|uuid',
             'tanggal_pemindahan' => 'required|date',
             'jabatan_penerima' => 'required|string',
-            'jabatan_penyerah' => 'required|string',
+            'jabatan_penyerah' => 'nullable|string',
             'unit_kerja_penerima' => 'required|string',
-            'unit_kerja_penyerah' => 'required|string',
+            'unit_kerja_penyerah' => 'nullable|string',
             'asset_id' => 'required|uuid|exists:asset_data,id',
         ];
     }
