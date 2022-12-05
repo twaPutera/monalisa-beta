@@ -15,6 +15,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class PemindahanAssetCommandServices
 {
@@ -150,6 +152,18 @@ class PemindahanAssetCommandServices
 
         $message_log = 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' berhasil dibuat pada asset ' . $asset->deskripsi;;
         $this->assetDataCommandServices->insertLogAsset($asset->id, $message_log);
+
+        if (!config('app.sso_siska')) {
+            $notifikasi = [
+                'title' => 'Pemindahan Asset',
+                'message' => 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' telah dibuat, silahkan melakukan approval',
+                'url' => route('user.asset-data.pemindahan.detail', $pemindahan_asset->id),
+                'date' => date('d/m/Y H:i'),
+            ];
+            $user = User::find($request->penerima_asset);
+            $user->notify(new UserNotification($notifikasi));
+        }
+
         return $pemindahan_asset;
     }
 
