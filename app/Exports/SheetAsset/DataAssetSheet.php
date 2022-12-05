@@ -36,6 +36,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                 'kondisi' => 'bagus',
                 'peminjaman' =>  'iya',
                 'sparepart' => 'tidak',
+                'barang_it' => 'IT',
                 'notif' => '(Ini Adalah Contoh Pengisian Data, Hapus Baris Ini Sebelum Mengisi Data)',
             ],
         ]);
@@ -76,6 +77,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap/pengembangan) *',
             'Status Peminjaman (iya/tidak) *',
             'Status Sparepart (iya/tidak) *',
+            'Status Pemilik Barang (IT/Asset) *',
         ];
     }
 }
