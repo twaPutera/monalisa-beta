@@ -576,6 +576,9 @@
 
                         generateChartService(response.data.dataSummaryServiceByStatus);
 
+                        generatechartNilaiBukuAset(response.data.dataNilaiBukuAsset);
+
+                        generatechartPerolehabAset(response.data.dataNilaiPerolehan);
                     }
                 },
             })
@@ -583,11 +586,71 @@
 
         const formatNumberToMilion = (number) => {
             number = number / 1000000;
-            return Math.ceil(number) + ' Jt';
+            return formatNumber(Math.ceil(number)) + ' Jt';
         }
 
         const generateChartAssetSummary = (data) => {
             echarts.init(document.querySelector("#chartAssetSummary")).setOption({
+                title: {
+                    show: false,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                },
+                padding: 0,
+                series: [{
+                    name: 'Kelompok Aset',
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    data: data,
+                    // color: ['#45C277', '#FA394C', '#FFC102'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            });
+        }
+
+        const generatechartNilaiBukuAset = (data) => {
+            echarts.init(document.querySelector("#chartNilaiBukuAset")).setOption({
+                title: {
+                    show: false,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                },
+                padding: 0,
+                series: [{
+                    name: 'Kelompok Aset',
+                    type: 'pie',
+                    radius: ['50%', '60%'],
+                    data: data,
+                    // color: ['#45C277', '#FA394C', '#FFC102'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            });
+        }
+
+        const generatechartPerolehabAset = (data) => {
+            echarts.init(document.querySelector("#chartNilaiPerolehanAset")).setOption({
                 title: {
                     show: false,
                 },
@@ -905,12 +968,44 @@
                         <div class="kt-portlet__head px-4">
                             <div class="kt-portlet__head-label">
                                 <h3 class="kt-portlet__head-title">
-                                    Asset Summary
+                                    Jumlah Asset
                                 </h3>
                             </div>
                         </div>
                         <div class="kt-portlet__body px-0">
                             <div id="chartAssetSummary" style="height: 260px; margin-top: -30px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <div class="kt-portlet shadow-custom">
+                        <div class="kt-portlet__head px-4">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Nilai Buku Aset
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body px-0">
+                            <div id="chartNilaiBukuAset" style="height: 260px; margin-top: -30px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="kt-portlet shadow-custom">
+                        <div class="kt-portlet__head px-4">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Nilai Perolehan Aset
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__body px-0">
+                            <div id="chartNilaiPerolehanAset" style="height: 260px; margin-top: -30px;"></div>
                         </div>
                     </div>
                 </div>

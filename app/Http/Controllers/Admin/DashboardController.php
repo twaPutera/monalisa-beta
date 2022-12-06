@@ -56,6 +56,8 @@ class DashboardController extends Controller
             $data_belum_ditangani = $data_pengaduan->where('status_pengaduan', 'dilaporkan')->count();
             $data_sudah_ditangani = $data_pengaduan->where('status_pengaduan', '!=', 'dilaporkan')->count();
             $data_total_pengaduan = $data_pengaduan->count();
+            $data_nilai_buku_asset = $this->assetDataQueryServices->getDataChartNilaiBukuByGroup($request);
+            $data_perolehan = $this->assetDataQueryServices->getDataChartNilaiPerolehanByGroup($request);
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -69,6 +71,8 @@ class DashboardController extends Controller
                     'dataTotalPengaduan' => $data_total_pengaduan,
                     'dataBelumDitangani' => $data_belum_ditangani,
                     'dataSudahDitangani' => $data_sudah_ditangani,
+                    'dataNilaiBukuAsset' => $data_nilai_buku_asset,
+                    'dataNilaiPerolehan' => $data_perolehan,
                 ],
             ]);
             //code...

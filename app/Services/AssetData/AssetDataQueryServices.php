@@ -382,6 +382,116 @@ class AssetDataQueryServices
         return $data;
     }
 
+    public function getDataChartNilaiBukuByGroup(Request $request)
+    {
+        $data = [];
+        $group_kategori_asset = GroupKategoriAsset::query()
+            ->select([
+                'id',
+                'nama_group',
+            ])
+            ->get();
+
+        $user = SsoHelpers::getUserLogin();
+        foreach ($group_kategori_asset as $item) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $nilai_buku = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '1')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_buku_asset');
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $nilai_buku = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_buku_asset');
+                } else {
+                    $nilai_buku = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_buku_asset');
+                }
+            }
+
+
+            $data[] = [
+                'name' => $item->nama_group,
+                'value' => $nilai_buku,
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getDataChartNilaiPerolehanByGroup(Request $request)
+    {
+        $data = [];
+        $group_kategori_asset = GroupKategoriAsset::query()
+            ->select([
+                'id',
+                'nama_group',
+            ])
+            ->get();
+
+        $user = SsoHelpers::getUserLogin();
+        foreach ($group_kategori_asset as $item) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $nilai_perolehan = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '1')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_perolehan');
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $nilai_perolehan = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_it', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_perolehan');
+                } else {
+                    $nilai_perolehan = AssetData::query()
+                        ->whereHas('kategori_asset', function ($query) use ($item) {
+                            $query->where('id_group_kategori_asset', $item->id);
+                        })
+                        ->where('is_pemutihan', '0')
+                        ->where('is_draft', '0')
+                        ->where('status_kondisi', '!=', 'pengembangan')
+                        ->sum('nilai_perolehan');
+                }
+            }
+
+
+            $data[] = [
+                'name' => $item->nama_group,
+                'value' => $nilai_perolehan,
+            ];
+        }
+
+        return $data;
+    }
+
     public function getDataChartSummaryAssetByStatus(Request $request)
     {
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
