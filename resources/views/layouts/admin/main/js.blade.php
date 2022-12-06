@@ -84,6 +84,67 @@
             icon: 'warning',
         });
     }
+
+    $(document).ready(function() {
+        getDataNotification();
+    });
+
+    const getDataNotification = () => {
+        $.ajax({
+            url: "{{ route('admin.notification.get-data') }}",
+            data: {
+                user_id: "{{ Auth::user()->id }}"
+            },
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    console.log(response.data);
+                    $('.notificationContainer').empty();
+                    if (response.data.length > 0) {
+                        $(response.data).each(function (index, value) {
+                            $('.notificationContainer').append(generateTemplateNotification(value.data, value.id));
+                        })
+                    }
+                }
+            }
+        });
+    }
+
+    const generateTemplateNotification = (data, id) => {
+        return `
+            <a href="${data.url}" class="kt-notification__item" onclick="onNotificationClick('${id}')">
+                <div class="kt-notification__item-icon">
+                    <i class="flaticon2-bar-chart kt-font-info"></i>
+                </div>
+                <div class="kt-notification__item-details">
+                    <div class="kt-notification__item-title">
+                        ${data.message}
+                    </div>
+                    <div class="kt-notification__item-time">
+                        ${data.date}
+                    </div>
+                </div>
+            </a>
+        `;
+    }
+
+    const onNotificationClick = (id) => {
+        $.ajax({
+            url: "{{ route('admin.notification.read') }}",
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    getDataNotification();
+                }
+            }
+        });
+    }
 </script>
 <script src="{{ asset('custom-js/config.js') }}" type="text/javascript"></script>
 <script src="{{ asset('custom-js/general.js') }}" type="text/javascript"></script>

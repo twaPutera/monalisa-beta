@@ -77,6 +77,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     Route::group(['prefix' => 'summary'], function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'getSummaryDashboard'])->name('admin.get-summary-dashboard');
     });
+    Route::group(['prefix' => 'notification'], function () {
+        Route::get('/get-data', [AdminDashboardController::class, 'getNotificationData'])->name('admin.notification.get-data');
+        Route::get('/count', [AdminDashboardController::class, 'countNotification'])->name('admin.notification.count');
+        Route::post('/get-data', [AdminDashboardController::class, 'readNotification'])->name('admin.notification.read');
+    });
     # Approval
     Route::group(['prefix' => 'approval'], function () {
         Route::get('/datatable', [AdminApprovalController::class, 'datatable'])->name('admin.approval.datatable');

@@ -9,6 +9,8 @@ use App\Services\Approval\ApprovalQueryServices;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
+use App\Services\Notification\NotificationQueryServices;
+use App\Services\Notification\NotificationCommandServices;
 
 class DashboardController extends Controller
 {
@@ -16,16 +18,23 @@ class DashboardController extends Controller
     protected $assetServiceQueryServices;
     protected $approvalQueryServices;
     protected $pengaduanQueryServices;
+    protected $notificationQueryServices;
+    protected $notificationCommandServices;
+
     public function __construct(
         AssetDataQueryServices $assetDataQueryServices,
         AssetServiceQueryServices $assetServiceQueryServices,
         ApprovalQueryServices $approvalQueryServices,
-        PengaduanQueryServices $pengaduanQueryServices
+        PengaduanQueryServices $pengaduanQueryServices,
+        NotificationQueryServices $notificationQueryServices,
+        NotificationCommandServices $notificationCommandServices
     ) {
         $this->approvalQueryServices = $approvalQueryServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
         $this->pengaduanQueryServices = $pengaduanQueryServices;
+        $this->notificationQueryServices = $notificationQueryServices;
+        $this->notificationCommandServices = $notificationCommandServices;
     }
 
     public function index()
@@ -117,6 +126,56 @@ class DashboardController extends Controller
                 ],
             ]);
         } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function countNotification(Request $request)
+    {
+        try {
+            $count = $this->notificationQueryServices->countNotificationUser($request->user_id);
+            return response()->json([
+                'success' => true,
+                'data' => $count,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function getNotificationData(Request $request)
+    {
+        try {
+            $data = $this->notificationQueryServices->findNotificationUser($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function readNotification(Request $request)
+    {
+        try {
+            $data = $this->notificationCommandServices->readNotification($request->id);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
