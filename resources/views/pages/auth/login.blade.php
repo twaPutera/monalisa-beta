@@ -3,7 +3,7 @@
 @section('content')
 <div class="w-75">
     <h4 class="mb-4 text-center text-primary"><strong>Login</strong></h4>
-    <form action="{{ route('login') }}" method="POST" class="form-sso">
+    <form action="{{ route('login.action') }}" method="POST" class="form-sso">
         @csrf
         <div class="form-group">
             <div class="form-cointainer @error('email') is-invalid @enderror">
