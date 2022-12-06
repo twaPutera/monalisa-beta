@@ -156,7 +156,7 @@
                     {
                         data: 'is_it',
                         render: function(type) {
-                            return type == '1' ? 'Barang IT' : 'Barang Aset';
+                            return type == '1' ? 'Departement IT' : 'Departement Aset';
                         }
                     },
                     {
