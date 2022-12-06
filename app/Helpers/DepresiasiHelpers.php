@@ -129,4 +129,30 @@ class DepresiasiHelpers
 
         return ($umur_asset / 12);
     }
+
+    public static function storePastDepresiasiAsset(AssetData $asset, $tanggal_awal_depresiasi)
+    {
+        $nilai_buku = $asset->nilai_perolehan;
+        $lama_bulan = self::getDiffOfMonth($tanggal_awal_depresiasi, date('Y-m-d'));
+
+        if (date('d') < 15) {
+            $lama_bulan = $lama_bulan - 1;
+        }
+
+        for($i=0; $i<$lama_bulan; $i++) {
+            $tanggal_loop = date('Y-m-d', strtotime($tanggal_awal_depresiasi . ' +'.$i.' month'));
+            $nilai_buku_awal = $nilai_buku;
+            $nilai_buku = $nilai_buku - $asset->nilai_depresiasi;
+
+            $depresiasi = new DepresiasiAsset();
+            $depresiasi->id_asset_data = $asset->id;
+            $depresiasi->nilai_depresiasi = $asset->nilai_depresiasi;
+            $depresiasi->tanggal_depresiasi = $tanggal_loop;
+            $depresiasi->nilai_buku_awal = $nilai_buku_awal;
+            $depresiasi->nilai_buku_akhir = $nilai_buku < 1 ? 1 : $nilai_buku;
+            $depresiasi->save();
+        }
+
+        return $nilai_buku;
+    }
 }

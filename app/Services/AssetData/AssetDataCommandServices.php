@@ -273,6 +273,7 @@ class AssetDataCommandServices
         foreach ($id_asset as $id) {
             $asset = AssetData::find($id);
             $asset->is_draft = '0';
+            $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
             $asset->save();
         }
 
@@ -284,6 +285,7 @@ class AssetDataCommandServices
         $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
         foreach ($query as $data) {
             $data->is_draft = '0';
+            $data->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($data, $data->tanggal_awal_depresiasi);
             $data->save();
         }
         return $query;
