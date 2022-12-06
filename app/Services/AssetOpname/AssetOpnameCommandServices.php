@@ -16,20 +16,7 @@ class AssetOpnameCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        // if ($user) {
-        //     if ($user->role == 'manager_it' || $user->role == "staff_it") {
-        //         $asset_data = AssetData::where('is_pemutihan', 0)
-        //             ->where('is_draft', '0')
-        //             ->where('is_it', '1')
-        //             ->where('id', $id)->first();
-        //     } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
-        //         $asset_data = AssetData::where('is_pemutihan', 0)
-        //             ->where('is_draft', '0')
-        //             ->where('is_it', '0')
-        //             ->where('id', $id)->first();
-        //     } else {
-        //     }
-        // }
+
         $asset_data = AssetData::where('is_pemutihan', 0)
             ->where('is_draft', '0')
             ->where('id', $id)->first();
@@ -42,8 +29,8 @@ class AssetOpnameCommandServices
         $opname_log->status_akhir = $request->status_kondisi;
         $opname_log->kritikal = $request->kritikal;
         $opname_log->id_lokasi = $request->id_lokasi;
-        $opname_log->lokasi_sebelumnya = $asset_data->lokasi->id;
-        $opname_log->akuntan_awal = $asset_data->status_akunting;
+        $opname_log->lokasi_sebelumnya = $asset_data->id_lokasi != null ? $asset_data->lokasi->id : null;
+        $opname_log->akuntan_awal = $asset_data->status_akunting != null ? $asset_data->status_akunting : null;
         $opname_log->akuntan_akhir = $request->status_akunting;
         $opname_log->keterangan = $request->catatan;
         $opname_log->created_by = config('app.sso_siska') ? $user->guid : $user->id;

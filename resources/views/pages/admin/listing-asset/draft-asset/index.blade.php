@@ -369,7 +369,7 @@
                         form.find('input[name="no_po"]').val(data.asset.no_po);
                         form.find('input[name="no_urut"]').val(data.asset.no_urut);
                         form.find('input[name="cost_center"]').val(data.asset.cost_center);
-                        form.find('input[name="call_center"]').val(data.asset.call_center);
+                        // form.find('input[name="call_center"]').val(data.asset.call_center);
                         form.find('input[name="no_sp3"]').val(data.asset.no_sp3);
                         form.find('textarea[name="spesifikasi"]').val(data.asset.spesifikasi);
 
@@ -449,7 +449,7 @@
                                     response,
                                 ]);
                             } else {
-                                console.log(response);
+                                // console.log(response);
                                 // showToaster(response.error, "Error");
                             }
                         },

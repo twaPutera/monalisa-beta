@@ -755,7 +755,7 @@
                                 <div class="d-flex justify-content-between mb-3 py-2 align-items-center border-bottom">
                                     <h6 class="mb-0">Status Peminjaman</h6>
                                     @php
-                                        
+
                                         if ($asset->is_pinjam == 0) {
                                             $pinjam = '<h6 class="text-center text-danger" style="font-size: 24px"><i
                                                                                                                                                                                                     class="fas fa-times-circle"></i></h6>';
@@ -781,10 +781,28 @@
                         <div class="col-md-6 col-12">
                             <div class="d-flex assetPropertuTitle justify-content-between align-items-center mb-3">
                                 <h6 class="text-primary mb-0"><strong>Asset Properties</strong></h6>
-                                @if ($asset->is_pemutihan != 1)
-                                    <button onclick="openModalByClass('modalCreateAsset')"
-                                        class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
-                                            class="fa fa-edit"></i></button>
+                                @if ($user->role == 'manager_it' || $user->role == 'staff_it')
+                                    @if ($asset->is_it == 1)
+                                        @if ($asset->is_pemutihan != 1)
+                                            <button onclick="openModalByClass('modalCreateAsset')"
+                                                class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                                    class="fa fa-edit"></i></button>
+                                        @endif
+                                    @endif
+                                @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
+                                    @if ($asset->is_it == 0)
+                                        @if ($asset->is_pemutihan != 1)
+                                            <button onclick="openModalByClass('modalCreateAsset')"
+                                                class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                                    class="fa fa-edit"></i></button>
+                                        @endif
+                                    @endif
+                                @else
+                                    @if ($asset->is_pemutihan != 1)
+                                        <button onclick="openModalByClass('modalCreateAsset')"
+                                            class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                                class="fa fa-edit"></i></button>
+                                    @endif
                                 @endif
                             </div>
                             <div class="pt-3 pb-1 scroll-bar assetProperti"
@@ -943,11 +961,33 @@
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_2" role="tabpanel">
                             <div class="d-flex justify-content-end my-2">
-                                @if ($asset->is_pemutihan != '1')
-                                    <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
-                                        class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
-                                        <i class="fa fa-plus"></i> Service
-                                    </button>
+                                @if ($user->role == 'manager_it' || $user->role == 'staff_it')
+                                    @if ($asset->is_it == 1)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreateAssetService')"
+                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log"
+                                                type="button">
+                                                <i class="fa fa-plus"></i> Service
+                                            </button>
+                                        @endif
+                                    @endif
+                                @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
+                                    @if ($asset->is_it == 0)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreateAssetService')"
+                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log"
+                                                type="button">
+                                                <i class="fa fa-plus"></i> Service
+                                            </button>
+                                        @endif
+                                    @endif
+                                @else
+                                    @if ($asset->is_pemutihan != '1')
+                                        <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
+                                            class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                            <i class="fa fa-plus"></i> Service
+                                        </button>
+                                    @endif
                                 @endif
                             </div>
                             <div class="table-responsive">
@@ -971,12 +1011,33 @@
                         </div>
                         <div class="tab-pane" id="kt_tabs_1_3" role="tabpanel">
                             <div class="d-flex justify-content-end my-2">
-                                @if ($asset->is_pemutihan != '1')
-                                    <button onclick="openModalByClass('modalCreatePemindahan')"
-                                        class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
-                                        <i class="fas fa-sync-alt"></i> Pindahkan Asset
-                                    </button>
+                                @if ($user->role == 'manager_it' || $user->role == 'staff_it')
+                                    @if ($asset->is_it == 1)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreatePemindahan')"
+                                                class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                                <i class="fas fa-sync-alt"></i> Pindahkan Asset
+                                            </button>
+                                        @endif
+                                    @endif
+                                @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
+                                    @if ($asset->is_it == 0)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreatePemindahan')"
+                                                class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                                <i class="fas fa-sync-alt"></i> Pindahkan Asset
+                                            </button>
+                                        @endif
+                                    @endif
+                                @else
+                                    @if ($asset->is_pemutihan != '1')
+                                        <button onclick="openModalByClass('modalCreatePemindahan')"
+                                            class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                            <i class="fas fa-sync-alt"></i> Pindahkan Asset
+                                        </button>
+                                    @endif
                                 @endif
+
                             </div>
                             <table class="table table-striped mb-0" id="tableLogPemindahan">
                                 <thead>

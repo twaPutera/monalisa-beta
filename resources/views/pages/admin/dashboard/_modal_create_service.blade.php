@@ -18,7 +18,7 @@
                             <input type="hidden" name="id_lokasi" class="form-control" id="assetLokasiIdServices">
                             <input type="hidden" name="tanggal_mulai_perencanaan" class="form-control" id="idPerencanaanServices">
                             <input type="hidden" name="id_asset" class="form-control" id="assetIdServices">
-                            <input type="text" name="asset_deskripsi" class="form-control" id="assetNameServices">
+                            <input type="text" name="asset_deskripsi" class="form-control" disabled id="assetNameServices">
                         </div>
                         <div class="form-group d-none" id="tanggalBaru">
                             <label for="">Tanggal Service</label>

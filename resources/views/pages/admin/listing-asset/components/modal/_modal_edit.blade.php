@@ -174,11 +174,11 @@
                                     <input type="text" class="form-control" value="{{ $asset->cost_center }}"
                                         name="cost_center">
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="">Call Center</label>
                                     <input type="text" class="form-control" name="call_center"
                                         value="{{ $asset->call_center }}">
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label for="">Spesifikasi</label>
                                     <textarea name="spesifikasi" class="form-control" id="" cols="30" rows="10">{{ $asset->spesifikasi }}</textarea>

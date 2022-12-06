@@ -55,6 +55,7 @@ class AssetOpnameController extends Controller
             ], 200);
         } catch (Throwable $th) {
             DB::rollback();
+            dd($th);
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
