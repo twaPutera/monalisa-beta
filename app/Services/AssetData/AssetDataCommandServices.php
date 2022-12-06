@@ -51,7 +51,7 @@ class AssetDataCommandServices
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->tanggal_perolehan = $request->tanggal_perolehan;
         $asset->nilai_perolehan = $request->nilai_perolehan;
-        $asset->nilai_buku_asset = $request->nilai_buku_asset;
+        // $asset->nilai_buku_asset = $request->nilai_buku_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');

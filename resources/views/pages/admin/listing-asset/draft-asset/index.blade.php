@@ -315,7 +315,7 @@
                         form.find('input[name="tanggal_perolehan"]').val(data.asset.tanggal_perolehan);
                         form.find('input[name="kode_asset"]').val(data.asset.kode_asset);
                         form.find('input[name="nilai_perolehan"]').val(data.asset.nilai_perolehan);
-                        form.find('input[name="nilai_buku_asset"]').val(data.asset.nilai_buku_asset);
+                        // form.find('input[name="nilai_buku_asset"]').val(data.asset.nilai_buku_asset);
                         form.find('input[name="no_seri"]').val(data.asset.no_seri);
                         form.find('input[name="no_inventaris"]').val(data.asset.no_inventaris);
                         form.find('select[name="id_group_asset"]').append(

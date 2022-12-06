@@ -44,10 +44,10 @@
                                 <label for="">Nilai Perolehan (Rp)</label>
                                 <input type="number" class="form-control" name="nilai_perolehan">
                             </div>
-                            <div class="form-group col-md-4 col-6">
+                            {{-- <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Buku (Rp)</label>
                                 <input type="number" class="form-control" name="nilai_buku_asset">
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Perolehan</label>
                                 <select class="form-control" onchange="jenisAssetChange(this)" name="jenis_penerimaan">
