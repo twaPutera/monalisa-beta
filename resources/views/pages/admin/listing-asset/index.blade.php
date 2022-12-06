@@ -290,7 +290,7 @@
                         } else if (asset.status_kondisi == 'tidak-lengkap') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>`;
-                        }else if (asset.status_kondisi == 'pengembangan') {
+                        } else if (asset.status_kondisi == 'pengembangan') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
                         } else {
@@ -302,11 +302,11 @@
                         // if (asset.is_pemutihan == 0) {
                         //     var pemutihan =
                         //         `<h6 class="text-center text-danger" style="font-size: 24px"><i
-                        //             class="fas fa-times-circle"></i></h6>`;
+                    //             class="fas fa-times-circle"></i></h6>`;
                         // } else if (asset.is_pemutihan == 1) {
                         //     var pemutihan =
                         //         `<h6 class="text-center text-success" style="font-size: 24px"><i
-                        //             class="fas fa-check-circle"></i></h6>`;
+                    //             class="fas fa-check-circle"></i></h6>`;
                         // }
 
                         if (asset.is_pinjam == 0) {
@@ -452,7 +452,7 @@
                                     <th width="150px">Kode</th>
                                     <th width="200px">Deskripsi</th>
                                     <th width="200px">Tipe</th>
-                                    <th width="200px">Barang IT</th>
+                                    <th width="200px">Kepemilikan</th>
                                     <th width="150px">Asset Group</th>
                                     <th width="150px">Jenis Asset</th>
                                     <th width="180px">Status Kondisi</th>

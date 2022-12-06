@@ -819,6 +819,11 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td width="40%">Kepemilikan</td>
+                                        <td><strong>{{ $asset->is_it == 1 ? 'Barang IT' : 'Barang Asset' }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="40%">Tipe</td>
                                         <td><strong>{{ ucWords($asset->is_inventaris) == 1 ? 'Inventaris' : 'Asset' }}</strong>
                                         </td>
