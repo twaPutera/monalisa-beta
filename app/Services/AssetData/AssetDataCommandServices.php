@@ -51,7 +51,7 @@ class AssetDataCommandServices
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->tanggal_perolehan = $request->tanggal_perolehan;
         $asset->nilai_perolehan = $request->nilai_perolehan;
-        // $asset->nilai_buku_asset = $request->nilai_buku_asset;
+        $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
@@ -192,11 +192,10 @@ class AssetDataCommandServices
         $asset->id_kategori_asset = $request->id_kategori_asset;
         $asset->tanggal_perolehan = $request->tanggal_perolehan;
         $asset->nilai_perolehan = $request->nilai_perolehan;
-        $asset->nilai_buku_asset = $request->nilai_buku_asset;
+        $asset->nilai_buku_asset = $request->nilai_perolehan;
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
         $asset->status_kondisi = $request->status_kondisi;
-        $asset->nilai_buku_asset = $request->nilai_perolehan;
 
         if ($request->kode_asset != $asset->kode_asset) {
             \File::delete(storage_path('app/images/qr-code/' . $asset->qr_code));
@@ -206,7 +205,7 @@ class AssetDataCommandServices
             $asset->qr_code = $qr_name;
         }
 
-        if ($request->tanggal_perolehan != $asset->tanggal_perolehan || $request->id_kategori_asset != $asset->id_kategori_asset || $request->nilai_buku_asset != $asset->nilai_buku_asset) {
+        if ($request->tanggal_perolehan != $asset->tanggal_perolehan || $request->id_kategori_asset != $asset->id_kategori_asset || $request->nilai_perolehan != $asset->nilai_perolehan) {
             $kategori_asset = KategoriAsset::find($request->id_kategori_asset);
             $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($request->nilai_perolehan, ($kategori_asset->umur_asset * 12));
             $asset->nilai_depresiasi = $nilai_depresiasi;
