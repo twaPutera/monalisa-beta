@@ -89,7 +89,7 @@ class DepresiasiPerKelompokSheet implements FromCollection, WithTitle, WithHeadi
     {
         return [
             ['No', 'Kode Akun', 'Kode Aset', 'Rincian Kode Aset', '', 'Deskripsi Aset', 'Tanggal Perolehan', 'Lokasi', 'Nilai Perolehan', 'Satuan', 'Status Akunting', 'Umur Manfaat Komersial', 'Spesifikasi', 'Mulai', '', 'Akhir', 'Bbn Penyusutan Per Tahun', 'Akm. Penyusutan Awal Tahun', 'Nilai Buku Awal Tahun', 'Beban Penyusutan', 'Nilai Buku Akhir Tahun', 'Nilai Buku Saat Ini'],
-            ['', '', '', 'Kelompok Aset', 'Sub Kelompok Aset', '', '', '', '', '', '', '', '', 'Tahun', 'Bulan', 'Tahun', 'Bulan', '', '', '', '', ''],
+            ['', '', '', 'Kelompok Aset', 'Sub Kelompok Aset', '', '', '', '', '', '', '', '', 'Tahun', 'Bulan', 'Tahun', 'Bulan', '', '', '', '', '', ''],
         ];
     }
 
