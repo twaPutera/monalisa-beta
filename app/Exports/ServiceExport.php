@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Helpers\SsoHelpers;
 use App\Models\LogServiceAsset;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -39,13 +40,13 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
     public function query()
     {
         $query = LogServiceAsset::query();
-        $query->join('services', 'log_service_assets.id_service', '=', 'services.id');
-        $query->join('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
-        $query->join('detail_services', 'detail_services.id_service', '=', 'services.id');
-        $query->join('asset_data', 'detail_services.id_asset_data', '=', 'asset_data.id');
-        $query->join('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
-        $query->join('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
-        $query->join('lokasis', 'detail_services.id_lokasi', '=', 'lokasis.id');
+        $query->leftJoin('services', 'log_service_assets.id_service', '=', 'services.id');
+        $query->leftJoin('kategori_services', 'services.id_kategori_service', '=', 'kategori_services.id');
+        $query->leftJoin('detail_services', 'detail_services.id_service', '=', 'services.id');
+        $query->leftJoin('asset_data', 'detail_services.id_asset_data', '=', 'asset_data.id');
+        $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
+        $query->leftJoin('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id');
+        $query->leftJoin('lokasis', 'detail_services.id_lokasi', '=', 'lokasis.id');
         $query->select([
             'services.tanggal_mulai',
             'services.kode_services',
@@ -64,6 +65,15 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
             'log_service_assets.message_log',
             'log_service_assets.created_by',
         ]);
+
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $query->where('asset_data.is_it', 1);
+            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $query->where('asset_data.is_it', 0);
+            }
+        }
 
         if (isset($this->status_service)) {
             if ($this->status_service != 'all') {

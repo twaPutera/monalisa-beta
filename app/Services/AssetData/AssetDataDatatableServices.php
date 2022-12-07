@@ -201,16 +201,16 @@ class AssetDataDatatableServices
             $query->where('id_kategori_asset', $request->id_kategori_asset);
         }
 
-        // $user = SsoHelpers::getUserLogin();
-        // if (!isset($request->global)) {
-        //     if ($user) {
-        //         if ($user->role == 'manager_it' || $user->role == "staff_it") {
-        //             $query->where('is_it', 1);
-        //         } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
-        //             $query->where('is_it', 0);
-        //         }
-        //     }
-        // }
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('is_it', 1);
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->where('is_it', 0);
+                }
+            }
+        }
 
         $query->where('is_pemutihan', 0);
         return DataTables::of($query)

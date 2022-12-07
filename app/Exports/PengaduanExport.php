@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Helpers\SsoHelpers;
 use App\Models\LogPengaduanAsset;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -60,6 +61,16 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
             'log_pengaduan_assets.message_log',
             'log_pengaduan_assets.created_by as dilakukan_oleh',
         ]);
+
+        $user = SsoHelpers::getUserLogin();
+        if ($user) {
+            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                $query->where('asset_data.is_it', 1);
+            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                $query->orWhere('pengaduans.id_asset_data', null);
+                $query->orWhere('asset_data.is_it', 0);
+            }
+        }
 
         if (isset($this->id_lokasi) && $this->id_lokasi != 'root') {
             $query->where('pengaduans.id_lokasi', $this->id_lokasi);

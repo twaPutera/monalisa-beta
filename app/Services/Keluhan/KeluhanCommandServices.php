@@ -8,18 +8,33 @@ use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\LogPengaduanAsset;
 use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class KeluhanCommandServices
 {
     public function update(KeluhanUpdateRequest $request, string $id)
     {
         $request->validated();
+        $user = SsoHelpers::getUserLogin();
+
         $asset_pengaduan = Pengaduan::findOrFail($id);
         $asset_pengaduan->status_pengaduan = $request->status_pengaduan;
         $asset_pengaduan->catatan_admin = $request->catatan_admin;
         $asset_pengaduan->save();
 
+        $pelapor = User::find($asset_pengaduan->created_by);
+        $status_pengaduan =  $request->status_pengaduan == "selesai" ? "diselesaikan" : "diproses";
+
+        $notifikasi = [
+            'title' => 'Pengaduan Asset',
+            'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah ' . $status_pengaduan . ' oleh ' . $user->name,
+            'url' => route('user.pengaduan.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
         $log = self::storeLog($asset_pengaduan->id, $request->status_pengaduan, $request->catatan_admin);
+
+        $pelapor->notify(new UserNotification($notifikasi));
 
         if ($request->hasFile('file_pendukung')) {
             $path = storage_path('app/images/asset-respon-pengaduan');
