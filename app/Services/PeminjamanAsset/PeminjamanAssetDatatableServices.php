@@ -116,6 +116,12 @@ class PeminjamanAssetDatatableServices
             $query->where('peminjaman_asset_id', $request->peminjaman_asset_id);
         }
 
+        if (isset($request->is_it)) {
+            $query->whereHas('peminjaman_asset', function ($query) use ($request) {
+                $query->where('is_it', $request->is_it);
+            });
+        }
+
         $order_column_index = $filter['order'][0]['column'] ?? 0;
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
 
