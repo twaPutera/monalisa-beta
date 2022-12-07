@@ -95,6 +95,7 @@ class KeluhanDatatableServices
                     });
                 } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
                     $query->whereHas('asset_data', function ($query) use ($request) {
+                        $query->orWhere('id_asset_data', null);
                         $query->where('is_it', '0');
                     });
                 }
@@ -222,7 +223,7 @@ class KeluhanDatatableServices
     {
         $query = LogPengaduanAsset::query();
         $filter = $request->toArray();
-        $query->join('pengaduans', 'log_pengaduan_assets.id_pengaduan', '=', 'pengaduans.id');
+        $query->leftJoin('pengaduans', 'log_pengaduan_assets.id_pengaduan', '=', 'pengaduans.id');
         $query->leftJoin('lokasis', 'pengaduans.id_lokasi', '=', 'lokasis.id');
         $query->leftJoin('asset_data', 'pengaduans.id_asset_data', '=', 'asset_data.id');
         $query->leftJoin('kategori_assets', 'asset_data.id_kategori_asset', '=', 'kategori_assets.id');
@@ -271,6 +272,18 @@ class KeluhanDatatableServices
         if (isset($request->status_pengaduan)) {
             if ($request->status_pengaduan != 'all') {
                 $query->where('log_pengaduan_assets.status', $request->status_pengaduan);
+            }
+        }
+
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    $query->where('asset_data.is_it', 1);
+                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    $query->orWhere('pengaduans.id_asset_data', null);
+                    $query->orWhere('asset_data.is_it', 0);
+                }
             }
         }
 

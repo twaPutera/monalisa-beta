@@ -116,7 +116,7 @@
                         data: 'catatan',
                         orderable: false,
                     },
-                 
+
                     {
                         name: 'status_service',
                         data: 'status_service',
@@ -137,13 +137,13 @@
                 columnDefs: [{
                         targets: [1, 3],
                         render: function(data, type, full, meta) {
-                            return data != null ? formatDateIntoIndonesia(data) : '-';
+                            return data != 'Tidak Ada' ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
                         targets: [4],
                         render: function(data, type, full, meta) {
-                            return data != null ? formatDateTimeIntoIndonesia(data) : '-';
+                            return data != 'Tidak Ada' ? formatDateTimeIntoIndonesia(data) : '-';
                         },
                     },
                     {
