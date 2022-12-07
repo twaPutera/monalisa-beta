@@ -626,7 +626,9 @@
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: function(params) {
+                        return `${params.name} : <br/> ${formatNumber(params.value)}`;
+                    }
                 },
                 legend: {
                     show: false,
@@ -656,7 +658,9 @@
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: function(params) {
+                        return `${params.name} : <br/> ${formatNumber(params.value)}`;
+                    }
                 },
                 legend: {
                     show: false,
@@ -667,14 +671,13 @@
                     type: 'pie',
                     radius: ['50%', '60%'],
                     data: data,
-                    // color: ['#45C277', '#FA394C', '#FFC102'],
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
                             shadowOffsetX: 0,
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
-                    }
+                    },
                 }]
             });
         }
