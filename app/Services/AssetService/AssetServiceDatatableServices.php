@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use Yajra\DataTables\Contracts\DataTable;
 use App\Services\UserSso\UserSsoQueryServices;
+use Illuminate\Support\Facades\Auth;
 
 class AssetServiceDatatableServices
 {
@@ -179,10 +180,33 @@ class AssetServiceDatatableServices
             })
             ->addColumn('dashboard', function ($item) {
                 $element = '';
-                if ($item->status_service != 'selesai') {
-                    $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
+                $user = SsoHelpers::getUserLogin();
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
+                    if ($item->detail_service->asset_data->is_it == 1) {
+                        if ($item->status_service != 'selesai') {
+                            $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
+                        } else {
+                            $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                        }
+                    } else {
+                        $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    }
+                } else if ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
+                    if ($item->detail_service->asset_data->is_it == 0) {
+                        if ($item->status_service != 'selesai') {
+                            $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
+                        } else {
+                            $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                        }
+                    } else {
+                        $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    }
                 } else {
-                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    if ($item->status_service != 'selesai') {
+                        $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
+                    } else {
+                        $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    }
                 }
                 return $element;
             })
@@ -339,7 +363,7 @@ class AssetServiceDatatableServices
             ->addColumn('catatan', function ($item) {
                 return $item->catatan ?? 'Tidak Ada';
             })
-          
+
             ->addColumn('status_service', function ($item) {
                 return $item->status ?? 'Tidak Ada';
             })
@@ -391,6 +415,31 @@ class AssetServiceDatatableServices
 
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('dashboard', function ($item) {
+                $element = '';
+                $user = SsoHelpers::getUserLogin();
+                if ($user) {
+                    if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                        if ($item->asset_data->is_it == 1) {
+                            $element .= '<button type="button" onclick="addServicesFromPerencanaan(this)" data-url_show="' . route('admin.services.find-perencanaan-service', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                <i class="fa fa-eye"></i>
+                            </button>';
+                        }
+                    } else if ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
+                        if ($item->asset_data->is_it == 0) {
+                            $element .= '<button type="button" onclick="addServicesFromPerencanaan(this)" data-url_show="' . route('admin.services.find-perencanaan-service', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                <i class="fa fa-eye"></i>
+                            </button>';
+                        }
+                    } else {
+                        $element .= '<button type="button" onclick="addServicesFromPerencanaan(this)" data-url_show="' . route('admin.services.find-perencanaan-service', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                            <i class="fa fa-eye"></i>
+                        </button>';
+                    }
+                }
+                return $element;
+            })
+            ->rawColumns(['dashboard'])
             ->make(true);
     }
 }

@@ -32,6 +32,7 @@
                     data: function(d) {
                         d.status_pengaduan = 'dilaporkan';
                         d.limit = 10;
+                        d.global = true;
                     }
                 },
                 columns: [{
@@ -42,8 +43,8 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'id',
-                        name: 'id',
+                        data: 'dashboard',
+                        name: 'dashboard',
                         orderable: false
                     },
                     {
@@ -71,125 +72,121 @@
                     [4, 'asc']
                 ],
                 columnDefs: [{
-                        targets: 1,
-                        render: function(data, type, full, meta) {
-                            return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                                    <i class="la la-eye"></i>\
-                                                </button>'.replace(':id_edit', data).replace(':id_update', data);
-                        },
+                    targets: 4,
+                    render: function(data, type, full, meta) {
+                        let element = "";
+                        if (data == 10) {
+                            element +=
+                                `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+                        } else if (data == 5) {
+                            element +=
+                                `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+                        } else if (data == 1) {
+                            element +=
+                                `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+                        } else {
+                            element +=
+                                `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+                        }
+                        return element;
                     },
-                    {
-                        targets: 4,
-                        render: function(data, type, full, meta) {
-                            let element = "";
-                            if (data == 10) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
-                            } else if (data == 5) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
-                            } else if (data == 1) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
-                            } else {
-                                element +=
-                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
-                            }
-                            return element;
-                        },
-                    }
-                ],
+                }],
             });
         });
 
-        var datatableAduanTerbaru = $('#datatableAduanTerbaru');
-        $(document).ready(function() {
-            datatableAduanTerbaru.DataTable({
-                responsive: true,
-                searchDelay: 500,
-                processing: true,
-                searching: false,
-                bLengthChange: false,
-                // set limit item per page
-                orderable: true,
-                paging: false,
-                info: false,
-                scrollX: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ route('admin.keluhan.datatable') }}",
-                    data: function(d) {
-                        d.status_pengaduan = 'dilaporkan';
-                        d.limit = 10;
-                    }
-                },
-                columns: [{
-                        data: "DT_RowIndex",
-                        class: "text-center",
-                        orderable: false,
-                        searchable: false,
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'id',
-                        name: 'id',
-                        orderable: false
-                    },
-                    {
-                        name: 'tanggal_pengaduan',
-                        data: 'tanggal_pengaduan'
-                    },
-                    {
-                        name: 'created_by_name',
-                        data: 'created_by_name',
-                        orderable: false
-                    },
-                    {
-                        name: 'prioritas',
-                        data: 'prioritas',
-                        orderable: true
-                    },
-                    {
-                        name: 'lokasi_asset',
-                        data: 'lokasi_asset',
-                        orderable: false
-                    },
+        // var datatableAduanTerbaru = $('#datatableAduanTerbaru');
+        // $(document).ready(function() {
+        //     datatableAduanTerbaru.DataTable({
+        //         responsive: true,
+        //         searchDelay: 500,
+        //         processing: true,
+        //         searching: false,
+        //         bLengthChange: false,
+        //         // set limit item per page
+        //         orderable: true,
+        //         paging: false,
+        //         info: false,
+        //         scrollX: true,
+        //         serverSide: true,
+        //         ajax: {
+        //             url: "{{ route('admin.keluhan.datatable') }}",
+        //             data: function(d) {
+        //                 d.status_pengaduan = 'dilaporkan';
+        //                 d.limit = 10;
+        //             }
+        //         },
+        //         columns: [{
+        //                 data: "DT_RowIndex",
+        //                 class: "text-center",
+        //                 orderable: false,
+        //                 searchable: false,
+        //                 name: 'DT_RowIndex'
+        //             },
+        //             {
+        //                 data: 'id',
+        //                 name: 'id',
+        //                 orderable: false
+        //             },
+        //             {
+        //                 name: 'tanggal_pengaduan',
+        //                 data: 'tanggal_pengaduan'
+        //             },
+        //             {
+        //                 name: 'created_by_name',
+        //                 data: 'created_by_name',
+        //                 orderable: false
+        //             },
+        //             {
+        //                 name: 'prioritas',
+        //                 data: 'prioritas',
+        //                 orderable: true
+        //             },
+        //             {
+        //                 name: 'lokasi_asset',
+        //                 data: 'lokasi_asset',
+        //                 orderable: false
+        //             },
 
-                ],
-                order: [
-                    [2, 'desc']
-                ],
-                columnDefs: [{
-                        targets: 1,
-                        render: function(data, type, full, meta) {
-                            return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
-                                                    <i class="la la-eye"></i>\
-                                                </button>'.replace(':id_edit', data).replace(':id_update', data);
-                        },
-                    },
-                    {
-                        targets: 4,
-                        render: function(data, type, full, meta) {
-                            let element = "";
-                            if (data == 10) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
-                            } else if (data == 5) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
-                            } else if (data == 1) {
-                                element +=
-                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
-                            } else {
-                                element +=
-                                    `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
-                            }
-                            return element;
-                        },
-                    }
-                ],
-            });
-        });
+        //         ],
+        //         order: [
+        //             [2, 'desc']
+        //         ],
+        //         columnDefs: [{
+        //                 targets: 1,
+        //                 render: function(data, type, full, meta) {
+        //                     return '<button data-url_edit="{{ route('admin.keluhan.edit', ':id_edit') }}" data-url_update="{{ route('admin.keluhan.update', ':id_update') }}" onclick="editPengaduan(this)" class="btn btn-sm btn-primary btn-icon" title="View details">\
+        //                                                                                                 <i class="la la-eye"></i>\
+        //                                                                                             </button>'.replace(
+        //                             ':id_edit',
+        //                             data)
+        //                         .replace(
+        //                             ':id_update',
+        //                             data);
+        //                 },
+        //             },
+        //             {
+        //                 targets: 4,
+        //                 render: function(data, type, full, meta) {
+        //                     let element = "";
+        //                     if (data == 10) {
+        //                         element +=
+        //                             `<span class="kt-badge kt-badge--danger kt-badge--inline">High</span>`;
+        //                     } else if (data == 5) {
+        //                         element +=
+        //                             `<span class="kt-badge kt-badge--warning kt-badge--inline">Medium</span>`;
+        //                     } else if (data == 1) {
+        //                         element +=
+        //                             `<span class="kt-badge kt-badge--info kt-badge--inline">Low</span>`;
+        //                     } else {
+        //                         element +=
+        //                             `<span class="kt-badge kt-badge--dark kt-badge--inline">Tidak Ada</span>`;
+        //                     }
+        //                     return element;
+        //                 },
+        //             }
+        //         ],
+        //     });
+        // });
 
         const editPengaduan = (button) => {
             const url_edit = $(button).data('url_edit');
@@ -244,8 +241,42 @@
                 }
             })
         }
+        $('#file_pendukung').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-text').text(file.name);
+        });
+        const detailPengaduan = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailPengaduanData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
     </script>
     <script>
+        const detailService = (button) => {
+            const url_detail = $(button).data('url_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    const modal = $('.modalDetailInventarisData');
+                    const detail = modal.find('.modalDetailBodyData');
+                    detail.empty();
+                    detail.append(response);
+                    modal.modal('show');
+                }
+            })
+        }
         var datatablePerencanaanServices = $('#datatablePerencanaanServices');
         $(document).ready(function() {
             datatablePerencanaanServices.DataTable({
@@ -276,8 +307,9 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        name: 'id',
-                        data: 'id'
+                        name: 'dashboard',
+                        data: 'dashboard',
+                        orderable: false
                     },
                     {
                         name: 'tanggal_perencanaan',
@@ -292,18 +324,9 @@
                 order: [
                     [2, 'desc']
                 ],
-                columnDefs: [{
-                    targets: 1,
-                    render: function(data, type, full, meta) {
-                        let element = "";
-                        element +=
-                            `<button onclick="addServicesFromPerencanaan(this)" data-url_show="{{ route('admin.services.find-perencanaan-service', ':id') }}" class="btn btn-sm btn-primary btn-icon" title="View details">` +
-                            `<i class="la la-eye"></i>` +
-                            `</button>`;
-                        element = element.replace(/:id/g, data);
-                        return element;
-                    },
-                }],
+                columnDefs: [
+                    // Here
+                ],
             });
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
@@ -314,7 +337,8 @@
                     modal.modal('hide');
                     showToastSuccess('Sukses', data.message);
                     datatableCriticalAduan.DataTable().ajax.reload();
-                    datatablePerencanaanServices.ajax.reload();
+                    datatablePerencanaanServices.DataTable().ajax.reload();
+                    datatableServicesOnProgress.DataTable().ajax.reload();
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -355,6 +379,11 @@
             })
         }
 
+        $('#file_asset_service').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-image-text').text(file.name);
+        });
+
         var datatableServicesOnProgress = $('#datatableServicesOnProgress');
         var tableLogOpname = $('#tableLogOpname');
         $(document).ready(function() {
@@ -371,6 +400,7 @@
                     url: "{{ route('admin.listing-asset.service-asset.datatable') }}",
                     data: function(d) {
                         d.status_service = 'on progress';
+                        d.global = true;
                     }
                 },
                 columns: [{
@@ -427,6 +457,7 @@
                     url: "{{ route('admin.listing-asset.log-opname.datatable') }}",
                     data: function(d) {
                         d.limit = 10;
+                        d.global = true;
                     }
                 },
                 columns: [{
@@ -533,6 +564,7 @@
                 data: {
                     'is_pemutihan': '0',
                     'is_draft': '0',
+                    'global': true,
                 },
                 success: function(response) {
                     console.log(response);
@@ -850,6 +882,7 @@
                     data: function(d) {
                         d.status_kondisi = 'pengembangan';
                         d.is_draft = '0';
+                        d.global = true;
                     }
                 },
                 columns: [{
@@ -1245,5 +1278,7 @@
     </div>
     @include('pages.admin.dashboard._modal_create_service')
     @include('pages.admin.keluhan.components.modal._modal_edit_keluhan')
+    @include('pages.admin.services.components.modal._modal_detail_service')
     @include('pages.admin.services.components.modal._modal_edit_status_service')
+    @include('pages.admin.keluhan.components.modal._modal_detail_keluhan')
 @endsection

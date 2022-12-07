@@ -85,9 +85,11 @@
                     select.empty();
                     response.data.forEach(element => {
                         let selected = '';
-                        if (element.id == "{{ $asset_data->lokasi->id }}") {
-                            selected = 'selected';
-                        }
+                        @if ($asset_data->id_lokasi)
+                            if (element.id == "{{ $asset_data->lokasi->id }}") {
+                                selected = 'selected';
+                            }
+                        @endif
                         select.append(
                             `<option ${selected} value="${element.id}">${element.text}</option>`
                         );
