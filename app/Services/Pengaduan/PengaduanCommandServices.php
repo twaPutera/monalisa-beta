@@ -11,6 +11,8 @@ use App\Models\LogPengaduanAsset;
 use App\Http\Requests\Pengaduan\PengaduanStoreRequest;
 use App\Http\Requests\Pengaduan\PengaduanUpdateRequest;
 use App\Http\Requests\Pengaduan\AssetPengaduanStoreRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class PengaduanCommandServices
 {
@@ -32,6 +34,23 @@ class PengaduanCommandServices
         $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
+
+        if ($asset_data->is_it == 1) {
+            $target_user = User::where('role', 'staff_it')->get();
+        } else {
+            $target_user = User::where('role', 'staff_asset')->get();
+        }
+
+        $notifikasi = [
+            'title' => 'Pengaduan Asset',
+            'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
+            'url' => route('admin.keluhan.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
 
         $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Laporan Masuk');
 
@@ -58,6 +77,7 @@ class PengaduanCommandServices
 
         return $code;
     }
+
     public function storeUserPengaduan(PengaduanStoreRequest $request)
     {
         $request->validated();
@@ -69,7 +89,16 @@ class PengaduanCommandServices
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
+
+            if ($asset_data->is_it == 1) {
+                $target_user = User::where('role', 'staff_it')->get();
+            } else {
+                $target_user = User::where('role', 'staff_asset')->get();
+            }
+        } else {
+            $target_user = User::where('role', 'admin')->get();
         }
+
         $asset_pengaduan->kode_pengaduan =  self::generateCode();
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
@@ -78,6 +107,17 @@ class PengaduanCommandServices
         $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $asset_pengaduan->save();
+
+        $notifikasi = [
+            'title' => 'Pengaduan Asset',
+            'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
+            'url' => route('admin.keluhan.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
 
         $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Laporan Masuk');
 
@@ -98,19 +138,40 @@ class PengaduanCommandServices
     {
         $request->validated();
 
+        $user = SsoHelpers::getUserLogin();
+
         $asset_pengaduan = Pengaduan::findOrFail($id);
         if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
+            if ($asset_data->is_it == 1) {
+                $target_user = User::where('role', 'staff_it')->get();
+            } else {
+                $target_user = User::where('role', 'staff_asset')->get();
+            }
+        } else {
+            $target_user = User::where('role', 'admin')->get();
         }
+
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
         $asset_pengaduan->tanggal_pengaduan  = $request->tanggal_pengaduan;
         $asset_pengaduan->catatan_pengaduan = $request->alasan_pengaduan;
         $asset_pengaduan->status_pengaduan = 'dilaporkan';
         $asset_pengaduan->prioritas = $request->prioritas;
         $asset_pengaduan->save();
+
+        $notifikasi = [
+            'title' => 'Pengaduan Asset',
+            'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah diubah dan dilaporkan ulang oleh ' . $user->name,
+            'url' => route('admin.keluhan.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
 
         $log = self::storeLog($asset_pengaduan->id, 'dilaporkan', $request->alasan_pengaduan, 'Perubahan Laporan');
 

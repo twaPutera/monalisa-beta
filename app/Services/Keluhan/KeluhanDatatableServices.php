@@ -174,22 +174,34 @@ class KeluhanDatatableServices
                 $user = SsoHelpers::getUserLogin();
                 if ($user) {
                     if ($user->role == 'manager_it' || $user->role == "staff_it") {
-                        if ($item->asset_data->is_it == 1) {
-                            $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
-                            <i class="fa fa-eye"></i>
-                            </button>';
+                        if ($item->asset_data != null) {
+                            if ($item->asset_data->is_it == 1) {
+                                $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>';
+                            } else {
+                                $element .= '<button type="button" onclick="detailPengaduan(this)" data-url_detail="' . route('admin.keluhan.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>';
+                            }
                         } else {
-                            $element .= '<button type="button" onclick="detailPengaduan(this)" data-url_detail="' . route('admin.keluhan.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                            $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>
                             </button>';
                         }
                     } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
-                        if ($item->asset_data->is_it == 0) {
-                            $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
-                            <i class="fa fa-eye"></i>
-                            </button>';
+                        if ($item->asset_data != null) {
+                            if ($item->asset_data->is_it == 0) {
+                                $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>';
+                            } else {
+                                $element .= '<button type="button" onclick="detailPengaduan(this)" data-url_detail="' . route('admin.keluhan.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>';
+                            }
                         } else {
-                            $element .= '<button type="button" onclick="detailPengaduan(this)" data-url_detail="' . route('admin.keluhan.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                            $element .= '<button type="button" onclick="editPengaduan(this)" data-url_edit="' . route('admin.keluhan.edit', $item->id) . '" data-url_update="' . route('admin.keluhan.update', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>
                             </button>';
                         }
