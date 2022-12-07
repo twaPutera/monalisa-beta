@@ -39,6 +39,12 @@ class DepresiasiAssetDatatableServices
             });
         }
 
+        if (isset($request->is_it)) {
+            $query->whereHas('asset_data', function ($query) use ($request) {
+                $query->where('is_it', $request->is_it);
+            });
+        }
+
         if (isset($request->kategori_asset)) {
             $query->whereHas('asset_data', function ($query) use ($request) {
                 $query->where('id_kategori_asset', $request->kategori_asset);

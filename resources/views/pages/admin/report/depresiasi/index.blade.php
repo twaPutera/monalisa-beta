@@ -30,6 +30,7 @@
                         d.group_kategori_asset = $('#groupAssetCreate').val();
                         d.kategori_asset = $('#kategoriAssetCreate').val();
                         d.keyword = $('#searchDepresiasi').val();
+                        d.is_it = $('#is_it').val();
                     }
                 },
                 columns: [{
@@ -193,6 +194,11 @@
     </script>
 @endsection
 @section('main-content')
+    @if ($user->role == 'staff_asset' || $user->role == 'manager_asset')
+        <input type="hidden" name="" id="is_it" value="0">
+    @elseif($user->role == 'manager_it' || $user->role == 'staff_it')
+        <input type="hidden" name="" id="is_it" value="1">
+    @endif
     <div class="row">
         <div class="col-md-2 col-12">
             @include('pages.admin.report.menu')
