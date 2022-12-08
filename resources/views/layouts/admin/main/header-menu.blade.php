@@ -42,8 +42,8 @@
                                     d="M25.892,18.035l-2.366-2.366v-4.03A8.823,8.823,0,0,0,15.64,2.877V1.125H13.888V2.877A8.893,8.893,0,0,0,6,11.639v4.03L3.637,18.035a.8.8,0,0,0-.262.613v2.628a.823.823,0,0,0,.876.876h6.133a4.381,4.381,0,0,0,8.761,0h6.133a.823.823,0,0,0,.876-.876V18.648A.8.8,0,0,0,25.892,18.035ZM14.764,24.781a2.628,2.628,0,0,1-2.628-2.628h5.257a2.628,2.628,0,0,1-2.628,2.628ZM24.4,20.4H5.127V19l2.366-2.366a.8.8,0,0,0,.262-.613V11.639a7.009,7.009,0,1,1,14.018,0v4.381a.8.8,0,0,0,.262.613L24.4,19Z"
                                     transform="translate(-3.373 -1.125)" fill="#0067d4" />
                             </svg>
-                            <span class="kt-badge kt-badge--success kt-hidden"></span>
                         </span>
+                        <span class="kt-badge kt-badge--info notifCount" style="margin-left: -10px; display: none;">11</span>
                     </div>
                     <div
                         class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
@@ -54,7 +54,7 @@
                                 <h3 class="kt-head__title">
                                     User Notifications
                                     &nbsp;
-                                    <span class="btn btn-label-primary btn-sm btn-bold btn-font-md">23 new</span>
+                                    <span class="btn btn-label-primary btn-sm btn-bold btn-font-md notifCount" id="">0</span>
                                 </h3>
                             </div>
 

@@ -213,7 +213,7 @@ class PemindahanAssetCommandServices
             $notifikasi = [
                 'title' => 'Pemindahan Asset',
                 'message' => 'Pemindahan asset dengan nomor surat ' . $pemindahan_asset->no_surat . ' telah disetujui',
-                'url' => route('user.asset-data.pemindahan.detail', $pemindahan_asset->id),
+                'url' => route('admin.approval.pemindahan.index', ['id' => $pemindahan_asset->id]),
                 'date' => date('d/m/Y H:i'),
             ];
 

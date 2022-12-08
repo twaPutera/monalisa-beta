@@ -121,6 +121,12 @@
                     showValidation(element, errors[key][0]);
                 }
             });
+
+            @if(isset(request()->id))
+                $('#idNotifikasi').data('url_detail', "{{ route('admin.listing-asset.pemindahan-asset.show', request()->id) }}");
+                $('#idNotifikasi').data('url_update', "{{ route('admin.approval.pemindahan.change-status', request()->id) }}");
+                showDetail($('#idNotifikasi'));
+            @endif
         });
 
         const showDetail = (button) => {
@@ -183,6 +189,7 @@
     </script>
 @endsection
 @section('main-content')
+    <input type="hidden" data-url_detail="" data-url_update="" name="" id="idNotifikasi">
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="kt-portlet shadow-custom">

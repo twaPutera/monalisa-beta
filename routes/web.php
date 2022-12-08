@@ -80,7 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/get-data', [AdminDashboardController::class, 'getNotificationData'])->name('admin.notification.get-data');
         Route::get('/count', [AdminDashboardController::class, 'countNotification'])->name('admin.notification.count');
-        Route::post('/get-data', [AdminDashboardController::class, 'readNotification'])->name('admin.notification.read');
+        Route::post('/read-notif', [AdminDashboardController::class, 'readNotification'])->name('admin.notification.read');
     });
     # Approval
     Route::group(['prefix' => 'approval'], function () {

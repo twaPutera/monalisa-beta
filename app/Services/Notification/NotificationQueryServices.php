@@ -10,7 +10,10 @@ class NotificationQueryServices
     public function findNotificationUser(Request $request)
     {
         $users = User::find($request->user_id);
-        return $users->notifications;
+        return $users->notifications()
+                ->where('read_at', null)
+                ->orderBy('created_at', 'desc')
+                ->get();
     }
 
     public function countNotificationUser($id)

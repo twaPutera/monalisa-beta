@@ -99,12 +99,13 @@
             dataType: "JSON",
             success: function (response) {
                 if (response.success) {
-                    console.log(response.data);
                     $('.notificationContainer').empty();
                     if (response.data.length > 0) {
                         $(response.data).each(function (index, value) {
                             $('.notificationContainer').append(generateTemplateNotification(value.data, value.id));
-                        })
+                        });
+                        $('.notifCount').text(response.data.length);
+                        $('.notifCount').show();
                     }
                 }
             }
