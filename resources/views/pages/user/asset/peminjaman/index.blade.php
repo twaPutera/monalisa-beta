@@ -14,6 +14,12 @@
             getAllDataPeminjaman('pendingContainer', ['pending']);
             getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'duedate', 'ditolak']);
             getAllDataPeminjaman('selesaiContainer', ['selesai']);
+
+            @if (isset(request()->peminjaman_asset_id))
+                $('#notifikasiId').data('link_detail', "{{ route('user.asset-data.peminjaman.detail', request()->peminjaman_asset_id) }}");
+                $('#notifikasiId').data('link_perpanjangan', "{{ route('user.asset-data.peminjaman.perpanjangan.store', request()->peminjaman_asset_id) }}");
+                showDetailPeminjaman($('#notifikasiId'));
+            @endif
         })
     </script>
     <script>
@@ -233,6 +239,7 @@
     </script>
 @endsection
 @section('content')
+<input type="hidden" name="" id="notifikasiId">
 <ul class="nav nav-tabs lined" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" data-bs-toggle="tab" href="#overview2" role="tab" aria-selected="true">
