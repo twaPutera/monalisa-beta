@@ -19,6 +19,8 @@
                                 @if (isset($asset->lokasi))
                                     <option selected="selected" value="{{ $asset->lokasi->id }}">
                                         {{ $asset->lokasi->nama_lokasi }}</option>
+                                @else
+                                    <option selected="selected" value="">Universitas Pertamina</option>
                                 @endif
                             </select>
                         </div>

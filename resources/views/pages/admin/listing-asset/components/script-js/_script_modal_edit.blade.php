@@ -61,7 +61,7 @@
             generateSatuanAssetEdit();
             generateVendorAssetEdit();
             generateOwnerAssetEdit();
-            generateMemorandumAndinSelect2();
+            generateMemorandumAndinSelect2(false);
             generateKategoriSelect2Edit();
         }, 1000);
     });

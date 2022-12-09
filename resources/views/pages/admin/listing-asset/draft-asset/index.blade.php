@@ -274,6 +274,36 @@
             });
         });
 
+        const changeMemorandumStatus = (v) => {
+            const memoAndin = $('#memo_andin');
+            const memoManual = $('#memo_manual');
+            if (v == "andin") {
+                memoAndin.removeClass('d-none');
+                memoManual.addClass('d-none');
+            } else if (v == "manual") {
+                memoManual.removeClass('d-none');
+                memoAndin.addClass('d-none');
+            } else {
+                memoAndin.addClass('d-none');
+                memoManual.addClass('d-none');
+            }
+        }
+
+        const changeMemorandumStatusEdit = (v) => {
+            const memoAndin = $('.memo_andin');
+            const memoManual = $('.memo_manual');
+            if (v == "andin") {
+                memoAndin.removeClass('d-none');
+                memoManual.addClass('d-none');
+            } else if (v == "manual") {
+                memoManual.removeClass('d-none');
+                memoAndin.addClass('d-none');
+            } else {
+                memoAndin.addClass('d-none');
+                memoManual.addClass('d-none');
+            }
+        }
+
         const checklistAsset = (element) => {
             let jsonTempAsset = JSON.parse($('#jsonTempAsset').val())
             if ($(element).is(':checked')) {
@@ -294,6 +324,19 @@
         }
 
         const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
+            table.DataTable().ajax.reload();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const id_lokasi = $('#lokasiParentId').val(null);
+            const id_satuan_asset = $('#satuanAssetFilter').val(null);
+            const id_vendor = $('#vendorAssetFilter').val(null);
+            const id_kategori_asset = $('#kategoriAssetFilter').val(null);
+            const searchKeyword = $('#searchAsset').val(null);
+            const is_sparepart = $('#isSparepartFilter').val(null);
+            const is_pemutihan = $('#isPemutihanFilter').val(null);
             table.DataTable().ajax.reload();
         }
 
@@ -395,6 +438,17 @@
                             form.find('select[name="id_surat_memo_andin"]').append(
                                 `<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`
                             );
+                            form.find(
+                                `select[name="status_memorandum"] option[value="andin"]`
+                            ).prop('selected', true);
+                            changeMemorandumStatusEdit('andin');
+                        } else {
+                            changeMemorandumStatusEdit('manual');
+                            form.find('input[name="no_memo_surat_manual"]').val(data.asset.no_memo_surat);
+                            form.find(
+                                `select[name="status_memorandum"] option[value="manual"]`
+                            ).prop('selected', true);
+
                         }
 
                         modal.on('shown.bs.modal', function() {
@@ -492,6 +546,9 @@
                     <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom"
                         type="button"><i class="fas fa-sliders-h mr-2"></i>
                         Filter</button>
+                    <button onclick="resetFilterData()" id="resetFilter"
+                        class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                            class="fas fa-sync"></i>Reset</button>
                 </div>
                 <div class="d-flex align-items-center">
                     <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm"

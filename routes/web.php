@@ -156,6 +156,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
         });
 
+        # Opname Asset
+        Route::group(['prefix' => 'opname-asset'], function () {
+            Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('admin.listing-asset.opname-asset.store');
+        });
+
         # Log Opname
         Route::group(['prefix' => 'log-opname'], function () {
             Route::get('/datatable', [MasterAssetController::class, 'log_opname_dt'])->name('admin.listing-asset.log-opname.datatable');

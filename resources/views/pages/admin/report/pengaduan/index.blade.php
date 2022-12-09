@@ -315,6 +315,19 @@
 
         const filterTableService = () => {
             exportData();
+            const reset = $('#resetFilter').removeClass('d-none')
+            table.DataTable().ajax.reload();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const awal = $('.datepickerAwal').val(null);
+            const akhir = $('.datepickerAkhir').val(null);
+            const status_pengaduan = $('#statusPengaduan').val(null);
+            const id_asset_data = $('#assetDataService').val(null);
+            const id_lokasi = $('#lokasiAssetCreateService').val(null);
+            const id_kategori_asset = $('#listKategoriAssetLocation').val(null);
+            const keyword = $('#searchServices').val(null);
             table.DataTable().ajax.reload();
         }
 
@@ -359,6 +372,9 @@
                                         <input type="hidden" name="id_asset_data" id="id_asset_data_export">
                                         <button type="button" onclick="openModalByClass('modalFilterAsset')"
                                             class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                        <button onclick="resetFilterData()" id="resetFilter"
+                                            class="btn btn-sm d-none btn-danger shadow-custom ml-2" type="button"><i
+                                                class="fas fa-sync"></i>Reset</button>
                                         <button class="btn btn-success shadow-custom btn-sm ml-2" type="submit"><i
                                                 class="fas fa-print"></i>
                                             Export Excel</button>

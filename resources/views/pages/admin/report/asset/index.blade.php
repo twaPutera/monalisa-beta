@@ -292,6 +292,15 @@
         }
         const filterTableService = () => {
             exportData();
+            const reset = $('#resetFilter').removeClass('d-none')
+            table.DataTable().ajax.reload();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const id_lokasi = $('#lokasiAssetCreateService').val(null);
+            const id_kategori_asset = $('#listKategoriAssetLocation').val(null);
+            const searchKeyword = $('#searchAsset').val(null);
             table.DataTable().ajax.reload();
         }
 
@@ -335,14 +344,16 @@
 
         const getSummaryOverview = () => {
             $.ajax({
-                url: '{{ route("admin.report.summary-asset.get-summary-overview") }}',
+                url: '{{ route('admin.report.summary-asset.get-summary-overview') }}',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        $('#totalPenerimaan').text(`Rp. ${formatNumber(response.data.asset.nilai_beli_asset)}`);
+                        $('#totalPenerimaan').text(
+                            `Rp. ${formatNumber(response.data.asset.nilai_beli_asset)}`);
                         $('#totalValue').text(`Rp. ${formatNumber(response.data.asset.nilai_value_asset)}`);
-                        $('#totalDepresiasi').text(`Rp. ${formatNumber(response.data.asset.nilai_depresiasi)}`);
+                        $('#totalDepresiasi').text(
+                            `Rp. ${formatNumber(response.data.asset.nilai_depresiasi)}`);
                         $('#avgDepresiasi').text(`${response.data.avg_depresiasi} %`);
                     }
                 }
@@ -373,6 +384,9 @@
                                         <input type="hidden" name="id_kategori_asset" id="id_kategori_asset_export">
                                         <button type="button" onclick="openModalByClass('modalFilterAsset')"
                                             class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                        <button onclick="resetFilterData()" id="resetFilter"
+                                            class="btn btn-sm d-none btn-danger shadow-custom ml-2" type="button"><i
+                                                class="fas fa-sync"></i>Reset</button>
                                         <button class="btn btn-success ml-1 shadow-custom btn-sm ml-2" type="submit"><i
                                                 class="fas fa-print"></i>
                                             Export Excel</button>

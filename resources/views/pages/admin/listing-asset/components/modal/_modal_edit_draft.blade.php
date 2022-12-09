@@ -129,13 +129,35 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-6">
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="">No Memorandum</label>
                                     <select name="id_surat_memo_andin" class="form-control memorandumAndin"
                                         id="">
 
                                     </select>
                                     <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
+                                </div> --}}
+                                <div class="form-group">
+                                    <label for="">Pilih Memorandum</label>
+                                    <select name="status_memorandum" class="form-control mr-3" id=""
+                                        onchange="changeMemorandumStatusEdit(this.value)">
+                                        {{-- <option value="draft">Draft</option> --}}
+                                        <option value="">Pilih Asal Memorandum</option>
+                                        <option value="andin">Dari ANDIN</option>
+                                        <option value="manual">Input Manual</option>
+                                    </select>
+                                </div>
+                                <div class="form-group d-none memo_andin">
+                                    <label for="">No Memorandum</label>
+                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin"
+                                        id="">
+
+                                    </select>
+                                    <input type="hidden" class="noMemoSurat" name="no_memo_surat" value="">
+                                </div>
+                                <div class="form-group d-none memo_manual">
+                                    <label for="">Nomor Memorandum</label>
+                                    <input type="text" class="form-control" name="no_memo_surat_manual">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nomor PO</label>

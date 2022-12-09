@@ -51,7 +51,7 @@
         });
     }
 
-    const generateMemorandumAndinSelect2 = () => {
+    const generateMemorandumAndinSelect2 = (id = true) => {
         $('.memorandumAndin').select2({
             width: '100%',
             placeholder: 'Pilih Memorandum',
@@ -73,9 +73,13 @@
                 },
                 cache: true
             },
-        }).on('change', function (e) {
+        }).on('change', function(e) {
             const data = $(this).select2('data')[0];
-            $('#noMemoSurat').val(data.text);
+            if (id) {
+                $('#noMemoSurat').val(data.text);
+            } else {
+                $('.noMemoSurat').val(data.text);
+            }
         });
     }
 
@@ -95,6 +99,12 @@
             generateVendorAsset();
             generateOwnerAsset();
             generateMemorandumAndinSelect2();
+        }, 2000);
+    });
+
+    $('.modalCreateOpname').on('shown.bs.modal', function() {
+        setTimeout(() => {
+            generateSelect2Lokasi('lokasiAssetOpname');
         }, 2000);
     });
 

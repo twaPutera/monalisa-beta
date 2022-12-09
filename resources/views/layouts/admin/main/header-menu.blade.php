@@ -60,7 +60,8 @@
 
                             <!--end: Head -->
                             <div class="tab-content">
-                                <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll notificationContainer" data-scroll="true" data-height="300" data-mobile-height="200">
+                                <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll notificationContainer"
+                                    data-scroll="true" data-height="300" data-mobile-height="200">
                                     <a href="#" class="kt-notification__item">
                                         <div class="kt-notification__item-icon">
                                             <i class="flaticon2-bar-chart kt-font-info"></i>
@@ -80,7 +81,7 @@
                     </div>
                 </div>
                 <div class="kt-header__topbar-item d-flex align-items-center mr-3">
-                    <div class="badge badge-lg badge-primary"><strong>Jabatan</strong>
+                    <div class="badge badge-lg badge-primary"><strong>{!! ucWords(App\Helpers\CutText::cutUnderscore($user->role)) !!}</strong>
                     </div>
                 </div>
                 <!--begin: User bar -->
@@ -114,7 +115,6 @@
                         <!--begin: Navigation -->
                         <div class="kt-notification">
                             @if ($user->role == 'staff')
-
                             @endif
                             <a href="{{ route('user.dashboard.index') }}" target="_blank" class="kt-notification__item">
                                 <div class="kt-notification__item-icon">
@@ -132,7 +132,8 @@
                             <div class="kt-notification__custom kt-space-end">
                                 <form method="POST" action="{{ route('sso.logout') }}">
                                     @csrf
-                                    <a class="btn btn-label btn-label-brand btn-sm btn-bold" href="#" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <a class="btn btn-label btn-label-brand btn-sm btn-bold" href="#"
+                                        onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('LOGOUT') }}
                                     </a>
                                 </form>
