@@ -368,3 +368,8 @@ td {
         font-size: 1rem;
     }
 }
+
+.kt-badge.kt-badge--danger {
+    color: #ffffff;
+    background: #ff0000;
+}

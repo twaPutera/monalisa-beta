@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+        <style>
+            .text-summary-dashboard {
+                font-size: 16px;
+            }
+        </style>
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
@@ -617,8 +622,21 @@
         }
 
         const formatNumberToMilion = (number) => {
-            number = number / 1000000;
-            return formatNumber(Math.ceil(number)) + ' Jt';
+            let satuan = '';
+            let pembagi = 1;
+
+            if (number >= 1000000000) {
+                satuan = 'M';
+                pembagi = 1000000000;
+            } else if (number >= 1000000) {
+                satuan = 'Jt';
+                pembagi = 1000000;
+            } else if (number >= 1000) {
+                satuan = 'Rb';
+                pembagi = 1000;
+            }
+
+            return (number / pembagi).toFixed(2) + ' ' + satuan;
         }
 
         const generateChartAssetSummary = (data) => {
@@ -964,7 +982,7 @@
                                     </span>
                                     <p class="mb-0 text-dark">Total Aset</p>
                                 </div>
-                                <h2 class="text-dark mb-0"><strong id="totalAssetSummary">0</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalAssetSummary">0</strong></h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -974,7 +992,7 @@
                                     </span>
                                     <p class="mb-0 text-dark">Nilai Beli Asset</p>
                                 </div>
-                                <h2 class="text-dark mb-0"><strong id="nilaiBeliAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="nilaiBeliAsset">0 Jt</strong></h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -984,7 +1002,7 @@
                                     </span>
                                     <p class="mb-0 text-dark">Total Depresiasi</p>
                                 </div>
-                                <h2 class="text-dark mb-0"><strong id="totalDepresiasiAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalDepresiasiAsset">0 Jt</strong></h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -994,7 +1012,7 @@
                                     </span>
                                     <p class="mb-0 text-dark">Value Asset</p>
                                 </div>
-                                <h2 class="text-dark mb-0"><strong id="totalValueAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalValueAsset">0 Jt</strong></h2>
                             </div>
                         </div>
                     </div>
