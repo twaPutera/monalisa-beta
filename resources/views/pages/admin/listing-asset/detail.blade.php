@@ -993,7 +993,7 @@
                                     @if ($asset->is_it == 1)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
-                                                class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                                class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                                 <i class="fa fa-plus"></i> Opname
                                             </button>
                                         @endif
@@ -1002,7 +1002,7 @@
                                     @if ($asset->is_it == 0)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
-                                                class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                                class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                                 <i class="fa fa-plus"></i> Opname
                                             </button>
                                         @endif
@@ -1010,7 +1010,7 @@
                                 @else
                                     @if ($asset->is_pemutihan != '1')
                                         <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
-                                            class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                            class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                             <i class="fa fa-plus"></i> Opname
                                         </button>
                                     @endif
@@ -1043,7 +1043,7 @@
                                     @if ($asset->is_it == 1)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateAssetService')"
-                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log"
+                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log mr-2"
                                                 type="button">
                                                 <i class="fa fa-plus"></i> Service
                                             </button>
@@ -1053,7 +1053,7 @@
                                     @if ($asset->is_it == 0)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateAssetService')"
-                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log"
+                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log mr-2"
                                                 type="button">
                                                 <i class="fa fa-plus"></i> Service
                                             </button>
@@ -1062,7 +1062,7 @@
                                 @else
                                     @if ($asset->is_pemutihan != '1')
                                         <button onclick="openModalByClass('modalCreateAssetService')" id="create-service"
-                                            class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                            class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                             <i class="fa fa-plus"></i> Service
                                         </button>
                                     @endif
