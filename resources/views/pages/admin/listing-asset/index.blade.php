@@ -263,10 +263,21 @@
         });
 
         const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
             table.DataTable().ajax.reload();
         }
 
-
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const id_lokasi = $('#lokasiParentId').val(null);
+            const id_satuan_asset = $('#satuanAssetFilter').val(null);
+            const id_vendor = $('#vendorAssetFilter').val(null);
+            const id_kategori_asset = $('#kategoriAssetFilter').val(null);
+            const searchKeyword = $('#searchAsset').val(null);
+            const is_sparepart = $('#isSparepartFilter').val(null);
+            const is_pemutihan = $('#isPemutihanFilter').val(null);
+            table.DataTable().ajax.reload();
+        }
         const showAsset = (button) => {
             const url = $(button).data('url_detail');
             $.ajax({
@@ -422,6 +433,9 @@
                     <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-secondary shadow-custom"
                         type="button"><i class="fas fa-sliders-h mr-2"></i>
                         Filter</button>
+                    <button onclick="resetFilterData()" id="resetFilter"
+                        class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                            class="fas fa-sync"></i>Reset</button>
                 </div>
                 <div class="d-flex align-items-center">
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"

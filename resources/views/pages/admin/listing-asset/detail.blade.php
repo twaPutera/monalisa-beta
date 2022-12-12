@@ -396,8 +396,7 @@
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-                console.log(errors);
-                if (errors.success && !errors.success) {
+                if (errors.success == false && !errors.success) {
                     showToastError('Gagal', errors.message);
                 }
                 //if validation not pass
@@ -407,6 +406,9 @@
                     showValidation(element, errors[key][0]);
                     if (key == "file_asset_service") {
                         $('#preview-file-image-error').html(errors[key][0]);
+                    }
+                    if (key == "file_asset_terbaru") {
+                        $('#preview-file-image-terbaru-error').html(errors[key][0]);
                     }
                 }
             });
@@ -528,6 +530,16 @@
                 dropdownParent: $('.modal.show'),
             });
         });
+        const selectServicePerencanaan = (v) => {
+            const perencanaanService = $('#perencanaanService');
+            if (v == "aktif") {
+                perencanaanService.removeClass('d-none');
+            } else if (v == "nonaktif") {
+                perencanaanService.addClass('d-none');
+            } else {
+                perencanaanService.addClass('d-none');
+            }
+        }
 
         const setHeightPropertiAsset = () => {
             let height = $('.detailAssetBox').height();
@@ -542,6 +554,21 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+
+        $('.dateTanggalOpaname').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
+        $('.dateTanggalPerencanaan').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
         $('.datepickerCreateSelesai').datepicker({
             todayHighlight: true,
             width: '100%',
@@ -604,6 +631,11 @@
             const file = $(this)[0].files[0];
             $('#preview-file-image-text').text(file.name);
         });
+
+        $('#file_asset_terbaru').on('change', function() {
+            const file = $(this)[0].files[0];
+            $('#preview-file-image-terbaru-text').text(file.name);
+        });
     </script>
     <script>
         const getPositionPenyerah = () => {
@@ -655,7 +687,20 @@
                 }
             })
         }
-
+        const changeMemorandumStatusEdit = (v) => {
+            const memoAndin = $('.memo_andin');
+            const memoManual = $('.memo_manual');
+            if (v == "andin") {
+                memoAndin.removeClass('d-none');
+                memoManual.addClass('d-none');
+            } else if (v == "manual") {
+                memoManual.removeClass('d-none');
+                memoAndin.addClass('d-none');
+            } else {
+                memoAndin.addClass('d-none');
+                memoManual.addClass('d-none');
+            }
+        }
         const getUnitByPosition = (select, idElement) => {
             let guid = $(select).val();
             $.ajax({
@@ -943,6 +988,34 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="kt_tabs_1_1" role="tabpanel">
+                            <div class="d-flex justify-content-end my-2">
+                                @if ($user->role == 'manager_it' || $user->role == 'staff_it')
+                                    @if ($asset->is_it == 1)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
+                                                class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                                <i class="fa fa-plus"></i> Opname
+                                            </button>
+                                        @endif
+                                    @endif
+                                @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
+                                    @if ($asset->is_it == 0)
+                                        @if ($asset->is_pemutihan != '1')
+                                            <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
+                                                class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                                <i class="fa fa-plus"></i> Opname
+                                            </button>
+                                        @endif
+                                    @endif
+                                @else
+                                    @if ($asset->is_pemutihan != '1')
+                                        <button onclick="openModalByClass('modalCreateOpname')" id="create-opname"
+                                            class="btn btn-primary shadow-custom btn-sm btn-log" type="button">
+                                            <i class="fa fa-plus"></i> Opname
+                                        </button>
+                                    @endif
+                                @endif
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0" id="tableLogOpname">
                                     <thead>
@@ -1100,4 +1173,5 @@
     @include('pages.admin.listing-asset.components.modal._modal_preview_service')
     @include('pages.admin.listing-asset.components.modal._modal_preview_opname')
     @include('pages.admin.listing-asset.components.modal._modal_create_pemindahan')
+    @include('pages.admin.listing-asset.components.modal._modal_create_opname')
 @endsection

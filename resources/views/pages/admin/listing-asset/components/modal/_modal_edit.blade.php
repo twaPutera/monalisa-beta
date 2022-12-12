@@ -148,14 +148,37 @@
                         <div class="row">
                             <div class="col-md-4 col-6">
                                 <div class="form-group">
+                                    <label for="">Pilih Memorandum</label>
+                                    <select name="status_memorandum" class="form-control mr-3" id=""
+                                        onchange="changeMemorandumStatusEdit(this.value)">
+                                        {{-- <option value="draft">Draft</option> --}}
+                                        <option value="">Pilih Asal Memorandum</option>
+                                        <option value="andin"
+                                            {{ isset($asset->id_surat_memo_andin) ? 'selected' : '' }}>
+                                            Dari ANDIN</option>
+                                        <option value="manual"
+                                            {{ !isset($asset->id_surat_memo_andin) ? 'selected' : '' }}>Input Manual
+                                        </option>
+                                    </select>
+                                </div>
+                                <div
+                                    class="form-group {{ !isset($asset->id_surat_memo_andin) ? 'd-none' : '' }} memo_andin">
                                     <label for="">No Memorandum</label>
-                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin" id="memorandumAndin">
+                                    <select name="id_surat_memo_andin" class="form-control memorandumAndin"
+                                        id="">
                                         @if (isset($asset->id_surat_memo_andin))
                                             <option selected="selected" value="{{ $asset->id_surat_memo_andin }}">
                                                 {{ $asset->no_memo_surat }}</option>
                                         @endif
                                     </select>
-                                    <input type="hidden" id="noMemoSurat" name="no_memo_surat" value="">
+                                    <input type="hidden" id="noMemoSurat" name="no_memo_surat"
+                                        value="{{ $asset->no_memo_surat }}">
+                                </div>
+                                <div
+                                    class="form-group {{ isset($asset->id_surat_memo_andin) ? 'd-none' : '' }} memo_manual">
+                                    <label for="">Nomor Memorandum</label>
+                                    <input type="text" class="form-control" name="no_memo_surat_manual"
+                                        value="{{ $asset->no_memo_surat }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nomor PO</label>

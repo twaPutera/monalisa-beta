@@ -237,8 +237,19 @@
             })
         }
         const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
             table.DataTable().ajax.reload();
         }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const id_lokasi = $('#lokasiAssetCreateService').val(null);
+            const id_asset = $('#listAssetLocation').val(null);
+            const status_pengaduan = $("#statusPengaduanFilter").val(null);
+            const prioritas_pengaduan = $("#prioritasPengaduanFilter").val(null);
+            table.DataTable().ajax.reload();
+        }
+
         $('#file_pendukung').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-text').text(file.name);
@@ -278,6 +289,9 @@
                                     class="btn btn-sm btn-info shadow-custom" type="button"><i
                                         class="fas fa-sliders-h mr-2"></i>
                                     Filter</button>
+                                <button onclick="resetFilterData()" id="resetFilter"
+                                    class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                                        class="fas fa-sync"></i>Reset</button>
                             </div>
                         </div>
                     </div>

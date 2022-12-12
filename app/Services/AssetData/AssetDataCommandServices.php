@@ -56,8 +56,8 @@ class AssetDataCommandServices
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
         $asset->register_oleh = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset->no_memo_surat = $request->no_memo_surat;
-        $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual;
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_urut = $request->no_urut;
@@ -128,8 +128,8 @@ class AssetDataCommandServices
         $asset->id_lokasi = $request->id_lokasi;
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
-        $asset->no_memo_surat = $request->no_memo_surat;
-        $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual;
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_seri = $request->no_seri;
@@ -175,8 +175,8 @@ class AssetDataCommandServices
         $asset->id_lokasi = $request->id_lokasi;
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
-        $asset->no_memo_surat = $request->no_memo_surat;
-        $asset->id_surat_memo_andin = $request->id_surat_memo_andin;
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual;
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null;
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_seri = $request->no_seri;

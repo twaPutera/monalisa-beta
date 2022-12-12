@@ -83,6 +83,16 @@
         });
 
         const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
+            table.DataTable().ajax.reload();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const start_date = $('#filterStartDate').val(null);
+            const end_date = $('#filterEndDate').val(null);
+            const searchKeyword = $('#searchDepresiasi').val(null);
+            const is_it = $('#is_it').val(null);
             table.DataTable().ajax.reload();
         }
 
@@ -131,6 +141,9 @@
                             <div class="kt-portlet__head-actions">
                                 <button type="button" onclick="openModalByClass('modalFilterPeminjamanAsset')"
                                     class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Filter </button>
+                                <button onclick="resetFilterData()" id="resetFilter"
+                                    class="btn btn-sm d-none btn-danger shadow-custom ml-2" type="button"><i
+                                        class="fas fa-sync"></i>Reset</button>
                                 <button onclick="openModalByClass('modalExportPeminjamanAsset')"
                                     class="btn btn-success ml-1 shadow-custom btn-sm" type="button"><i
                                         class="fas fa-print"></i>Export Excel</button>

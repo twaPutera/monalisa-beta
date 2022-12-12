@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetService;
 
+use App\Helpers\CutText;
 use App\Models\Service;
 use App\Models\AssetData;
 use App\Models\AssetImage;
@@ -341,7 +342,7 @@ class AssetServiceCommandServices
         $log_asset = new LogServiceAsset();
         $user = SsoHelpers::getUserLogin();
         $log_asset->id_service = $id_asset;
-        $log_asset->message_log = "$log Data Service untuk $nama_asset oleh " . Auth::user()->role . " (Ket : $keterangan )";
+        $log_asset->message_log = "$log Data Service untuk $nama_asset oleh " . ucWords(CutText::cutUnderscore(Auth::user()->role)) . " (Ket : $keterangan )";
         $log_asset->status = $status == 'onprogress' ? 'on progress' : $status;
         $log_asset->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $log_asset->save();
