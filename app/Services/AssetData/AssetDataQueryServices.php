@@ -100,10 +100,12 @@ class AssetDataQueryServices
         $data = AssetData::query();
 
         if (isset($request->keyword)) {
+            // $data->where('deskripsi', 'like', '%' . $request->keyword . '%')
+            //     ->where(function ($query) use ($request) {
+            //         $query->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
+            //     });
             $data->where('deskripsi', 'like', '%' . $request->keyword . '%')
-                ->where(function ($query) use ($request) {
-                    $query->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
-                });
+                ->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
         }
 
         if (isset($request->id_kategori_asset)) {

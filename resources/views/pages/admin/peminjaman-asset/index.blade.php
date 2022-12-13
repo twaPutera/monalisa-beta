@@ -1,20 +1,30 @@
 @extends('layouts.admin.main.master')
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
+
 @section('custom_js')
+    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
+        var table = $('#datatableExample');
         $(document).ready(function() {
-            var table = $('#datatableExample');
             table.DataTable({
                 responsive: true,
                 // searchDelay: 500,
                 processing: true,
-                searching: false,
-                bLengthChange: false,
                 serverSide: true,
-                ajax: "{{ route('admin.peminjaman.datatable') }}",
+                ajax: {
+                    url: "{{ route('admin.peminjaman.datatable') }}",
+                    data: function(d) {
+                        d.tanggal_awal = $('#tanggal_awal').val();
+                        d.tanggal_akhir = $('#tanggal_akhir').val();
+                        d.status_peminjaman = $("#status_peminjaman").val();
+                        d.status_approval = $("#status_approval").val();
+                    }
+                },
                 columns: [{
                         data: "DT_RowIndex",
                         class: "text-center",
@@ -117,6 +127,31 @@
                 }
             });
         });
+        $('.datepickerAwal').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerAkhir').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
+            table.DataTable().ajax.reload();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const tanggal_awal = $('#tanggal_awal').val(null);
+            const tanggal_akhir = $('#tanggal_akhir').val(null);
+            const status_peminjaman = $("#status_peminjaman").val(null);
+            const status_approval = $("#status_approval").val(null);
+            table.DataTable().ajax.reload();
+        }
     </script>
 @endsection
 @section('main-content')
@@ -132,7 +167,13 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-
+                                <button onclick="openModalByClass('modalFilterAsset')"
+                                    class="btn btn-sm btn-info shadow-custom" type="button"><i
+                                        class="fas fa-sliders-h mr-2"></i>
+                                    Filter</button>
+                                <button onclick="resetFilterData()" id="resetFilter"
+                                    class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                                        class="fas fa-sync"></i>Reset</button>
                             </div>
                         </div>
                     </div>
@@ -161,4 +202,5 @@
             </div>
         </div>
     </div>
+    @include('pages.admin.peminjaman-asset._modal_filter')
 @endsection

@@ -8,7 +8,7 @@
 @section('custom_css')
     <style>
         div.dataTables_wrapper {
-            width: 200% !important;
+            width: 120% !important;
         }
     </style>
 @endsection

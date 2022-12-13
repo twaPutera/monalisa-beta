@@ -407,7 +407,7 @@
                     if (key == "file_asset_service") {
                         $('#preview-file-image-error').html(errors[key][0]);
                     }
-                    if (key == "file_asset_terbaru") {
+                    if (key == "gambar_asset") {
                         $('#preview-file-image-terbaru-error').html(errors[key][0]);
                     }
                 }

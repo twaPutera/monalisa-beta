@@ -91,7 +91,7 @@ class LokasiQueryServices
                 }
             }
         }
-        
+
         $lokasi = $lokasi->where('id_parent_lokasi', null)
             ->get();
         foreach ($lokasi as $item) {
