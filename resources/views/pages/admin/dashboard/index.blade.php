@@ -636,7 +636,9 @@
                 pembagi = 1000;
             }
 
-            return (number / pembagi).toFixed(2) + ' ' + satuan;
+            let numberFormat = formatNumber((number / pembagi).toFixed(2));
+
+            return numberFormat + ' ' + satuan;
         }
 
         const generateChartAssetSummary = (data) => {
@@ -677,7 +679,7 @@
                 tooltip: {
                     trigger: 'item',
                     formatter: function(params) {
-                        return `${params.name} : <br/> ${formatNumber(params.value)}`;
+                        return `${params.name} : <br/> Rp ${formatNumber(params.value)}`;
                     }
                 },
                 legend: {
@@ -709,7 +711,7 @@
                 tooltip: {
                     trigger: 'item',
                     formatter: function(params) {
-                        return `${params.name} : <br/> ${formatNumber(params.value)}`;
+                        return `${params.name} : <br/>Rp ${formatNumber(params.value)}`;
                     }
                 },
                 legend: {
@@ -797,6 +799,13 @@
                 legend: {
                     show: false,
                 },
+                grid: {
+                    left: '5%',
+                    containLabel: true,
+                    top: '5%',
+                    bottom: '5%',
+                    right: '5%',
+                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -855,7 +864,10 @@
                 },
                 grid: {
                     left: '10%',
-                    containLabel: true
+                    containLabel: true,
+                    top: '0%',
+                    bottom: '20%',
+                    right: '10%',
                 },
                 legend: {
                     show: false,
@@ -1110,7 +1122,7 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body p-0">
-                    <div id="chartPenerimaanAsset" style="margin-top: -30px; height: 270px;"></div>
+                    <div id="chartPenerimaanAsset" style="height: 280px;"></div>
                 </div>
             </div>
         </div>
@@ -1141,7 +1153,7 @@
                         </div>
                         <div class="col-8 p-0 m-0">
                             <div style="height: 250px;">
-                                <div id="chartSummaryService" style="height: 300px; margin-top: -60px;"></div>
+                                <div id="chartSummaryService" style="height: 300px; "></div>
                             </div>
                         </div>
                     </div>
