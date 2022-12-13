@@ -2,8 +2,8 @@
 
 namespace App\Services\AssetService;
 
-use App\Helpers\CutText;
 use App\Models\Service;
+use App\Helpers\CutText;
 use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
@@ -14,8 +14,8 @@ use App\Models\PerencanaanServices;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
-use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateStatusRequest;
+use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
 
 class AssetServiceCommandServices
@@ -24,14 +24,14 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '1')
                         ->where('id', $id)->first();
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '0')
@@ -67,12 +67,11 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-
-        if ($request->status_service == "selesai") {
-            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+        if ($request->status_service == 'selesai') {
+            $asset_data->status_kondisi = $request->status_kondisi == 'baik' ? 'bagus' : $request->status_kondisi;
             $asset_data->save();
         } else {
-            $asset_data->status_kondisi = "maintenance";
+            $asset_data->status_kondisi = 'maintenance';
             $asset_data->save();
         }
 
@@ -85,7 +84,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -115,14 +114,14 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '1')
                         ->where('id', $request->id_asset)->first();
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '0')
@@ -157,12 +156,11 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-
-        if ($request->status_service == "selesai") {
-            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+        if ($request->status_service == 'selesai') {
+            $asset_data->status_kondisi = $request->status_kondisi == 'baik' ? 'bagus' : $request->status_kondisi;
             $asset_data->save();
         } else {
-            $asset_data->status_kondisi = "maintenance";
+            $asset_data->status_kondisi = 'maintenance';
             $asset_data->save();
         }
         $detail_asset_service = new DetailService();
@@ -174,7 +172,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -194,14 +192,14 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '1')
                         ->where('id', $id)->first();
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
                         ->where('is_draft', '0')
                         ->where('is_it', '0')
@@ -237,11 +235,11 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
-        if ($request->status_service == "selesai") {
-            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+        if ($request->status_service == 'selesai') {
+            $asset_data->status_kondisi = $request->status_kondisi == 'baik' ? 'bagus' : $request->status_kondisi;
             $asset_data->save();
         } else {
-            $asset_data->status_kondisi = "maintenance";
+            $asset_data->status_kondisi = 'maintenance';
             $asset_data->save();
         }
 
@@ -254,7 +252,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, "Penambahan", $request->keterangan_service);
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -284,7 +282,7 @@ class AssetServiceCommandServices
         $detail_asset_service->tindakan = $request->tindakan;
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', "Perubahan Informasi Services");
+        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', 'Perubahan Informasi Services');
         return $asset_service;
     }
 
@@ -302,11 +300,11 @@ class AssetServiceCommandServices
 
         $detail_asset_service = DetailService::where('id_service', $asset_service->id)->firstOrFail();
         $asset_data = AssetData::where('id', $detail_asset_service->id_asset_data)->first();
-        if ($request->status_service == "selesai") {
-            $asset_data->status_kondisi = $request->status_kondisi == "baik" ? "bagus" : $request->status_kondisi;
+        if ($request->status_service == 'selesai') {
+            $asset_data->status_kondisi = $request->status_kondisi == 'baik' ? 'bagus' : $request->status_kondisi;
             $asset_data->save();
         } else {
-            $asset_data->status_kondisi = "maintenance";
+            $asset_data->status_kondisi = 'maintenance';
             $asset_data->save();
         }
 

@@ -2,14 +2,14 @@
 
 namespace App\Services\Keluhan;
 
+use App\Models\User;
 use App\Models\Pengaduan;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\LogPengaduanAsset;
-use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
-use App\Models\User;
 use App\Notifications\UserNotification;
+use App\Http\Requests\Keluhan\KeluhanUpdateRequest;
 
 class KeluhanCommandServices
 {
@@ -24,7 +24,7 @@ class KeluhanCommandServices
         $asset_pengaduan->save();
 
         $pelapor = User::find($asset_pengaduan->created_by);
-        $status_pengaduan =  $request->status_pengaduan == "selesai" ? "diselesaikan" : "diproses";
+        $status_pengaduan =  $request->status_pengaduan == 'selesai' ? 'diselesaikan' : 'diproses';
 
         $notifikasi = [
             'title' => 'Pengaduan Asset',

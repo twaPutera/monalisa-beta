@@ -70,7 +70,6 @@ class AssetOpnameCommandServices
             $asset_images->path = $filenamesave;
             $asset_images->save();
 
-
             $filename_opname = self::generateNameImageLogAsset($request->file('gambar_asset')->getClientOriginalExtension(), $opname_log->id);
             $path_opname = storage_path('app/images/asset-opname');
 

@@ -2,10 +2,10 @@
 
 namespace App\Services\Pengaduan;
 
-use App\Helpers\SsoHelpers;
-use App\Models\LogPengaduanAsset;
 use App\Models\Pengaduan;
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
+use App\Models\LogPengaduanAsset;
 
 class PengaduanQueryServices
 {
@@ -40,14 +40,14 @@ class PengaduanQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             $pengaduan->with(['asset_data', 'asset_data.lokasi', 'image', 'lokasi']);
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $pengaduan->whereHas('asset_data', function ($query) use ($request) {
                         $query->where('is_it', '1');
                     });
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $pengaduan->whereHas('asset_data', function ($query) use ($request) {
                         $query->where('is_it', '0');
                     });

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Pengaduan\PengaduanQueryServices;
-use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 use App\Services\Notification\NotificationQueryServices;
 use App\Services\Notification\NotificationCommandServices;
+use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 
 class DashboardController extends Controller
 {
@@ -40,7 +40,7 @@ class DashboardController extends Controller
             'success' => true,
             'data' => [
                 'total_aduan' => $data_pengaduan,
-                'total_peminjaman' => $data_peminjaman
+                'total_peminjaman' => $data_peminjaman,
             ],
         ]);
     }

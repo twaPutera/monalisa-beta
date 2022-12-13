@@ -3,20 +3,20 @@
 namespace App\Services\PemindahanAsset;
 
 use Exception;
+use App\Models\User;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PemindahanAsset;
 use App\Models\DetailPemindahanAsset;
+use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Session;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetStoreRequest;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
-use App\Models\User;
-use App\Notifications\UserNotification;
 
 class PemindahanAssetCommandServices
 {
@@ -153,7 +153,7 @@ class PemindahanAssetCommandServices
         $message_log = 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' berhasil dibuat pada asset ' . $asset->deskripsi;;
         $this->assetDataCommandServices->insertLogAsset($asset->id, $message_log);
 
-        if (!config('app.sso_siska')) {
+        if (! config('app.sso_siska')) {
             $notifikasi = [
                 'title' => 'Pemindahan Asset',
                 'message' => 'Pemindahan asset dengan nomor surat ' . $request->no_bast . ' telah dibuat, silahkan melakukan approval',

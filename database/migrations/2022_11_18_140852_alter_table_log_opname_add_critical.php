@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AlterTableLogOpnameAddCritical extends Migration
 {
@@ -14,7 +14,7 @@ class AlterTableLogOpnameAddCritical extends Migration
     public function up()
     {
         Schema::table('log_asset_opnames', function (Blueprint $table) {
-            $table->string('kritikal',100)->after('tanggal_opname');
+            $table->string('kritikal', 100)->after('tanggal_opname');
         });
     }
 

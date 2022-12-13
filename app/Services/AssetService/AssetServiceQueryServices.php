@@ -3,9 +3,9 @@
 namespace App\Services\AssetService;
 
 use App\Models\Service;
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Helpers\DateIndoHelpers;
-use App\Helpers\SsoHelpers;
 use App\Models\PerencanaanServices;
 
 class AssetServiceQueryServices
@@ -110,13 +110,13 @@ class AssetServiceQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $status_backlog->where('asset_data.is_it', '1');
                     $status_selesai->where('asset_data.is_it', '1');
                     $status_on_progress->where('asset_data.is_it', '1');
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $status_backlog->where('asset_data.is_it', '0');
                     $status_selesai->where('asset_data.is_it', '0');
                     $status_on_progress->where('asset_data.is_it', '0');
@@ -162,11 +162,11 @@ class AssetServiceQueryServices
                 $query->whereMonth('services.created_at', $request->month);
             }
 
-            if (!isset($request->global)) {
+            if (! isset($request->global)) {
                 if ($user) {
-                    if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                         $query->where('asset_data.is_it', '1');
-                    } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                    } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                         $query->where('asset_data.is_it', '0');
                     }
                 }

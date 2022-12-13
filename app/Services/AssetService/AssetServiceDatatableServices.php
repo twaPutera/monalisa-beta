@@ -2,18 +2,17 @@
 
 namespace App\Services\AssetService;
 
-use App\Helpers\SsoHelpers;
 use Carbon\Carbon;
 use App\Models\Service;
 use App\Models\AssetData;
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Models\LogServiceAsset;
-use App\Models\PerencanaanServices;
 use Yajra\DataTables\DataTables;
+use App\Models\PerencanaanServices;
 use App\Services\User\UserQueryServices;
 use Yajra\DataTables\Contracts\DataTable;
 use App\Services\UserSso\UserSsoQueryServices;
-use Illuminate\Support\Facades\Auth;
 
 class AssetServiceDatatableServices
 {
@@ -110,15 +109,15 @@ class AssetServiceDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->whereHas('detail_service', function ($query) use ($request) {
                         $query->whereHas('asset_data', function ($query) use ($request) {
                             $query->where('is_it', '1');
                         });
                     });
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $query->whereHas('detail_service', function ($query) use ($request) {
                         $query->whereHas('asset_data', function ($query) use ($request) {
                             $query->where('is_it', '0');
@@ -191,7 +190,7 @@ class AssetServiceDatatableServices
                     } else {
                         $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
                     }
-                } else if ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     if ($item->detail_service->asset_data->is_it == 0) {
                         if ($item->status_service != 'selesai') {
                             $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
@@ -266,11 +265,11 @@ class AssetServiceDatatableServices
         ]);
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $query->where('asset_data.is_it', 0);
                 }
             }
@@ -305,8 +304,6 @@ class AssetServiceDatatableServices
         if (isset($request->keyword)) {
             $query->where('asset_data.deskripsi', 'like', '%' . $request->keyword . '%');
         }
-
-
 
         // SORT
         $order_column_index = $filter['order'][0]['column'] ?? 0;
@@ -432,13 +429,13 @@ class AssetServiceDatatableServices
                 $element = '';
                 $user = SsoHelpers::getUserLogin();
                 if ($user) {
-                    if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                    if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                         if ($item->asset_data->is_it == 1) {
                             $element .= '<button type="button" onclick="addServicesFromPerencanaan(this)" data-url_show="' . route('admin.services.find-perencanaan-service', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>
                             </button>';
                         }
-                    } else if ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
+                    } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                         if ($item->asset_data->is_it == 0) {
                             $element .= '<button type="button" onclick="addServicesFromPerencanaan(this)" data-url_show="' . route('admin.services.find-perencanaan-service', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>

@@ -6,12 +6,12 @@ use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\Pengaduan\PengaduanCommandServices;
 use App\Http\Requests\Pengaduan\PengaduanStoreRequest;
 use App\Http\Requests\Pengaduan\PengaduanUpdateRequest;
-use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 
 class PengaduanController extends Controller
 {

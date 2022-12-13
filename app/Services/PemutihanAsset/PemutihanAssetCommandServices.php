@@ -34,11 +34,11 @@ class PemutihanAssetCommandServices
         $request->validated();
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
@@ -47,7 +47,7 @@ class PemutihanAssetCommandServices
         } else {
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -121,11 +121,11 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
@@ -134,7 +134,7 @@ class PemutihanAssetCommandServices
         } else {
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -211,7 +211,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -230,11 +230,11 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
-                } elseif ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
@@ -243,7 +243,7 @@ class PemutihanAssetCommandServices
         } else {
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (!isset($approver)) {
+        if (! isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
