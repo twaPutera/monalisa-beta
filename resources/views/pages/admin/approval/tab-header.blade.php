@@ -4,7 +4,7 @@
             href="{{ route('admin.approval.peminjaman.index') }}">Peminjaman (<span
                 id="peminjaman-approval-count">0</span>)</a>
     </li>
-    @if (Auth::user()->role == 'manager')
+    @if (Auth::user()->role == 'manager_it' || Auth::user()->role == 'manager_asset')
         <li class="nav-item dropdown">
             <a class="nav-link @if (\Request::segment(3) == 'pemutihan') active @endif"
                 href="{{ route('admin.approval.pemutihan.index') }}">Pemutihan (<span
