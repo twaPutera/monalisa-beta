@@ -156,7 +156,8 @@
             type: 'GET',
             dataType: 'json',
             data: {
-                url: "{{ \Request::segment(3) }}"
+                role: "{{ $user->role }}",
+                user_id: "{{ $user->id }}"
             },
             success: function(response) {
                 const tab_peminjaman = $("#peminjaman-approval-count");
@@ -171,11 +172,11 @@
                     daftar_approval.empty();
                     approval_task.empty();
 
-                    tab_pemindahan.append(response.data.total_approval_pemindahan);
-                    tab_pemutihan.append(response.data.total_approval_pemutihan);
-                    tab_peminjaman.append(response.data.total_approval_peminjaman);
-                    daftar_approval.append(response.data.daftar_approval);
-                    approval_task.append(response.data.approval_task);
+                    tab_pemindahan.append(response.data.approval_pemindahan_asset);
+                    tab_pemutihan.append(response.data.approval_pemutihan_asset);
+                    tab_peminjaman.append(response.data.approval_peminjaman + response.data.approval_perpancangan_peminjaman_asset);
+                    daftar_approval.append(response.data.total_approval);
+                    approval_task.append(response.data.total_approval);
                 }
             }
         })
