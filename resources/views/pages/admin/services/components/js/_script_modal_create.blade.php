@@ -1,13 +1,20 @@
 <script>
     $('.modalCreateAssetService').on('shown.bs.modal', function() {
         setTimeout(() => {
-            generateSelect2Lokasi('lokasiAssetCreateService');
+            // generateSelect2Lokasi('lokasiAssetCreateService');
             generateAssetSelect2Create('listAssetLocation', 'root');
             generateSelect2KategoriService('kategoriServiceCreate');
             generateAssetServiceDateSelect2Create('listAssetServicesDate');
             $('#listAssetLocationPerencanaan').select2({
                 width: '100%',
                 placeholder: 'Pilih Asset',
+                allowClear: true,
+                parent: $(this)
+            });
+
+            $('#lokasiAssetCreateService').select2({
+                width: '100%',
+                placeholder: 'Pilih Lokasi',
                 allowClear: true,
                 parent: $(this)
             });
@@ -78,30 +85,26 @@
         })
     }
 
-    const generateSelect2Lokasi = (id) => {
-        $('#' + id).select2({
-            width: '100%',
-            placeholder: 'Pilih Lokasi',
-            dropdownParent: $('.modal.show'),
-            ajax: {
-                url: '{{ route('admin.setting.lokasi.get-select2') }}',
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        keyword: params.term, // search term
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.data,
-                    };
-                },
-                cache: true
-            },
-        });
+    const generateOptionLokasi = () => {
+        $.ajax({
+            url: '{{ route('admin.setting.lokasi.get-select2') }}',
+            type: 'GET',
+            success: function (response) {
+                if (response.success) {
+                    let data = response.data;
+                    let option = '';
+                    data.forEach(element => {
+                        option += `<option value="${element.id}">${element.text}</option>`;
+                    });
+                    $('#lokasiAssetCreateService').append(option);
+                }
+            }
+        })
     }
+
+    $(document).ready(function() {
+        generateOptionLokasi();
+    })
 
     const generateAssetSelect2Create = (idElement, idLokasi) => {
         $('#' + idElement).removeAttr('disabled');

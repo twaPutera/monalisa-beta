@@ -1,7 +1,12 @@
 <script>
     $('.modalFilterAsset').on('shown.bs.modal', function() {
         setTimeout(() => {
-            generateSelect2Lokasi('lokasiAssetCreateService');
+            // generateSelect2Lokasi('lokasiAssetCreateService');
+            $('.lokasiSelect').select2({
+                width: '100%',
+                placeholder: 'Pilih Lokasi',
+                dropdownParent: $('.modal.show'),
+            });
             generateAssetSelect2Create('listAssetLocation', 'root');
         }, 2000);
     });
@@ -13,6 +18,27 @@
     $('#listAssetLocation').on('change', function() {
         generateSelect2Lokasi('lokasiAssetCreateService');
     });
+
+    const generateOptionLokasi = () => {
+        $.ajax({
+            url: '{{ route('admin.setting.lokasi.get-select2') }}',
+            type: 'GET',
+            success: function (response) {
+                if (response.success) {
+                    let data = response.data;
+                    let option = '';
+                    data.forEach(element => {
+                        option += `<option value="${element.id}">${element.text}</option>`;
+                    });
+                    $('.lokasiSelect').append(option);
+                }
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        generateOptionLokasi();
+    })
 
     const generateSelect2Lokasi = (id) => {
         $('#' + id).select2({

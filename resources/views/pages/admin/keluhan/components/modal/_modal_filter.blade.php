@@ -10,7 +10,7 @@
             <div class="modal-body row">
                 <div class="form-group col-md-6 col-12">
                     <label for="">Lokasi</label>
-                    <select name="id_lokasi" class="form-control" id="lokasiAssetCreateService">
+                    <select name="id_lokasi" class="form-control lokasiSelect" id="lokasiAssetCreateService">
 
                     </select>
                 </div>
