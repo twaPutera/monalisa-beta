@@ -103,9 +103,11 @@
     });
 
     $('.modalCreateOpname').on('shown.bs.modal', function() {
-        setTimeout(() => {
-            generateSelect2Lokasi('lokasiAssetOpname');
-        }, 2000);
+        $('#lokasiAssetOpname').select2({
+            width: '100%',
+            placeholder: 'Pilih Lokasi',
+            dropdownParent: $('.modal.show'),
+        });
     });
 
     $('#groupAssetCreate').on('change', function() {

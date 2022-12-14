@@ -728,6 +728,27 @@
                 }
             })
         }
+
+        const generateOptionLokasi = () => {
+            $.ajax({
+                url: '{{ route('admin.setting.lokasi.get-select2') }}',
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $('#lokasiAssetOpname').append(option);
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function() {
+            generateOptionLokasi();
+        })
     </script>
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
 @endsection
