@@ -10,9 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Services\Lokasi\LokasiQueryServices;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
-use App\Http\Requests\Services\ServicesUpdateStatusRequest;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\AssetService\AssetServiceCommandServices;
+use App\Http\Requests\Services\ServicesUpdateStatusRequest;
 use App\Services\AssetService\AssetServiceDatatableServices;
 
 class ServicesController extends Controller
@@ -48,7 +48,7 @@ class ServicesController extends Controller
         foreach ($allLokasi as $itemLokasi) {
             foreach ($allDetail as $itemServices) {
                 if ($itemServices->where('id_lokasi', $itemLokasi->id)->count() >= $data['totalLokasi']) {
-                    $data['namaLokasi'] =  !empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : 'Tidak Ada';
+                    $data['namaLokasi'] =  ! empty($itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi) ? $itemServices->where('id_lokasi', $itemLokasi->id)->first()->lokasi->nama_lokasi : 'Tidak Ada';
                     $data['totalLokasi'] = $itemServices->where('id_lokasi', $itemLokasi->id)->count();
                 }
             }

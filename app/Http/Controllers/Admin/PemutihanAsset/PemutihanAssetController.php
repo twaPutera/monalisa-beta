@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetQueryServices;
+use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 use App\Services\PemutihanAsset\PemutihanAssetCommandServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreRequest;
 use App\Services\PemutihanAsset\PemutihanAssetDatatableServices;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
-use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
 
 class PemutihanAssetController extends Controller
 {
@@ -122,7 +122,7 @@ class PemutihanAssetController extends Controller
                 foreach ($request->file('gambar_asset') as $file) {
                     $extension = $file->getClientOriginalExtension();
                     $allowedfileExtension = ['jpeg', 'png', 'jpg', 'gif', 'svg'];
-                    if (!in_array($extension, $allowedfileExtension)) {
+                    if (! in_array($extension, $allowedfileExtension)) {
                         return response()->json([
                             'success' => false,
                             'message' => 'Terdapat file yang tidak sesuai dengan format',

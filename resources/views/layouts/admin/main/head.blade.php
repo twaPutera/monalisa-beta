@@ -30,7 +30,7 @@
     <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     @yield('plugin_css')
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('custom-css/bootstrap-validation-v3.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link href="{{ asset('custom-css/bootstrap-validation-v3.css') }}" rel="stylesheet" type="text/css" /> --}}
     <link href="{{ asset('custom-css/theme-mod.css') }}" rel="stylesheet" type="text/css" />
     @yield('custom_css')
 

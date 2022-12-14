@@ -64,9 +64,9 @@ class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles,
 
         $user = SsoHelpers::getUserLogin();
         if ($user) {
-            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+            if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                 $query->where('asset_data.is_it', 1);
-            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+            } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                 $query->orWhere('pengaduans.id_asset_data', null);
                 $query->orWhere('asset_data.is_it', 0);
             }

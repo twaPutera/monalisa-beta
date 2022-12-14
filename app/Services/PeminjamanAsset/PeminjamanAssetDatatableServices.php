@@ -37,6 +37,34 @@ class PeminjamanAssetDatatableServices
             });
         }
 
+        if (isset($request->tanggal_awal)) {
+            $query->where('tanggal_peminjaman', '>=', $request->tanggal_awal);
+        }
+
+        if (isset($request->tanggal_akhir)) {
+            $query->where('tanggal_pengembalian', '<=', $request->tanggal_akhir);
+        }
+
+        if (isset($request->status_peminjaman)) {
+            if ($request->status_peminjaman != 'all') {
+                $query->where('status', $request->status_peminjaman);
+            }
+        }
+
+        if (isset($request->status_approval)) {
+            if ($request->status_approval != 'all') {
+                $query->whereHas('approval', function ($query) use ($request) {
+                    $query->where('is_approve', $request->status_approval);
+                });
+            }
+
+            if ($request->status_approval == 'other') {
+                $query->whereHas('approval', function ($query) use ($request) {
+                    $query->where('is_approve', null);
+                });
+            }
+        }
+
         $query->orderBy('created_at', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
@@ -46,7 +74,7 @@ class PeminjamanAssetDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                $element .= '<a href="'. route('admin.peminjaman.detail', $item->id) .'" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                $element .= '<a href="' . route('admin.peminjaman.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>
                             </a>';
                 return $element;

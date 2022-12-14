@@ -68,9 +68,9 @@ class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, S
 
         $user = SsoHelpers::getUserLogin();
         if ($user) {
-            if ($user->role == 'manager_it' || $user->role == "staff_it") {
+            if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                 $query->where('asset_data.is_it', 1);
-            } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+            } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                 $query->where('asset_data.is_it', 0);
             }
         }

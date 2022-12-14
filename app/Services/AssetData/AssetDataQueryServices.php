@@ -4,13 +4,13 @@ namespace App\Services\AssetData;
 
 use App\Models\AssetData;
 use App\Models\AssetImage;
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
-use App\Helpers\SsoHelpers;
 use App\Models\PeminjamanAsset;
 use App\Models\GroupKategoriAsset;
-use App\Models\DetailPemindahanAsset;
 use App\Models\PerencanaanServices;
+use App\Models\DetailPemindahanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -100,10 +100,12 @@ class AssetDataQueryServices
         $data = AssetData::query();
 
         if (isset($request->keyword)) {
+            // $data->where('deskripsi', 'like', '%' . $request->keyword . '%')
+            //     ->where(function ($query) use ($request) {
+            //         $query->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
+            //     });
             $data->where('deskripsi', 'like', '%' . $request->keyword . '%')
-                ->where(function ($query) use ($request) {
-                    $query->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
-                });
+                ->orWhere('kode_asset', 'like', '%' . $request->keyword . '%');
         }
 
         if (isset($request->id_kategori_asset)) {
@@ -124,11 +126,11 @@ class AssetDataQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $data->where('is_it', 1);
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $data->where('is_it', 0);
                 }
             }
@@ -148,7 +150,6 @@ class AssetDataQueryServices
 
         return $results;
     }
-
 
     public function getDataAssetForDashboardUser(string $user_id)
     {
@@ -329,7 +330,7 @@ class AssetDataQueryServices
         $user = SsoHelpers::getUserLogin();
         foreach ($group_kategori_asset as $item) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $nilai_buku = AssetData::query()
                         ->whereHas('kategori_asset', function ($query) use ($item) {
                             $query->where('id_group_kategori_asset', $item->id);
@@ -339,7 +340,7 @@ class AssetDataQueryServices
                         ->where('is_draft', '0')
                         ->where('status_kondisi', '!=', 'pengembangan')
                         ->sum('nilai_buku_asset');
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $nilai_buku = AssetData::query()
                         ->whereHas('kategori_asset', function ($query) use ($item) {
                             $query->where('id_group_kategori_asset', $item->id);
@@ -360,7 +361,6 @@ class AssetDataQueryServices
                         ->sum('nilai_buku_asset');
                 }
             }
-
 
             $data[] = [
                 'name' => $item->nama_group,
@@ -384,7 +384,7 @@ class AssetDataQueryServices
         $user = SsoHelpers::getUserLogin();
         foreach ($group_kategori_asset as $item) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $nilai_perolehan = AssetData::query()
                         ->whereHas('kategori_asset', function ($query) use ($item) {
                             $query->where('id_group_kategori_asset', $item->id);
@@ -394,7 +394,7 @@ class AssetDataQueryServices
                         ->where('is_draft', '0')
                         ->where('status_kondisi', '!=', 'pengembangan')
                         ->sum('nilai_perolehan');
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $nilai_perolehan = AssetData::query()
                         ->whereHas('kategori_asset', function ($query) use ($item) {
                             $query->where('id_group_kategori_asset', $item->id);
@@ -416,7 +416,6 @@ class AssetDataQueryServices
                 }
             }
 
-
             $data[] = [
                 'name' => $item->nama_group,
                 'value' => $nilai_perolehan,
@@ -431,7 +430,6 @@ class AssetDataQueryServices
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $data = [];
         foreach ($status as $item) {
-
             $count_asset = AssetData::query()
                 ->where('status_kondisi', $item)
                 ->where('is_pemutihan', '0')
@@ -482,7 +480,6 @@ class AssetDataQueryServices
 
     public function getAvgDepresiasiAsset()
     {
-
         $asset = AssetData::query()
             ->select([
                 'id',

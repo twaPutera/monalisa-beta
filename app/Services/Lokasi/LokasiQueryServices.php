@@ -2,10 +2,10 @@
 
 namespace App\Services\Lokasi;
 
-use App\Models\AssetData;
 use App\Models\Lokasi;
-use App\Models\PerencanaanServices;
+use App\Models\AssetData;
 use Illuminate\Http\Request;
+use App\Models\PerencanaanServices;
 
 class LokasiQueryServices
 {
@@ -70,7 +70,7 @@ class LokasiQueryServices
     public function generateAllSelect2(Request $request)
     {
         $arraySelect2 = [];
-        if (!isset($request->keyword)) {
+        if (! isset($request->keyword)) {
             $arraySelect2[] = [
                 'id' => 'root',
                 'text' => 'Universitas Pertamina',
@@ -83,15 +83,15 @@ class LokasiQueryServices
         }
 
         if (isset($request->id_asset)) {
-            $perencanaan = PerencanaanServices::where('id',$request->id_asset)->first();
-            if($perencanaan){
+            $perencanaan = PerencanaanServices::where('id', $request->id_asset)->first();
+            if ($perencanaan) {
                 $asset = AssetData::where('id', $perencanaan->id_asset_data)->first();
                 if ($asset) {
                     $lokasi->where('id', $asset->id_lokasi);
                 }
             }
         }
-        
+
         $lokasi = $lokasi->where('id_parent_lokasi', null)
             ->get();
         foreach ($lokasi as $item) {

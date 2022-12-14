@@ -2,6 +2,7 @@
 
 namespace App\Imports\SheetAsset;
 
+use Carbon\Carbon;
 use App\Models\Lokasi;
 use App\Models\Vendor;
 use App\Models\AssetData;
@@ -11,7 +12,6 @@ use App\Models\SatuanAsset;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
-use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -59,7 +59,6 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($row[5], ($id_kategori->umur_asset * 12));
         $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($tanggal_perolehan, ($id_kategori->umur_asset * 12));
 
-
         $data_asset = AssetData::create([
             'id_vendor' => $id_vendor,
             'id_lokasi' => $id_lokasi,
@@ -92,7 +91,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'tanggal_awal_depresiasi' => $tgl_awal_depresiasi,
             'tanggal_akhir_depresiasi' => DepresiasiHelpers::getAkhirTanggalDepresiasi($tgl_awal_depresiasi, $id_kategori->umur_asset),
             'is_draft' => 1,
-            'is_it' => $row[19] == "IT" ? 1 : 0,
+            'is_it' => $row[19] == 'IT' ? 1 : 0,
         ]);
         return $data_asset;
     }

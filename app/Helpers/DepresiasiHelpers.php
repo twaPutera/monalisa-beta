@@ -139,7 +139,7 @@ class DepresiasiHelpers
             $lama_bulan = $lama_bulan - 1;
         }
 
-        for($i=0; $i<$lama_bulan; $i++) {
+        for ($i=0; $i<$lama_bulan; $i++) {
             $tanggal_loop = date('Y-m-d', strtotime($tanggal_awal_depresiasi . ' +'.$i.' month'));
             $nilai_buku_awal = $nilai_buku;
             $nilai_buku = $nilai_buku - $asset->nilai_depresiasi;

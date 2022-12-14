@@ -2,12 +2,12 @@
 
 namespace App\Services\AssetData;
 
-use App\Helpers\SsoHelpers;
+use App\Models\Lokasi;
 use App\Models\LogAsset;
 use App\Models\AssetData;
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
-use App\Models\Lokasi;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -108,16 +108,16 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (!isset($request->is_pemutihan)) {
+        if (! isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', '1');
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $query->where('is_it', '0');
                 }
             }
@@ -202,11 +202,11 @@ class AssetDataDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', 1);
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $query->where('is_it', 0);
                 }
             }
@@ -353,11 +353,11 @@ class AssetDataDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
-                if ($user->role == 'manager_it' || $user->role == "staff_it") {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);
-                } else if ($user->role == 'manager_asset' || $user->role == "staff_asset") {
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $query->where('asset_data.is_it', 0);
                 }
             }
