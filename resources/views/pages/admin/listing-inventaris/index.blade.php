@@ -371,8 +371,8 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>Jenis Bahan Habis Pakai</th>
-                                    <th>Kategori Bahan Habis Pakai</th>
                                     <th>Merk Bahan Habis Pakai</th>
+                                    <th>Kategori Bahan Habis Pakai</th>
                                     <th>Jumlah Bahan Habis Pakai Sebelumnya</th>
                                     <th>Jumlah Bahan Habis Pakai Saat Ini</th>
                                     <th>Deskripsi Bahan Habis Pakai</th>

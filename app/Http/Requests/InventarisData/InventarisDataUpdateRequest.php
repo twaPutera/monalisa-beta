@@ -31,4 +31,16 @@ class InventarisDataUpdateRequest extends FormRequest
             'deskripsi_inventori' => 'required|string|max:255',
         ];
     }
+
+
+    public function attributes()
+    {
+        return [
+            'id_kategori_inventori' => 'Id kategori bahan habis pakai',
+            'id_satuan_inventori' => 'Id satuan bahan habis pakai',
+            'kode_inventori' => 'Jenis bahan habis pakai',
+            'nama_inventori' => 'Merk bahan habis pakai',
+            'deskripsi_inventori' => 'Deskripsi bahan habis pakai',
+        ];
+    }
 }

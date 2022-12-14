@@ -34,20 +34,24 @@ class PemutihanAssetCommandServices
         $request->validated();
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
+                    $is_it = 1;
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
+                    $is_it = 0;
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $is_it = 2;
                 }
             }
         } else {
+            $is_it = 2;
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = new PemutihanAsset();
@@ -59,6 +63,7 @@ class PemutihanAssetCommandServices
         $pemutihan->status = 'Draft';
         $pemutihan->created_by = config('app.sso_siska') ? $user->guid : $user->id;
         $pemutihan->is_store = 0;
+        $pemutihan->is_it = $is_it;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->save();
 
@@ -121,20 +126,24 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
+                    $is_it = 1;
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
+                    $is_it = 0;
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $is_it = 2;
                 }
             }
         } else {
+            $is_it = 2;
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         $pemutihan = PemutihanAsset::findOrFail($id);
@@ -159,6 +168,7 @@ class PemutihanAssetCommandServices
         }
         $pemutihan->status = $request->status_pemutihan;
         $pemutihan->is_store = 1;
+        $pemutihan->is_it = $is_it;
         $pemutihan->save();
 
         if ($request->status_pemutihan == 'Publish') {
@@ -211,7 +221,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -230,20 +240,24 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
+                    $is_it = 1;
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
+                    $is_it = 0;
                 } else {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $is_it = 2;
                 }
             }
         } else {
+            $is_it = 2;
             $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (! isset($approver)) {
+        if (!isset($approver)) {
             throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
         }
         if ($request->hasFile('file_berita_acara')) {
@@ -292,6 +306,7 @@ class PemutihanAssetCommandServices
         $pemutihan->nama_pemutihan = $request->nama_pemutihan;
         $pemutihan->keterangan = $request->keterangan_pemutihan;
         $pemutihan->status = $request->status_pemutihan;
+        $pemutihan->is_it = $is_it;
         $pemutihan->save();
 
         if ($request->status_pemutihan == 'Publish') {

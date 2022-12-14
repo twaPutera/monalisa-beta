@@ -56,6 +56,10 @@
                         data: 'status'
                     },
                     {
+                        name: 'is_it',
+                        data: 'is_it'
+                    },
+                    {
                         name: 'created_by',
                         data: 'created_by'
                     },
@@ -78,6 +82,23 @@
                             } else if (data == "Ditolak") {
                                 element +=
                                     `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
+                            }
+                            return element;
+                        },
+                    },
+                    {
+                        targets: 7,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "1") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Departemen IT</span>`;
+                            } else if (data == "0") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline">Departemen Asset</span>`;
+                            } else if (data == "2") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">General</span>`;
                             }
                             return element;
                         },
@@ -184,7 +205,7 @@
                     let element = formElement.find(`[name=${key}]`);
                     clearValidation(element);
                     showValidation(element, errors[key][0]);
-                    if (key == "file_asset_service") {
+                    if (key == "file_berita_acara") {
                         $('#preview-file-image-error').html(errors[key][0]);
                         $('#preview-file-image-error-update').html(errors[key][0]);
                     }
@@ -416,6 +437,7 @@
                                     <th>No Berita Acara</th>
                                     <th>Keterangan Pemutihan</th>
                                     <th>Status Pemutihan</th>
+                                    <th>Kepemilikan Pemutihan</th>
                                     <th>Diajukan Oleh</th>
                                 </tr>
                             </thead>
