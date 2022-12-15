@@ -347,7 +347,7 @@ class PemutihanAssetController extends Controller
                 'success' => true,
                 'message' => 'Berhasil mengubah data pemutihan asset',
                 'data' => $pemutihan,
-                'reload' => true,
+                'redirect' => true,
             ], 200);
         } catch (Throwable $th) {
             DB::rollBack();
