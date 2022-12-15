@@ -1,4 +1,4 @@
-<div class="modal fade modalCreateAsset" id="modalEdit" role="dialog" data-backdrop="static" data-keyboard="false"
+<div class="modal fade modalEditAsset" id="modalEdit" role="dialog" data-backdrop="static" data-keyboard="false"
     aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -66,11 +66,8 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Lokasi Asset</label>
-                                <select name="id_lokasi" class="form-control" id="lokasiAssetCreate">
-                                    @if (isset($asset->lokasi))
-                                        <option selected="selected" value="{{ $asset->lokasi->id }}">
-                                            {{ $asset->lokasi->nama_lokasi }}</option>
-                                    @endif
+                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
+
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">

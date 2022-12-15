@@ -217,6 +217,13 @@ class PeminjamanAssetCommandServices
             $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
             $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
 
+            logger('Peminjaman', [
+                'id' => $peminjaman->id,
+                'tanggal_pengembalian' => $tanggal_pengembalian,
+                'minutes' => $minutes,
+                'now' => now()->addMinutes($minutes)->format('Y-m-d H:i:s'),
+            ]);
+
             PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
         }
 
@@ -285,6 +292,13 @@ class PeminjamanAssetCommandServices
 
             $tanggal_pengembalian = $peminjaman->tanggal_pengembalian . ' ' . $peminjaman->jam_selesai;
             $minutes = DateIndoHelpers::getDiffMinutesFromTwoDates($tanggal_pengembalian, date('Y-m-d H:i:s'));
+
+            logger('Peminjaman', [
+                'id' => $peminjaman->id,
+                'tanggal_pengembalian' => $tanggal_pengembalian,
+                'minutes' => $minutes,
+                'now' => now()->addMinutes($minutes)->format('Y-m-d H:i:s'),
+            ]);
 
             PeminjamanDueDateJob::dispatch($peminjaman->id, $tanggal_pengembalian)->delay(now()->addMinutes($minutes));
         }

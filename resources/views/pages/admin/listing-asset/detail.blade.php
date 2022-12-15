@@ -740,6 +740,8 @@
                         data.forEach(element => {
                             option += `<option value="${element.id}">${element.text}</option>`;
                         });
+                        $('#lokasiAssetEdit').append(option);
+                        $('#lokasiAssetEdit option[value="{{ $asset->id_lokasi }}"]').prop('selected', 'selected');
                         $('#lokasiAssetOpname').append(option);
                     }
                 }
@@ -850,7 +852,7 @@
                                 @if ($user->role == 'manager_it' || $user->role == 'staff_it')
                                     @if ($asset->is_it == 1)
                                         @if ($asset->is_pemutihan != 1)
-                                            <button onclick="openModalByClass('modalCreateAsset')"
+                                            <button onclick="openModalByClass('modalEditAsset')"
                                                 class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
                                                     class="fa fa-edit"></i></button>
                                         @endif
@@ -858,14 +860,14 @@
                                 @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
                                     @if ($asset->is_it == 0)
                                         @if ($asset->is_pemutihan != 1)
-                                            <button onclick="openModalByClass('modalCreateAsset')"
+                                            <button onclick="openModalByClass('modalEditAsset')"
                                                 class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
                                                     class="fa fa-edit"></i></button>
                                         @endif
                                     @endif
                                 @else
                                     @if ($asset->is_pemutihan != 1)
-                                        <button onclick="openModalByClass('modalCreateAsset')"
+                                        <button onclick="openModalByClass('modalEditAsset')"
                                             class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
                                                 class="fa fa-edit"></i></button>
                                     @endif

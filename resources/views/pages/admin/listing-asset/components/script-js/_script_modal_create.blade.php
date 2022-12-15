@@ -102,6 +102,22 @@
         }, 2000);
     });
 
+    $('.modalEditAsset').on('shown.bs.modal', function() {
+        setTimeout(() => {
+            generateGroupSelect2('groupAssetCreate');
+            $('#lokasiAssetEdit').select2({
+                width: '100%',
+                placeholder: 'Pilih Lokasi',
+                dropdownParent: $('.modal.show'),
+            });
+            generateKelasAsset();
+            generateSatuanAsset();
+            generateVendorAsset();
+            generateOwnerAsset();
+            generateMemorandumAndinSelect2();
+        }, 2000);
+    });
+
     $('.modalCreateOpname').on('shown.bs.modal', function() {
         $('#lokasiAssetOpname').select2({
             width: '100%',
