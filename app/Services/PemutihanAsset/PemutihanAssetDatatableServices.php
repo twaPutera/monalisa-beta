@@ -24,9 +24,10 @@ class PemutihanAssetDatatableServices
         $query = PemutihanAsset::query();
         // $query->join('detail_pemutihan_assets', 'pemutihan_assets.id', 'detail_pemutihan_assets.id_pemutihan_asset');
         // $query->join('asset_data', 'asset_data.id', 'detail_pemutihan_assets.id_asset_data');
-        $query->select([
-            'pemutihan_assets.*',
-        ]);
+        // $query->select([
+        //     'pemutihan_assets.*',
+        // ]);
+
         $user = SsoHelpers::getUserLogin();
         if (!isset($request->global)) {
             if ($user) {
@@ -39,26 +40,36 @@ class PemutihanAssetDatatableServices
                 }
             }
         }
-        $query->orderBy('pemutihan_assets.created_at', 'desc');
+        // SEARCH
+        $search = $request->toArray();
+        $search_column = $search['search']['value'];
+        if ($search_column != null) {
+            $query->where('nama_pemutihan', 'like', '%' . $search_column . '%')
+                ->orWhere('tanggal', 'like', '%' . $search_column . '%')
+                ->orWhere('keterangan', 'like', '%' . $search_column . '%')
+                ->orWhere('no_memo', 'like', '%' . $search_column . '%');
+        }
+
+        $query->orderBy('created_at', 'desc');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('keterangan', function ($item) {
-                return empty($item->keterangan) ? 'Tidak Ada' : $item->keterangan;
+                return !isset($item->keterangan) ? 'Tidak Ada' : $item->keterangan;
             })
             ->addColumn('tanggal', function ($item) {
-                return empty($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
+                return !isset($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
             })
             ->addColumn('nama_pemutihan', function ($item) {
-                return empty($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
+                return !isset($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
             })
             ->addColumn('no_memo', function ($item) {
-                return empty($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
+                return !isset($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
             })
             ->addColumn('status', function ($item) {
-                return empty($item->status) ? 'Tidak Ada' : $item->status;
+                return !isset($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('is_it', function ($item) {
-                return empty($item->is_it) ? 'Tidak Ada' : $item->is_it;
+                return !isset($item->is_it) ? 'Tidak Ada' : $item->is_it;
             })
             ->addColumn('created_by', function ($item) {
                 $name = 'Not Found';
@@ -174,33 +185,45 @@ class PemutihanAssetDatatableServices
     public function datatableDetail(Request $request)
     {
         $query = DetailPemutihanAsset::query();
-        $query->with(['asset_data']);
-
+        // $query->with(['asset_data']);
+        $query->join('asset_data', 'detail_pemutihan_assets.id_asset_data', 'asset_data.id');
+        $query->select([
+            'detail_pemutihan_assets.*',
+            'asset_data.is_pemutihan',
+            'asset_data.is_it',
+            'asset_data.deskripsi',
+            'asset_data.kode_asset',
+            'asset_data.status_kondisi',
+        ]);
         if (isset($request->id_pemutihan_detail)) {
             $query->where('id_pemutihan_asset', $request->id_pemutihan_detail);
         }
 
         if (isset($request->is_pemutihan)) {
-            $query->whereHas('asset_data', function ($q) use ($request) {
-                $q->where('is_pemutihan', $request->is_pemutihan);
-            });
+            $query->where('asset_data.is_pemutihan', $request->is_pemutihan);
         }
-
         $user = SsoHelpers::getUserLogin();
         if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
-                    $query->whereHas('asset_data', function ($q) use ($request) {
-                        $q->where('is_it', '1');
-                    });
+                    $query->where('asset_data.is_it', '1');
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
-                    $query->whereHas('asset_data', function ($q) use ($request) {
-                        $q->where('is_it', '0');
-                    });
+                    $query->where('asset_data.is_it', '0');
                 }
             }
         }
-        $query->orderBy('created_at', 'desc');
+
+        // Search
+        $search = $request->toArray();
+        $search_column = $search['search']['value'];
+        if ($search_column != null) {
+            $query->where('keterangan_pemutihan', 'like', '%' . $search_column . '%')
+                ->orWhere('asset_data.deskripsi', 'like', '%' . $search_column . '%')
+                ->orWhere('asset_data.status_kondisi', 'like', '%' . $search_column . '%')
+                ->orWhere('asset_data.kode_asset', 'like', '%' . $search_column . '%');
+        }
+
+        $query->orderBy('detail_pemutihan_assets.created_at', 'desc');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('file_gambar', function ($item) {
