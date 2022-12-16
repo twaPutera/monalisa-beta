@@ -412,6 +412,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
 Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:user|manager_asset|manager_it|staff_asset|staff_it|admin']], function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard.index');
     Route::get('/profile', [UserDashboardController::class, 'profile'])->name('user.dashboard.profile');
+    Route::get('/about', [UserDashboardController::class, 'about'])->name('user.dashboard.about');
     Route::get('/dashboard/get-summary-dashboard', [UserDashboardController::class, 'getDashboardData'])->name('user.get-summary-dashboard');
     Route::group(['prefix' => 'notification'], function () {
         Route::get('/', [UserDashboardController::class, 'notification'])->name('user.notification.index');

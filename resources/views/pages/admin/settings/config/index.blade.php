@@ -1,5 +1,9 @@
 @extends('layouts.admin.main.master')
 @section('plugin_css')
+     <link href="{{ asset('assets/vendors/general/summernote/dist/summernote.css') }}" rel="stylesheet" type="text/css" />
+@endsection
+@section('plugin_js')
+    <script src="{{ asset('assets/vendors/general/summernote/dist/summernote.js') }}" type="text/javascript"></script>
 @endsection
 @section('custom_js')
     <script>
@@ -22,7 +26,15 @@
                     showValidation(element, errors[key][0]);
                 }
             });
+
+            summerNotesInit();
         });
+
+        const summerNotesInit = () => {
+            $('.summernote').summernote({
+                height: 150
+            });
+        }
     </script>
 @endsection
 @section('main-content')
@@ -51,11 +63,19 @@
                         @csrf
                         <div class="row">
                             @foreach ($sistemConfigs as $item)
-                                <div class="form-group col-md-6 col-12">
-                                    <label for="">{{ $item->config_name }}</label>
-                                    <input type="text" class="form-control" value="{{ $item->value }}"
-                                        name="config[{{ $item->config }}]">
-                                </div>
+                                @if ($item->config == 'tentang_aplikasi')
+                                    <div class="form-group col-md-12 col-12">
+                                        <label for="">{{ $item->config_name }}</label>
+                                        <textarea name="config[{{ $item->config }}]" id="" cols="30" rows="10"
+                                            class="form-control summernote">{{ $item->value }}</textarea>
+                                    </div>
+                                @else
+                                    <div class="form-group col-md-12 col-12">
+                                        <label for="">{{ $item->config_name }}</label>
+                                        <input type="text" class="form-control" value="{{ $item->value }}"
+                                            name="config[{{ $item->config }}]">
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                         <div class="d-flex justify-content-end">

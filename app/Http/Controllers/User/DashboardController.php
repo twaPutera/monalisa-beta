@@ -8,6 +8,7 @@ use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\Notification\NotificationQueryServices;
 use App\Services\Notification\NotificationCommandServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use App\Services\SistemConfig\SistemConfigQueryServices;
 
 class DashboardController extends Controller
 {
@@ -15,21 +16,30 @@ class DashboardController extends Controller
     protected $peminjamanAssetQueryServices;
     protected $notificationQueryServices;
     protected $notificationCommandServices;
+    protected $sistemConfigQueryServices;
 
     public function __construct(
         PengaduanQueryServices $pengaduanQueryServices,
         PeminjamanAssetQueryServices $peminjamanAssetQueryServices,
         NotificationQueryServices $notificationQueryServices,
-        NotificationCommandServices $notificationCommandServices
+        NotificationCommandServices $notificationCommandServices,
+        SistemConfigQueryServices $sistemConfigQueryServices
     ) {
         $this->pengaduanQueryServices = $pengaduanQueryServices;
         $this->peminjamanAssetQueryServices = $peminjamanAssetQueryServices;
         $this->notificationQueryServices = $notificationQueryServices;
         $this->notificationCommandServices = $notificationCommandServices;
+        $this->sistemConfigQueryServices = $sistemConfigQueryServices;
     }
     public function index()
     {
         return view('pages.user.dashboard');
+    }
+
+    public function about()
+    {
+        $tentang_aplikasi = $this->sistemConfigQueryServices->findByConfig('tentang_aplikasi');
+        return view('pages.user.about', compact('tentang_aplikasi'));
     }
 
     public function getDashboardData(Request $request)

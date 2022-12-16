@@ -72,7 +72,7 @@
                 <div class="listview-title mt-1">Lainnya</div>
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
-                        <a href="app-settings.html" class="item">
+                        <a href="{{ route('user.dashboard.about') }}" class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="information-circle-outline"></ion-icon>
                             </div>
