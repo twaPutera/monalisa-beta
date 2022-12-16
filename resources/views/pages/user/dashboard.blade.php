@@ -60,6 +60,7 @@
                 success: function(response) {
                     if (response.success) {
                         $('#totalAduan').text(response.data.total_aduan);
+                        $('#totalApproval').text(response.data.total_approval);
                         $('#totalPeminjaman').text(response.data.total_peminjaman);
                     }
                 },
@@ -370,11 +371,11 @@
             <!-- Wallet Footer -->
             <div class="wallet-footer justify-content-between">
                 <div class="item">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
-                        <div class="icon-wrapper bg-primary">
+                    <a href="{{ route('user.approval.index') }}" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
+                        <div class="icon-wrapper bg-primary" id="totalApproval">
                             0
                         </div>
-                        <strong>Aset</strong>
+                        <strong>Pemindahan Aset</strong>
                     </a>
                 </div>
                 <div class="item">

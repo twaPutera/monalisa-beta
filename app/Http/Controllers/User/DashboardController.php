@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Approval\ApprovalQueryServices;
 use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\Notification\NotificationQueryServices;
 use App\Services\Notification\NotificationCommandServices;
@@ -17,19 +18,22 @@ class DashboardController extends Controller
     protected $notificationQueryServices;
     protected $notificationCommandServices;
     protected $sistemConfigQueryServices;
+    protected $approvalQueryServices;
 
     public function __construct(
         PengaduanQueryServices $pengaduanQueryServices,
         PeminjamanAssetQueryServices $peminjamanAssetQueryServices,
         NotificationQueryServices $notificationQueryServices,
         NotificationCommandServices $notificationCommandServices,
-        SistemConfigQueryServices $sistemConfigQueryServices
+        SistemConfigQueryServices $sistemConfigQueryServices,
+        ApprovalQueryServices $approvalQueryServices
     ) {
         $this->pengaduanQueryServices = $pengaduanQueryServices;
         $this->peminjamanAssetQueryServices = $peminjamanAssetQueryServices;
         $this->notificationQueryServices = $notificationQueryServices;
         $this->notificationCommandServices = $notificationCommandServices;
         $this->sistemConfigQueryServices = $sistemConfigQueryServices;
+        $this->approvalQueryServices = $approvalQueryServices;
     }
     public function index()
     {
@@ -46,11 +50,13 @@ class DashboardController extends Controller
     {
         $data_pengaduan = $this->pengaduanQueryServices->countDataByCreatedById($request->created_by);
         $data_peminjaman = $this->peminjamanAssetQueryServices->countDataByGuidPeminjamAsset($request->created_by);
+        $data_approval = $this->approvalQueryServices->countByGuidApprover($request->created_by);
         return response()->json([
             'success' => true,
             'data' => [
                 'total_aduan' => $data_pengaduan,
                 'total_peminjaman' => $data_peminjaman,
+                'total_approval' => $data_approval,
             ],
         ]);
     }

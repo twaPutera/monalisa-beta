@@ -64,4 +64,12 @@ class ApprovalQueryServices
 
         return $summary_approval;
     }
+
+    public function countByGuidApprover(string $guid_approver)
+    {
+        $query = Approval::query();
+        $query->where('guid_approver', $guid_approver);
+        $query->where('is_approve', null);
+        return $query->count();
+    }
 }
