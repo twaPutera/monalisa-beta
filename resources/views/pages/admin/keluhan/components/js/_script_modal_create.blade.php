@@ -69,7 +69,7 @@
         $('#' + idElement).removeAttr('disabled');
         $('#' + idElement).select2({
             width: '100%',
-            placeholder: 'Pilih Jenis',
+            placeholder: 'Pilih Asset',
             dropdownParent: $('.modal.show'),
             ajax: {
                 url: '{{ route('admin.listing-asset.get-all-data-asset-select2') }}',

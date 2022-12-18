@@ -65,12 +65,18 @@
                         </div>
                         <div class="form-group">
                             <label for="">List Asset Yang Akan Diputihkan</label>
-                            <div class="alert alert-danger d-none" id="alert-list-asset">List asset yang diputihkan wajib diisi</div>
+                            <div class="alert alert-danger d-none" id="alert-list-asset">List asset yang diputihkan
+                                wajib diisi</div>
                             <div class="table-responsive">
                                 <div class="input-group mr-3" style="width: 250px;">
-                                    <input type="text" id="searchAsset" class="form-control form-control-sm" placeholder="Search for...">
+                                    <input type="text" id="searchAsset" class="form-control form-control-sm"
+                                        placeholder="Search for...">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary btn-icon" onclick="filterTableService()" id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-primary btn-icon" onclick="filterTableService()"
+                                            id="searchButton" type="button"><i class="fa fa-search"></i></button>
+                                        <button onclick="resetFilterData()" id="resetFilter"
+                                            class="btn btn-sm d-none btn-danger text-white shadow-custom ml-2" type="button"><i
+                                                class="fas fa-sync text-white"></i>Reset</button>
                                     </div>
                                 </div>
                                 <table class="table table-striped mb-0" id="addAssetData">

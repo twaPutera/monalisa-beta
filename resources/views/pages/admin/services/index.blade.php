@@ -180,6 +180,7 @@
         }
 
         const filterTableService = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
             table.DataTable().ajax.reload();
         }
     </script>
@@ -459,6 +460,16 @@
                 }
             })
         }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const month = $('.monthpicker').val(null);
+            const year = $('.yearpicker').val((new Date).getFullYear());
+            const status_service = $("input[name='status_services']:checked").val(null);
+            const id_lokasi = $('#lokasiFilter').val(null);
+            const keyword = $('#searchServices').val(null);
+            table.DataTable().ajax.reload();
+        }
     </script>
     @include('pages.admin.services.components.js._script_modal_create')
 @endsection
@@ -531,6 +542,9 @@
                         class="form-control yearpicker mx-2" style="width: 150px;" placeholder="Tahun">
                     <input type="text" onchange="filterTime()" readonly class="form-control monthpicker mr-2"
                         style="width: 150px;" placeholder="Bulan">
+                    <button onclick="resetFilterData()" id="resetFilter"
+                        class="btn btn-sm d-none btn-danger text-white shadow-custom ml-2 mr-2" type="button"><i
+                            class="fas fa-sync text-white"></i>Reset</button>
                     <button onclick="openModalByClass('modalCreateAssetService')"
                         class="btn btn-primary shadow-custom btn-sm" type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
