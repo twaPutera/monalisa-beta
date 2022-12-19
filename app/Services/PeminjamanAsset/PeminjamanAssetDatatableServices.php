@@ -21,6 +21,8 @@ class PeminjamanAssetDatatableServices
     public function datatable(Request $request)
     {
         $query = PeminjamanAsset::query()
+            ->join('users', 'users.id', '=', 'peminjaman_assets.guid_peminjam_asset')
+            ->select('peminjaman_assets.*', 'users.name as nama_peminjam')
             ->with(['approval']);
 
         if (isset($request->status)) {
@@ -43,6 +45,13 @@ class PeminjamanAssetDatatableServices
 
         if (isset($request->tanggal_akhir)) {
             $query->where('tanggal_pengembalian', '<=', $request->tanggal_akhir);
+        }
+
+        if (isset($request->keyword)) {
+            $query->where(function ($query) use($request) {
+                $query->where('code', 'LIKE', '%' . $request->keyword . '%');
+                $query->orWhere('users.name', 'LIKE', '%' . $request->keyword . '%');
+            });
         }
 
         if (isset($request->status_peminjaman)) {
@@ -68,10 +77,10 @@ class PeminjamanAssetDatatableServices
         $query->orderBy('created_at', 'DESC');
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('nama_peminjam', function ($row) {
-                $peminjam = json_decode($row->json_peminjam_asset);
-                return $peminjam->name;
-            })
+            // ->addColumn('nama_peminjam', function ($row) {
+            //     $peminjam = json_decode($row->json_peminjam_asset);
+            //     return $peminjam->name;
+            // })
             ->addColumn('action', function ($item) {
                 $element = '';
                 $element .= '<a href="' . route('admin.peminjaman.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">

@@ -15,6 +15,8 @@
                 responsive: true,
                 // searchDelay: 500,
                 processing: true,
+                searching: false,
+                bLengthChange: false,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('admin.peminjaman.datatable') }}",
@@ -23,6 +25,7 @@
                         d.tanggal_akhir = $('#tanggal_akhir').val();
                         d.status_peminjaman = $("#status_peminjaman").val();
                         d.status_approval = $("#status_approval").val();
+                        d.keyword = $("#searchPeminjaman").val();
                     }
                 },
                 columns: [{
@@ -38,6 +41,9 @@
                         orderable: false,
                         searchable: false,
                         name: 'action'
+                    },
+                    {
+                        data: 'code'
                     },
                     {
                         data: 'nama_peminjam'
@@ -61,7 +67,7 @@
                 columnDefs: [
                     //Custom template data
                     {
-                        targets: [6],
+                        targets: [7],
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'disetujui') {
@@ -90,7 +96,7 @@
                         },
                     },
                     {
-                        targets: [7],
+                        targets: [8],
                         render: function(data, type, full, meta) {
                             let element =
                                 '<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Pending</span>';
@@ -179,12 +185,23 @@
                     </div>
                 </div>
                 <div class="kt-portlet__body">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="input-group mr-3" style="width: 250px;">
+                            <input type="text" id="searchPeminjaman" class="form-control form-control-sm"
+                                placeholder="Search for...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
+                                    type="button"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped dt_table" id="datatableExample">
                             <thead>
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
+                                    <th>Kode Peminjaman</th>
                                     <th>Nama Peminjam</th>
                                     <th>Tanggal Peminjaman</th>
                                     <th>Tanggal Pengembalian</th>
