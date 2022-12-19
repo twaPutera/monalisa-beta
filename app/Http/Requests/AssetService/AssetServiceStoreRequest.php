@@ -32,7 +32,7 @@ class AssetServiceStoreRequest extends FormRequest
             'permasalahan' => 'required|string|max:255',
             'id_kategori_service' => 'required|uuid|exists:kategori_services,id',
             'tindakan' => 'required|string|max:255',
-            'catatan' => 'required|string|max:255',
+            'catatan' => 'nullable|string|max:255',
             'status_service' => 'required|in:onprogress,backlog,selesai',
             'keterangan_service' => 'required|string|max:255',
             'status_kondisi' => 'required|in:baik,rusak',

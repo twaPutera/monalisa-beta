@@ -283,7 +283,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
         $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', 'Perubahan Informasi Services');
-        return $asset_service;
+        return $detail_asset_service;
     }
 
     public function updateStatusServices(string $id, ServicesUpdateStatusRequest $request)

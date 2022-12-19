@@ -59,9 +59,12 @@
                                     <option>Pilih Jenis Perolehan</option>
                                     <option {{ $asset->jenis_penerimaan == 'PO' ? 'selected' : '' }} value="PO">PO
                                     </option>
-                                    <option {{ $asset->jenis_penerimaan == 'Hibah' ? 'selected' : '' }} value="Hibah">
-                                        Hibah
-                                    </option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Eksternal' ? 'selected' : '' }}
+                                        value="Hibah Eksternal">Hibah Eksternal</option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Penelitian' ? 'selected' : '' }}
+                                        value="Hibah Penelitian">Hibah Penelitian</option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Perorangan' ? 'selected' : '' }}
+                                        value="Hibah Perorangan">Hibah Perorangan</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">

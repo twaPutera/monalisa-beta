@@ -111,7 +111,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '3' => 'required|string|max:255',
             '4' => 'required|date_format:d/m/Y',
             '5' => 'required|numeric',
-            '6' => 'required|string|in:PO,Hibah',
+            '6' => 'required|string|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             // '7' => 'required|numeric',
             // '8' => 'nullable|string|max:50',
             '7' => 'nullable|string|max:50',

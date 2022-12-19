@@ -52,7 +52,9 @@
                                 <select class="form-control" onchange="jenisAssetChange(this)" name="jenis_penerimaan">
                                     <option selected="">Pilih Jenis Perolehan</option>
                                     <option data-asset-lama="0" value="PO">PO</option>
-                                    <option data-asset-lama="0" value="Hibah">Hibah</option>
+                                    <option data-asset-lama="0" value="Hibah Eksternal">Hibah Eksternal</option>
+                                    <option data-asset-lama="0" value="Hibah Penelitian">Hibah Penelitian</option>
+                                    <option data-asset-lama="0" value="Hibah Perorangan">Hibah Perorangan</option>
                                     <option data-asset-lama="1" value="Dari Asset Lama">Dari Asset Lama</option>
                                 </select>
                             </div>

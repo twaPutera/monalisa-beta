@@ -58,7 +58,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             // 'Tanggal Register',
             'Tanggal Perolehan (Format: d/m/Y)*',
             'Nilai Perolehan *',
-            'Jenis Perolehan (Opsi: PO/Hibah) *',
+            'Jenis Perolehan (Opsi: PO/Hibah Eksternal/Hibah Penelitian/Hibah Perorangan) *',
             // 'Nilai Buku Asset *',
             // 'No Memorandum',
             'No PO',

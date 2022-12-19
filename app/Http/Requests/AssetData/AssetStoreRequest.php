@@ -34,7 +34,7 @@ class AssetStoreRequest extends FormRequest
             'tanggal_perolehan' => 'required|date',
             'nilai_perolehan' => 'required|numeric',
             // 'nilai_buku_asset' => 'required|numeric|lte:nilai_perolehan',
-            'jenis_penerimaan' => 'required|string|max:255',
+            'jenis_penerimaan' => 'required|string|max:255|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             'ownership' => 'nullable|uuid',
             // 'tgl_register' => 'required|date|date_format:Y-m-d',
             // 'register_oleh' => 'required|uuid',

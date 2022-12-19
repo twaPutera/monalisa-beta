@@ -34,7 +34,7 @@ class AssetUpdateDraftRequest extends FormRequest
             'deskripsi' => 'required|string|max:255',
             'tanggal_perolehan' => 'date',
             'nilai_perolehan' => 'numeric',
-            'jenis_penerimaan' => 'required|string|max:255',
+            'jenis_penerimaan' => 'required|string|max:255|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             'ownership' => 'nullable|uuid',
             // 'tgl_register' => 'date|date_format:Y-m-d',
             // 'register_oleh' => 'uuid',

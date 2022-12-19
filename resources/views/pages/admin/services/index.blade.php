@@ -296,7 +296,7 @@
                     form.find('input[name=tanggal_mulai_service]').val(response.data.tanggal_mulai);
                     form.find('textarea[name=permasalahan]').val(response.data.detail_service.permasalahan);
                     form.find('textarea[name=tindakan]').val(response.data.detail_service.tindakan);
-                    form.find('textarea[name=catatan]').val(response.data.detail_service.tindakan);
+                    form.find('textarea[name=catatan]').val(response.data.detail_service.catatan);
                     modal.on('shown.bs.modal', function(e) {
                         $('#kategoriServiceUpdate option[value="' + response.data
                             .id_kategori_service + '"]').attr('selected', 'selected');

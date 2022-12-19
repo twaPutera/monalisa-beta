@@ -25,7 +25,7 @@ class ServicesUpdateRequest extends FormRequest
     {
         return [
             'tindakan' => 'required|string|max:255',
-            'catatan' => 'required|string|max:255',
+            'catatan' => 'nullable|string|max:255',
         ];
     }
 }
