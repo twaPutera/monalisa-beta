@@ -34,4 +34,9 @@ class PeminjamanAsset extends Model
     {
         return $this->hasMany(LogPeminjamanAsset::class, 'peminjaman_asset_id', 'id');
     }
+
+    public function peminjam()
+    {
+        return $this->belongsTo(User::class, 'guid_peminjam_asset', 'id');
+    }
 }
