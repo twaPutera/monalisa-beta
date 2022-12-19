@@ -22,12 +22,12 @@
                     </select>
                 </div>
                 <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Awal</label>
+                    <label for="">Tanggal Mulai Services</label>
                     <input type="text" name="tanggal_awal" readonly class="form-control datepickerAwal mx-2"
                         placeholder="Tanggal Awal">
                 </div>
                 <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Akhir</label>
+                    <label for="">Tanggal Selesai Services</label>
                     <input type="text" name="tanggal_akhir" readonly class="form-control datepickerAkhir mr-2"
                         placeholder="Tanggal Akhir">
                 </div>

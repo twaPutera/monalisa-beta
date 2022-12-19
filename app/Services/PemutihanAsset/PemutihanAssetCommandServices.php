@@ -70,9 +70,18 @@ class PemutihanAssetCommandServices
         for ($i = 0; $i < count($request->id_checkbox); $i++) {
             $id_checkbox = $request->id_checkbox[$i];
             $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
+            $find_asset_in_detail = DetailPemutihanAsset::where('id_asset_data', $find_asset->id)->first();
+            if ($find_asset_in_detail) {
+                throw new Exception('Asset Yang Dipilih Sudah Ada Pada BAST Pemutihan!');
+                break;
+            }
+            if ($find_asset->is_it != '0') {
+                throw new Exception('Asset Sudah Diputihkan!');
+                break;
+            }
             $detail_pemutihan = new DetailPemutihanAsset();
             $detail_pemutihan->id_pemutihan_asset = $pemutihan->id;
-            $detail_pemutihan->id_asset_data = $id_checkbox;
+            $detail_pemutihan->id_asset_data = $find_asset->id;
             $detail_pemutihan->json_asset = json_encode($find_asset);
             $detail_pemutihan->save();
         }

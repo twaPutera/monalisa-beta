@@ -21,7 +21,7 @@ class ApprovalQueryServices
 
         if ($request->role == 'manager_it' || $request->role == 'staff_it') {
             $is_it = '1';
-        } elseif($request->role == 'manager_asset' || $request->role == 'staff_asset') {
+        } elseif ($request->role == 'manager_asset' || $request->role == 'staff_asset') {
             $is_it = '0';
         }
 
@@ -42,24 +42,26 @@ class ApprovalQueryServices
             ->where('approvable_type', 'App\\Models\\PemindahanAsset')
             ->where('approvals.is_approve', null);
 
+        $approval_pemutihan_asset = Approval::query()
+            ->join('pemutihan_assets', 'pemutihan_assets.id', '=', 'approvals.approvable_id')
+            ->where('approvable_type', 'App\\Models\\PemutihanAsset')
+            ->where('approvals.is_approve', null)
+            ->where('guid_approver', $request->user_id);
+
         if (isset($is_it)) {
             $approval_peminjaman->where('peminjaman_assets.is_it', $is_it);
             $approval_perpancangan_peminjaman_asset->where('perpanjangan_peminjaman_assets.is_it', $is_it);
             $approval_pemindahan_asset->where('asset_data.is_it', $is_it);
+            $approval_pemutihan_asset->where('pemutihan_assets.is_it', $is_it);
         }
 
-        $approval_pemutihan_asset = Approval::query()
-            ->where('approvable_type', 'App\\Models\\PemutihanAsset')
-            ->where('approvals.is_approve', null)
-            ->where('guid_approver', $request->user_id)
-            ->count();
 
         $summary_approval = [
             'approval_peminjaman' => $approval_peminjaman->count(),
             'approval_perpancangan_peminjaman_asset' => $approval_perpancangan_peminjaman_asset->count(),
             'approval_pemindahan_asset' => $approval_pemindahan_asset->count(),
-            'approval_pemutihan_asset' => $approval_pemutihan_asset,
-            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset
+            'approval_pemutihan_asset' => $approval_pemutihan_asset->count(),
+            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset->count()
         ];
 
         return $summary_approval;

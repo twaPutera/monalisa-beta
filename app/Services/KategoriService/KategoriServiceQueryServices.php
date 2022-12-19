@@ -22,10 +22,12 @@ class KategoriServiceQueryServices
         $data = KategoriService::query();
 
         if (isset($request->keyword)) {
+            // $data->where('nama_service', 'like', '%' . $request->keyword . '%')
+            //     ->where(function ($query) use ($request) {
+            //         $query->orWhere('kode_service', 'like', '%' . $request->keyword . '%');
+            //     });
             $data->where('nama_service', 'like', '%' . $request->keyword . '%')
-                ->where(function ($query) use ($request) {
-                    $query->orWhere('kode_service', 'like', '%' . $request->keyword . '%');
-                });
+                ->orWhere('kode_service', 'like', '%' . $request->keyword . '%');
         }
 
         $data = $data->orderby('nama_service', 'asc')

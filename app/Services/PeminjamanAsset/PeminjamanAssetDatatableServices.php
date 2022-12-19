@@ -136,8 +136,12 @@ class PeminjamanAssetDatatableServices
             });
         }
 
-        if (isset($request->start_date) && isset($request->end_date)) {
-            $query->whereBetween('log_peminjaman_assets.created_at', [$request->start_date, $request->end_date]);
+        if (isset($request->start_date)) {
+            $query->where('log_peminjaman_assets.created_at', '>=', $request->start_date . ' 00:00:00');
+        }
+
+        if (isset($request->end_date)) {
+            $query->where('log_peminjaman_assets.created_at', '<=', $request->end_date . ' 23:59:00');
         }
 
         if (isset($request->peminjaman_asset_id)) {
