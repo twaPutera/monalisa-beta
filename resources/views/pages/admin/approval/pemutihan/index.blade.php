@@ -26,6 +26,7 @@
                     data: function(d) {
                         // d.is_approve = null;
                         d.approvable_type = 'App\\Models\\PemutihanAsset';
+                        d.guid_approver = "{{ $user->id }}"
                     }
                 },
                 columns: [{

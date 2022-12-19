@@ -16,7 +16,7 @@
     });
 
     $('#listAssetLocation').on('change', function() {
-        generateSelect2Lokasi('lokasiAssetCreateService');
+        // generateSelect2Lokasi('lokasiAssetCreateService');
     });
 
     const generateOptionLokasi = () => {
