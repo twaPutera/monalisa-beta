@@ -18,14 +18,16 @@ class PemutihanAssetQueryServices
     public function findAll()
     {
         $query = PemutihanAsset::query();
-        $query->join('detail_pemutihan_assets', 'pemutihan_assets.id', 'detail_pemutihan_assets.id_pemutihan_asset');
-        $query->join('asset_data', 'asset_data.id', 'detail_pemutihan_assets.id_asset_data');
+        // $query->join('detail_pemutihan_assets', 'pemutihan_assets.id', 'detail_pemutihan_assets.id_pemutihan_asset');
+        // $query->join('asset_data', 'asset_data.id', 'detail_pemutihan_assets.id_asset_data');
         $user = SsoHelpers::getUserLogin();
         if ($user) {
             if ($user->role == 'manager_it' || $user->role == 'staff_it') {
-                $query->where('asset_data.is_it', '1');
+                // $query->where('asset_data.is_it', '1');
+                $query->where('is_it', 1);
             } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
-                $query->where('asset_data.is_it', '0');
+                // $query->where('asset_data.is_it', '0');
+                $query->where('is_it', 0);
             }
         }
         return $query->get();
@@ -34,7 +36,7 @@ class PemutihanAssetQueryServices
     public function findById(string $id, string $status = null)
     {
         $user = null;
-        if (! empty($status)) {
+        if (!empty($status)) {
             $data = PemutihanAsset::query()
                 ->with(['approval', 'detail_pemutihan_asset', 'detail_pemutihan_asset.asset_data', 'detail_pemutihan_asset.asset_data.lokasi'])
                 ->where('id', $id)

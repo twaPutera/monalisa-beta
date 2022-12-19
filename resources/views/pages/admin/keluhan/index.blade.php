@@ -213,8 +213,10 @@
                     form.attr('action', url_update);
                     if (response.data.asset_data != null) {
                         form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
-                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
-                            .nama_lokasi);
+                        if (response.data.asset_data.lokasi != null) {
+                            form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
+                                .nama_lokasi);
+                        }
                         form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
                             .group_kategori_asset.nama_group);
                         form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset

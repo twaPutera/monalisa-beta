@@ -218,6 +218,7 @@
         });
 
         const filterTableService = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
             table2.DataTable().ajax.reload();
         }
 
@@ -227,6 +228,15 @@
             format: 'yyyy-mm-dd',
             autoclose: true,
         });
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const jenis = $('.jenispicker').val(null);
+            const status_kondisi = $('.kondisipicker').val(null);
+            const searchKeyword = $('#searchAsset').val(null);
+            table2.DataTable().ajax.reload();
+        }
+
 
         $('.check-all').on('change', function() {
             if ($(this).is(':checked')) {
