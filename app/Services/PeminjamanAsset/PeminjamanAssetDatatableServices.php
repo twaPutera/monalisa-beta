@@ -48,7 +48,7 @@ class PeminjamanAssetDatatableServices
         }
 
         if (isset($request->keyword)) {
-            $query->where(function ($query) use($request) {
+            $query->where(function ($query) use ($request) {
                 $query->where('code', 'LIKE', '%' . $request->keyword . '%');
                 $query->orWhere('users.name', 'LIKE', '%' . $request->keyword . '%');
             });

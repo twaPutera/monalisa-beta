@@ -29,7 +29,7 @@ class PemutihanAssetDatatableServices
         // ]);
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     // $query->where('asset_data.is_it', '1');
@@ -56,22 +56,22 @@ class PemutihanAssetDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('keterangan', function ($item) {
-                return !isset($item->keterangan) ? 'Tidak Ada' : $item->keterangan;
+                return ! isset($item->keterangan) ? 'Tidak Ada' : $item->keterangan;
             })
             ->addColumn('tanggal', function ($item) {
-                return !isset($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
+                return ! isset($item->tanggal) ? 'Tidak Ada' : $item->tanggal;
             })
             ->addColumn('nama_pemutihan', function ($item) {
-                return !isset($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
+                return ! isset($item->nama_pemutihan) ? 'Tidak Ada' : $item->nama_pemutihan;
             })
             ->addColumn('no_memo', function ($item) {
-                return !isset($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
+                return ! isset($item->no_memo) ? 'Tidak Ada' : $item->no_memo;
             })
             ->addColumn('status', function ($item) {
-                return !isset($item->status) ? 'Tidak Ada' : $item->status;
+                return ! isset($item->status) ? 'Tidak Ada' : $item->status;
             })
             ->addColumn('is_it', function ($item) {
-                return !isset($item->is_it) ? 'Tidak Ada' : $item->is_it;
+                return ! isset($item->is_it) ? 'Tidak Ada' : $item->is_it;
             })
             ->addColumn('created_by', function ($item) {
                 $name = 'Not Found';
@@ -140,7 +140,7 @@ class PemutihanAssetDatatableServices
             $query->where('id_kategori_asset', $request->jenis);
         }
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', '1');
@@ -205,7 +205,7 @@ class PemutihanAssetDatatableServices
             $query->where('asset_data.is_pemutihan', $request->is_pemutihan);
         }
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', '1');

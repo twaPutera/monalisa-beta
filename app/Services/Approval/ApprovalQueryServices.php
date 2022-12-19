@@ -58,13 +58,12 @@ class ApprovalQueryServices
             $approval_pemutihan_asset->where('pemutihan_assets.is_it', $is_it);
         }
 
-
         $summary_approval = [
             'approval_peminjaman' => $approval_peminjaman->count(),
             'approval_perpancangan_peminjaman_asset' => $approval_perpancangan_peminjaman_asset->count(),
             'approval_pemindahan_asset' => $approval_pemindahan_asset->count(),
             'approval_pemutihan_asset' => $approval_pemutihan_asset->count(),
-            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset->count()
+            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset->count(),
         ];
 
         return $summary_approval;

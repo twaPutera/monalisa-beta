@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Approval\ApprovalQueryServices;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\Pengaduan\PengaduanQueryServices;

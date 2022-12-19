@@ -32,7 +32,6 @@ class InventarisDataUpdateRequest extends FormRequest
         ];
     }
 
-
     public function attributes()
     {
         return [
