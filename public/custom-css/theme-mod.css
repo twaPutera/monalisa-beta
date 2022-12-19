@@ -373,3 +373,7 @@ td {
     color: #ffffff;
     background: #ff0000;
 }
+
+.note-editor.note-frame .panel-heading.note-toolbar {
+    z-index: 999 !important;
+}

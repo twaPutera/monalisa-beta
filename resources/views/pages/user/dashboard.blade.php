@@ -371,7 +371,7 @@
             <!-- Wallet Footer -->
             <div class="wallet-footer justify-content-between">
                 <div class="item">
-                    <a href="{{ route('user.approval.index') }}" data-bs-toggle="modal" data-bs-target="#withdrawActionSheet">
+                    <a href="{{ route('user.approval.index') }}">
                         <div class="icon-wrapper bg-primary" id="totalApproval">
                             0
                         </div>
