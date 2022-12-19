@@ -56,9 +56,9 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             'No Urut Asset',
             'Deskripsi Asset *',
             // 'Tanggal Register',
-            'Tanggal Perolehan *',
+            'Tanggal Perolehan (Format: d/m/Y)*',
             'Nilai Perolehan *',
-            'Jenis Perolehan (PO/Hibah) *',
+            'Jenis Perolehan (Opsi: PO/Hibah) *',
             // 'Nilai Buku Asset *',
             // 'No Memorandum',
             'No PO',
@@ -74,10 +74,10 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             // 'Call Center',
             // 'Umur Manfaat Fisikal',
             // 'Umur Manfaat Komersial',
-            'Status Kondisi Asset (bagus/rusak/maintenance/tidak-lengkap/pengembangan) *',
-            'Status Peminjaman (iya/tidak) *',
-            'Status Sparepart (iya/tidak) *',
-            'Status Pemilik Barang (IT/Asset) *',
+            'Status Kondisi Asset (Opsi: bagus/rusak/maintenance/tidak-lengkap/pengembangan) *',
+            'Status Peminjaman (Opsi: iya/tidak) *',
+            'Status Sparepart (Opsi: iya/tidak) *',
+            'Status Pemilik Barang (Opsi: IT/Asset) *',
         ];
     }
 }
