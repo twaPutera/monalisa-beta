@@ -46,7 +46,10 @@ class ApprovalQueryServices
             ->join('pemutihan_assets', 'pemutihan_assets.id', '=', 'approvals.approvable_id')
             ->where('approvable_type', 'App\\Models\\PemutihanAsset')
             ->where('approvals.is_approve', null)
-            ->where('guid_approver', $request->user_id);
+            ->where('guid_approver', $request->user_id)
+            ->orWhere(function ($query) use ($request) {
+                $query->where('guid_approver', null);
+            });
 
         if (isset($is_it)) {
             $approval_peminjaman->where('peminjaman_assets.is_it', $is_it);

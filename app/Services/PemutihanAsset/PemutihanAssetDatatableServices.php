@@ -44,10 +44,12 @@ class PemutihanAssetDatatableServices
         $search = $request->toArray();
         $search_column = $search['search']['value'];
         if ($search_column != null) {
-            $query->where('nama_pemutihan', 'like', '%' . $search_column . '%')
-                ->orWhere('tanggal', 'like', '%' . $search_column . '%')
-                ->orWhere('keterangan', 'like', '%' . $search_column . '%')
-                ->orWhere('no_memo', 'like', '%' . $search_column . '%');
+            $query->where(function ($query) use ($search_column) {
+                $query->where('nama_pemutihan', 'like', '%' . $search_column . '%')
+                    ->orWhere('tanggal', 'like', '%' . $search_column . '%')
+                    ->orWhere('keterangan', 'like', '%' . $search_column . '%')
+                    ->orWhere('no_memo', 'like', '%' . $search_column . '%');
+            });
         }
 
         $query->orderBy('created_at', 'desc');
@@ -217,10 +219,12 @@ class PemutihanAssetDatatableServices
         $search = $request->toArray();
         $search_column = $search['search']['value'];
         if ($search_column != null) {
-            $query->where('keterangan_pemutihan', 'like', '%' . $search_column . '%')
-                ->orWhere('asset_data.deskripsi', 'like', '%' . $search_column . '%')
-                ->orWhere('asset_data.status_kondisi', 'like', '%' . $search_column . '%')
-                ->orWhere('asset_data.kode_asset', 'like', '%' . $search_column . '%');
+            $query->where(function ($query) use ($search_column) {
+                $query->where('keterangan_pemutihan', 'like', '%' . $search_column . '%')
+                    ->orWhere('asset_data.deskripsi', 'like', '%' . $search_column . '%')
+                    ->orWhere('asset_data.status_kondisi', 'like', '%' . $search_column . '%')
+                    ->orWhere('asset_data.kode_asset', 'like', '%' . $search_column . '%');
+            });
         }
 
         $query->orderBy('detail_pemutihan_assets.created_at', 'desc');

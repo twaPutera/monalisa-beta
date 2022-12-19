@@ -16,7 +16,10 @@ class ApprovalDatatableServices
             ->select('approvals.*');
 
         if (isset($request->guid_approver)) {
-            $query->where('guid_approver', $request->guid_approver);
+            $query->where(function ($query) use ($request) {
+                $query->where('guid_approver', $request->guid_approver)
+                    ->orWhere('guid_approver', null);
+            });
         }
 
         if (isset($request->approvable_type)) {

@@ -43,20 +43,22 @@ class PemutihanAssetCommandServices
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                     $is_it = 0;
                 } else {
-                    $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $approver = null;
                     $is_it = 2;
                 }
             }
         } else {
+            // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+            $approver = null;
             $is_it = 2;
-            $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (!isset($approver)) {
-            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
-        }
+        // if (!isset($approver)) {
+        //     throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        // }
         $pemutihan = new PemutihanAsset();
-        $pemutihan->guid_manager = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
-        $pemutihan->json_manager = config('app.sso_siska') ? json_encode($approver[0]) : json_encode($approver);
+        $pemutihan->guid_manager = isset($approver) ? (config('app.sso_siska') ? $approver[0]['guid'] : $approver->id) : null;
+        $pemutihan->json_manager = isset($approver) ? (config('app.sso_siska') ? json_encode($approver[0]) : json_encode($approver)) : null;
         $pemutihan->tanggal = $request->tanggal;
         $pemutihan->no_memo = $request->no_berita_acara;
         $pemutihan->nama_pemutihan = $request->nama_pemutihan;
@@ -144,17 +146,19 @@ class PemutihanAssetCommandServices
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                     $is_it = 0;
                 } else {
-                    $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $approver = null;
                     $is_it = 2;
                 }
             }
         } else {
             $is_it = 2;
-            $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+            // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+            $approver = null;
         }
-        if (!isset($approver)) {
-            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
-        }
+        // if (!isset($approver)) {
+        //     throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        // }
         $pemutihan = PemutihanAsset::findOrFail($id);
         if ($request->hasFile('gambar_asset')) {
             foreach ($request->file('gambar_asset') as $i => $file) {
@@ -182,7 +186,7 @@ class PemutihanAssetCommandServices
 
         if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
-            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
+            $approval->guid_approver = isset($approver) ? (config('app.sso_siska') ? $approver[0]['guid'] : $approver->id) : null;
             $approval->approvable_type = get_class($pemutihan);
             $approval->approvable_id = $pemutihan->id;
             $approval->save();
@@ -258,17 +262,19 @@ class PemutihanAssetCommandServices
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_asset');
                     $is_it = 0;
                 } else {
-                    $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+                    $approver = null;
                     $is_it = 2;
                 }
             }
         } else {
             $is_it = 2;
-            $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
+            $approver = null;
+            // $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'admin');
         }
-        if (!isset($approver)) {
-            throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
-        }
+        // if (!isset($approver)) {
+        //     throw new Exception('Tidak Manager Asset yang dapat melakukan approval!');
+        // }
         if ($request->hasFile('file_berita_acara')) {
             if (isset($pemutihan->file_bast)) {
                 $path = storage_path('app/file/pemutihan');
@@ -320,7 +326,7 @@ class PemutihanAssetCommandServices
 
         if ($request->status_pemutihan == 'Publish') {
             $approval = new Approval();
-            $approval->guid_approver = config('app.sso_siska') ? $approver[0]['guid'] : $approver->id;
+            $approval->guid_approver = isset($approver) ? (config('app.sso_siska') ? $approver[0]['guid'] : $approver->id) : null;
             $approval->approvable_type = get_class($pemutihan);
             $approval->approvable_id = $pemutihan->id;
             $approval->save();
