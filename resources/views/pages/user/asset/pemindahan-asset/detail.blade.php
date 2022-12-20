@@ -98,7 +98,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Log Terakhir</p>
+                        <p class="mb-0 text-green">Log Service Terakhir</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
