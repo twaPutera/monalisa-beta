@@ -2,10 +2,10 @@
 
 namespace App\Services\PeminjamanAsset;
 
+use Exception;
 use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanAsset;
-use Exception;
 
 class PeminjamanAssetQueryServices
 {
@@ -62,7 +62,7 @@ class PeminjamanAssetQueryServices
     {
         $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval', 'perpanjangan_peminjaman_asset'])->find($id);
 
-        if (!isset($peminjaman)) {
+        if (! isset($peminjaman)) {
             throw new Exception('Peminjaman Asset tidak ditemukan');
         }
 
@@ -81,7 +81,7 @@ class PeminjamanAssetQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $data->where('is_it', 1);

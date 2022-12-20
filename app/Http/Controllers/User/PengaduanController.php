@@ -55,7 +55,6 @@ class PengaduanController extends Controller
                 'message' => 'Data pengaduan asset gagal didapatkan',
             ]);
         }
-
     }
 
     public function store(PengaduanStoreRequest $request)

@@ -11,6 +11,7 @@ use App\Http\Controllers\TestFront\TestingController;
 use App\Http\Controllers\User\AssetPengaduanController;
 use App\Http\Controllers\Admin\Setting\LokasiController;
 use App\Http\Controllers\Admin\Setting\VendorController;
+use App\Http\Controllers\User\BahanHabisPakaiController;
 use App\Http\Controllers\Admin\Keluhan\KeluhanController;
 use App\Http\Controllers\Admin\Services\ServicesController;
 use App\Http\Controllers\Admin\History\DepresiasiController;
@@ -47,7 +48,6 @@ use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPem
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
-use App\Http\Controllers\User\BahanHabisPakaiController;
 
 /*
 |--------------------------------------------------------------------------
