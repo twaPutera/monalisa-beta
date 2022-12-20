@@ -30,7 +30,7 @@ class ApprovalController extends Controller
         try {
             $pemindahan_asset = $this->pemindahanAssetQueryServices->findAll($request);
             $pemindahan_asset->map(function ($item) {
-                $item->link_detail = route('user.approval.detail', ['id' => $item->id]);
+                $item->link_detail = route('admin.approval.pemindahan.change-status', ['id' => $item->id]);
                 $item->asset = json_decode($item->detail_pemindahan_asset->json_asset_data);
                 $item->penerima = json_decode($item->json_penerima_asset);
                 $item->penyerah = json_decode($item->json_penyerah_asset);
