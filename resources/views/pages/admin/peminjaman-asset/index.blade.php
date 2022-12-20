@@ -190,6 +190,7 @@
             const status_peminjaman = $("#status_peminjaman").val(null);
             const guid_peminjam_asset = $("#peminjamSelect2").val(null);
             const status_approval = $("#status_approval").val(null);
+            const keyword = $("#searchPeminjaman").val(null);
             table.DataTable().ajax.reload();
         }
     </script>

@@ -5,6 +5,13 @@
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
+@section('custom_css')
+    <style>
+        .datepicker-months .table-condensed thead {
+            display: none;
+        }
+    </style>
+@endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>

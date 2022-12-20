@@ -7,7 +7,7 @@
 @endsection
 @section('custom_css')
     <style>
-        .table-condensed thead {
+        .datepicker-months .table-condensed thead {
             display: none;
         }
     </style>
