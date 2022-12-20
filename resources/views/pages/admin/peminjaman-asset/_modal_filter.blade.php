@@ -40,6 +40,12 @@
                         <option value="other">Pending</option>
                     </select>
                 </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Peminjam</label>
+                    <select name="peminjam" class="form-control" id="peminjamSelect2">
+
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

@@ -267,6 +267,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::get('/datatable', [AdminPeminjamanAssetController::class, 'datatable'])->name('admin.peminjaman.datatable');
         Route::get('/show/{id}', [AdminPeminjamanAssetController::class, 'show'])->name('admin.peminjaman.show');
         Route::get('/detail/{id}', [AdminPeminjamanAssetController::class, 'detail'])->name('admin.peminjaman.detail');
+        Route::get('/get-data-select2', [AdminPeminjamanAssetController::class, 'getDataPeminjamSelect2'])->name('admin.peminjaman.get-data-select2');
         Route::group(['prefix' => 'detail-asset'], function () {
             Route::get('/datatable', [AdminPeminjamanAssetController::class, 'detailPeminjamanDatatable'])->name('admin.peminjaman.detail-asset.datatable');
             Route::post('/delete/{id}', [AdminPeminjamanAssetController::class, 'deleteDetailPeminjaman'])->name('admin.peminjaman.detail-asset.delete');

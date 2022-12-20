@@ -7,7 +7,9 @@
 @endsection
 @section('custom_css')
     <style>
-
+        .table-condensed thead {
+            display: none;
+        }
     </style>
 @endsection
 @section('plugin_js')

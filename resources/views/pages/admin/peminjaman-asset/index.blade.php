@@ -1,6 +1,7 @@
 @extends('layouts.admin.main.master')
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
 @endsection
@@ -8,6 +9,7 @@
 @section('custom_js')
     <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script>
         var table = $('#datatableExample');
         $(document).ready(function() {
@@ -25,6 +27,7 @@
                         d.tanggal_akhir = $('#tanggal_akhir').val();
                         d.status_peminjaman = $("#status_peminjaman").val();
                         d.status_approval = $("#status_approval").val();
+                        d.guid_peminjam_asset = $("#peminjamSelect2").val();
                         d.keyword = $("#searchPeminjaman").val();
                     }
                 },
@@ -149,12 +152,43 @@
             const reset = $('#resetFilter').removeClass('d-none')
             table.DataTable().ajax.reload();
         }
+        const generatePeminjamFilter = () => {
+            $('#peminjamSelect2').select2({
+                width: '100%',
+                placeholder: 'Pilih Peminjam',
+                dropdownParent: $('.modal.show'),
+                ajax: {
+                    url: '{{ route('admin.peminjaman.get-data-select2') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            keyword: params.term, // search term
+                        };
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.data,
+                        };
+                    },
+                    cache: true
+                },
+            });
+        }
+
+        $('.modalFilterAsset').on('shown.bs.modal', function() {
+            setTimeout(() => {
+                generatePeminjamFilter();
+            }, 2000);
+        });
 
         const resetFilterData = () => {
             const reset = $('#resetFilter').addClass('d-none')
             const tanggal_awal = $('#tanggal_awal').val(null);
             const tanggal_akhir = $('#tanggal_akhir').val(null);
             const status_peminjaman = $("#status_peminjaman").val(null);
+            const guid_peminjam_asset = $("#peminjamSelect2").val(null);
             const status_approval = $("#status_approval").val(null);
             table.DataTable().ajax.reload();
         }

@@ -2,8 +2,10 @@
 
 namespace App\Services\PeminjamanAsset;
 
+use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanAsset;
+use Exception;
 
 class PeminjamanAssetQueryServices
 {
@@ -60,10 +62,44 @@ class PeminjamanAssetQueryServices
     {
         $peminjaman = PeminjamanAsset::query()->with(['request_peminjaman_asset.kategori_asset', 'detail_peminjaman_asset', 'approval', 'perpanjangan_peminjaman_asset'])->find($id);
 
-        if (! isset($peminjaman)) {
+        if (!isset($peminjaman)) {
             throw new Exception('Peminjaman Asset tidak ditemukan');
         }
 
         return $peminjaman;
+    }
+
+    public function getDataPeminjamSelect2(Request $request)
+    {
+        $data = PeminjamanAsset::query()
+            ->join('users', 'users.id', '=', 'peminjaman_assets.guid_peminjam_asset')
+            ->select('peminjaman_assets.*', 'users.name as nama_peminjam');
+
+        if (isset($request->keyword)) {
+            $data->where('users.name', 'like', '%' . $request->keyword . '%')
+                ->orWhere('peminjaman_assets.code', 'like', '%' . $request->keyword . '%');
+        }
+
+        $user = SsoHelpers::getUserLogin();
+        if (!isset($request->global)) {
+            if ($user) {
+                if ($user->role == 'manager_it' || $user->role == 'staff_it') {
+                    $data->where('is_it', 1);
+                } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
+                    $data->where('is_it', 0);
+                }
+            }
+        }
+        $data = $data->orderby('created_at', 'asc')
+            ->get();
+        $results = [];
+        foreach ($data as $item) {
+            $results[] = [
+                'id' => $item->guid_peminjam_asset,
+                'text' => $item->nama_peminjam . ' (Kode Peminjaman: ' . $item->code . ')',
+            ];
+        }
+
+        return $results;
     }
 }

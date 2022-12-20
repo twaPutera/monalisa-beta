@@ -57,6 +57,22 @@ class PeminjamanAssetController extends Controller
         }
     }
 
+    public function getDataPeminjamSelect2(Request $request)
+    {
+        try {
+            $data = $this->peminjamanAssetQueryServices->getDataPeminjamSelect2($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function changeStatus(PeminjamanAssetChangeStatusRequest $request, $id)
     {
         try {
