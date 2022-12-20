@@ -1,5 +1,5 @@
 @extends('layouts.user.master')
-@section('page-title', 'Daftar Peminjaman')
+@section('page-title', 'Daftar Permintaan Bahan Habis Pakai')
 @section('custom-css')
     <style>
         .containerPerpanjangan {
@@ -12,12 +12,13 @@
     <script>
         $(document).ready(function() {
             getAllDataPeminjaman('pendingContainer', ['pending']);
-            getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'duedate', 'ditolak']);
+            getAllDataPeminjaman('dipinjamContainer', ['diproses', 'ditolak']);
             getAllDataPeminjaman('selesaiContainer', ['selesai']);
 
             @if (isset(request()->peminjaman_asset_id))
-                $('#notifikasiId').data('link_detail', "{{ route('user.asset-data.peminjaman.detail', request()->peminjaman_asset_id) }}");
-                $('#notifikasiId').data('link_perpanjangan', "{{ route('user.asset-data.peminjaman.perpanjangan.store', request()->peminjaman_asset_id) }}");
+                $('#notifikasiId').data('link_detail',
+                    "{{ route('user.asset-data.peminjaman.detail', request()->peminjaman_asset_id) }}");
+
                 showDetailPeminjaman($('#notifikasiId'));
             @endif
         })
@@ -25,7 +26,7 @@
     <script>
         const getAllDataPeminjaman = (idContainer, status) => {
             $.ajax({
-                url: '{{ route("user.asset-data.peminjaman.get-all-data") }}',
+                url: '{{ route('user.asset-data.peminjaman.get-all-data') }}',
                 data: {
                     guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
                     with: ['request_peminjaman_asset.kategori_asset'],
@@ -33,10 +34,10 @@
                 },
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         if (response.data.length > 0) {
-                            $(response.data).each(function (index, value) {
+                            $(response.data).each(function(index, value) {
                                 $('#' + idContainer).append(generateTemplateApproval(value));
                             })
                         } else {
@@ -81,10 +82,10 @@
                 url: url_detail,
                 type: 'GET',
                 dataType: 'json',
-                beforeSend: function () {
+                beforeSend: function() {
                     $(".loadingSpiner").show();
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         const data = response.data;
                         const array_asset = data.detail_peminjaman_asset.map((item) => (
@@ -94,19 +95,21 @@
                         $('.tanggalPengembalian').val(data.tanggal_pengembalian);
                         $('#statusPeminjaman').html(generateStatusPeminjaman(data.status));
                         $('.containerDetailPeminjaman').empty();
-                        $(data.request_peminjaman_asset).each(function (index, value) {
+                        $(data.request_peminjaman_asset).each(function(index, value) {
                             const array_asset_item = array_asset.filter((item) => (
                                 item.id_kategori_asset === value.id_kategori_asset
                             ));
-                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value.kategori_asset.nama_kategori, array_asset_item));
+                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value
+                                .kategori_asset.nama_kategori, array_asset_item));
                         })
                         $('#alasanPeminjaman').text(data.alasan_peminjaman);
 
                         $('.containerPerpanjangan').empty();
 
                         if (data.perpanjangan_peminjaman_asset.length > 0) {
-                            $(data.perpanjangan_peminjaman_asset).each(function (index, value) {
-                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(value));
+                            $(data.perpanjangan_peminjaman_asset).each(function(index, value) {
+                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(
+                                    value));
                             })
                         }
 
@@ -118,7 +121,7 @@
                                 $('#formPerpanjangan').attr('action', url_perpanjangan);
                                 $('#btnShowPerpanjangan').show();
                             }
-                        } else if(data.status == 'selesai') {
+                        } else if (data.status == 'selesai') {
                             $('#formPerpanjangan').attr('action', "");
                             $('#btnShowPerpanjangan').hide();
                             $('#keteranganPengembalian').text(data.keterangan_pengembalian);
@@ -167,7 +170,7 @@
 
         const generateListDetailPeminjaman = (data_asset) => {
             let element = '';
-            $(data_asset).each(function (index, value) {
+            $(data_asset).each(function(index, value) {
                 element += `<li>${value.deskripsi}</li>`;
             })
             return element;
@@ -239,40 +242,40 @@
     </script>
 @endsection
 @section('content')
-<input type="hidden" name="" id="notifikasiId">
-<ul class="nav nav-tabs lined" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#overview2" role="tab" aria-selected="true">
-            Menunggu
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#cards2" role="tab" aria-selected="false">
-            Status
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#cards3" role="tab" aria-selected="false">
-            Selesai
-        </a>
-    </li>
-</ul>
-<div class="tab-content mt-2">
-    <div class="tab-pane fade active show" id="overview2" role="tabpanel">
-        <div class="section">
-            <div class="" id="pendingContainer"></div>
+    <input type="hidden" name="" id="notifikasiId">
+    <ul class="nav nav-tabs lined" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#overview2" role="tab" aria-selected="true">
+                Menunggu
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#cards2" role="tab" aria-selected="false">
+                Status
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#cards3" role="tab" aria-selected="false">
+                Selesai
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content mt-2">
+        <div class="tab-pane fade active show" id="overview2" role="tabpanel">
+            <div class="section">
+                <div class="" id="pendingContainer"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="cards2" role="tabpanel">
+            <div class="section">
+                <div class="" id="dipinjamContainer"></div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="cards3" role="tabpanel">
+            <div class="section">
+                <div class="" id="selesaiContainer"></div>
+            </div>
         </div>
     </div>
-    <div class="tab-pane fade" id="cards2" role="tabpanel">
-        <div class="section">
-            <div class="" id="dipinjamContainer"></div>
-        </div>
-    </div>
-    <div class="tab-pane fade" id="cards3" role="tabpanel">
-        <div class="section">
-            <div class="" id="selesaiContainer"></div>
-        </div>
-    </div>
-</div>
-@include('pages.user.asset.peminjaman._modal_detail')
+    @include('pages.user.asset.peminjaman._modal_detail')
 @endsection

@@ -39,8 +39,23 @@ class PengaduanController extends Controller
 
     public function detail(string $id)
     {
-        $pengaduan = $this->pengaduanQueryServices->findById($id);
-        return view('pages.user.pengaduan.detail', compact('pengaduan'));
+        // return view('pages.user.pengaduan.detail', compact('pengaduan'));
+        try {
+            $pengaduan = $this->pengaduanQueryServices->findById($id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data pengaduan asset berhasil didapatkan',
+                'data' => $pengaduan,
+            ], 200);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => 'Data pengaduan asset gagal didapatkan',
+            ]);
+        }
+
     }
 
     public function store(PengaduanStoreRequest $request)

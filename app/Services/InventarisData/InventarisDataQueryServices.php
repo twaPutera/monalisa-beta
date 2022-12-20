@@ -28,6 +28,10 @@ class InventarisDataQueryServices
                 });
         }
 
+        if (isset($request->id_kategori_inventori)) {
+            $data->where('id_kategori_inventori', $request->id_kategori_inventori);
+        }
+
         $data = $data->orderby('nama_inventori', 'asc')
             ->get();
 

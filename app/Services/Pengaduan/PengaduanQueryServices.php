@@ -40,7 +40,7 @@ class PengaduanQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             $pengaduan->with(['asset_data', 'asset_data.lokasi', 'image', 'lokasi']);
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
@@ -81,6 +81,6 @@ class PengaduanQueryServices
     {
         return Pengaduan::with(['image' => function ($q) {
             $q->orderBy('created_at', 'asc');
-        }])->findOrFail($id);
+        }, 'asset_data', 'asset_data.lokasi', 'asset_data.kategori_asset', 'asset_data.kategori_asset.group_kategori_asset'])->findOrFail($id);
     }
 }

@@ -47,6 +47,7 @@ use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPem
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\User\BahanHabisPakaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -452,10 +453,18 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');
             Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('user.asset-data.opname.store');
         });
-
         Route::group(['prefix' => 'pengaduan'], function () {
             Route::get('/create/{id}', [AssetPengaduanController::class, 'create'])->name('user.asset-data.pengaduan.index');
             Route::post('/store/{id}', [AssetPengaduanController::class, 'store'])->name('user.asset-data.pengaduan.store');
+        });
+        Route::group(['prefix' => 'bahan-habis-pakai'], function () {
+            Route::get('/', [BahanHabisPakaiController::class, 'index'])->name('user.asset-data.bahan-habis-pakai.index');
+            Route::get('/create', [BahanHabisPakaiController::class, 'create'])->name('user.asset-data.bahan-habis-pakai.create');
+            Route::post('/store', [BahanHabisPakaiController::class, 'store'])->name('user.asset-data.bahan-habis-pakai.store');
+            Route::group(['prefix' => 'master'], function () {
+                Route::get('get-data-item-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('user.asset-data.bahan-habis-pakai.item.get-data-select2');
+                Route::get('get-data-kategori-select2', [KategoriInventoriController::class, 'getDataSelect2'])->name('user.asset-data.bahan-habis-pakai.kategori.get-data-select2');
+            });
         });
     });
     Route::group(['prefix' => 'approval'], function () {

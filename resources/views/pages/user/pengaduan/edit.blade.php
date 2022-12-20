@@ -126,7 +126,9 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     @if ($pengaduan->asset_data != null)
-                        <input type="hidden" id="valueLokasiDefault" value="{{ $pengaduan->asset_data->lokasi->id }}">
+                        @if ($pengaduan->asset_data->id_lokasi != null)
+                            <input type="hidden" id="valueLokasiDefault" value="{{ $pengaduan->asset_data->lokasi->id }}">
+                        @endif
                     @else
                         <input type="hidden" id="valueLokasiDefault" value="{{ $pengaduan->lokasi->id }}">
                     @endif

@@ -360,7 +360,7 @@
                 <div class="left">
                     <span class="title text-primary">Selamat Datang</span>
                     <h1 class="text-muted" style="font-size: 20px;">{{ $user->name }}</h1>
-                    <span class="text-muted">Jenis Role</span>
+                    <span class="text-muted">{!! ucWords(App\Helpers\CutText::cutUnderscore($user->role)) !!}</span>
                 </div>
                 <div class="right">
                     <img alt="Logo" src="{{ asset('assets/images/logo-Press-103x75.png') }}"

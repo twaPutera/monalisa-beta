@@ -5,7 +5,8 @@
                 <!-- profile box -->
                 <div class="profileBox pt-2 pb-2">
                     <div class="image-wrapper">
-                        <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff" alt="image" class="imaged  w36">
+                        <img src="https://ui-avatars.com/api/?name={{ $user->name ?? 'No Name' }}&background=5174ff&color=fff"
+                            alt="image" class="imaged  w36">
                     </div>
                     <div class="in">
                         <strong>{{ $user->name }}</strong>
@@ -24,7 +25,7 @@
 
                 <!-- action group -->
                 <div class="action-group justify-content-start">
-                    <a href="{{ route('user.pengaduan.create') }}" class="action-button">
+                    <a href="{{ route('user.pengaduan.create') }}" class="action-button mx-2">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="document-outline"></ion-icon>
@@ -32,7 +33,7 @@
                             Adukan
                         </div>
                     </a>
-                    <a href="{{ route('user.asset-data.peminjaman.create') }}" class="action-button mx-4">
+                    <a href="{{ route('user.asset-data.peminjaman.create') }}" class="action-button mx-2">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="add-circle-outline"></ion-icon>
@@ -40,7 +41,15 @@
                             Pinjam
                         </div>
                     </a>
-                    <a href="{{ route('user.scan-qr.index') }}" class="action-button">
+                    <a href="{{ route('user.asset-data.bahan-habis-pakai.create') }}" class="action-button mx-2">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="cube-outline"></ion-icon>
+                            </div>
+                            Permintaan
+                        </div>
+                    </a>
+                    <a href="{{ route('user.scan-qr.index') }}" class="action-button mx-2">
                         <div class="in">
                             <div class="iconbox">
                                 <ion-icon name="grid-outline"></ion-icon>
@@ -61,6 +70,17 @@
                             </div>
                             <div class="in">
                                 Daftar Aduan
+                                {{-- <span class="badge badge-primary">10</span> --}}
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.asset-data.bahan-habis-pakai.index') }}" class="item">
+                            <div class="icon-box bg-primary">
+                                <ion-icon name="cube-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                Daftar Permintaan
                                 {{-- <span class="badge badge-primary">10</span> --}}
                             </div>
                         </a>
