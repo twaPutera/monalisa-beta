@@ -114,7 +114,8 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            <strong>{{ isset($last_service) ? $last_service->guid_pembuat : '-' }}</strong></p>
+                            <strong>{{ isset($last_service) ? $last_service->guid_pembuat : '-' }}</strong>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -130,28 +131,30 @@
             </div>
         </div>
     </div>
-    <div class="modal fade dialogbox" id="dialogApprove" data-bs-backdrop="static" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Pemindahan Asset</h5>
-                </div>
-                <div class="modal-body">
-                    Apakah anda yakin ingin menerima asset ini?
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ $approval->linkApproval() }}" class="form-submit" method="POST">
-                        @csrf
-                        <input type="hidden" value="disetujui" name="status">
-                        <div class="btn-inline">
-                            <a href="#" class="btn btn-text-secondary" data-bs-dismiss="modal">Tutup</a>
-                            <button type="submit" class="btn btn-text-primary">Approve</button>
-                        </div>
-                    </form>
+    @if (isset($approval))
+        <div class="modal fade dialogbox" id="dialogApprove" data-bs-backdrop="static" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Pemindahan Asset</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah anda yakin ingin menerima asset ini?
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ $approval->linkApproval() }}" class="form-submit" method="POST">
+                            @csrf
+                            <input type="hidden" value="disetujui" name="status">
+                            <div class="btn-inline">
+                                <a href="#" class="btn btn-text-secondary" data-bs-dismiss="modal">Tutup</a>
+                                <button type="submit" class="btn btn-text-primary">Approve</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 @section('button-menu')
     @if ($pemindahan_asset->status == 'pending')
