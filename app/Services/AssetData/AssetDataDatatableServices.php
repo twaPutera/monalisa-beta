@@ -40,7 +40,7 @@ class AssetDataDatatableServices
             $query->whereDoesntHave('detail_peminjaman_asset', function ($query) use ($request) {
                 $query->whereHas('peminjaman_asset', function ($query) use ($request) {
                     $query->where(function ($query) use ($request) {
-                        $query->where('status', 'dipinjam');
+                        $query->whereIn('status', ['dipinjam', 'duedate']);
                         if (isset($request->id_peminjaman)) {
                             $query->orWhere('id', '=', $request->id_peminjaman);
                         }
