@@ -35,7 +35,7 @@ class AssetServiceQueryServices
             ->whereHas('detail_service', function ($query) use ($id) {
                 $query->where('id_asset_data', $id);
             })
-            ->where('status_service', 'done')
+            ->where('status_service', 'selesai')
             ->orderby('created_at', 'desc')
             ->first();
 
@@ -110,7 +110,7 @@ class AssetServiceQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $status_backlog->where('asset_data.is_it', '1');
@@ -162,7 +162,7 @@ class AssetServiceQueryServices
                 $query->whereMonth('services.created_at', $request->month);
             }
 
-            if (! isset($request->global)) {
+            if (!isset($request->global)) {
                 if ($user) {
                     if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                         $query->where('asset_data.is_it', '1');

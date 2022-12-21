@@ -114,7 +114,7 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            <strong>{{ isset($last_service) ? $last_service->guid_pembuat : '-' }}</strong>
+                            <strong>{{ isset($last_service) ? $last_service->user_guid : '-' }}</strong>
                         </p>
                     </div>
                 </div>

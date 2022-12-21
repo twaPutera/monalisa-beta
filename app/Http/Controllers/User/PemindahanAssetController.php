@@ -9,6 +9,8 @@ use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class PemindahanAssetController extends Controller
 {
@@ -16,17 +18,22 @@ class PemindahanAssetController extends Controller
     protected $pemindahanAssetCommandServices;
     protected $assetDataQueryServices;
     protected $assetServiceQueryServices;
-
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct(
         PemindahanAssetQueryServices $pemindahanAssetQueryServices,
         PemindahanAssetCommandServices $pemindahanAssetCommandServices,
         AssetDataQueryServices $assetDataQueryServices,
-        AssetServiceQueryServices $assetServiceQueryServices
+        AssetServiceQueryServices $assetServiceQueryServices,
+        UserSsoQueryServices $userSsoQueryServices,
+        UserQueryServices $userQueryServices
     ) {
         $this->pemindahanAssetQueryServices = $pemindahanAssetQueryServices;
         $this->pemindahanAssetCommandServices = $pemindahanAssetCommandServices;
         $this->assetDataQueryServices = $assetDataQueryServices;
         $this->assetServiceQueryServices = $assetServiceQueryServices;
+        $this->userSsoQueryServices = $userSsoQueryServices;
+        $this->userQueryServices = $userQueryServices;
     }
 
     public function detail($id)
@@ -36,6 +43,17 @@ class PemindahanAssetController extends Controller
         $approval = $pemindahan_asset->approval->where('guid_approver', $user->id)->first();
         $asset_data = $this->assetDataQueryServices->findById($pemindahan_asset->detail_pemindahan_asset->id_asset);
         $last_service = $this->assetServiceQueryServices->findLastestLogByAssetId($pemindahan_asset->detail_pemindahan_asset->id_asset);
+        if (isset($last_service)) {
+            $name = 'Not Found';
+            if (config('app.sso_siska')) {
+                $user = $last_service->guid_pembuat == null ? null : $this->userSsoQueryServices->getUserByGuid($last_service->guid_pembuat);
+                $name = isset($user[0]) ? $user[0]['nama'] : 'Not Found';
+            } else {
+                $user = $this->userQueryServices->findById($last_service->guid_pembuat);
+                $name = isset($user) ? $user->name : 'Not Found';
+            }
+            $last_service->user_guid = $name;
+        }
         return view('pages.user.asset.pemindahan-asset.detail', compact('pemindahan_asset', 'asset_data', 'last_service', 'approval'));
     }
 
