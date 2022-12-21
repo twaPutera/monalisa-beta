@@ -70,7 +70,7 @@
     <script>
         const getAllDataPeminjaman = (idContainer, status) => {
             $.ajax({
-                url: '{{ route("user.asset-data.peminjaman.get-all-data") }}',
+                url: '{{ route('user.asset-data.peminjaman.get-all-data') }}',
                 data: {
                     guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
                     with: ['request_peminjaman_asset.kategori_asset'],
@@ -83,10 +83,10 @@
                 },
                 type: 'GET',
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         if (response.data.length > 0) {
-                            $(response.data).each(function (index, value) {
+                            $(response.data).each(function(index, value) {
                                 $('#' + idContainer).append(generateTemplatePeminjaman(value));
                             })
                         } else {
@@ -131,10 +131,10 @@
                 url: url_detail,
                 type: 'GET',
                 dataType: 'json',
-                beforeSend: function () {
+                beforeSend: function() {
                     $(".loadingSpiner").show();
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         const data = response.data;
                         const array_asset = data.detail_peminjaman_asset.map((item) => (
@@ -144,19 +144,21 @@
                         $('.tanggalPengembalian').val(data.tanggal_pengembalian);
                         $('#statusPeminjaman').html(generateStatusPeminjaman(data.status));
                         $('.containerDetailPeminjaman').empty();
-                        $(data.request_peminjaman_asset).each(function (index, value) {
+                        $(data.request_peminjaman_asset).each(function(index, value) {
                             const array_asset_item = array_asset.filter((item) => (
                                 item.id_kategori_asset === value.id_kategori_asset
                             ));
-                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value.kategori_asset.nama_kategori, array_asset_item));
+                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value
+                                .kategori_asset.nama_kategori, array_asset_item));
                         })
                         $('#alasanPeminjaman').text(data.alasan_peminjaman);
 
                         $('.containerPerpanjangan').empty();
 
                         if (data.perpanjangan_peminjaman_asset.length > 0) {
-                            $(data.perpanjangan_peminjaman_asset).each(function (index, value) {
-                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(value));
+                            $(data.perpanjangan_peminjaman_asset).each(function(index, value) {
+                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(
+                                    value));
                             })
                         }
 
@@ -168,7 +170,7 @@
                                 $('#formPerpanjangan').attr('action', url_perpanjangan);
                                 $('#btnShowPerpanjangan').show();
                             }
-                        } else if(data.status == 'selesai') {
+                        } else if (data.status == 'selesai') {
                             $('#formPerpanjangan').attr('action', "");
                             $('#btnShowPerpanjangan').hide();
                             $('#keteranganPengembalian').text(data.keterangan_pengembalian);
@@ -217,7 +219,7 @@
 
         const generateListDetailPeminjaman = (data_asset) => {
             let element = '';
-            $(data_asset).each(function (index, value) {
+            $(data_asset).each(function(index, value) {
                 element += `<li>${value.deskripsi}</li>`;
             })
             return element;
@@ -258,7 +260,7 @@
             $('.form-submit').submit();
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             getAllDataPeminjaman('dipinjamContainer', ['dipinjam', 'duedate', 'pending']);
         });
 
@@ -266,7 +268,7 @@
             if (data.success) {
                 changeTextToast('toastSuccess', data.message);
                 toastbox('toastSuccess', 2000);
-
+                $('#modalDetailPengaduan').modal('hide');
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
@@ -292,7 +294,7 @@
         });
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             getDataPengaduan('pengaduanContainer', ['diproses', 'dilaporkan']);
         });
         const getDataPengaduan = (idContainer, status) => {
@@ -327,11 +329,195 @@
                 }
             })
         }
+        const emptyFieldBeforeAppend = () => {
+            $('#logContainer').empty();
+            $('#namaAsset').empty();
+            $('#lokasiAsset').empty();
+            $('#kelompokAsset').empty();
+            $('#jenisAsset').empty();
+            $('#statusTerakhir').empty();
+            $('#statusPemutihan').empty();
+            $('#prioritas').empty();
+            $('#statusPengaduan').empty();
+            $('#catatanPengaduan').empty();
+            $('#catatanResponPengaduan').empty();
+        }
 
+        const showDetailPengaduan = (element) => {
+            const url_detail = $(element).data('link_detail');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+                    $(".loadingSpiner").show();
+                },
+                success: function(response) {
+                    if (response.success) {
+                        emptyFieldBeforeAppend();
+                        const data = response.data;
+                        getAllDataLogPengaduan("logContainer", data.id);
+                        $('#namaAsset').append(data.asset_data.deskripsi);
+                        if (data.asset_data.id_lokasi != null) {
+                            $('#lokasiAsset').append(data.asset_data.lokasi.nama_lokasi);
+                        } else {
+                            $('#lokasiAsset').append("Tidak Ada Lokasi");
+                        }
+
+                        if (data.asset_data.id_kategori_asset != null) {
+                            $('#kelompokAsset').append(data.asset_data.kategori_asset.group_kategori_asset
+                                .nama_group);
+                            $('#jenisAsset').append(data.asset_data.kategori_asset.nama_kategori);
+                        } else {
+                            $('#kelompokAsset').append("Tidak Ada Kelompok Asset");
+                            $('#jenisAsset').append("Tidak Ada Jenis Asset");
+                        }
+                        if (data.asset_data.status_kondisi == 'bagus') {
+                            var kondisi = '<span class="badge badge-success">Baik</span>';
+                        } else if (data.asset_data.status_kondisi == 'rusak') {
+                            var kondisi = '<span class="badge badge-danger">Rusak</span>';
+                        } else if (data.asset_data.status_kondisi == 'maintenance') {
+                            var kondisi = '<span class="badge badge-warning">Maintenance</span>';
+                        } else if (data.asset_data.status_kondisi == 'tidak-lengkap') {
+                            var kondisi = '<span class="badge badge-dark">Tidak Lengkap</span>';
+                        } else if (data.asset_data.status_kondisi == 'pengembangan') {
+                            var kondisi = '<span class="badge badge-info">Pengembangan</span>';
+                        }
+                        $('#statusTerakhir').append(kondisi);
+
+                        if (data.asset_data.is_pemutihan == 0) {
+                            var pemutihan =
+                                '<span class="badge badge-success px-3">Tidak Diputihkan</span>';
+                        } else if (data.asset_data.is_pemutihan == 1) {
+                            var pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                        }
+                        $('#statusPemutihan').append(pemutihan);
+                        $('#tanggalPengaduan').val(data.tanggal_pengaduan);
+
+                        if (data.prioritas == 10) {
+                            var prioritas = '<span class="badge badge-danger px-3">High</span>';
+                        } else if (data.prioritas == 5) {
+                            var prioritas = '<span class="badge badge-warning px-3">Medium</span>';
+                        } else if (data.prioritas == 1) {
+                            var prioritas = '<span class="badge badge-info px-3">Low</span>';
+                        } else {
+                            var prioritas = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
+                        }
+                        $('#prioritas').append(prioritas);
+
+                        if (data.status_pengaduan == "dilaporkan") {
+                            var status_pengaduan =
+                                '<span class="badge badge-danger px-3">Dilaporkan</span>';
+                        } else if (data.status_pengaduan == "diproses") {
+                            var status_pengaduan = '<span class="badge badge-warning px-3">Diproses</span>';
+                        } else if (data.status_pengaduan == "selesai") {
+                            var status_pengaduan = '<span class="badge badge-success px-3">Selesai</span>';
+                        } else {
+                            var status_pengaduan =
+                                '<span class="badge badge-secondary px-3">Tidak Ada</span>';
+                        }
+                        $('#statusPengaduan').append(status_pengaduan);
+                        $('#catatanPengaduan').append(data.catatan_pengaduan);
+
+                        if (data.image[0] != null) {
+                            var url_gambar_saya =
+                                "{{ route('user.pengaduan.download-gambar') }}?filename=" +
+                                data.image[0].path + "&status=request";
+                            $('#gambarSaya').removeClass('d-none');
+                            $('#urlGambarSaya').attr('href', url_gambar_saya)
+                        } else {
+                            $('#gambarSaya').addClass('d-none');
+                        }
+
+                        if (data.status_pengaduan != "dilaporkan") {
+                            $('#responPengaduan').removeClass('d-none');
+                            $('#catatanResponPengaduan').append(data.catatan_admin);
+                            if (data.image[1] != null) {
+                                var url_gambar_respon =
+                                    "{{ route('user.pengaduan.download-gambar') }}?filename=" +
+                                    data.image[1].path + "&status=response";
+                                $('#gambarRespon').removeClass('d-none');
+                                $('#urlGambarRespon').attr('href', url_gambar_respon)
+                            } else {
+                                $('#gambarRespon').addClass('d-none');
+                            }
+                        } else {
+                            $('#responPengaduan').addClass('d-none');
+                        }
+
+                        if (data.status_pengaduan == "dilaporkan") {
+                            $('#editOrDeleteButton').removeClass('d-none')
+                            var delete_link = "{{ route('user.pengaduan.destroy', '') }}" + '/' + data.id;
+                            var edit_link = "{{ route('user.pengaduan.edit', '') }}" + '/' + data.id;
+                            $('#deletePengaduanButton').attr('action', delete_link);
+                            $('#editPengaduanButton').attr('href', edit_link);
+                        } else {
+                            $('#editOrDeleteButton').addClass('d-none');
+                        }
+                        $(".loadingSpiner").hide();
+                        $('#modalDetailPengaduan').modal('show');
+                    }
+                }
+            })
+        }
+        const getAllDataLogPengaduan = (idContainer, idPengaduan) => {
+            $.ajax({
+                url: '{{ route('user.pengaduan.get-all-data-log') }}',
+                data: {
+                    with: ['pengaduan'],
+                    id_pengaduan: idPengaduan
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $(response.data).each(function(index, value) {
+                                $('#' + idContainer).append(generateTemplateLogPengaduan(value));
+                            })
+                        } else {
+                            $('#' + idContainer).append(`
+                                <div class="section text-center mt-2">
+                                    <h4 class="text-grey">Tidak Ada Data</h4>
+                                </div>
+                            `);
+                        }
+                    }
+                }
+            })
+        }
+        const generateStatusPengaduan = (status) => {
+            let template = '';
+            if (status == 'dilaporkan') {
+                template = '<span class="badge badge-warning">Dilaporkan</span>';
+            } else if (status == 'diproses') {
+                template = '<span class="badge badge-primary">Diproses</span>';
+            } else if (status == 'selesai') {
+                template = '<span class="badge badge-success">Selesai</span>';
+            }
+
+            return template;
+
+        }
+
+        const generateTemplateLogPengaduan = (data) => {
+            return `
+            <div class="py-2 px-2 border mb-2 border-primary border-radius-sm">
+                <div class="border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-dark mb-0"><strong>Tanggal Log</strong></p>
+                        <p class="mb-0">${data.tanggal_log}</p>
+                       </div>
+                        ${generateStatusPengaduan(data.status)}
+                </div>
+                    <p class="mb-0">${data.message_log}</p>
+            </div>
+            `
+        }
         const generateTemplatePengaduan = (data) => {
             return `
-                <a href="${data.link_detail}" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
-                    <p class="text-dark mb-0 asset-deskripsi">${data.asset_data != null ? data.asset_data.deskripsi : 'Pengaduan'} - ${ data.asset_data != null ? data.asset_data.lokasi.nama_lokasi : data.lokasi.nama_lokasi} </p>
+                <a href="#" data-link_detail="${data.link_detail}" onclick="showDetailPengaduan(this)" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                    <p class="text-dark mb-0 asset-deskripsi">${data.asset_data != null ? data.asset_data.deskripsi : 'Pengaduan'} - ${ data.asset_data != null ? (data.asset_data.id_lokasi != null ? data.asset_data.lokasi.nama_lokasi : 'Tidak Ada Lokasi') : data.lokasi.nama_lokasi} </p>
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center" style="width: 60%;">
                             <div class="" style="">
@@ -440,5 +626,6 @@
     <div class="section mt-2">
         <div class="" id="dipinjamContainer"></div>
     </div>
-@include('pages.user.asset.peminjaman._modal_detail')
+    @include('pages.user.asset.peminjaman._modal_detail')
+    @include('pages.user.pengaduan._modal_detail')
 @endsection

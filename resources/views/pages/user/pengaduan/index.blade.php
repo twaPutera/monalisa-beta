@@ -9,6 +9,31 @@
         })
     </script>
     <script>
+        $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+            if (data.success) {
+                changeTextToast('toastSuccess', data.message);
+                toastbox('toastSuccess', 2000);
+                $('#modalDetailPengaduan').modal('hide');
+                setTimeout(() => {
+                    window.location.href = '{{ route('user.pengaduan.index') }}';
+                }, 2000);
+            }
+        });
+        $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+            if (!errors.success) {
+                changeTextToast('toastDanger', errors.message);
+                toastbox('toastDanger', 2000)
+            }
+            for (let key in errors) {
+                let element = formElement.find(`[name=${key}]`);
+                clearValidation(element);
+                showValidation(element, errors[key][0]);
+
+            }
+        });
+    </script>
+
+    <script>
         const getAllDataLogPengaduan = (idContainer, idPengaduan) => {
             $.ajax({
                 url: '{{ route('user.pengaduan.get-all-data-log') }}',
@@ -244,43 +269,8 @@
                         } else {
                             $('#editOrDeleteButton').addClass('d-none');
                         }
-                        // $('#statusPeminjaman').html(generateStatusPeminjaman(data.status));
-                        // $('.containerDetailPeminjaman').empty();
-                        // $(data.request_peminjaman_asset).each(function (index, value) {
-                        //     const array_asset_item = array_asset.filter((item) => (
-                        //         item.id_kategori_asset === value.id_kategori_asset
-                        //     ));
-                        //     $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value.kategori_asset.nama_kategori, array_asset_item));
-                        // })
-                        // $('#alasanPeminjaman').text(data.alasan_peminjaman);
-
-
-                        // if (data.perpanjangan_peminjaman_asset.length > 0) {
-                        //     $(data.perpanjangan_peminjaman_asset).each(function (index, value) {
-                        //         $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(value));
-                        //     })
-                        // }
-
-                        // if (data.status == 'dipinjam' || data.status == 'duedate') {
-                        //     const data_perpanjangan = data.perpanjangan_peminjaman_asset.filter((item) => (
-                        //         item.status === 'pending'
-                        //     ));
-                        //     if (data_perpanjangan.length < 1) {
-                        //         $('#formPerpanjangan').attr('action', url_perpanjangan);
-                        //         $('#btnShowPerpanjangan').show();
-                        //     }
-                        // } else if(data.status == 'selesai') {
-                        //     $('#formPerpanjangan').attr('action', "");
-                        //     $('#btnShowPerpanjangan').hide();
-                        //     $('#keteranganPengembalian').text(data.keterangan_pengembalian);
-                        //     $('#rating').text(data.rating);
-                        // } else {
-                        //     $('#formPerpanjangan').attr('action', "");
-                        //     $('#btnShowPerpanjangan').hide();
-                        // }
-
                         $(".loadingSpiner").hide();
-                        $('#modalDetailPeminjaman').modal('show');
+                        $('#modalDetailPengaduan').modal('show');
                     }
                 }
             })

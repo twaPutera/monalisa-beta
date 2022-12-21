@@ -84,7 +84,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
@@ -141,7 +141,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
@@ -208,6 +208,10 @@ class PengaduanCommandServices
             $pathOld = $path . '/' . $pengaduan->image[0]->path;
             FileHelpers::removeFile($pathOld);
             $pengaduan->image[0]->delete();
+        }
+        $log_pengaduan = LogPengaduanAsset::where('id_pengaduan', $pengaduan->id)->get();
+        foreach ($log_pengaduan as $item) {
+            $item->delete();
         }
         return $pengaduan->delete();
     }

@@ -4,7 +4,7 @@
     <script>
         $(document).ready(function() {
             getAllDataApproval('approvalContainer', 'pending');
-            getAllDataApproval('historyApprovalContainer', 'done');
+            getAllDataApproval('historyApprovalContainer', 'disetujui');
         })
     </script>
     <script>
