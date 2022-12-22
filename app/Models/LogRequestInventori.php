@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class LogRequestInventori extends Model
 {
     use HasFactory, Uuid;
+    protected $table = "log_request_inventories";
 
     public function request_inventori()
     {

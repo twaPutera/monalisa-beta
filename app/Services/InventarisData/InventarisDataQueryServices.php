@@ -4,12 +4,55 @@ namespace App\Services\InventarisData;
 
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
+use App\Models\LogRequestInventori;
+use App\Models\RequestInventori;
 
 class InventarisDataQueryServices
 {
     public function findAll()
     {
         return InventoriData::all();
+    }
+
+    public function findAllRequest(Request $request)
+    {
+        $query = RequestInventori::query();
+
+        if ($request->has('with')) {
+            $query->with($request->with);
+        }
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('statusArray')) {
+            $query->whereIn('status', $request->statusArray);
+        }
+
+        if ($request->has('created_by')) {
+            $query->where('guid_pengaju', $request->created_by);
+        }
+
+        $query = $query->get();
+        return $query;
+    }
+
+    public function findRequestById(string $id)
+    {
+        return RequestInventori::with(['detail_request_inventori','detail_request_inventori.inventori','detail_request_inventori.inventori.kategori_inventori'])->where('id', $id)->firstOrFail();
+    }
+
+    public function findAllLog(Request $request)
+    {
+        $log_inventori = LogRequestInventori::query();
+        if (isset($request->with)) {
+            $log_inventori->with($request->with);
+        }
+        $log_inventori->orderBy('created_at', 'desc');
+        $log_inventori->where('request_inventori_id', $request->id_request);
+        $log_inventori = $log_inventori->get();
+        return $log_inventori;
     }
 
     public function findById(string $id)

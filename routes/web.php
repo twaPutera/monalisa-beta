@@ -460,7 +460,12 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
         Route::group(['prefix' => 'bahan-habis-pakai'], function () {
             Route::get('/', [BahanHabisPakaiController::class, 'index'])->name('user.asset-data.bahan-habis-pakai.index');
             Route::get('/create', [BahanHabisPakaiController::class, 'create'])->name('user.asset-data.bahan-habis-pakai.create');
+            Route::get('/edit/{id}', [BahanHabisPakaiController::class, 'edit'])->name('user.asset-data.bahan-habis-pakai.edit');
+            Route::post('/update/{id}', [BahanHabisPakaiController::class, 'update'])->name('user.asset-data.bahan-habis-pakai.update');
+            Route::get('/detail/{id}', [BahanHabisPakaiController::class, 'detail'])->name('user.asset-data.bahan-habis-pakai.detail');
             Route::post('/store', [BahanHabisPakaiController::class, 'store'])->name('user.asset-data.bahan-habis-pakai.store');
+            Route::get('/get-all-data', [BahanHabisPakaiController::class, 'getAllData'])->name('user.asset-data.bahan-habis-pakai.get-all-data');
+            Route::get('/get-all-log-data', [BahanHabisPakaiController::class, 'getAllLogData'])->name('user.asset-data.bahan-habis-pakai.get-all-data-log');
             Route::group(['prefix' => 'master'], function () {
                 Route::get('get-data-item-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('user.asset-data.bahan-habis-pakai.item.get-data-select2');
                 Route::get('get-data-kategori-select2', [KategoriInventoriController::class, 'getDataSelect2'])->name('user.asset-data.bahan-habis-pakai.kategori.get-data-select2');

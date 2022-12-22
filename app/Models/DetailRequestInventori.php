@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class DetailRequestInventori extends Model
 {
     use HasFactory, Uuid;
+    protected $table = "detail_request_inventories";
+
     public function request_inventori()
     {
         return $this->belongsTo(RequestInventori::class, 'request_inventori_id', 'id');

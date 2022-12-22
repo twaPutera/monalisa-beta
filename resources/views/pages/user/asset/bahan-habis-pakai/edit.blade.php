@@ -1,5 +1,5 @@
 @extends('layouts.user.master-detail')
-@section('page-title', 'Ajukan Permintaan Bahan Habis Pakai')
+@section('page-title', 'Ubah Permintaan Bahan Habis Pakai')
 @section('pluggin-css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
 @endsection
@@ -47,6 +47,7 @@
         $(document).ready(function() {
             generateSelect2GroupKategori();
             generateSelect2Kategori();
+            generateAutoSelect();
         });
     </script>
     <script>
@@ -101,6 +102,40 @@
             });
         }
 
+        const generateAutoSelect = () => {
+            $.ajax({
+                url: '{{ route('user.asset-data.bahan-habis-pakai.item.get-data-select2') }}',
+                type: 'GET',
+                data: {
+                    id_kategori_inventori: $('#kelompokAsset').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        let data = response.data;
+                        let option = '';
+                        data.forEach(element => {
+                            option += `<option value="${element.id}">${element.text}</option>`;
+                        });
+                        $('#jenisAsset').append(option);
+
+                        @foreach ($edit->detail_request_inventori as $data)
+                            $('#jenisAsset option[value="{{ $data->inventori_id }}"]').prop('selected',
+                                'selected');
+
+                            var update = {
+                                id: "{{ $data->inventori_id }}",
+                                text: "{{ $data->inventori->nama_inventori }}" + "(" +
+                                    "{{ $data->inventori->kode_inventori }}" + ")",
+                                qty: "{{ $data->qty }}"
+                            }
+                            $('#detailPeminjamanContainer').append(generateTemplateDetailPeminjamanUpdate(
+                                update));
+                        @endforeach
+                    }
+                }
+            })
+        }
+
         const generateTemplateDetailPeminjaman = (item) => {
             return `
                 <div class="row mb-2" id="${item.id}">
@@ -109,6 +144,22 @@
                     </div>
                     <div class="col-4">
                         <input type="number" value="1" name="data_bahan_habis_pakai[${item.id}][jumlah]" class="form-control py-3">
+                    </div>
+                    <div class="col-12">
+                        <div class="invalid-feedback" id="errorJumlah-${item.id}"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const generateTemplateDetailPeminjamanUpdate = (item) => {
+            return `
+                <div class="row mb-2" id="${item.id}">
+                    <div class="col-8">
+                        <input type="text" value="${item.text}" readonly name="data_bahan_habis_pakai[${item.id}][nama_item]" class="form-control py-3">
+                    </div>
+                    <div class="col-4">
+                        <input type="number" value="${item.qty}" name="data_bahan_habis_pakai[${item.id}][jumlah]" class="form-control py-3">
                     </div>
                     <div class="col-12">
                         <div class="invalid-feedback" id="errorJumlah-${item.id}"></div>
@@ -129,7 +180,8 @@
 @endsection
 @section('content')
     <div class="section mt-2">
-        <form action="{{ route('user.asset-data.bahan-habis-pakai.store') }}" method="POST" class="mt-2 form-submit">
+        <form action="{{ route('user.asset-data.bahan-habis-pakai.update', $edit->id) }}" method="POST"
+            class="mt-2 form-submit">
             @csrf
             <div class="form-group boxed">
                 <div class="input-wrapper">
@@ -160,13 +212,14 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Unit Kerja</strong></label>
-                    <input type="text" name="unit_kerja" class="form-control" id="">
+                    <input type="text" name="unit_kerja" class="form-control" value="{{ $edit->unit_kerja }}"
+                        id="">
                 </div>
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>No Memo</strong></label>
-                    <input type="text" name="no_memo" class="form-control" id="">
+                    <input type="text" name="no_memo" class="form-control" value="{{ $edit->no_memo }}" id="">
                 </div>
             </div>
             <div class="form-group boxed">
@@ -174,8 +227,8 @@
                     <label class="text-dark" for=""><strong>Tanggal Pengambilan</strong></label>
                     <div class="d-flex">
                         <div class="" style="width: 100%;">
-                            <input type="date" name="tanggal_pengambilan" class="form-control pe-1" id=""
-                                placeholder="Text Input">
+                            <input type="date" name="tanggal_pengambilan" value="{{ $edit->tanggal_pengambilan }}"
+                                class="form-control pe-1" id="" placeholder="Text Input">
                         </div>
                     </div>
                 </div>
@@ -184,7 +237,7 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Alasan Permintaan</strong></label>
-                    <textarea name="alasan_permintaan" class="form-control" id="" cols="30" rows="10"></textarea>
+                    <textarea name="alasan_permintaan" class="form-control" id="" cols="30" rows="10">{{ $edit->alasan }}</textarea>
                 </div>
             </div>
         </form>

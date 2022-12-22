@@ -170,7 +170,6 @@
                     if (response.success) {
                         emptyFieldBeforeAppend();
                         const data = response.data;
-                        console.log(data);
                         getAllDataLogPengaduan("logContainer", data.id);
                         $('#namaAsset').append(data.asset_data.deskripsi);
                         if (data.asset_data.id_lokasi != null) {

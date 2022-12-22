@@ -10,6 +10,12 @@ use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
+use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
+use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
+use App\Models\Approval;
+use App\Models\DetailRequestInventori;
+use App\Models\LogRequestInventori;
+use App\Models\RequestInventori;
 
 class InventarisDataCommandServices
 {
@@ -38,7 +44,102 @@ class InventarisDataCommandServices
 
         return $inventori_data;
     }
+    public function storeFromUser(UserRequestInventoriStoreRequest $request)
+    {
+        $request->validated();
+        $user = SsoHelpers::getUserLogin();
 
+        $request_inventaris = new RequestInventori();
+        $request_inventaris->guid_pengaju = config('app.sso_siska') ? $user->guid : $user->id;
+        $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
+        $request_inventaris->unit_kerja = $request->unit_kerja;
+        $request_inventaris->no_memo = $request->no_memo;
+        $request_inventaris->status = "pending";
+        $request_inventaris->kode_request = self::generateCode();
+        $request_inventaris->alasan = $request->alasan_permintaan;
+        $request_inventaris->save();
+
+        foreach ($request->id_bahan_habis_pakai as $id_bahan_habis_pakai) {
+            $request_kategori_detail = $request->data_bahan_habis_pakai[$id_bahan_habis_pakai];
+            $detail_request_inventaris = new DetailRequestInventori();
+            $detail_request_inventaris->request_inventori_id = $request_inventaris->id;
+            $detail_request_inventaris->inventori_id = $id_bahan_habis_pakai;
+            $detail_request_inventaris->qty = $request_kategori_detail['jumlah'];
+            $detail_request_inventaris->save();
+        }
+        $message = "Permintaan bahan habis pakai baru dengan kode " . $request_inventaris->kode_request . " dibuat oleh " . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, "pending");
+
+        $approval = new Approval();
+        // $approval->guid_approver = $approver[0]['guid'];
+        $approval->approvable_type = get_class($request_inventaris);
+        $approval->approvable_id = $request_inventaris->id;
+        $approval->save();
+
+        return $request_inventaris;
+    }
+
+    public function updateFromUser(UserRequestInventoriUpdateRequest $request, string $id)
+    {
+        $request->validated();
+        $user = SsoHelpers::getUserLogin();
+
+        $request_inventaris = RequestInventori::find($id);
+        $request_inventaris->guid_pengaju = config('app.sso_siska') ? $user->guid : $user->id;
+        $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
+        $request_inventaris->unit_kerja = $request->unit_kerja;
+        $request_inventaris->no_memo = $request->no_memo;
+        $request_inventaris->status = "pending";
+        $request_inventaris->alasan = $request->alasan_permintaan;
+        $request_inventaris->save();
+
+        foreach ($request_inventaris->detail_request_inventori as $item) {
+            $item->delete();
+        }
+
+        foreach ($request->id_bahan_habis_pakai as $id_bahan_habis_pakai) {
+            $request_kategori_detail = $request->data_bahan_habis_pakai[$id_bahan_habis_pakai];
+            $detail_request_inventaris = new DetailRequestInventori();
+            $detail_request_inventaris->request_inventori_id = $request_inventaris->id;
+            $detail_request_inventaris->inventori_id = $id_bahan_habis_pakai;
+            $detail_request_inventaris->qty = $request_kategori_detail['jumlah'];
+            $detail_request_inventaris->save();
+        }
+        $message = "Permintaan bahan habis pakai dengan kode " . $request_inventaris->kode_request . " berhasil diperbaharui oleh " . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, "pending");
+
+        $approval = new Approval();
+        // $approval->guid_approver = $approver[0]['guid'];
+        $approval->approvable_type = get_class($request_inventaris);
+        $approval->approvable_id = $request_inventaris->id;
+        $approval->save();
+
+        return $request_inventaris;
+    }
+
+    public function generateCode()
+    {
+        $code = 'RBHP-' . date('Ymd') . '-' . rand(1000, 9999);
+        $check_code = RequestInventori::where('kode_request', $code)->first();
+
+        if ($check_code) {
+            return self::generateCode();
+        }
+
+        return $code;
+    }
+
+    public function storeLogRequestInventori($request_inventori_id, $message, $status)
+    {
+        $user = SsoHelpers::getUserLogin();
+
+        $log = new LogRequestInventori();
+        $log->request_inventori_id = $request_inventori_id;
+        $log->message = $message;
+        $log->status = $status;
+        $log->created_by = $user->name;
+        $log->save();
+    }
     public function storeUpdate(InventarisDataStoreUpdateRequest $request)
     {
         $request->validated();

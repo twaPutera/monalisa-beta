@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class RequestInventori extends Model
 {
     use HasFactory, Uuid;
+    protected $table = "request_inventories";
 
     public function detail_request_inventori()
     {

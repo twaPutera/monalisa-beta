@@ -1,36 +1,88 @@
 @extends('layouts.user.master')
 @section('page-title', 'Daftar Permintaan Bahan Habis Pakai')
-@section('custom-css')
-    <style>
-        .containerPerpanjangan {
-            /* transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94); */
-        }
-    </style>
-
-@endsection
 @section('custom-js')
     <script>
         $(document).ready(function() {
-            getAllDataPeminjaman('pendingContainer', ['pending']);
-            getAllDataPeminjaman('dipinjamContainer', ['diproses', 'ditolak']);
-            getAllDataPeminjaman('selesaiContainer', ['selesai']);
-
-            @if (isset(request()->peminjaman_asset_id))
-                $('#notifikasiId').data('link_detail',
-                    "{{ route('user.asset-data.peminjaman.detail', request()->peminjaman_asset_id) }}");
-
-                showDetailPeminjaman($('#notifikasiId'));
-            @endif
+            getAllDataRequest('pendingContainer', ['pending']);
+            getAllDataRequest('dipinjamContainer', ['diproses', 'ditolak']);
+            getAllDataRequest('selesaiContainer', ['selesai']);
         })
     </script>
     <script>
-        const getAllDataPeminjaman = (idContainer, status) => {
+        $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+            if (data.success) {
+                changeTextToast('toastSuccess', data.message);
+                toastbox('toastSuccess', 2000);
+                $('#modalDetailBahanHabisPakai').modal('hide');
+                setTimeout(() => {
+                    window.location.href = '{{ route('user.asset-data.bahan-habis-pakai.index') }}';
+                }, 2000);
+            }
+        });
+        $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+            if (!errors.success) {
+                changeTextToast('toastDanger', errors.message);
+                toastbox('toastDanger', 2000)
+            }
+            for (let key in errors) {
+                let element = formElement.find(`[name=${key}]`);
+                clearValidation(element);
+                showValidation(element, errors[key][0]);
+
+            }
+        });
+    </script>
+
+    <script>
+        const getAllDataLogBahanHabisPakai = (idContainer, idRequest) => {
             $.ajax({
-                url: '{{ route('user.asset-data.peminjaman.get-all-data') }}',
+                url: '{{ route('user.asset-data.bahan-habis-pakai.get-all-data-log') }}',
                 data: {
-                    guid_peminjam_asset: "{{ $user->guid ?? $user->id }}",
-                    with: ['request_peminjaman_asset.kategori_asset'],
-                    statusArray: status
+                    with: ['request_inventori'],
+                    id_request: idRequest
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (response.data.length > 0) {
+                            $(response.data).each(function(index, value) {
+                                $('#' + idContainer).append(generateTemplateLog(value));
+                            })
+                        } else {
+                            $('#' + idContainer).append(`
+                                <div class="section text-center mt-2">
+                                    <h4 class="text-grey">Tidak Ada Data</h4>
+                                </div>
+                            `);
+                        }
+                    }
+                }
+            })
+        }
+        const generateStatusRequest = (status) => {
+            let template = '';
+            if (status == 'pending') {
+                template = '<span class="badge badge-warning">Diajukan</span>';
+            } else if (status == 'diproses') {
+                template = '<span class="badge badge-primary">Diproses</span>';
+            } else if (status == 'ditolak') {
+                template = '<span class="badge badge-danger">Ditolak</span>';
+            } else if (status == 'selesai') {
+                template = '<span class="badge badge-success">Selesai</span>';
+            }
+
+            return template;
+
+        }
+
+        const getAllDataRequest = (idContainer, status) => {
+            $.ajax({
+                url: '{{ route('user.asset-data.bahan-habis-pakai.get-all-data') }}',
+                data: {
+                    created_by: "{{ $user->guid ?? $user->id }}",
+                    with: ['detail_request_inventori', 'detail_request_inventori.inventori', ],
+                    statusArray: status,
                 },
                 type: 'GET',
                 dataType: 'json',
@@ -52,32 +104,56 @@
             })
         }
 
-        const generateTemplateApproval = (data) => {
+        const generateTemplateLog = (data) => {
             return `
-                <a href="#" data-link_detail="${data.link_detail}" data-link_perpanjangan="${data.link_perpanjangan}" onclick="showDetailPeminjaman(this)" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
-                    <p class="text-dark mb-0 asset-deskripsi">${data.code}</p>
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center" style="width: 60%;">
-                            <div class="" style="">
-                                <p class="text-primary mb-0 asset-deskripsi"><i>${data.status === 'pending' ? "Menunggu" : data.status === 'dipinjam' ? 'Dipinjam' : data.status === 'duedate' ? "Terlambat" : "Selesai"}</i></p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
-                            <div class="me-1 text-end">
-                                <span class="text-grey text-end">${data.tanggal_peminjaman}</span>
-                            </div>
-                            <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
-                                <ion-icon name="chevron-forward-outline"></ion-icon>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            `;
+            <div class="py-2 px-2 border mb-2 border-primary border-radius-sm">
+                <div class="border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-dark mb-0"><strong>Tanggal Log</strong></p>
+                        <p class="mb-0">${data.tanggal_log}</p>
+                       </div>
+                        ${generateStatusRequest(data.status)}
+                </div>
+                    <p class="mb-0">${data.message}</p>
+            </div>
+            `
         }
 
-        const showDetailPeminjaman = (element) => {
+
+
+        const generateTemplateApproval = (data) => {
+            return `
+            <a href="#" data-link_detail="${data.link_detail}"  onclick="showDetailRequest(this)" class="mb-2 bg-white px-2 py-2 d-block border-radius-sm border border-primary">
+                <p class="text-dark mb-0 asset-deskripsi">${data.kode_request}</p>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center" style="width: 60%;">
+                        <div class="" style="">
+                            <p class="text-primary mb-0 asset-deskripsi" style="text-transform:capitalize"><i>${data.status}</i></p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center" style="width: 40%;">
+                        <div class="me-1 text-end">
+                            <span class="text-grey text-end">${data.tanggal_permintaan}</span>
+                        </div>
+                        <div class="mb-0 text-grey text-end" style="font-size: 20px !important;">
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        `;
+        }
+
+        const emptyFieldBeforeAppend = () => {
+            $('#logContainer').empty();
+            $('#namaPengaju').empty();
+            $('#unitKerja').empty();
+            $('#statusPermintaan').empty();
+            $('#alasanPermintaan').empty();
+        }
+
+        const showDetailRequest = (element) => {
             const url_detail = $(element).data('link_detail');
-            const url_perpanjangan = $(element).data('link_perpanjangan');
             $.ajax({
                 url: url_detail,
                 type: 'GET',
@@ -87,74 +163,46 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        emptyFieldBeforeAppend();
                         const data = response.data;
-                        const array_asset = data.detail_peminjaman_asset.map((item) => (
-                            JSON.parse(item.json_asset_data)
-                        ));
-                        $('#tanggalPeminjaman').val(data.tanggal_peminjaman);
-                        $('.tanggalPengembalian').val(data.tanggal_pengembalian);
-                        $('#statusPeminjaman').html(generateStatusPeminjaman(data.status));
-                        $('.containerDetailPeminjaman').empty();
-                        $(data.request_peminjaman_asset).each(function(index, value) {
-                            const array_asset_item = array_asset.filter((item) => (
-                                item.id_kategori_asset === value.id_kategori_asset
-                            ));
-                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value
-                                .kategori_asset.nama_kategori, array_asset_item));
-                        })
-                        $('#alasanPeminjaman').text(data.alasan_peminjaman);
-
-                        $('.containerPerpanjangan').empty();
-
-                        if (data.perpanjangan_peminjaman_asset.length > 0) {
-                            $(data.perpanjangan_peminjaman_asset).each(function(index, value) {
-                                $('.containerPerpanjangan').append(generateListHistoryPerpanjangan(
-                                    value));
-                            })
-                        }
-
-                        if (data.status == 'dipinjam' || data.status == 'duedate') {
-                            const data_perpanjangan = data.perpanjangan_peminjaman_asset.filter((item) => (
-                                item.status === 'pending'
-                            ));
-                            if (data_perpanjangan.length < 1) {
-                                $('#formPerpanjangan').attr('action', url_perpanjangan);
-                                $('#btnShowPerpanjangan').show();
-                            }
+                        console.log(data);
+                        getAllDataLogBahanHabisPakai("logContainer", data.id);
+                        $('#namaPengaju').append(data.created_by);
+                        $('#unitKerja').append(data.unit_kerja);
+                        $('#noMemo').append(data.no_memo);
+                        $('#tanggalPengambilan').val(data.tanggal_pengambilan);
+                        if (data.status == 'pending') {
+                            template = '<span class="badge badge-warning">Diajukan</span>';
+                        } else if (data.status == 'diproses') {
+                            template = '<span class="badge badge-primary">Diproses</span>';
+                        } else if (data.status == 'ditolak') {
+                            template = '<span class="badge badge-danger">Ditolak</span>';
                         } else if (data.status == 'selesai') {
-                            $('#formPerpanjangan').attr('action', "");
-                            $('#btnShowPerpanjangan').hide();
-                            $('#keteranganPengembalian').text(data.keterangan_pengembalian);
-                            $('#rating').text(data.rating);
+                            template = '<span class="badge badge-success">Selesai</span>';
+                        }
+                        $('#statusPermintaan').append(template);
+                        $('#alasanPermintaan').append(data.alasan);
+
+                        if (data.status == 'ditolak') {
+                            $('#editOrDeleteButton').removeClass('d-none')
+                            var url_edit =
+                                "{{ route('user.asset-data.bahan-habis-pakai.edit', '') }}/" +
+                                data.id;
+                            $('#editPermintaanButton').attr('href', url_edit)
                         } else {
-                            $('#formPerpanjangan').attr('action', "");
-                            $('#btnShowPerpanjangan').hide();
+                            $('#editOrDeleteButton').addClass('d-none')
                         }
 
+                        $(data.detail_request_inventori).each(function(index, value) {
+                            $('.containerDetailPeminjaman').append(generateDetailPeminjaman(value
+                                .inventori.kategori_inventori.nama_kategori,
+                                value));
+                        })
                         $(".loadingSpiner").hide();
-                        $('#modalDetailPeminjaman').modal('show');
+                        $('#modalDetailBahanHabisPakai').modal('show');
                     }
                 }
             })
-        }
-
-        const generateStatusPeminjaman = (status) => {
-            let template = '';
-            if (status == 'pending') {
-                template = '<span class="badge badge-warning">Menunggu Approval</span>';
-            } else if (status == 'dipinjam') {
-                template = '<span class="badge badge-primary">Sedang Dipinjam</span>';
-            } else if (status == 'duedate') {
-                template = '<span class="badge badge-warning">Terlambat</span>';
-            } else if (status == 'selesai') {
-                template = '<span class="badge badge-success">Selesai</span>';
-            } else if (status == 'ditolak') {
-                template = '<span class="badge badge-danger">Ditolak</span>';
-            } else if (status == 'disetujui') {
-                template = '<span class="badge badge-success">Disetujui</span>';
-            }
-
-            return template;
         }
 
         const generateDetailPeminjaman = (nama_kategori, data_asset) => {
@@ -171,82 +219,18 @@
         const generateListDetailPeminjaman = (data_asset) => {
             let element = '';
             $(data_asset).each(function(index, value) {
-                element += `<li>${value.deskripsi}</li>`;
+                element +=
+                    `<li>${value.inventori.nama_inventori} (${value.inventori.kode_inventori}) -- (Permintaan: ${value.qty}, Realisasi: ${value.realisasi != null ? value.realisasi : "-"})</li>`;
             })
             return element;
-        }
-
-        let showPerpanjangan = true;
-
-        const showHideFormPerpanjangan = (element) => {
-            if (showPerpanjangan) {
-                $(element).text('Batal').removeClass('btn-warning').addClass('btn-danger');
-                $('.containerPerpanjanganForm').show();
-                $('#btnSubmitPerpanjangan').show();
-                showPerpanjangan = false;
-            } else {
-                $(element).text('Ajukan Perpanjangan').removeClass('btn-danger').addClass('btn-warning');
-                $('.containerPerpanjanganForm').hide();
-                $('#btnSubmitPerpanjangan').hide();
-                showPerpanjangan = true;
-            }
-        }
-
-        const generateListHistoryPerpanjangan = (data) => {
-            return `
-                <div class="py-2 px-2 border border-primary border-radius-sm">
-                    <div class="border-bottom d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="text-dark mb-0"><strong>Tanggal Perpanjangan</strong></p>
-                            <p class="mb-0">${data.tanggal_expired_perpanjangan}</p>
-                        </div>
-                        ${generateStatusPeminjaman(data.status)}
-                    </div>
-                    <p class="mb-0">${data.alasan_perpanjangan}</p>
-                </div>
-            `;
-        }
-
-        $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
-            if (data.success) {
-                changeTextToast('toastSuccess', data.message);
-                toastbox('toastSuccess', 2000);
-
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            }
-        });
-        $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-            if (!errors.success && errors.message) {
-                dialogDanger(errors.message, errors.error);
-            }
-            for (let key in errors) {
-                let array_error_key = key.split('.');
-                if (array_error_key.length < 2) {
-                    let element = formElement.find(`[name=${key}]`);
-                    clearValidation(element);
-                    showValidation(element, errors[key][0]);
-                } else {
-                    let new_key = `${array_error_key[0]}[${array_error_key[1]}][${array_error_key[2]}]`;
-                    let element = formElement.find(`[name="${new_key}"]`);
-                    $(element).addClass('is-invalid');
-                    $(`#errorJumlah-${array_error_key[1]}`).text(errors[key][0]).show();
-                }
-            }
-        });
-
-        const submitForm = () => {
-            $('.form-submit').submit();
         }
     </script>
 @endsection
 @section('content')
-    <input type="hidden" name="" id="notifikasiId">
     <ul class="nav nav-tabs lined" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" data-bs-toggle="tab" href="#overview2" role="tab" aria-selected="true">
-                Menunggu
+                Diajukan
             </a>
         </li>
         <li class="nav-item">
@@ -277,5 +261,5 @@
             </div>
         </div>
     </div>
-    @include('pages.user.asset.peminjaman._modal_detail')
+    @include('pages.user.asset.bahan-habis-pakai._modal_detail')
 @endsection
