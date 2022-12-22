@@ -15,6 +15,11 @@ class InventoriData extends Model
         return $this->belongsTo(KategoriInventori::class, 'id_kategori_inventori', 'id');
     }
 
+    public function detail_request_inventori()
+    {
+        return $this->hasMany(DetailRequestInventori::class, 'inventori_id', 'id');
+    }
+
     public function satuan_inventori()
     {
         return $this->belongsTo(SatuanInventori::class, 'id_satuan_inventori', 'id');
