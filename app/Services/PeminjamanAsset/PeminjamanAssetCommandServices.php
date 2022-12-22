@@ -78,6 +78,27 @@ class PeminjamanAssetCommandServices
         $log_message = 'Peminjaman Asset baru dibuat oleh ' . $user->name;
         $this->storeLogPeminjamanAsset($peminjaman->id, $log_message);
 
+        $role = [];
+
+        if ($peminjaman->is_it == '1') {
+            $role = ['manager_it', 'staff_it', 'admin'];
+        } else {
+            $role = ['manager_asset', 'staff_asset', 'admin'];
+        }
+
+        $users = User::query()->whereIn('role', $role)->get();
+
+        $notifikasi = [
+            'title' => 'Peminjaman Asset',
+            'message' => 'Peminjaman Asset dengan kode ' . $peminjaman->code . ' telah diajukan oleh ' . $user->name,
+            'url' => route('admin.approval.peminjaman.index', ['peminjaman_id' => $peminjaman->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($users as $user) {
+            $user->notify(new UserNotification($notifikasi));
+        }
+
         return $peminjaman;
     }
 
