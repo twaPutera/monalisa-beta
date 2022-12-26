@@ -16,4 +16,9 @@
             href="{{ route('admin.approval.pemindahan.index') }}">Pemindahan (<span
                 id="pemindahan-approval-count">0</span>)</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link @if (\Request::segment(3) == 'request-inventori') active @endif"
+            href="{{ route('admin.approval.request-inventori.index') }}">Request Inventori (<span
+                id="request-inventori-approval-count">0</span>)</a>
+    </li>
 </ul>

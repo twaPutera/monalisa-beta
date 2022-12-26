@@ -40,7 +40,10 @@ class InventarisDataQueryServices
 
     public function findRequestById(string $id)
     {
-        return RequestInventori::with(['detail_request_inventori','detail_request_inventori.inventori','detail_request_inventori.inventori.kategori_inventori'])->where('id', $id)->firstOrFail();
+        return RequestInventori::query()
+            ->with(['detail_request_inventori','detail_request_inventori.inventori','detail_request_inventori.inventori.kategori_inventori'])
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function findAllLog(Request $request)

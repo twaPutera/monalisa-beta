@@ -11,6 +11,7 @@ use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
+use App\Http\Requests\Approval\RequestInventoriUpdate;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
 use App\Models\Approval;
 use App\Models\DetailRequestInventori;
@@ -44,6 +45,7 @@ class InventarisDataCommandServices
 
         return $inventori_data;
     }
+
     public function storeFromUser(UserRequestInventoriStoreRequest $request)
     {
         $request->validated();
@@ -140,6 +142,7 @@ class InventarisDataCommandServices
         $log->created_by = $user->name;
         $log->save();
     }
+
     public function storeUpdate(InventarisDataStoreUpdateRequest $request)
     {
         $request->validated();
@@ -203,5 +206,32 @@ class InventarisDataCommandServices
             return $inventori_data;
         }
         return false;
+    }
+
+    public function changeApprovalStatus(RequestInventoriUpdate $request, $id)
+    {
+        $request->validated();
+
+        $user = SsoHelpers::getUserLogin();
+
+        $request_inventori = RequestInventori::findOrFail($id);
+        $request_inventori->status = $request->status;
+        $request_inventori->save();
+
+        $approval = $request_inventori->approval;
+        $approval->tanggal_approval = date('Y-m-d H:i:s');
+        $approval->guid_approver = config('app.sso_siska') ? $user->guid : $user->id;
+        $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
+        $approval->keterangan = $request->keterangan;
+        $approval->save();
+
+        $log_message = 'Approval request bahan habis pakai dengan kode ' . $request_inventori->kode_request . ' telah ditolak oleh ' . $user->name;
+        if ($request->status == 'disetujui') {
+            $log_message = 'Approval request bahan habis pakai dengan kode ' . $request_inventori->kode_request . ' telah disetujui oleh ' . $user->name;
+        }
+
+        $this->storeLogRequestInventori($request_inventori->id, $log_message, $request->status);
+
+        return $request_inventori;
     }
 }
