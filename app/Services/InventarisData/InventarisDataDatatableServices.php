@@ -140,17 +140,26 @@ class InventarisDataDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                if($item->status == "diproses"){
-                    $element .= '<a href="' . route('admin.permintaan-inventaris.realisasi', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
-                                    <i class="fa fa-box"></i>
+                if ($item->status != "ditolak") {
+                    $element .= '<a href="' . route('admin.permintaan-inventaris.realisasi', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
+                                    <i class="fa fa-eye"></i>
                                 </a>';
                 }
-                $element .= '<button type="button" onclick="edit(this)" data-url_detail="' . route('admin.permintaan-inventaris.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
-                                <i class="fa fa-eye"></i>
-                            </button>';
                 return $element;
             })
             ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function datatableLogPermintaan(Request $request)
+    {
+        $query = LogRequestInventori::query();
+        if (isset($request->request_inventori_id)) {
+            $query->where('request_inventori_id', $request->request_inventori_id);
+        }
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
             ->make(true);
     }
 

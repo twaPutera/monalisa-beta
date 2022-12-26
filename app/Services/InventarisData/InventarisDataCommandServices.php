@@ -215,7 +215,7 @@ class InventarisDataCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $request_inventori = RequestInventori::findOrFail($id);
-        $request_inventori->status = $request->status;
+        $request_inventori->status = $request->status == 'disetujui' ? 'diproses' : 'ditolak';
         $request_inventori->save();
 
         $approval = $request_inventori->approval;
@@ -230,7 +230,7 @@ class InventarisDataCommandServices
             $log_message = 'Approval request bahan habis pakai dengan kode ' . $request_inventori->kode_request . ' telah disetujui oleh ' . $user->name;
         }
 
-        $this->storeLogRequestInventori($request_inventori->id, $log_message, $request->status);
+        $this->storeLogRequestInventori($request_inventori->id, $log_message, $request->status == 'disetujui' ? 'diproses' : 'ditolak');
 
         return $request_inventori;
     }

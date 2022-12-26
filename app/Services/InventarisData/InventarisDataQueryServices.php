@@ -14,6 +14,11 @@ class InventarisDataQueryServices
         return InventoriData::all();
     }
 
+    public function findPermintaan(string $id)
+    {
+        $query = RequestInventori::find($id);
+        return $query;
+    }
     public function findAllRequest(Request $request)
     {
         $query = RequestInventori::query();
@@ -41,7 +46,7 @@ class InventarisDataQueryServices
     public function findRequestById(string $id)
     {
         return RequestInventori::query()
-            ->with(['detail_request_inventori','detail_request_inventori.inventori','detail_request_inventori.inventori.kategori_inventori'])
+            ->with(['detail_request_inventori', 'detail_request_inventori.inventori', 'detail_request_inventori.inventori.kategori_inventori'])
             ->where('id', $id)
             ->firstOrFail();
     }

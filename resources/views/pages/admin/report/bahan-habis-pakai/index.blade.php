@@ -105,10 +105,10 @@
                             let element = "";
                             if (data == "pending") {
                                 element +=
-                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Pending</span>`;
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span>`;
                             } else if (data == "diproses") {
                                 element +=
-                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Diproses</span>`;
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Diproses</span>`;
 
                             } else if (data == "ditolak") {
                                 element +=

@@ -312,7 +312,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/', [RequestBahanHabisPakaiController::class, 'index'])->name('admin.permintaan-inventaris.index');
             Route::get('/datatable', [RequestBahanHabisPakaiController::class, 'datatable'])->name('admin.permintaan-inventaris.datatable');
             Route::get('/realisasi/{id}', [RequestBahanHabisPakaiController::class, 'realisasi'])->name('admin.permintaan-inventaris.realisasi');
-            Route::get('/detail-log/{id}', [RequestBahanHabisPakaiController::class, 'detail'])->name('admin.permintaan-inventaris.detail');
+            Route::get('/log-permintaan', [RequestBahanHabisPakaiController::class, 'datatableLog'])->name('admin.permintaan-inventaris.datatable.log');
         });
 
         Route::group(['prefix' => 'approval-permintaan'], function () {

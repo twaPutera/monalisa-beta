@@ -67,7 +67,34 @@
                         data: 'alasan'
                     }
                 ],
-                columnDefs: [
+                columnDefs: [{
+                        targets: [2, 4],
+                        render: function(data, type, full, meta) {
+                            return data != 'Tidak Ada' ? formatDateIntoIndonesia(data) : '-';
+                        },
+                    },
+                    {
+                        targets: 8,
+                        render: function(data, type, full, meta) {
+                            let element = "";
+                            if (data == "pending") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span>`;
+                            } else if (data == "diproses") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--primary kt-badge--inline">Diproses</span>`;
+
+                            } else if (data == "ditolak") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline">Ditolak</span>`;
+                            } else if (data == "selesai") {
+                                element +=
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline">Selesai</span>`;
+                            }
+                            return element;
+                        },
+                    }
+                    //Custom template data
                     //Custom template data
                 ],
             });
