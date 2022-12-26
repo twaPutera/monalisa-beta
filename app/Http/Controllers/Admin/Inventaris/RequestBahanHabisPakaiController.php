@@ -22,7 +22,7 @@ class RequestBahanHabisPakaiController extends Controller
     public function __construct(
         InventarisDataCommandServices $inventarisDataCommandServices,
         InventarisDataDatatableServices $inventarisDataDatatableServices,
-        InventarisDataQueryServices $inventarisDataQueryServices,
+        InventarisDataQueryServices $inventarisDataQueryServices
     ) {
         $this->inventarisDataDatatableServices = $inventarisDataDatatableServices;
         $this->inventarisDataQueryServices = $inventarisDataQueryServices;
