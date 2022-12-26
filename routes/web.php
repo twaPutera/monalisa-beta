@@ -48,8 +48,10 @@ use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPem
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
 use App\Http\Controllers\Admin\History\HistoryBahanHabisPakaiController;
 use App\Http\Controllers\Admin\Inventaris\RequestBahanHabisPakaiController;
+use App\Http\Controllers\Admin\Approval\RequestInventoriController as AdminApprovalRequestInventoriController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\Admin\Inventaris\RequestInventoriController as AdminRequestInventoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +103,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::group(['prefix' => 'pemindahan'], function () {
             Route::get('/', [AdminApprovalPemindahanController::class, 'index'])->name('admin.approval.pemindahan.index');
             Route::post('/change-status/{id}', [AdminApprovalPemindahanController::class, 'changeStatusApproval'])->name('admin.approval.pemindahan.change-status');
+        });
+        Route::group(['prefix' => 'request-inventori'], function () {
+            Route::get('/', [AdminApprovalRequestInventoriController::class, 'index'])->name('admin.approval.request-inventori.index');
+            Route::post('/change-status/{id}', [AdminApprovalRequestInventoriController::class, 'changeStatusApproval'])->name('admin.approval.request-inventori.change-status');
         });
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [HistoryApprovalController::class, 'index'])->name('admin.approval.history.index');
@@ -307,6 +313,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/datatable', [RequestBahanHabisPakaiController::class, 'datatable'])->name('admin.permintaan-inventaris.datatable');
             Route::get('/realisasi/{id}', [RequestBahanHabisPakaiController::class, 'realisasi'])->name('admin.permintaan-inventaris.realisasi');
             Route::get('/detail-log/{id}', [RequestBahanHabisPakaiController::class, 'detail'])->name('admin.permintaan-inventaris.detail');
+        });
+
+        Route::group(['prefix' => 'approval-permintaan'], function () {
+            Route::get('/', [AdminRequestInventoriController::class, 'index'])->name('admin.listing-inventaris.request-inventori.index');
+            Route::get('/datatable', [AdminRequestInventoriController::class, 'datatable'])->name('admin.listing-inventaris.request-inventori.datatable');
+            Route::get('/show/{id}', [AdminRequestInventoriController::class, 'show'])->name('admin.listing-inventaris.request-inventori.show');
+            Route::post('/update/{id}', [AdminRequestInventoriController::class, 'update'])->name('admin.listing-inventaris.request-inventori.update');
         });
     });
     # User Management

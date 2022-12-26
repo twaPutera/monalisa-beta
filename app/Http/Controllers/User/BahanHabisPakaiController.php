@@ -16,10 +16,10 @@ class BahanHabisPakaiController extends Controller
 {
     protected $inventarisDataQueryServices;
     protected $inventarisDataCommandServices;
+
     public function __construct(
         InventarisDataQueryServices $inventarisDataQueryServices,
-        InventarisDataCommandServices $inventarisDataCommandServices,
-
+        InventarisDataCommandServices $inventarisDataCommandServices
     ) {
         $this->inventarisDataQueryServices = $inventarisDataQueryServices;
         $this->inventarisDataCommandServices = $inventarisDataCommandServices;

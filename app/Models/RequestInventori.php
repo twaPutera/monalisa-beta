@@ -20,4 +20,9 @@ class RequestInventori extends Model
     {
         return $this->hasMany(LogRequestInventori::class, 'request_inventori_id', 'id');
     }
+
+    public function approval()
+    {
+        return $this->morphOne(Approval::class, 'approvable');
+    }
 }
