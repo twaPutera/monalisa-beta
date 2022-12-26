@@ -12,6 +12,7 @@ use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
 use App\Http\Requests\Approval\RequestInventoriUpdate;
+use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
 use App\Models\Approval;
 use App\Models\DetailRequestInventori;
@@ -182,6 +183,10 @@ class InventarisDataCommandServices
         $inventori_data->save();
 
         return $inventori_data;
+    }
+
+    public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id){
+
     }
 
     public function updateStok(string $id, InventarisDataUpdateStokRequest $request)

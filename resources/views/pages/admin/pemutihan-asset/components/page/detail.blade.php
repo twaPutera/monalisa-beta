@@ -53,13 +53,14 @@
 
         const submitForm = () => {
             Swal.fire({
-                title: 'Apakah anda yakin membatalkan?',
-                text: "Data yang batal ditambahkan akan terhapus permanen",
+                 title: 'Are you sure?',
+                text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#CF4343',
-                cancelButtonColor: '#d5d5d5',
-                confirmButtonText: 'Ya, Batalkan !'
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak",
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#form-submit').submit();

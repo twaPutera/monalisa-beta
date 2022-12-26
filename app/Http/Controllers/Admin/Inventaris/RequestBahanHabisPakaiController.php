@@ -3,23 +3,30 @@
 namespace App\Http\Controllers\Admin\Inventaris;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
+use App\Services\InventarisData\InventarisDataCommandServices;
 use App\Services\InventarisData\InventarisDataDatatableServices;
 use App\Services\InventarisData\InventarisDataQueryServices;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RequestBahanHabisPakaiController extends Controller
 {
     protected $inventarisDataDatatableServices;
     protected $inventarisDataQueryServices;
+    protected $inventarisDataCommandServices;
     public function __construct(
+        InventarisDataCommandServices $inventarisDataCommandServices,
         InventarisDataDatatableServices $inventarisDataDatatableServices,
         InventarisDataQueryServices $inventarisDataQueryServices,
     ) {
         $this->inventarisDataDatatableServices = $inventarisDataDatatableServices;
         $this->inventarisDataQueryServices = $inventarisDataQueryServices;
+        $this->inventarisDataCommandServices = $inventarisDataCommandServices;
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
     }
@@ -56,5 +63,25 @@ class RequestBahanHabisPakaiController extends Controller
             abort(404);
         }
         return view('pages.admin.listing-inventaris.permintaan.detail', compact('permintaan'));
+    }
+
+    public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $listing_inventaris = $this->inventarisDataCommandServices->storeRealisasi($request, $id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menambahkan data inventaris',
+                'data' => $listing_inventaris,
+            ], 200);
+        } catch (Throwable $th) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }

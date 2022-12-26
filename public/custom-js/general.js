@@ -130,7 +130,18 @@ const formConfirmSubmit = () => {
                         }
                     },
                     error: function (response) {
+                        // console.log(response)
                         $(".backdrop").hide();
+                        $(".loadingSpiner").hide();
+                        let errors;
+                        if (response.status == 500) {
+                            errors = response.responseJSON;
+                        } else if (response.status == 422) {
+                            errors = response.responseJSON.errors;
+                        } else if (response.status == 400) {
+                            errors = response.responseJSON.errors;
+                        }
+                        $("body").trigger("_EventAjaxErrors", [form, errors]);
                     },
                 });
             }

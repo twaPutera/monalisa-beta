@@ -105,11 +105,35 @@
                     //Custom te
                 ],
             });
+
+            $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
+                if (data.success) {
+                    showToastSuccess('Sukses', data.message);
+                    if (data.redirect && data.redirect != null) {
+                        setTimeout(function() {
+                            var redirect = "{{ route('admin.pemutihan-asset.index') }}"
+                            location.assign(redirect);
+                        }, 1000);
+                    }
+                }
+
+            });
+            $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
+                //if validation not pass
+                for (let key in errors) {
+                    let key_split = key.split('.');
+                    let name = `data_realisasi[${key_split[1]}][jumlah]`;
+                    let element = formElement.find(`[name='${name}']`);
+                    clearValidation(element);
+                    showValidation(element, errors[key][0]);
+                }
+            });
         });
     </script>
 @endsection
 @section('main-content')
-    <form action="" class="form-confirm d-inline" method="POST">
+    <form action="{{ route('admin.permintaan-inventaris.realisasi.store', $permintaan->id) }}" class="form-confirm d-inline"
+        method="POST">
         @csrf
         <div class="col-md-12 col-12">
             <div class="kt-portlet shadow-custom">
@@ -123,7 +147,6 @@
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
                                 @if ($permintaan->status == 'diproses')
-                                    <input type="hidden" name="status" value="dipinjam">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-check mr-2"></i>
                                         Proses</button>
                                 @elseif($permintaan->status == 'pending')
@@ -151,23 +174,23 @@
                                 <div class="kt-portlet__body">
                                     <div class="form-group">
                                         <label for="nama">Kode Permintaan</label>
-                                        <input type="text" class="form-control" id="codePeminjam" readonly name="nama"
+                                        <input type="text" class="form-control" id="codePeminjam" readonly name=""
                                             placeholder="Kode" value="{{ $permintaan->kode_request }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">Nama Pengaju</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama"
+                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
                                             placeholder="Nama" value="{{ $permintaan->pengaju }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">No Memo</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama"
-                                            placeholder="Nama" value="{{ $permintaan->no_memo }}">
+                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
+                                            placeholder="No Memo" value="{{ $permintaan->no_memo }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">Unit Kerja</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name="nama"
-                                            placeholder="Nama" value="{{ $permintaan->unit_kerja }}">
+                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
+                                            placeholder="Unit Kerja" value="{{ $permintaan->unit_kerja }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Permintaan</label>
@@ -193,6 +216,8 @@
                             </div>
                         </div>
                         <div class="col-md-8 col-12">
+                            <div class="alert alert-danger d-none" id="alert-error"></div>
+
                             <div class="kt-portlet shadow-custom">
                                 <div class="kt-portlet__head px-4">
                                     <div class="kt-portlet__head-label">
@@ -218,8 +243,9 @@
                                                     <th>Kode Inventori</th>
                                                     <th>Nama Inventori</th>
                                                     <th>Nama Kategori</th>
+                                                    <th>Jumlah Stok</th>
                                                     <th>Jumlah Permintaan</th>
-                                                    <th>Realisasi</th>
+                                                    <th width="100px">Realisasi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -229,8 +255,14 @@
                                                         <td>{{ $item->inventori->kode_inventori }}</td>
                                                         <td>{{ $item->inventori->nama_inventori }}</td>
                                                         <td>{{ $item->inventori->kategori_inventori->nama_kategori }}</td>
+                                                        <td>{{ $item->inventori->jumlah_saat_ini }}
+                                                            {{ $item->inventori->satuan_inventori->nama_satuan }}</td>
                                                         <td>{{ $item->qty }}</td>
-                                                        <td><input type="number" class="form-control" name="">
+                                                        <td>
+                                                            <input type="hidden" name="id_inventaris[]"
+                                                                value="{{ $item->id }}">
+                                                            <input type="number" class="form-control"
+                                                                name="data_realisasi[{{ $item->id }}][jumlah]">
                                                         </td>
                                                     </tr>
                                                 @endforeach
