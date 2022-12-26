@@ -49,4 +49,14 @@
             </span>
             <span class="kt-nav__link-text">History Peminjaman</span> </a>
     </li>
+    <li class="kt-nav__item">
+        <a
+            @if (\Request::segment(3) == 'history-bahan-habis-pakai') class="kt-nav__link px-3 active" href="javascript:;"
+        @else
+            class="kt-nav__link px-3" href="{{ route('admin.report.history-bahan-habis-pakai.index') }}" @endif>
+            <span class="kt-nav__link-icon">
+                <i class="fas fa-book"></i>
+            </span>
+            <span class="kt-nav__link-text">History Bahan Habis Pakai</span> </a>
+    </li>
 </ul>

@@ -46,6 +46,8 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
+use App\Http\Controllers\Admin\History\HistoryBahanHabisPakaiController;
+use App\Http\Controllers\Admin\Inventaris\RequestBahanHabisPakaiController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 
@@ -198,6 +200,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/download/export', [HistoryServiceController::class, 'download'])->name('admin.report.history-service.download-export');
             Route::get('/datatable', [HistoryServiceController::class, 'datatable'])->name('admin.report.history-service.datatable');
         });
+
+        Route::group(['prefix' => 'history-bahan-habis-pakai'], function () {
+            Route::get('/', [HistoryBahanHabisPakaiController::class, 'index'])->name('admin.report.history-bahan-habis-pakai.index');
+            Route::get('/download/export', [HistoryBahanHabisPakaiController::class, 'download'])->name('admin.report.history-bahan-habis-pakai.download-export');
+            Route::get('/datatable', [HistoryBahanHabisPakaiController::class, 'datatable'])->name('admin.report.history-bahan-habis-pakai.datatable');
+        });
     });
 
     # Pemutihan Asset
@@ -278,22 +286,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
     });
 
     # Inventaris
-    Route::group(['prefix' => 'listing-inventaris'], function () {
-        Route::get('/', [MasterInventarisController::class, 'index'])->name('admin.listing-inventaris.index');
-        Route::get('/get-one-inventaris', [MasterInventarisController::class, 'getOne'])->name('admin.listing-inventaris.get.one');
-        Route::get('/datatable', [MasterInventarisController::class, 'datatable'])->name('admin.listing-inventaris.datatable');
-        Route::post('/store', [MasterInventarisController::class, 'store'])->name('admin.listing-inventaris.store');
-        Route::post('/store-and-update', [MasterInventarisController::class, 'storeUpdate'])->name('admin.listing-inventaris.store.update');
-        Route::get('/edit/{id}', [MasterInventarisController::class, 'edit'])->name('admin.listing-inventaris.edit');
-        Route::post('/update/{id}', [MasterInventarisController::class, 'update'])->name('admin.listing-inventaris.update');
-        Route::get('/detail/{id}', [MasterInventarisController::class, 'detail'])->name('admin.listing-inventaris.detail');
-        Route::post('/update-stok/{id}', [MasterInventarisController::class, 'updateStok'])->name('admin.listing-inventaris.update.stok');
-        Route::get('/edit-stok/{id}', [MasterInventarisController::class, 'editStok'])->name('admin.listing-inventaris.edit.stok');
-        Route::get('/datatable-penambahan', [MasterInventarisController::class, 'datatablePenambahan'])->name('admin.listing-inventaris.datatable.penambahan');
-        Route::get('/datatable-pengurangan', [MasterInventarisController::class, 'datatablePengurangan'])->name('admin.listing-inventaris.datatable.pengurangan');
-        Route::get('/get-data-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('admin.listing-inventaris.get-data-select2');
+    Route::group(['prefix' => 'bahan-habis-pakai'], function () {
+        Route::group(['prefix' => 'listing-data'], function () {
+            Route::get('/', [MasterInventarisController::class, 'index'])->name('admin.listing-inventaris.index');
+            Route::get('/get-one-inventaris', [MasterInventarisController::class, 'getOne'])->name('admin.listing-inventaris.get.one');
+            Route::get('/datatable', [MasterInventarisController::class, 'datatable'])->name('admin.listing-inventaris.datatable');
+            Route::post('/store', [MasterInventarisController::class, 'store'])->name('admin.listing-inventaris.store');
+            Route::post('/store-and-update', [MasterInventarisController::class, 'storeUpdate'])->name('admin.listing-inventaris.store.update');
+            Route::get('/edit/{id}', [MasterInventarisController::class, 'edit'])->name('admin.listing-inventaris.edit');
+            Route::post('/update/{id}', [MasterInventarisController::class, 'update'])->name('admin.listing-inventaris.update');
+            Route::get('/detail/{id}', [MasterInventarisController::class, 'detail'])->name('admin.listing-inventaris.detail');
+            Route::post('/update-stok/{id}', [MasterInventarisController::class, 'updateStok'])->name('admin.listing-inventaris.update.stok');
+            Route::get('/edit-stok/{id}', [MasterInventarisController::class, 'editStok'])->name('admin.listing-inventaris.edit.stok');
+            Route::get('/datatable-penambahan', [MasterInventarisController::class, 'datatablePenambahan'])->name('admin.listing-inventaris.datatable.penambahan');
+            Route::get('/datatable-pengurangan', [MasterInventarisController::class, 'datatablePengurangan'])->name('admin.listing-inventaris.datatable.pengurangan');
+            Route::get('/get-data-select2', [MasterInventarisController::class, 'getDataSelect2'])->name('admin.listing-inventaris.get-data-select2');
+        });
+        Route::group(['prefix' => 'permintaan'], function () {
+            Route::get('/', [RequestBahanHabisPakaiController::class, 'index'])->name('admin.permintaan-inventaris.index');
+            Route::get('/datatable', [RequestBahanHabisPakaiController::class, 'datatable'])->name('admin.permintaan-inventaris.datatable');
+            Route::get('/realisasi/{id}', [RequestBahanHabisPakaiController::class, 'realisasi'])->name('admin.permintaan-inventaris.realisasi');
+            Route::get('/detail-log/{id}', [RequestBahanHabisPakaiController::class, 'detail'])->name('admin.permintaan-inventaris.detail');
+        });
     });
-
     # User Management
     Route::group(['prefix' => 'user-management'], function () {
         Route::group(['prefix' => 'user'], function () {

@@ -194,7 +194,7 @@
                         " " + response.data.satuan_inventori.nama_satuan);
                     table.find('strong[class=deskripsi_inventaris]').append(response.data
                         .deskripsi_inventori);
-                    modal.on('shown.bs.modal', function () {
+                    modal.on('shown.bs.modal', function() {
                         generateMemorandumAndinSelect2();
                     }).modal('show');
                 }
@@ -223,7 +223,7 @@
                     },
                     cache: true
                 },
-            }).on('change', function (e) {
+            }).on('change', function(e) {
                 const data = $(this).select2('data')[0];
                 $('#noMemoSurat').val(data.text);
             });
@@ -345,8 +345,10 @@
 @endsection
 @section('main-content')
     <div class="row">
-
-        <div class="col-md-12 col-12">
+        <div class="col-md-2 col-12">
+            @include('pages.admin.listing-inventaris.menu')
+        </div>
+        <div class="col-md-10 col-12">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -387,7 +389,7 @@
             </div>
         </div>
     </div>
-    @include('pages.admin.listing-inventaris.components.modal._modal_create')
-    @include('pages.admin.listing-inventaris.components.modal._modal_edit')
-    @include('pages.admin.listing-inventaris.components.modal._modal_edit_stok')
+    @include('pages.admin.listing-inventaris.listing-data.components.modal._modal_create')
+    @include('pages.admin.listing-inventaris.listing-data.components.modal._modal_edit')
+    @include('pages.admin.listing-inventaris.listing-data.components.modal._modal_edit_stok')
 @endsection

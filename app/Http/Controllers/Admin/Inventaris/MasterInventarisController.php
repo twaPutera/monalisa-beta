@@ -32,7 +32,7 @@ class MasterInventarisController extends Controller
 
     public function index()
     {
-        return view('pages.admin.listing-inventaris.index');
+        return view('pages.admin.listing-inventaris.listing-data.index');
     }
 
     public function datatable(Request $request)
@@ -149,7 +149,7 @@ class MasterInventarisController extends Controller
             DB::beginTransaction();
             $listing_inventaris = $this->inventarisDataCommandServices->updateStok($id, $request);
             DB::commit();
-            if (! $listing_inventaris) {
+            if (!$listing_inventaris) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Jumlah Stok Tidak Mencukupi',
@@ -174,7 +174,7 @@ class MasterInventarisController extends Controller
     {
         try {
             $listing_inventaris = $this->inventarisDataQueryServices->findById($id);
-            return view('pages.admin.listing-inventaris.detail', compact('listing_inventaris'));
+            return view('pages.admin.listing-inventaris.listing-data.detail', compact('listing_inventaris'));
         } catch (Throwable $th) {
             return response()->json([
                 'success' => false,
