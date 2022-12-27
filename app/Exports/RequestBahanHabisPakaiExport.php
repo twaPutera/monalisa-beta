@@ -2,22 +2,21 @@
 
 namespace App\Exports;
 
+use Carbon\Carbon;
 use App\Helpers\DateIndoHelpers;
 use App\Models\LogRequestInventori;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
-
     public function __construct(
         $awal_permintaan = null,
         $akhir_permintaan = null,
@@ -46,13 +45,12 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
             'request_inventories.no_memo',
         ]);
 
-
         if (isset($this->awal_permintaan)) {
-            $query->where('request_inventories.created_at', '>=', $this->awal_permintaan . " 00:00:00");
+            $query->where('request_inventories.created_at', '>=', $this->awal_permintaan . ' 00:00:00');
         }
 
         if (isset($this->akhir_permintaan)) {
-            $query->where('request_inventories.created_at', '<=', $this->akhir_permintaan . " 23:59:00");
+            $query->where('request_inventories.created_at', '<=', $this->akhir_permintaan . ' 23:59:00');
         }
 
         if (isset($this->awal_pengambilan)) {

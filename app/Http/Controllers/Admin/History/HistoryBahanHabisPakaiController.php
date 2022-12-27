@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin\History;
 
-use App\Exports\RequestBahanHabisPakaiExport;
-use App\Http\Controllers\Controller;
-use App\Services\InventarisData\InventarisDataDatatableServices;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RequestBahanHabisPakaiExport;
+use App\Services\InventarisData\InventarisDataDatatableServices;
 
 class HistoryBahanHabisPakaiController extends Controller
 {

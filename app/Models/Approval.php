@@ -27,7 +27,7 @@ class Approval extends Model
             return route('admin.peminjaman.show', $this->approvable_id);
         } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
             return route('admin.peminjaman.show', $this->approvable->id_peminjaman_asset);
-        } elseif($this->approvable instanceof RequestInventori) {
+        } elseif ($this->approvable instanceof RequestInventori) {
             return route('admin.listing-inventaris.request-inventori.show', $this->approvable_id);
         }
     }
@@ -42,7 +42,7 @@ class Approval extends Model
             return route('admin.approval.peminjaman.change-status', $this->approvable_id);
         } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
             return route('admin.approval.peminjaman.change-status-perpanjangan', $this->approvable_id);
-        } elseif($this->approvable instanceof RequestInventori) {
+        } elseif ($this->approvable instanceof RequestInventori) {
             return route('admin.approval.request-inventori.change-status', $this->approvable_id);
         }
     }
@@ -57,7 +57,7 @@ class Approval extends Model
             return 'Peminjaman Asset';
         } elseif ($this->approvable instanceof PerpanjanganPeminjamanAsset) {
             return 'Perpanjangan Peminjaman Asset';
-        } elseif($this->approvable instanceof RequestInventori) {
+        } elseif ($this->approvable instanceof RequestInventori) {
             return 'Request Penggunaan Inventori';
         }
 

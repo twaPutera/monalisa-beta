@@ -34,6 +34,8 @@ use App\Http\Controllers\Admin\Inventaris\MasterInventarisController;
 use App\Http\Controllers\User\AssetController as UserAssetController;
 use App\Http\Controllers\Admin\ListingAsset\PemindahanAssetController;
 use App\Http\Controllers\Admin\PemutihanAsset\PemutihanAssetController;
+use App\Http\Controllers\Admin\History\HistoryBahanHabisPakaiController;
+use App\Http\Controllers\Admin\Inventaris\RequestBahanHabisPakaiController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\PengaduanController as UserPengaduanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -46,12 +48,10 @@ use App\Http\Controllers\Admin\Approval\PemutihanController as AdminPemutihanAss
 use App\Http\Controllers\Admin\PemutihanAsset\AssetController as AdminAssetPemutihanController;
 use App\Http\Controllers\Admin\Approval\PemindahanController as AdminApprovalPemindahanController;
 use App\Http\Controllers\Admin\Approval\PeminjamanController as AdminApprovalPeminjamanController;
-use App\Http\Controllers\Admin\History\HistoryBahanHabisPakaiController;
-use App\Http\Controllers\Admin\Inventaris\RequestBahanHabisPakaiController;
-use App\Http\Controllers\Admin\Approval\RequestInventoriController as AdminApprovalRequestInventoriController;
 use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagementUserController;
-use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Inventaris\RequestInventoriController as AdminRequestInventoriController;
+use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
+use App\Http\Controllers\Admin\Approval\RequestInventoriController as AdminApprovalRequestInventoriController;
 
 /*
 |--------------------------------------------------------------------------

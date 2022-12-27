@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Inventaris;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
-use App\Services\InventarisData\InventarisDataCommandServices;
-use App\Services\InventarisData\InventarisDataDatatableServices;
-use App\Services\InventarisData\InventarisDataQueryServices;
-use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
+use Throwable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Throwable;
+use App\Http\Controllers\Controller;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\InventarisData\InventarisDataQueryServices;
+use App\Services\InventarisData\InventarisDataCommandServices;
+use App\Services\InventarisData\InventarisDataDatatableServices;
+use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
 
 class RequestBahanHabisPakaiController extends Controller
 {
@@ -59,7 +59,7 @@ class RequestBahanHabisPakaiController extends Controller
         }
         $permintaan->pengaju = $name;
         $permintaan->tanggal_permintaan = Carbon::parse($permintaan->created_at)->format('Y-m-d');
-        if ($permintaan->status == "ditolak") {
+        if ($permintaan->status == 'ditolak') {
             abort(404);
         }
         return view('pages.admin.listing-inventaris.permintaan.detail', compact('permintaan'));

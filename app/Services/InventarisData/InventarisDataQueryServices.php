@@ -4,8 +4,8 @@ namespace App\Services\InventarisData;
 
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
-use App\Models\LogRequestInventori;
 use App\Models\RequestInventori;
+use App\Models\LogRequestInventori;
 
 class InventarisDataQueryServices
 {

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
-use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
-use App\Services\InventarisData\InventarisDataCommandServices;
-use App\Services\InventarisData\InventarisDataQueryServices;
-use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\InventarisData\InventarisDataQueryServices;
+use App\Services\InventarisData\InventarisDataCommandServices;
+use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
+use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
 
 class BahanHabisPakaiController extends Controller
 {

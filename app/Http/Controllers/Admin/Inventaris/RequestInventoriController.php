@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin\Inventaris;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Services\InventarisData\InventarisDataCommandServices;
-use App\Services\InventarisData\InventarisDataQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\User\UserQueryServices;
-use Illuminate\Support\Facades\DB;
+use App\Services\UserSso\UserSsoQueryServices;
+use App\Services\InventarisData\InventarisDataQueryServices;
+use App\Services\InventarisData\InventarisDataCommandServices;
 
 class RequestInventoriController extends Controller
 {
@@ -47,7 +45,7 @@ class RequestInventoriController extends Controller
                 'data' => [
                     'request' => $data,
                     'pengaju' => $pengaju,
-                ]
+                ],
             ]);
         } catch (\Throwable $th) {
             //throw $th;

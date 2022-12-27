@@ -4,11 +4,11 @@ namespace App\Services\InventarisData;
 
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
+use App\Models\RequestInventori;
 use Yajra\DataTables\DataTables;
+use App\Models\LogRequestInventori;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
-use App\Models\LogRequestInventori;
-use App\Models\RequestInventori;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 
@@ -28,13 +28,13 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kategori', function ($item) {
-                return !empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
+                return ! empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
             })
             ->addColumn('sebelumnya', function ($item) {
-                return !empty($item->jumlah_sebelumnya) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return ! empty($item->jumlah_sebelumnya) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('saat_ini', function ($item) {
-                return !empty($item->jumlah_saat_ini) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return ! empty($item->jumlah_saat_ini) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -75,11 +75,11 @@ class InventarisDataDatatableServices
         }
 
         if (isset($request->awal_permintaan)) {
-            $query->where('request_inventories.created_at', '>=', $request->awal_permintaan . " 00:00:00");
+            $query->where('request_inventories.created_at', '>=', $request->awal_permintaan . ' 00:00:00');
         }
 
         if (isset($request->akhir_permintaan)) {
-            $query->where('request_inventories.created_at', '<=', $request->akhir_permintaan . " 23:59:00");
+            $query->where('request_inventories.created_at', '<=', $request->akhir_permintaan . ' 23:59:00');
         }
 
         if (isset($request->awal_pengambilan)) {
@@ -133,31 +133,31 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kode_permintaan', function ($item) {
-                return !empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
+                return ! empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
             })
             ->addColumn('message', function ($item) {
-                return !empty($item->message) ? $item->message : 'Tidak Ada';
+                return ! empty($item->message) ? $item->message : 'Tidak Ada';
             })
             ->addColumn('status', function ($item) {
-                return !empty($item->status) ? $item->status : 'Tidak Ada';
+                return ! empty($item->status) ? $item->status : 'Tidak Ada';
             })
             ->addColumn('no_memo', function ($item) {
-                return !empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
+                return ! empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
             })
             ->addColumn('alasan', function ($item) {
-                return !empty($item->alasan) ? $item->alasan : 'Tidak Ada';
+                return ! empty($item->alasan) ? $item->alasan : 'Tidak Ada';
             })
             ->addColumn('created_by', function ($item) {
-                return !empty($item->created_by) ? $item->created_by : 'Tidak Ada';
+                return ! empty($item->created_by) ? $item->created_by : 'Tidak Ada';
             })
             ->addColumn('tanggal_permintaan', function ($item) {
-                return !empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
+                return ! empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
             })
             ->addColumn('tanggal_pengambilan', function ($item) {
-                return !empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
+                return ! empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return !empty($item->created_at) ? $item->created_at : 'Tidak Ada';
+                return ! empty($item->created_at) ? $item->created_at : 'Tidak Ada';
             })
             ->make(true);
     }
@@ -203,7 +203,7 @@ class InventarisDataDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
-                if ($item->status != "ditolak") {
+                if ($item->status != 'ditolak') {
                     $element .= '<a href="' . route('admin.permintaan-inventaris.realisasi', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                     <i class="fa fa-eye"></i>
                                 </a>';

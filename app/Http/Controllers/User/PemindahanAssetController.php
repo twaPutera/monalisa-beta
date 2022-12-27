@@ -4,13 +4,13 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\AssetData\AssetDataQueryServices;
 use App\Services\AssetService\AssetServiceQueryServices;
 use App\Services\PemindahanAsset\PemindahanAssetQueryServices;
 use App\Services\PemindahanAsset\PemindahanAssetCommandServices;
 use App\Http\Requests\PemindahanAsset\PemindahanAssetChangeStatusRequest;
-use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 
 class PemindahanAssetController extends Controller
 {

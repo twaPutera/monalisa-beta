@@ -36,7 +36,7 @@ class InventarisDataRealisasiRequest extends FormRequest
         return [
             'data_realisasi.required' => 'Data Realisasi Wajib Diisi',
             'data_realisasi.*.jumlah.min' => 'Data Realisasi Harus Berupa Angka Dengan Minimal 0',
-            'data_realisasi.*.jumlah.required' => 'Data Realisasi Wajib Diisi'
+            'data_realisasi.*.jumlah.required' => 'Data Realisasi Wajib Diisi',
         ];
     }
 }

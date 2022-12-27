@@ -2,24 +2,24 @@
 
 namespace App\Services\InventarisData;
 
+use Exception;
+use Carbon\Carbon;
+use App\Models\Approval;
 use App\Helpers\SsoHelpers;
 use App\Models\InventoriData;
+use App\Models\RequestInventori;
+use App\Models\LogRequestInventori;
+use App\Models\DetailRequestInventori;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
+use App\Http\Requests\Approval\RequestInventoriUpdate;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
+use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
-use App\Http\Requests\Approval\RequestInventoriUpdate;
-use App\Http\Requests\InventarisData\InventarisDataRealisasiRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
-use App\Models\Approval;
-use App\Models\DetailRequestInventori;
-use App\Models\LogRequestInventori;
-use App\Models\RequestInventori;
-use Carbon\Carbon;
-use Exception;
 
 class InventarisDataCommandServices
 {
@@ -59,7 +59,7 @@ class InventarisDataCommandServices
         $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
         $request_inventaris->unit_kerja = $request->unit_kerja;
         $request_inventaris->no_memo = $request->no_memo;
-        $request_inventaris->status = "pending";
+        $request_inventaris->status = 'pending';
         $request_inventaris->kode_request = self::generateCode();
         $request_inventaris->alasan = $request->alasan_permintaan;
         $request_inventaris->save();
@@ -72,8 +72,8 @@ class InventarisDataCommandServices
             $detail_request_inventaris->qty = $request_kategori_detail['jumlah'];
             $detail_request_inventaris->save();
         }
-        $message = "Permintaan bahan habis pakai baru dengan kode " . $request_inventaris->kode_request . " dibuat oleh " . $user->name;
-        $this->storeLogRequestInventori($request_inventaris->id, $message, "pending");
+        $message = 'Permintaan bahan habis pakai baru dengan kode ' . $request_inventaris->kode_request . ' dibuat oleh ' . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, 'pending');
 
         $approval = new Approval();
         // $approval->guid_approver = $approver[0]['guid'];
@@ -94,7 +94,7 @@ class InventarisDataCommandServices
         $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
         $request_inventaris->unit_kerja = $request->unit_kerja;
         $request_inventaris->no_memo = $request->no_memo;
-        $request_inventaris->status = "pending";
+        $request_inventaris->status = 'pending';
         $request_inventaris->alasan = $request->alasan_permintaan;
         $request_inventaris->save();
 
@@ -110,8 +110,8 @@ class InventarisDataCommandServices
             $detail_request_inventaris->qty = $request_kategori_detail['jumlah'];
             $detail_request_inventaris->save();
         }
-        $message = "Permintaan bahan habis pakai dengan kode " . $request_inventaris->kode_request . " berhasil diperbaharui oleh " . $user->name;
-        $this->storeLogRequestInventori($request_inventaris->id, $message, "pending");
+        $message = 'Permintaan bahan habis pakai dengan kode ' . $request_inventaris->kode_request . ' berhasil diperbaharui oleh ' . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, 'pending');
 
         $approval = new Approval();
         // $approval->guid_approver = $approver[0]['guid'];
@@ -191,7 +191,7 @@ class InventarisDataCommandServices
     {
         $request->validated();
         $request_inventaris = RequestInventori::where('status', '!=', 'ditolak')->where('id', $id)->first();
-        $request_inventaris->status = "selesai";
+        $request_inventaris->status = 'selesai';
         $request_inventaris->save();
 
         $user = SsoHelpers::getUserLogin();
@@ -222,8 +222,8 @@ class InventarisDataCommandServices
             $log_pengurangan->created_by = $user->name;
             $log_pengurangan->save();
         }
-        $message = "Permintaan bahan habis pakai dengan kode " . $request_inventaris->kode_request . " berhasil diperbaharui oleh " . $user->name;
-        $this->storeLogRequestInventori($request_inventaris->id, $message, "selesai");
+        $message = 'Permintaan bahan habis pakai dengan kode ' . $request_inventaris->kode_request . ' berhasil diperbaharui oleh ' . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, 'selesai');
         return $request_inventaris;
     }
 

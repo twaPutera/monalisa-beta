@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\InventarisData\InventarisDataCommandServices;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\RequestInventoriUpdate;
+use App\Services\InventarisData\InventarisDataCommandServices;
 
 class RequestInventoriController extends Controller
 {

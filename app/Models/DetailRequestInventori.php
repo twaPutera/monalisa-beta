@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\Uuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DetailRequestInventori extends Model
 {
     use HasFactory, Uuid;
-    protected $table = "detail_request_inventories";
+    protected $table = 'detail_request_inventories';
 
     public function request_inventori()
     {

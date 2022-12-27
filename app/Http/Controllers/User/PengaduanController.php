@@ -158,7 +158,7 @@ class PengaduanController extends Controller
     public function edit(string $id)
     {
         $pengaduan = $this->pengaduanQueryServices->findById($id);
-        if ($pengaduan->status_pengaduan != "dilaporkan") {
+        if ($pengaduan->status_pengaduan != 'dilaporkan') {
             abort(404);
         }
         return view('pages.user.pengaduan.edit', compact('pengaduan'));

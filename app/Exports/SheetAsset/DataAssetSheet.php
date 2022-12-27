@@ -2,19 +2,19 @@
 
 namespace App\Exports\SheetAsset;
 
-use App\Models\KategoriAsset;
-use App\Models\KelasAsset;
 use App\Models\Lokasi;
-use App\Models\SatuanAsset;
 use App\Models\Vendor;
+use App\Models\KelasAsset;
+use App\Models\SatuanAsset;
+use App\Models\KategoriAsset;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldAutoSize, WithEvents
 {
@@ -128,16 +128,16 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
     {
         return [
             // handle by a closure.
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $row_count = $this->row_count;
                 $column_count = $this->column_count;
-                foreach ($this->selects as $select){
+                foreach ($this->selects as $select) {
                     $drop_column = $select['columns_name'];
                     $options = $select['options'];
                     // set dropdown list for first data row
                     $validation = $event->sheet->getCell("{$drop_column}2")->getDataValidation();
-                    $validation->setType(DataValidation::TYPE_LIST );
-                    $validation->setErrorStyle(DataValidation::STYLE_INFORMATION );
+                    $validation->setType(DataValidation::TYPE_LIST);
+                    $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
                     $validation->setAllowBlank(false);
                     $validation->setShowInputMessage(true);
                     $validation->setShowErrorMessage(true);
@@ -146,7 +146,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                     $validation->setError('Value is not in list.');
                     $validation->setPromptTitle('Pick from list');
                     $validation->setPrompt('Please pick a value from the drop-down list.');
-                    $validation->setFormula1(sprintf('"%s"',implode(',',$options)));
+                    $validation->setFormula1(sprintf('"%s"', implode(',', $options)));
 
                     // clone validation to remaining rows
                     for ($i = 3; $i <= $row_count; $i++) {
@@ -158,7 +158,6 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                         $event->sheet->getColumnDimension($column)->setAutoSize(true);
                     }
                 }
-
             },
         ];
     }
