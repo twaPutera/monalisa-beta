@@ -165,10 +165,12 @@
                 const tab_pemutihan = $("#pemutihan-approval-count");
                 const daftar_approval = $(".daftar-approval-count");
                 const approval_task = $(".approval-task-count");
+                const tab_request_inventori = $("#request-inventori-approval-count");
                 if (response.success) {
                     tab_pemindahan.empty();
                     tab_pemutihan.empty();
                     tab_peminjaman.empty();
+                    tab_request_inventori.empty();
                     daftar_approval.empty();
                     approval_task.empty();
 
@@ -177,6 +179,7 @@
                     tab_peminjaman.append(response.data.approval_peminjaman + response.data.approval_perpancangan_peminjaman_asset);
                     daftar_approval.append(response.data.total_approval);
                     approval_task.append(response.data.total_approval);
+                    tab_request_inventori.append(response.data.approva_request_inventori);
                 }
             }
         })
