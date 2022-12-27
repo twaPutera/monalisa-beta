@@ -190,6 +190,9 @@ class InventarisDataDatatableServices
             ->addColumn('unit_kerja', function ($item) {
                 return $item->unit_kerja ?? 'Tidak Ada';
             })
+            ->addColumn('jabatan', function ($item) {
+                return $item->jabatan ?? 'Tidak Ada';
+            })
             ->addColumn('user_pengaju', function ($item) {
                 $name = 'Not Found';
                 if (config('app.sso_siska')) {

@@ -59,6 +59,10 @@
                         data: 'unit_kerja'
                     },
                     {
+                        name: 'jabatan',
+                        data: 'jabatan'
+                    },
+                    {
                         name: 'status',
                         data: 'status'
                     },
@@ -74,7 +78,7 @@
                         },
                     },
                     {
-                        targets: 8,
+                        targets: 9,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "pending") {
@@ -187,6 +191,7 @@
                                     <th>No Memo</th>
                                     <th>User Pengaju</th>
                                     <th>Unit Kerja</th>
+                                    <th>Jabatan</th>
                                     <th>Status</th>
                                     <th>Alasan</th>
                                 </tr>

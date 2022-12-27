@@ -31,6 +31,10 @@
                             <p id="unitKerja"></p>
                         </div>
                         <div class="mt-2">
+                            <p class="text-dark mb-1"><strong>Jabatan</strong></p>
+                            <p id="jabatan"></p>
+                        </div>
+                        <div class="mt-2">
                             <p class="text-dark mb-1"><strong>No Memo</strong></p>
                             <p id="noMemo"></p>
                         </div>

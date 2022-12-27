@@ -27,6 +27,7 @@ class UserRequestInventoriStoreRequest extends FormRequest
             'tanggal_pengambilan' => 'required|date',
             'alasan_permintaan' => 'required|string',
             'no_memo' => 'required|string',
+            'jabatan' => 'required|string',
             'unit_kerja' => 'required|string',
             'id_bahan_habis_pakai' => 'required|array',
             'id_bahan_habis_pakai.*' => 'required|uuid',

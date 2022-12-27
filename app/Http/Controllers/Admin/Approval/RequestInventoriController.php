@@ -32,7 +32,7 @@ class RequestInventoriController extends Controller
                 'message' => 'Berhasil mengubah status approval',
                 'data' => [
                     'request_inventori' => $data,
-                    // 'url' => route('admin.request-inventori.detail', $data->id),
+                    'url' => route('admin.permintaan-inventaris.realisasi', $data->id),
                 ],
             ]);
         } catch (\Throwable $th) {

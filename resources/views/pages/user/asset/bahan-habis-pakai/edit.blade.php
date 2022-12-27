@@ -218,6 +218,12 @@
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Jabatan</strong></label>
+                    <input type="text" name="jabatan" class="form-control" value="{{ $edit->jabatan }}" id="">
+                </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>No Memo</strong></label>
                     <input type="text" name="no_memo" class="form-control" value="{{ $edit->no_memo }}" id="">
                 </div>

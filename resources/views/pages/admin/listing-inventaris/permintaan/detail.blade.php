@@ -144,7 +144,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Detail Peminjaman
+                            Detail Permintaan Bahan Habis Pakai
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -178,28 +178,33 @@
                                 <div class="kt-portlet__body">
                                     <div class="form-group">
                                         <label for="nama">Kode Permintaan</label>
-                                        <input type="text" class="form-control" id="codePeminjam" readonly name=""
+                                        <input type="text" class="form-control" id="" readonly name=""
                                             placeholder="Kode" value="{{ $permintaan->kode_request }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">Nama Pengaju</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
+                                        <input type="text" class="form-control" id="" readonly name=""
                                             placeholder="Nama" value="{{ $permintaan->pengaju }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">No Memo</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
+                                        <input type="text" class="form-control" id="" readonly name=""
                                             placeholder="No Memo" value="{{ $permintaan->no_memo }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="nama">Unit Kerja</label>
-                                        <input type="text" class="form-control" id="namaPeminjam" readonly name=""
+                                        <input type="text" class="form-control" id="" readonly name=""
                                             placeholder="Unit Kerja" value="{{ $permintaan->unit_kerja }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama">Jabatan</label>
+                                        <input type="text" class="form-control" id="" readonly name=""
+                                            placeholder="Jabatan" value="{{ $permintaan->jabatan }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Tanggal Permintaan</label>
                                         <div class="d-flex">
-                                            <input type="date" class="form-control" id="tanggalPeminjam" readonly
+                                            <input type="date" class="form-control" id="" readonly
                                                 name="" value="{{ $permintaan->tanggal_permintaan }}">
 
                                         </div>
@@ -207,14 +212,14 @@
                                     <div class="form-group">
                                         <label for="">Tanggal Pengambilan</label>
                                         <div class="d-flex">
-                                            <input type="date" class="form-control" id="tanggalPengembalian" readonly
+                                            <input type="date" class="form-control" id="" readonly
                                                 name="" value="{{ $permintaan->tanggal_pengambilan }}">
 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">Alasan Permintaan</label>
-                                        <textarea name="" class="form-control" readonly id="alasanPeminjaman" cols="30" rows="10">{{ $permintaan->alasan }}</textarea>
+                                        <textarea name="" class="form-control" readonly id="" cols="30" rows="10">{{ $permintaan->alasan }}</textarea>
                                     </div>
                                 </div>
                             </div>

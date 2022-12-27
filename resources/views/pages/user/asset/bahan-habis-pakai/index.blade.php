@@ -148,8 +148,11 @@
             $('#logContainer').empty();
             $('#namaPengaju').empty();
             $('#unitKerja').empty();
+            $('#jabatan').empty();
             $('#statusPermintaan').empty();
+            $('#noMemo').empty();
             $('#alasanPermintaan').empty();
+            $('.containerDetailPeminjaman').empty();
         }
 
         const showDetailRequest = (element) => {
@@ -169,6 +172,7 @@
                         getAllDataLogBahanHabisPakai("logContainer", data.id);
                         $('#namaPengaju').append(data.created_by);
                         $('#unitKerja').append(data.unit_kerja);
+                        $('#jabatan').append(data.jabatan);
                         $('#noMemo').append(data.no_memo);
                         $('#tanggalPengambilan').val(data.tanggal_pengambilan);
                         if (data.status == 'pending') {

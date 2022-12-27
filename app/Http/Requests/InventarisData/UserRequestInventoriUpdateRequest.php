@@ -28,6 +28,7 @@ class UserRequestInventoriUpdateRequest extends FormRequest
             'alasan_permintaan' => 'required|string',
             'no_memo' => 'required|string',
             'unit_kerja' => 'required|string',
+            'jabatan' => 'required|string',
             'id_bahan_habis_pakai' => 'required|array',
             'id_bahan_habis_pakai.*' => 'required|uuid',
             'data_bahan_habis_pakai' => 'required|array',

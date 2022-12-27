@@ -58,7 +58,8 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-is_approve="${full.is_approve}" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-url_detail="` + data + `" data-url_update="` + full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
+                                <button onclick="showDetail(this)" data-is_approve="${full.is_approve}" data-keterangan="${full.keterangan}" data-tanggal_approval="${full.tanggal_approval}" data-url_detail="` +
+                                data + `" data-url_update="` + full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
                             `;
@@ -91,7 +92,7 @@
                     modal.modal('hide');
                     table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
-                    if (data.data.peminjaman.status == 'disetujui') {
+                    if (data.data.request_inventori.status == 'diproses') {
                         setTimeout(() => {
                             window.location.href = data.data.url
                         }, 2000);
@@ -107,7 +108,7 @@
                 }
             });
 
-            @if(isset(request()->peminjaman_id))
+            @if (isset(request()->peminjaman_id))
                 alert('test');
                 setTimeout(() => {
                     $('button[data-approvable_id="{{ request()->peminjaman_id }}"]').click();
@@ -151,7 +152,8 @@
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(tanggal_approval).show();
                             const status_approval = is_approve == '1' ? 'disetujui' : 'ditolak';
-                            $('#statusApproval option[value=' + status_approval + ']').attr('selected', true);
+                            $('#statusApproval option[value=' + status_approval + ']').attr('selected',
+                                true);
                             $('#keteranganApproval').val(keterangan);
                         }
 
@@ -171,7 +173,8 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span>
+                                Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">

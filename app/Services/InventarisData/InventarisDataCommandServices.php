@@ -59,6 +59,7 @@ class InventarisDataCommandServices
         $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
         $request_inventaris->unit_kerja = $request->unit_kerja;
         $request_inventaris->no_memo = $request->no_memo;
+        $request_inventaris->jabatan = $request->jabatan;
         $request_inventaris->status = 'pending';
         $request_inventaris->kode_request = self::generateCode();
         $request_inventaris->alasan = $request->alasan_permintaan;
@@ -93,6 +94,7 @@ class InventarisDataCommandServices
         $request_inventaris->guid_pengaju = config('app.sso_siska') ? $user->guid : $user->id;
         $request_inventaris->tanggal_pengambilan = $request->tanggal_pengambilan;
         $request_inventaris->unit_kerja = $request->unit_kerja;
+        $request_inventaris->jabatan = $request->jabatan;
         $request_inventaris->no_memo = $request->no_memo;
         $request_inventaris->status = 'pending';
         $request_inventaris->alasan = $request->alasan_permintaan;

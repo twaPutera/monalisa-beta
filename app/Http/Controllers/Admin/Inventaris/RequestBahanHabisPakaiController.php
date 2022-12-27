@@ -73,7 +73,7 @@ class RequestBahanHabisPakaiController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil menambahkan data inventaris',
+                'message' => 'Berhasil realisasi permintaan',
                 'data' => $listing_inventaris,
                 'redirect' => true,
             ], 200);
