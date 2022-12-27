@@ -111,7 +111,7 @@
                     showToastSuccess('Sukses', data.message);
                     if (data.redirect && data.redirect != null) {
                         setTimeout(function() {
-                            var redirect = "{{ route('admin.pemutihan-asset.index') }}"
+                            var redirect = "{{ route('admin.permintaan-inventaris.index') }}"
                             location.assign(redirect);
                         }, 1000);
                     }
@@ -120,6 +120,10 @@
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
                 //if validation not pass
+                if (!errors.success) {
+                    showToastError('Gagal', errors.message);
+                }
+
                 for (let key in errors) {
                     let key_split = key.split('.');
                     let name = `data_realisasi[${key_split[1]}][jumlah]`;
@@ -258,12 +262,17 @@
                                                         <td>{{ $item->inventori->jumlah_saat_ini }}
                                                             {{ $item->inventori->satuan_inventori->nama_satuan }}</td>
                                                         <td>{{ $item->qty }}</td>
-                                                        <td>
-                                                            <input type="hidden" name="id_inventaris[]"
-                                                                value="{{ $item->id }}">
-                                                            <input type="number" class="form-control"
-                                                                name="data_realisasi[{{ $item->id }}][jumlah]">
-                                                        </td>
+                                                        @if ($permintaan->status != 'selesai' && $permintaan->status != 'ditolak')
+                                                            <td>
+                                                                <input type="hidden" name="id_inventaris[]"
+                                                                    value="{{ $item->id }}">
+                                                                <input type="number" class="form-control"
+                                                                    name="data_realisasi[{{ $item->id }}][jumlah]">
+                                                            </td>
+                                                        @else
+                                                            <td>{{ $item->realisasi }}</td>
+                                                        @endif
+
                                                     </tr>
                                                 @endforeach
                                             </tbody>

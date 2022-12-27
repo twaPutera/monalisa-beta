@@ -18,6 +18,8 @@ use App\Models\Approval;
 use App\Models\DetailRequestInventori;
 use App\Models\LogRequestInventori;
 use App\Models\RequestInventori;
+use Carbon\Carbon;
+use Exception;
 
 class InventarisDataCommandServices
 {
@@ -185,8 +187,44 @@ class InventarisDataCommandServices
         return $inventori_data;
     }
 
-    public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id){
+    public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id)
+    {
+        $request->validated();
+        $request_inventaris = RequestInventori::where('status', '!=', 'ditolak')->where('id', $id)->first();
+        $request_inventaris->status = "selesai";
+        $request_inventaris->save();
 
+        $user = SsoHelpers::getUserLogin();
+
+        foreach ($request->id_inventaris as $id_inventaris) {
+            $request_kategori_detail = $request->data_realisasi[$id_inventaris];
+            $detail_request_inventaris = DetailRequestInventori::find($id_inventaris);
+
+            $find_inventaris = InventoriData::find($detail_request_inventaris->inventori_id);
+            $selisih = $find_inventaris->jumlah_saat_ini - $request_kategori_detail['jumlah'];
+            if ($selisih < 0) {
+                throw new Exception('Stok bahan habis pakai tidak mencukupi !');
+                break;
+            }
+
+            $find_inventaris->jumlah_sebelumnya = $find_inventaris->jumlah_saat_ini;
+            $find_inventaris->jumlah_saat_ini = $selisih;
+            $find_inventaris->save();
+
+            $detail_request_inventaris->realisasi = $request_kategori_detail['jumlah'];
+            $detail_request_inventaris->save();
+
+            $log_pengurangan = new LogPenguranganInventori();
+            $log_pengurangan->id_inventori = $find_inventaris->id;
+            $log_pengurangan->no_memo = $request_inventaris->no_memo;
+            $log_pengurangan->jumlah = $request_kategori_detail['jumlah'];
+            $log_pengurangan->tanggal = Carbon::now()->format('Y-m-d');
+            $log_pengurangan->created_by = $user->name;
+            $log_pengurangan->save();
+        }
+        $message = "Permintaan bahan habis pakai dengan kode " . $request_inventaris->kode_request . " berhasil diperbaharui oleh " . $user->name;
+        $this->storeLogRequestInventori($request_inventaris->id, $message, "selesai");
+        return $request_inventaris;
     }
 
     public function updateStok(string $id, InventarisDataUpdateStokRequest $request)

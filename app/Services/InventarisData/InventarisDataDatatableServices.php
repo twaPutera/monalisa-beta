@@ -57,7 +57,7 @@ class InventarisDataDatatableServices
     {
         $query = LogRequestInventori::query();
         $query->leftJoin('request_inventories', 'request_inventories.id', 'log_request_inventories.request_inventori_id');
-        $query->leftJoin('detail_request_inventories', 'request_inventories.id', 'detail_request_inventories.request_inventori_id');
+        // $query->leftJoin('detail_request_inventories', 'request_inventories.id', 'detail_request_inventories.request_inventori_id');
         $query->select([
             'log_request_inventories.*',
             'request_inventories.kode_request',
@@ -66,6 +66,69 @@ class InventarisDataDatatableServices
             'request_inventories.alasan',
             'request_inventories.no_memo',
         ]);
+
+        if (isset($request->keyword)) {
+            $query->where('kode_request', 'like', '%' . $request->keyword . '%')
+                ->orWhere('no_memo', 'like', '%' . $request->keyword . '%')
+                ->orWhere('message', 'like', '%' . $request->keyword . '%')
+                ->orWhere('alasan', 'like', '%' . $request->keyword . '%');
+        }
+
+        if (isset($request->awal_permintaan)) {
+            $query->where('request_inventories.created_at', '>=', $request->awal_permintaan . " 00:00:00");
+        }
+
+        if (isset($request->akhir_permintaan)) {
+            $query->where('request_inventories.created_at', '<=', $request->akhir_permintaan . " 23:59:00");
+        }
+
+        if (isset($request->awal_pengambilan)) {
+            $query->where('tanggal_pengambilan', '>=', $request->awal_pengambilan);
+        }
+
+        if (isset($request->akhir_pengambilan)) {
+            $query->where('tanggal_pengambilan', '<=', $request->akhir_pengambilan);
+        }
+
+        if (isset($request->status_permintaan)) {
+            if ($request->status_permintaan != 'all') {
+                $query->where('log_request_inventories.status', $request->status_permintaan);
+            }
+        }
+
+        // Order
+        $filter = $request->toArray();
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if (0 == $order_column_index || 1 == $order_column_index) {
+            $query->orderBy('request_inventories.created_at', $order_column_dir);
+        }
+
+        if (2 == $order_column_index) {
+            $query->orderBy('kode_request', $order_column_dir);
+        }
+
+        if (3 == $order_column_index) {
+            $query->orderBy('created_at', $order_column_dir);
+        }
+
+        if (4 == $order_column_index) {
+            $query->orderBy('tanggal_pengambilan', $order_column_dir);
+        }
+
+        if (5 == $order_column_index) {
+            $query->orderBy('no_memo', $order_column_dir);
+        }
+
+        if (6 == $order_column_index) {
+            $query->orderBy('alasan', $order_column_dir);
+        }
+
+        if (7 == $order_column_index) {
+            $query->orderBy('message', $order_column_dir);
+        }
+
         $query->orderBy('log_request_inventories.created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()

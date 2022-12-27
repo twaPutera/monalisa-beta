@@ -44,7 +44,7 @@
                         d.awal_pengambilan = $('.datepickerAwalPengambilan').val();
                         d.akhir_pengambilan = $('.datepickerAkhirPengambilan').val();
                         d.status_permintaan = $('#statusPermintaan').val();
-                        d.id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val();
+                        // d.id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val();
                         d.keyword = $('#searchServices').val();
                     }
                 },
@@ -85,11 +85,13 @@
                     },
                     {
                         name: 'status',
-                        data: 'status'
+                        data: 'status',
+                        orderable: false,
                     },
                     {
                         name: 'created_by',
-                        data: 'created_by'
+                        data: 'created_by',
+                        orderable: false,
                     },
 
                 ],
@@ -147,14 +149,14 @@
                 }
             });
 
-            $('#listKategoriAssetLocation').select2({
-                width: '100%',
-                placeholder: 'Pilih Kategori Bahan Habis Pakai',
-                padding: '10px',
-                allowClear: true,
-            })
+            // $('#listKategoriAssetLocation').select2({
+            //     width: '100%',
+            //     placeholder: 'Pilih Kategori Bahan Habis Pakai',
+            //     padding: '10px',
+            //     allowClear: true,
+            // })
 
-            generateKategoriBahanHabisPakai();
+            // generateKategoriBahanHabisPakai();
             exportData();
             $("#searchServices").on("keydown", function(event) {
                 if (event.which == 13)
@@ -174,7 +176,7 @@
             const awal_pengambilan = $('.datepickerAwalPengambilan').val(null);
             const akhir_pengambilan = $('.datepickerAkhirPengambilan').val(null);
             const status_permintaan = $('#statusPermintaan').val(null);
-            const id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val(null);
+            // const id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val(null);
             const keyword = $('#searchServices').val(null);
             table.DataTable().ajax.reload();
         }
@@ -185,33 +187,33 @@
             let awal_pengambilan = $('.datepickerAwalPengambilan').val();
             let akhir_pengambilan = $('.datepickerAkhirPengambilan').val();
             let status_permintaan = $('#statusPermintaan').val();
-            let id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val();
+            // let id_kategori_bahan_habis_pakai = $('#listKategoriAssetLocation').val();
             $('#tgl_awal_permintaan_export').val(awal_permintaan);
             $('#tgl_akhir_permintaan_export').val(akhir_permintaan);
             $('#tgl_awal_pengambilan_export').val(awal_pengambilan);
             $('#tgl_akhir_pengambilan_export').val(akhir_pengambilan);
             $('#status_permintaan_export').val(status_permintaan);
-            $('#id_kategori_bahan_habis_pakai_export').val(id_kategori_bahan_habis_pakai);
+            // $('#id_kategori_bahan_habis_pakai_export').val(id_kategori_bahan_habis_pakai);
         }
 
-        const generateKategoriBahanHabisPakai = () => {
-            $.ajax({
-                url: "{{ route('admin.setting.kategori-inventori.get-data-select2') }}",
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        const select = $('#listKategoriAssetLocation');
-                        select.empty();
-                        select.append(`<option value="">Pilih Kategori Bahan Habis Pakai</option>`);
-                        response.data.forEach((item) => {
-                            select.append(
-                                `<option value="${item.id}">${item.text}</option>`);
-                        });
-                    }
-                }
-            })
-        }
+        // const generateKategoriBahanHabisPakai = () => {
+        //     $.ajax({
+        //         url: "{{ route('admin.setting.kategori-inventori.get-data-select2') }}",
+        //         type: 'GET',
+        //         dataType: 'json',
+        //         success: function(response) {
+        //             if (response.success) {
+        //                 const select = $('#listKategoriAssetLocation');
+        //                 select.empty();
+        //                 select.append(`<option value="">Pilih Kategori Bahan Habis Pakai</option>`);
+        //                 response.data.forEach((item) => {
+        //                     select.append(
+        //                         `<option value="${item.id}">${item.text}</option>`);
+        //                 });
+        //             }
+        //         }
+        //     })
+        // }
 
         $('.datepickerAwalPermintaan').datepicker({
             todayHighlight: true,
@@ -260,8 +262,8 @@
                                     method="get">
                                     <div class="d-flex align-items-center mt-2 mb-2">
                                         <input type="hidden" name="status_permintaan" id="status_permintaan_export">
-                                        <input type="hidden" name="id_kategori_bahan_habis_pakai"
-                                            id="id_kategori_bahan_habis_pakai_export">
+                                        {{-- <input type="hidden" name="id_kategori_bahan_habis_pakai"
+                                            id="id_kategori_bahan_habis_pakai_export"> --}}
                                         <input type="hidden" name="tgl_awal_permintaan" id="tgl_awal_permintaan_export">
                                         <input type="hidden" name="tgl_akhir_permintaan" id="tgl_akhir_permintaan_export">
                                         <input type="hidden" name="tgl_awal_pengambilan" id="tgl_awal_pengambilan_export">
