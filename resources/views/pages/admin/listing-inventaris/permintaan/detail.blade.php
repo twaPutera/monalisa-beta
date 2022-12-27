@@ -267,7 +267,7 @@
                                                         <td>{{ $item->inventori->jumlah_saat_ini }}
                                                             {{ $item->inventori->satuan_inventori->nama_satuan }}</td>
                                                         <td>{{ $item->qty }}</td>
-                                                        @if ($permintaan->status != 'selesai' && $permintaan->status != 'ditolak')
+                                                        @if ($permintaan->status == 'diproses')
                                                             <td>
                                                                 <input type="hidden" name="id_inventaris[]"
                                                                     value="{{ $item->id }}">
@@ -275,7 +275,7 @@
                                                                     name="data_realisasi[{{ $item->id }}][jumlah]">
                                                             </td>
                                                         @else
-                                                            <td>{{ $item->realisasi }}</td>
+                                                            <td>{{ isset($item->realisasi) ? $item->realisasi : "Menunggu Approval" }}</td>
                                                         @endif
 
                                                     </tr>
