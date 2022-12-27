@@ -5,6 +5,8 @@ namespace App\Exports;
 use Carbon\Carbon;
 use App\Helpers\DateIndoHelpers;
 use App\Models\LogRequestInventori;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -30,6 +32,8 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
         $this->akhir_pengambilan = $akhir_pengambilan;
         $this->status_permintaan = $status_permintaan;
         $this->number = 0;
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
     }
 
     public function query()
@@ -43,6 +47,9 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
             'request_inventories.created_at as tanggal_permintaan',
             'request_inventories.alasan',
             'request_inventories.no_memo',
+            'request_inventories.guid_pengaju',
+            'request_inventories.unit_kerja',
+            'request_inventories.jabatan',
         ]);
 
         if (isset($this->awal_permintaan)) {
@@ -78,13 +85,25 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
 
     public function map($item): array
     {
+        $name = 'Not Found';
+        if (config('app.sso_siska')) {
+            $user = $item->guid_pengaju == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pengaju);
+            $name = isset($user[0]) ? collect($user[0]) : null;
+        } else {
+            $user = $this->userQueryServices->findById($item->guid_pengaju);
+            $name = isset($user) ? $user->name : 'Not Found';
+        }
+
         return [
             $this->number += 1,
             DateIndoHelpers::formatDateToIndo(Carbon::parse($item->tanggal_permintaan)->format('Y-m-d')),
             $item->kode_request,
             DateIndoHelpers::formatDateToIndo(Carbon::parse($item->created_at)->format('Y-m-d')),
             DateIndoHelpers::formatDateToIndo($item->tanggal_pengambilan),
+            $name,
             $item->no_memo,
+            $item->unit_kerja,
+            $item->jabatan,
             $item->alasan,
             $item->message,
             $item->status,
@@ -94,7 +113,7 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Permintaan', 'Kode Permintaan', 'Log Terakhir', 'Tanggal Pengambilan', 'No Memo', 'Alasan Permintaan', 'Aktifitas', 'Status', 'Dilakukan Oleh'];
+        return ['No', 'Tanggal Permintaan', 'Kode Permintaan', 'Log Terakhir', 'Tanggal Pengambilan', 'User Pengaju', 'No Memo', 'Unit Kerja', 'Jabatan', 'Alasan Permintaan', 'Aktifitas', 'Status', 'Dilakukan Oleh'];
     }
 
     public function styles(Worksheet $sheet)

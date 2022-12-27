@@ -72,8 +72,20 @@
                         data: 'tanggal_pengambilan'
                     },
                     {
+                        name: 'user_pengaju',
+                        data: 'user_pengaju'
+                    },
+                    {
                         name: 'no_memo',
                         data: 'no_memo'
+                    },
+                    {
+                        name: 'unit_kerja',
+                        data: 'unit_kerja'
+                    },
+                    {
+                        name: 'jabatan',
+                        data: 'jabatan'
                     },
                     {
                         name: 'alasan',
@@ -102,7 +114,7 @@
                         },
                     },
                     {
-                        targets: 8,
+                        targets: 11,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "pending") {
@@ -309,7 +321,10 @@
                                     <th>Kode Permintaan</th>
                                     <th>Log Terakhir</th>
                                     <th>Tanggal Pengambilan</th>
+                                    <th>User Pengaju</th>
                                     <th>No Memo</th>
+                                    <th>Unit Kerja</th>
+                                    <th>Jabatan</th>
                                     <th>Alasan Permintaan</th>
                                     <th>Aktifitas</th>
                                     <th>Status</th>

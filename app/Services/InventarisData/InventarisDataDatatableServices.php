@@ -25,16 +25,17 @@ class InventarisDataDatatableServices
         $query = InventoriData::query();
         $query->with(['kategori_inventori', 'satuan_inventori']);
         $query->orderBy('created_at', 'ASC');
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kategori', function ($item) {
-                return ! empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
+                return !empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
             })
             ->addColumn('sebelumnya', function ($item) {
-                return ! empty($item->jumlah_sebelumnya) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return !empty($item->jumlah_sebelumnya) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('saat_ini', function ($item) {
-                return ! empty($item->jumlah_saat_ini) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return !empty($item->jumlah_saat_ini) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
@@ -65,6 +66,9 @@ class InventarisDataDatatableServices
             'request_inventories.created_at as tanggal_permintaan',
             'request_inventories.alasan',
             'request_inventories.no_memo',
+            'request_inventories.guid_pengaju',
+            'request_inventories.unit_kerja',
+            'request_inventories.jabatan',
         ]);
 
         if (isset($request->keyword)) {
@@ -133,31 +137,48 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kode_permintaan', function ($item) {
-                return ! empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
+                return !empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
             })
             ->addColumn('message', function ($item) {
-                return ! empty($item->message) ? $item->message : 'Tidak Ada';
+                return !empty($item->message) ? $item->message : 'Tidak Ada';
             })
             ->addColumn('status', function ($item) {
-                return ! empty($item->status) ? $item->status : 'Tidak Ada';
+                return !empty($item->status) ? $item->status : 'Tidak Ada';
             })
             ->addColumn('no_memo', function ($item) {
-                return ! empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
+                return !empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
+            })
+            ->addColumn('jabatan', function ($item) {
+                return !empty($item->jabatan) ? $item->jabatan : 'Tidak Ada';
+            })
+            ->addColumn('unit_kerja', function ($item) {
+                return !empty($item->unit_kerja) ? $item->unit_kerja : 'Tidak Ada';
+            })
+            ->addColumn('user_pengaju', function ($item) {
+                $name = 'Not Found';
+                if (config('app.sso_siska')) {
+                    $user = $item->guid_pengaju == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pengaju);
+                    $name = isset($user[0]) ? collect($user[0]) : null;
+                } else {
+                    $user = $this->userQueryServices->findById($item->guid_pengaju);
+                    $name = isset($user) ? $user->name : 'Not Found';
+                }
+                return $name;
             })
             ->addColumn('alasan', function ($item) {
-                return ! empty($item->alasan) ? $item->alasan : 'Tidak Ada';
+                return !empty($item->alasan) ? $item->alasan : 'Tidak Ada';
             })
             ->addColumn('created_by', function ($item) {
-                return ! empty($item->created_by) ? $item->created_by : 'Tidak Ada';
+                return !empty($item->created_by) ? $item->created_by : 'Tidak Ada';
             })
             ->addColumn('tanggal_permintaan', function ($item) {
-                return ! empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
+                return !empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
             })
             ->addColumn('tanggal_pengambilan', function ($item) {
-                return ! empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
+                return !empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return ! empty($item->created_at) ? $item->created_at : 'Tidak Ada';
+                return !empty($item->created_at) ? $item->created_at : 'Tidak Ada';
             })
             ->make(true);
     }
@@ -167,6 +188,28 @@ class InventarisDataDatatableServices
         $query = RequestInventori::query();
         $query->with(['detail_request_inventori']);
         $query->orderBy('created_at', 'ASC');
+
+        // Search
+        $search = $request->toArray();
+        $search_column = $search['search']['value'];
+        if ($search_column != null) {
+            // $query->where(function ($query) use ($search_column) {
+            $query->where('created_at', 'like', '%' . $search_column . '%')
+                // ->orWhereHas('asset_data', function ($query) use ($search_column) {
+                //     $query->where('asset_data.deskripsi', 'like', '%' . $search_column . '%');
+                // })
+                // ->orWhereHas('lokasi', function ($query) use ($search_column) {
+                //     $query->where('lokasis.nama_lokasi', 'like', '%' . $search_column . '%');
+                // })
+                ->orWhere('kode_request', 'like', '%' . $search_column . '%')
+                ->orWhere('tanggal_pengambilan', 'like', '%' . $search_column . '%')
+                ->orWhere('alasan', 'like', '%' . $search_column . '%')
+                ->orWhere('unit_kerja', 'like', '%' . $search_column . '%')
+                ->orWhere('jabatan', 'like', '%' . $search_column . '%')
+                ->orWhere('no_memo', 'like', '%' . $search_column . '%');
+            // });
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('tanggal_permintaan', function ($item) {

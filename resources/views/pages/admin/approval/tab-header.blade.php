@@ -18,7 +18,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link @if (\Request::segment(3) == 'request-inventori') active @endif"
-            href="{{ route('admin.approval.request-inventori.index') }}">Request Inventori (<span
+            href="{{ route('admin.approval.request-inventori.index') }}">Request Bahan Habis Pakai (<span
                 id="request-inventori-approval-count">0</span>)</a>
     </li>
 </ul>
