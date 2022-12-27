@@ -51,6 +51,11 @@ class ApprovalQueryServices
                 $query->where('guid_approver', null);
             });
 
+        $approval_request_inventori = Approval::query()
+            ->join('request_inventories', 'request_inventories.id', '=', 'approvals.approvable_id')
+            ->where('approvable_type', 'App\\Models\\RequestInventori')
+            ->where('approvals.is_approve', null);
+
         if (isset($is_it)) {
             $approval_peminjaman->where('peminjaman_assets.is_it', $is_it);
             $approval_perpancangan_peminjaman_asset->where('perpanjangan_peminjaman_assets.is_it', $is_it);
@@ -63,7 +68,8 @@ class ApprovalQueryServices
             'approval_perpancangan_peminjaman_asset' => $approval_perpancangan_peminjaman_asset->count(),
             'approval_pemindahan_asset' => $approval_pemindahan_asset->count(),
             'approval_pemutihan_asset' => $approval_pemutihan_asset->count(),
-            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset->count(),
+            'approva_request_inventori' => $approval_request_inventori->count(),
+            'total_approval' => $approval_peminjaman->count() + $approval_perpancangan_peminjaman_asset->count() + $approval_pemindahan_asset->count() + $approval_pemutihan_asset->count() + $approval_request_inventori->count(),
         ];
 
         return $summary_approval;
