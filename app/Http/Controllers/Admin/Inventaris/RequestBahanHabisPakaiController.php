@@ -75,6 +75,7 @@ class RequestBahanHabisPakaiController extends Controller
                 'success' => true,
                 'message' => 'Berhasil menambahkan data inventaris',
                 'data' => $listing_inventaris,
+                'redirect' => true,
             ], 200);
         } catch (Throwable $th) {
             DB::rollback();

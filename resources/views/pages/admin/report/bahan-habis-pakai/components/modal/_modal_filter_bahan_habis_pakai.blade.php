@@ -9,6 +9,32 @@
                 </button>
             </div>
             <div class="modal-body row">
+                {{-- <div class="form-group col-md-6 col-6">
+                    <label for="">Kategori Bahan Habis Pakai</label>
+                    <select name="" class="form-control" id="listKategoriAssetLocation">
+
+                    </select>
+                </div> --}}
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Tanggal Mulai Permintaan</label>
+                    <input type="text" name="tanggal_awal" readonly
+                        class="form-control datepickerAwalPermintaan mx-2" placeholder="Tanggal Awal">
+                </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Tanggal Selesai Permintaan</label>
+                    <input type="text" name="tanggal_akhir" readonly
+                        class="form-control datepickerAkhirPermintaan mr-2" placeholder="Tanggal Akhir">
+                </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Tanggal Mulai Pengambilan</label>
+                    <input type="text" name="tanggal_awal" readonly
+                        class="form-control datepickerAwalPengambilan mx-2" placeholder="Tanggal Awal">
+                </div>
+                <div class="form-group col-md-6 col-12">
+                    <label for="">Tanggal Selesai Pengambilan</label>
+                    <input type="text" name="tanggal_akhir" readonly
+                        class="form-control datepickerAkhirPengambilan mr-2" placeholder="Tanggal Akhir">
+                </div>
                 <div class="form-group col-md-6 col-6">
                     <label for="">Status Permintaan</label>
                     <select name="" class="form-control" id="statusPermintaan">
@@ -18,32 +44,6 @@
                         <option value="ditolak">Ditolak</option>
                         <option value="selesai">Selesai</option>
                     </select>
-                </div>
-                <div class="form-group col-md-6 col-6">
-                    <label for="">Kategori Bahan Habis Pakai</label>
-                    <select name="" class="form-control" id="listKategoriAssetLocation">
-
-                    </select>
-                </div>
-                <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Mulai Permintaan</label>
-                    <input type="text" name="tanggal_awal" readonly class="form-control datepickerAwalPermintaan mx-2"
-                        placeholder="Tanggal Awal">
-                </div>
-                <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Selesai Permintaan</label>
-                    <input type="text" name="tanggal_akhir" readonly class="form-control datepickerAkhirPermintaan mr-2"
-                        placeholder="Tanggal Akhir">
-                </div>
-                <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Mulai Pengambilan</label>
-                    <input type="text" name="tanggal_awal" readonly class="form-control datepickerAwalPengambilan mx-2"
-                        placeholder="Tanggal Awal">
-                </div>
-                <div class="form-group col-md-6 col-12">
-                    <label for="">Tanggal Selesai Pengambilan</label>
-                    <input type="text" name="tanggal_akhir" readonly class="form-control datepickerAkhirPengambilan mr-2"
-                        placeholder="Tanggal Akhir">
                 </div>
             </div>
             <div class="modal-footer">
