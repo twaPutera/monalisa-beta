@@ -222,7 +222,7 @@
                 <div class="kt-portlet__body">
                     <div class="d-flex justify-content-end align-items-center">
                         <div class="input-group mr-3" style="width: 250px;">
-                            <input type="text" id="searchPeminjaman" class="form-control form-control-sm"
+                            <input type="text" id="searchPeminjaman" onkeyup="filterTableAsset()" class="form-control form-control-sm"
                                 placeholder="Search for...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"

@@ -389,7 +389,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center">
                             <div class="input-group mr-3" style="width: 250px;">
-                                <input type="text" id="searchServices" class="form-control form-control-sm"
+                                <input type="text" id="searchServices" onkeyup="filterTableService()" class="form-control form-control-sm"
                                     placeholder="Search for...">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary btn-icon" onclick="filterTableService()"

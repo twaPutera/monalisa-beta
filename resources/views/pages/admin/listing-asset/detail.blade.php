@@ -110,6 +110,9 @@
                             } else if (data == 'diproses') {
                                 element =
                                     '<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Diproses</span>';
+                            } else if (data == 'duedate') {
+                                element =
+                                    '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Duedate</span>';
                             }
                             return element;
                         },
@@ -733,7 +736,7 @@
             $.ajax({
                 url: '{{ route('admin.setting.lokasi.get-select2') }}',
                 type: 'GET',
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         let data = response.data;
                         let option = '';
@@ -741,7 +744,8 @@
                             option += `<option value="${element.id}">${element.text}</option>`;
                         });
                         $('#lokasiAssetEdit').append(option);
-                        $('#lokasiAssetEdit option[value="{{ $asset->id_lokasi }}"]').prop('selected', 'selected');
+                        $('#lokasiAssetEdit option[value="{{ $asset->id_lokasi }}"]').prop('selected',
+                            'selected');
                         $('#lokasiAssetOpname').append(option);
                     }
                 }
@@ -1066,8 +1070,8 @@
                                     @if ($asset->is_it == 1)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateAssetService')"
-                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log mr-2"
-                                                type="button">
+                                                id="create-service"
+                                                class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                                 <i class="fa fa-plus"></i> Service
                                             </button>
                                         @endif
@@ -1076,8 +1080,8 @@
                                     @if ($asset->is_it == 0)
                                         @if ($asset->is_pemutihan != '1')
                                             <button onclick="openModalByClass('modalCreateAssetService')"
-                                                id="create-service" class="btn btn-primary shadow-custom btn-sm btn-log mr-2"
-                                                type="button">
+                                                id="create-service"
+                                                class="btn btn-primary shadow-custom btn-sm btn-log mr-2" type="button">
                                                 <i class="fa fa-plus"></i> Service
                                             </button>
                                         @endif

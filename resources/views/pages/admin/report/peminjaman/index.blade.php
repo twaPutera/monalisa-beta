@@ -154,7 +154,7 @@
                 <div class="kt-portlet__body">
                     <div class="d-flex align-items-center">
                         <div class="input-group mr-3" style="width: 250px;">
-                            <input type="text" id="searchDepresiasi" class="form-control form-control-sm"
+                            <input type="text" id="searchDepresiasi" onkeyup="filterTableAsset()" class="form-control form-control-sm"
                                 placeholder="Search for...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"

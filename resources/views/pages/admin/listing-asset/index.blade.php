@@ -423,7 +423,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchAsset" class="form-control form-control-sm"
+                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()" class="form-control form-control-sm"
                             placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
