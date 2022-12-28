@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Helpers\CutText;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -41,5 +42,25 @@ class UserQueryServices
     public function findById($id)
     {
         return User::find($id);
+    }
+
+    public function getDataUserSelect2(Request $request)
+    {
+        $data = User::query();
+        if (isset($request->keyword)) {
+            $data->where('users.name', 'like', '%' . $request->keyword . '%');
+        }
+
+        $data = $data->orderby('created_at', 'asc')
+            ->get();
+        $results = [];
+        foreach ($data as $item) {
+            $results[] = [
+                'id' => $item->id,
+                'text' => $item->name . ' (' . ucWords(strtolower(CutText::cutUnderscore($item->role))) . ')',
+            ];
+        }
+
+        return $results;
     }
 }

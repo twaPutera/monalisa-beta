@@ -192,4 +192,20 @@ class UserController extends Controller
         $path = public_path('template-import/template-import-user-up.xlsx');
         return response()->download($path);
     }
+
+    public function getDataUserSelect2(Request $request)
+    {
+        try {
+            $data = $this->userQueryServices->getDataUserSelect2($request);
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

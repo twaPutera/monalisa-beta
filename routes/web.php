@@ -335,6 +335,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::post('/delete/{id}', [AdminUserManagementUserController::class, 'delete'])->name('admin.user-management.user.delete');
             Route::post('/change-password/{id}', [AdminUserManagementUserController::class, 'changePassword'])->name('admin.user-management.user.change-password');
             Route::get('/datatable', [AdminUserManagementUserController::class, 'datatable'])->name('admin.user-management.user.datatable');
+            Route::get('/get-data-select2', [AdminUserManagementUserController::class, 'getDataUserSelect2'])->name('admin.user-management.user.get-data-select2');
         });
     });
 

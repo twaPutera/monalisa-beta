@@ -156,9 +156,9 @@
             $('#peminjamSelect2').select2({
                 width: '100%',
                 placeholder: 'Pilih Peminjam',
-                dropdownParent: $('.modal.show'),
+                dropdownParent: $('.modalFilterAsset'),
                 ajax: {
-                    url: '{{ route('admin.peminjaman.get-data-select2') }}',
+                    url: '{{ route('admin.user-management.user.get-data-select2') }}',
                     dataType: 'json',
                     delay: 250,
                     data: function(params) {
