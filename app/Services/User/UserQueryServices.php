@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Helpers\CutText;
 use App\Models\User;
+use App\Helpers\CutText;
 use Illuminate\Http\Request;
 
 class UserQueryServices

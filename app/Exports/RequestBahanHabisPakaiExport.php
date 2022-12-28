@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Helpers\DateIndoHelpers;
 use App\Models\LogRequestInventori;
 use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -14,6 +13,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 

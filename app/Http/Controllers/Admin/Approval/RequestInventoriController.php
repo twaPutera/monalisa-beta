@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Approval;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Approval\RequestInventoriUpdate;
 use App\Services\InventarisData\InventarisDataCommandServices;
