@@ -47,8 +47,8 @@ class ApprovalQueryServices
             ->where('approvable_type', 'App\\Models\\PemutihanAsset')
             ->where('approvals.is_approve', null)
             ->where(function ($query) use ($request) {
-                $query->orWhere('guid_approver', $request->user_id);
-                    if ($request->role == 'manager_it' || $request->role == 'manager_asset' || $request->role == 'admin') {
+                $query->where('guid_approver', $request->user_id);
+                    if (($request->role == 'manager_it') || ($request->role == 'manager_asset') || ($request->role == 'admin')) {
                         $query->orWhere('guid_approver', null);
                     }
             });
@@ -62,7 +62,10 @@ class ApprovalQueryServices
             $approval_peminjaman->where('peminjaman_assets.is_it', $is_it);
             $approval_perpancangan_peminjaman_asset->where('perpanjangan_peminjaman_assets.is_it', $is_it);
             $approval_pemindahan_asset->where('asset_data.is_it', $is_it);
-            $approval_pemutihan_asset->where('pemutihan_assets.is_it', $is_it);
+            $approval_pemutihan_asset->where(function ($query) use ($request) {
+                    $query->where('pemutihan_assets.is_it', $request->is_it)
+                        ->orWhere('pemutihan_assets.is_it', '2');
+                });
         }
 
         $summary_approval = [
