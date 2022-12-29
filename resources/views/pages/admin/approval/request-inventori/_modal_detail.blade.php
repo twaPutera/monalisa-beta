@@ -12,7 +12,7 @@
                 <div class="modal-body row">
                     <div class="col-md-4 col-12">
                         <div class="deskripsiPeminjaman">
-                            <h5>Deskripsi Peminjaman</h5>
+                            <h5>Deskripsi Pengaju</h5>
                             <div class="form-group">
                                 <label for="nama">Nama Pengaju</label>
                                 <input type="text" class="form-control" id="namaPengaju" readonly name="nama" placeholder="Nama" value="">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-4 col-12">
                         <div class="mb-2">
-                            <h5>Detail barang yang dipinjam</h5>
+                            <h5>Detail barang yang diminta</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-md-4 col-12">
                         <div class="mb-2">
-                            <h5>Status Approval Peminjaman</h5>
+                            <h5>Status Approval Permintaan</h5>
                         </div>
                         <div class="form-group">
                             <label for="nama">Tanggal Approval</label>
