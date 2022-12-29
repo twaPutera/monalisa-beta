@@ -46,9 +46,11 @@ class ApprovalQueryServices
             ->join('pemutihan_assets', 'pemutihan_assets.id', '=', 'approvals.approvable_id')
             ->where('approvable_type', 'App\\Models\\PemutihanAsset')
             ->where('approvals.is_approve', null)
-            ->where('guid_approver', $request->user_id)
-            ->orWhere(function ($query) use ($request) {
-                $query->where('guid_approver', null);
+            ->where(function ($query) use ($request) {
+                $query->orWhere('guid_approver', $request->user_id);
+                    if ($request->role == 'manager_it' || $request->role == 'manager_asset' || $request->role == 'admin') {
+                        $query->orWhere('guid_approver', null);
+                    }
             });
 
         $approval_request_inventori = Approval::query()
