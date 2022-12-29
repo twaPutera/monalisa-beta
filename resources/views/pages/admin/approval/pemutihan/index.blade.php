@@ -62,7 +62,8 @@
                         targets: [1],
                         render: function(data, type, full, meta) {
                             return `
-                                <button onclick="showDetail(this)" data-url_detail="` + data + `" data-url_update="` +
+                                <button onclick="showDetail(this)" data-approvable_id="${full.approvable_id}" data-url_detail="` +
+                                data + `" data-url_update="` +
                                 full.link_update + `" type="button" class="btn btn-sm btn-primary btn-icon" title="Detail">
                                     <i class="la la-eye"></i>
                                 </button>
@@ -128,6 +129,11 @@
                 },
             })
         }
+        @if (isset(request()->pemutihan_id))
+            setTimeout(() => {
+                $('button[data-approvable_id="{{ request()->pemutihan_id }}"]').click();
+            }, 1000);
+        @endif
 
         const showDetail = (button) => {
             const url = $(button).data('url_detail');

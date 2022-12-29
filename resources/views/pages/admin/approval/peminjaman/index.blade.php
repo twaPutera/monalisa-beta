@@ -197,7 +197,6 @@
             });
 
             @if(isset(request()->peminjaman_id))
-                alert('test');
                 setTimeout(() => {
                     $('button[data-approvable_id="{{ request()->peminjaman_id }}"]').click();
                 }, 1000);
