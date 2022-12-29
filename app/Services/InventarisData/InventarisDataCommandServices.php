@@ -20,6 +20,8 @@ use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class InventarisDataCommandServices
 {
@@ -82,6 +84,17 @@ class InventarisDataCommandServices
         $approval->approvable_id = $request_inventaris->id;
         $approval->save();
 
+        $target_user = User::where('role', '!=', 'user')->get();
+        $notifikasi = [
+            'title' => 'Permintaan Bahan Habis Pakai',
+            'message' => 'Permintaan Bahan Habis Pakai dengan kode ' . $request_inventaris->kode_request . ' telah ditambahkan oleh ' . $user->name,
+            'url' => route('admin.approval.request-inventori.index', ['request_id' => $request_inventaris->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
         return $request_inventaris;
     }
 
@@ -120,6 +133,18 @@ class InventarisDataCommandServices
         $approval->approvable_type = get_class($request_inventaris);
         $approval->approvable_id = $request_inventaris->id;
         $approval->save();
+
+        $target_user = User::where('role', '!=', 'user')->get();
+        $notifikasi = [
+            'title' => 'Permintaan Bahan Habis Pakai',
+            'message' => 'Permintaan Bahan Habis Pakai dengan kode ' . $request_inventaris->kode_request . ' telah ditambahkan oleh ' . $user->name,
+            'url' => route('admin.approval.request-inventori.index', ['request_id' => $request_inventaris->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
 
         return $request_inventaris;
     }
@@ -224,8 +249,18 @@ class InventarisDataCommandServices
             $log_pengurangan->created_by = $user->name;
             $log_pengurangan->save();
         }
-        $message = 'Permintaan bahan habis pakai dengan kode ' . $request_inventaris->kode_request . ' berhasil diperbaharui oleh ' . $user->name;
+        $message = 'Permintaan bahan habis pakai dengan kode ' . $request_inventaris->kode_request . ' berhasil direalisasi oleh ' . $user->name;
         $this->storeLogRequestInventori($request_inventaris->id, $message, 'selesai');
+
+        $target = User::find($request_inventaris->guid_pengaju);
+        $notifikasi = [
+            'title' => 'Permintaan Bahan Habis Pakai',
+            'message' => 'Permintaan Bahan Habis Pakai dengan kode ' . $request_inventaris->kode_request . ' telah direalisasi oleh ' . $user->name,
+            'url' => route('user.asset-data.bahan-habis-pakai.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        $target->notify(new UserNotification($notifikasi));
         return $request_inventaris;
     }
 
@@ -271,10 +306,24 @@ class InventarisDataCommandServices
         $approval->save();
 
         $log_message = 'Approval request bahan habis pakai dengan kode ' . $request_inventori->kode_request . ' telah ditolak oleh ' . $user->name;
+        $target = User::find($request_inventori->guid_pengaju);
+        $notifikasi = [
+            'title' => 'Permintaan Bahan Habis Pakai',
+            'message' => 'Permintaan Bahan Habis Pakai dengan kode ' . $request_inventori->kode_request . ' tidak ditolak oleh ' . $user->name,
+            'url' => route('user.asset-data.bahan-habis-pakai.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
+
         if ($request->status == 'disetujui') {
             $log_message = 'Approval request bahan habis pakai dengan kode ' . $request_inventori->kode_request . ' telah disetujui oleh ' . $user->name;
+            $notifikasi = [
+                'title' => 'Permintaan Bahan Habis Pakai',
+                'message' => 'Permintaan Bahan Habis Pakai dengan kode ' . $request_inventori->kode_request . ' telah disetujui oleh ' . $user->name,
+                'url' => route('user.asset-data.bahan-habis-pakai.index'),
+                'date' => date('d/m/Y H:i'),
+            ];
         }
-
+        $target->notify(new UserNotification($notifikasi));
         $this->storeLogRequestInventori($request_inventori->id, $log_message, $request->status == 'disetujui' ? 'diproses' : 'ditolak');
 
         return $request_inventori;
