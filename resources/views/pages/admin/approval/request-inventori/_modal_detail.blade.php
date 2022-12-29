@@ -40,7 +40,7 @@
                                 <thead>
                                     <tr>
                                         <th width="50px">No</th>
-                                        <th>Nama Inventori</th>
+                                        <th>Nama Bahan Habis Pakai</th>
                                         <th width="50px">Jumlah</th>
                                     </tr>
                                 </thead>
