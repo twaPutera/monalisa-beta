@@ -20,6 +20,12 @@
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
     <script>
         var table = $('#datatableExample');
+        @if (isset(request()->pengaduan_id))
+            setTimeout(() => {
+                $('button[data-pengaduan_id="{{ request()->pengaduan_id }}"]').click();
+            }, 1000);
+        @endif
+
         $(document).ready(function() {
 
             table.DataTable({

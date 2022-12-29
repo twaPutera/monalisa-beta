@@ -44,7 +44,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
@@ -111,7 +111,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
@@ -165,7 +165,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah diubah dan dilaporkan ulang oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
