@@ -10,7 +10,7 @@
                     </div>
                     <div class="in">
                         <strong>{{ $user->name }}</strong>
-                        <div class="text-primary"><strong>{{ $user->role }}</strong></div>
+                        <div class="text-primary"><strong>{!! App\Helpers\CutText::cutUnderscore($user->role) !!}</strong></div>
                     </div>
                     <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
                         <ion-icon name="close-outline"></ion-icon>

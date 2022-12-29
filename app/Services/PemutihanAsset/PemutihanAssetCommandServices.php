@@ -19,6 +19,8 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class PemutihanAssetCommandServices
 {
@@ -34,7 +36,7 @@ class PemutihanAssetCommandServices
         $request->validated();
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
@@ -125,6 +127,17 @@ class PemutihanAssetCommandServices
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode(json_encode($approval), $path);
+
+
+            // Notifikasi
+            $created_by = User::find($pemutihan->created_by);
+            $notifikasi = [
+                'title' => 'Pemutihan Asset',
+                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
+                'url' => route('admin.pemutihan-asset.index'),
+                'date' => date('d/m/Y H:i'),
+            ];
+            $created_by->notify(new UserNotification($notifikasi));
         }
 
         $approval->qr_path = $qr_code;
@@ -137,7 +150,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
@@ -185,12 +198,29 @@ class PemutihanAssetCommandServices
         $pemutihan->save();
 
         if ($request->status_pemutihan == 'Publish') {
+            // Notifikasi
+            $notifikasi = [
+                'title' => 'Pemutihan Asset',
+                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
+                'url' => route('admin.approval.pemutihan.index', ['pemutihan_id' => $pemutihan->id]),
+                'date' => date('d/m/Y H:i'),
+            ];
+            if ($approver != null) {
+                $approver->notify(new UserNotification($notifikasi));
+            } else {
+                $user_approver = User::where('role', 'admin')->orWhere('role', 'manager_asset')->orWhere('role', 'manager_it')->get();
+                foreach ($user_approver as $item) {
+                    $item->notify(new UserNotification($notifikasi));
+                }
+            }
             $approval = new Approval();
             $approval->guid_approver = isset($approver) ? (config('app.sso_siska') ? $approver[0]['guid'] : $approver->id) : null;
             $approval->approvable_type = get_class($pemutihan);
             $approval->approvable_id = $pemutihan->id;
             $approval->save();
         }
+
+
         return $pemutihan;
     }
 
@@ -234,7 +264,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -253,7 +283,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
@@ -325,6 +355,22 @@ class PemutihanAssetCommandServices
         $pemutihan->save();
 
         if ($request->status_pemutihan == 'Publish') {
+            // Notifikasi
+            $notifikasi = [
+                'title' => 'Pemutihan Asset',
+                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
+                'url' => route('admin.approval.pemutihan.index', ['pemutihan_id' => $pemutihan->id]),
+                'date' => date('d/m/Y H:i'),
+            ];
+            if ($approver != null) {
+                $approver->notify(new UserNotification($notifikasi));
+            } else {
+                $user_approver = User::where('role', 'admin')->orWhere('role', 'manager_asset')->orWhere('role', 'manager_it')->get();
+                foreach ($user_approver as $item) {
+                    $item->notify(new UserNotification($notifikasi));
+                }
+            }
+
             $approval = new Approval();
             $approval->guid_approver = isset($approver) ? (config('app.sso_siska') ? $approver[0]['guid'] : $approver->id) : null;
             $approval->approvable_type = get_class($pemutihan);
@@ -366,6 +412,16 @@ class PemutihanAssetCommandServices
             $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode($approval->id, $path);
             $approval->qr_path = $qr_name;
+
+            // Notifikasi
+            $created_by = User::find($pemutihan->created_by);
+            $notifikasi = [
+                'title' => 'Pemutihan Asset',
+                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
+                'url' => route('admin.pemutihan-asset.index'),
+                'date' => date('d/m/Y H:i'),
+            ];
+            $created_by->notify(new UserNotification($notifikasi));
         }
 
         $approval->save();

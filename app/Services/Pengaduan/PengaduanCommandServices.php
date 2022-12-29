@@ -44,7 +44,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
@@ -84,7 +84,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
@@ -96,7 +96,7 @@ class PengaduanCommandServices
                 $target_user = User::where('role', 'staff_asset')->get();
             }
         } else {
-            $target_user = User::where('role', 'admin')->get();
+            $target_user = User::where('role', 'admin')->orWhere('role', 'staff_it')->orWhere('role', 'staff_asset')->get();
         }
 
         $asset_pengaduan->kode_pengaduan =  self::generateCode();
@@ -111,7 +111,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah dilaporkan oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
@@ -141,7 +141,7 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
@@ -152,7 +152,7 @@ class PengaduanCommandServices
                 $target_user = User::where('role', 'staff_asset')->get();
             }
         } else {
-            $target_user = User::where('role', 'admin')->get();
+            $target_user = User::where('role', 'admin')->orWhere('role', 'staff_it')->orWhere('role', 'staff_asset')->get();
         }
 
         $asset_pengaduan->id_lokasi = $request->id_lokasi;
@@ -165,7 +165,7 @@ class PengaduanCommandServices
         $notifikasi = [
             'title' => 'Pengaduan Asset',
             'message' => 'Pengaduan Asset dengan kode ' . $asset_pengaduan->kode_pengaduan . ' telah diubah dan dilaporkan ulang oleh ' . $user->name,
-            'url' => route('admin.keluhan.index'),
+            'url' => route('admin.keluhan.index', ['pengaduan_id' => $asset_pengaduan->id]),
             'date' => date('d/m/Y H:i'),
         ];
 
