@@ -95,6 +95,9 @@
                             if (data == 'disetujui') {
                                 element =
                                     '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Disetujui</span>';
+                            } else if (data == 'selesai') {
+                                element =
+                                    '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Selesai</span>';
                             } else if (data == 'ditolak') {
                                 element =
                                     '<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Ditolak</span>';
