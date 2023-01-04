@@ -287,7 +287,14 @@ class KeluhanDatatableServices
         }
 
         if (isset($request->keyword)) {
-            $query->where('pengaduans.catatan_pengaduan', 'like', '%' . $request->keyword . '%');
+            $query->where('pengaduans.catatan_pengaduan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('pengaduans.tanggal_pengaduan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('pengaduans.kode_pengaduan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('pengaduans.kode_pengaduan', 'like', '%' . $request->keyword . '%')
+                ->orWhere('log_pengaduan_assets.created_at', 'like', '%' . $request->keyword . '%')
+                ->orWhere('lokasis.nama_lokasi', 'like', '%' . $request->keyword . '%')
+                ->orWhere('log_pengaduan_assets.message_log', 'like', '%' . $request->keyword . '%')
+                ->orWhere('asset_data.deskripsi', 'like', '%' . $request->keyword . '%');
         }
 
         if (isset($request->id_asset_data)) {

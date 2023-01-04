@@ -79,7 +79,7 @@ class PemutihanAssetCommandServices
                 throw new Exception('Asset Yang Dipilih Sudah Ada Pada BAST Pemutihan!');
                 break;
             }
-            if ($find_asset->is_it != '0') {
+            if ($find_asset->is_pemutihan != 0) {
                 throw new Exception('Asset Sudah Diputihkan!');
                 break;
             }
@@ -123,24 +123,30 @@ class PemutihanAssetCommandServices
         $approval->is_approve = $request->status == 'disetujui' ? '1' : '0';
         $approval->keterangan = $request->keterangan;
 
+        // Notifikasi
+        $created_by = User::find($pemutihan->created_by);
+        $notifikasi = [
+            'title' => 'Pemutihan Asset',
+            'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
+            'url' => route('admin.pemutihan-asset.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
         if ($request->status == 'disetujui') {
             $qr_name = 'qr-approval-pemindahan-' . time() . '.png';
             $path = storage_path('app/images/qr-code/pemutihan/' . $qr_name);
             $qr_code = QrCodeHelpers::generateQrCode(json_encode($approval), $path);
 
-
             // Notifikasi
-            $created_by = User::find($pemutihan->created_by);
             $notifikasi = [
                 'title' => 'Pemutihan Asset',
                 'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
                 'url' => route('admin.pemutihan-asset.index'),
                 'date' => date('d/m/Y H:i'),
             ];
-            $created_by->notify(new UserNotification($notifikasi));
+            $approval->qr_path = $qr_code;
         }
+        $created_by->notify(new UserNotification($notifikasi));
 
-        $approval->qr_path = $qr_code;
 
         $approval->save();
         return $pemutihan;
@@ -255,6 +261,10 @@ class PemutihanAssetCommandServices
             $cek_detail_pemutihan = DetailPemutihanAsset::where('id_asset_data', $id_checkbox)->where('id_pemutihan_asset', $id)->first();
             if ($cek_detail_pemutihan == null) {
                 $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
+                if ($find_asset->is_pemutihan != 0) {
+                    throw new Exception('Asset Sudah Diputihkan!');
+                    break;
+                }
                 $detail_pemutihan_create = new DetailPemutihanAsset();
                 $detail_pemutihan_create->id_pemutihan_asset = $id;
                 $detail_pemutihan_create->id_asset_data = $id_checkbox;
@@ -406,6 +416,14 @@ class PemutihanAssetCommandServices
         $approval->status = $request->status == 'disetujui' ? '1' : '0';
         $approval->tanggal_approval = date('Y-m-d');
         $approval->keterangan = $request->keterangan;
+        $created_by = User::find($pemutihan->created_by);
+        // Notifikasi
+        $notifikasi = [
+            'title' => 'Pemutihan Asset',
+            'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
+            'url' => route('admin.pemutihan-asset.index'),
+            'date' => date('d/m/Y H:i'),
+        ];
 
         if ($request->status == 'disetujui') {
             $qr_name = 'qr-approval-pemutihan-' . time() . '.png';
@@ -414,15 +432,15 @@ class PemutihanAssetCommandServices
             $approval->qr_path = $qr_name;
 
             // Notifikasi
-            $created_by = User::find($pemutihan->created_by);
             $notifikasi = [
                 'title' => 'Pemutihan Asset',
                 'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
                 'url' => route('admin.pemutihan-asset.index'),
                 'date' => date('d/m/Y H:i'),
             ];
-            $created_by->notify(new UserNotification($notifikasi));
         }
+
+        $created_by->notify(new UserNotification($notifikasi));
 
         $approval->save();
 
