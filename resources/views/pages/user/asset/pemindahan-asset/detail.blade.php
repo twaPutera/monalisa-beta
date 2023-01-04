@@ -22,7 +22,7 @@
     </script>
 @endsection
 @section('back-button')
-    <a href="{{ route('user.dashboard.index') }}" class="headerButton">
+    <a href="{{ route('user.approval.index') }}" class="headerButton">
         <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
     </a>
 @endsection

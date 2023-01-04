@@ -12,7 +12,7 @@
             $.ajax({
                 url: '{{ route("user.approval.get-all-data") }}',
                 data: {
-                    guid_penerima_asset: "{{ $user->guid }}",
+                    guid_penerima_asset: "{{ $user->id }}",
                     with: ['detail_pemindahan_asset'],
                     status: status
                 },
