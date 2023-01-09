@@ -156,8 +156,6 @@
                 orderings: false,
                 searching: false,
                 bLengthChange: false,
-                paging: false,
-                autoWidth: false,
                 ajax: {
                     url: "{{ route('admin.listing-asset.datatable') }}",
                     data: function(d) {
