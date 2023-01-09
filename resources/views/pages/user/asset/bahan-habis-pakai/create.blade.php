@@ -120,6 +120,43 @@
         const submitForm = () => {
             $('.form-submit').submit();
         }
+
+        const generateOptionUnitKerjaAndJabatan = () => {
+            $.ajax({
+                url: "{{ route('user.dashboard.profile.find-position-by-username') }}",
+                method: "GET",
+                data: {
+                    username: "{{ $user->username_sso }}"
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#unitKerjaSelect').empty();
+                        $('#jabatanSelect').empty();
+                        $(response.data).each(function(index, item) {
+                            $('#unitKerjaSelect').append(`
+                                <option value="${item.unit_kerja}">${item.unit_kerja}</option>
+                            `);
+                            $('#jabatanSelect').append(`
+                                <option value="${item.position}">${item.position}</option>
+                            `);
+                        })
+
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function() {
+            generateOptionUnitKerjaAndJabatan();
+            $('#unitKerjaSelect').select2({
+                placeholder: "Pilih Unit Kerja dan Jabatan",
+                tags: true,
+            });
+            $('#jabatanSelect').select2({
+                placeholder: "Pilih Unit Kerja dan Jabatan",
+                tags: true,
+            });
+        })
     </script>
 @endsection
 @section('back-button')
@@ -160,13 +197,21 @@
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Unit Kerja</strong></label>
-                    <input type="text" name="unit_kerja" class="form-control" id="">
+                    <select name="unit_kerja" id="unitKerjaSelect" class="form-control py-3">
+
+                    </select>
+                    <small>Jika Tidak terdapat unit kerja silahkan ketikan jabatan anda dan tekan "enter"</small>
+                    {{-- <input type="text" name="unit_kerja" class="form-control" id=""> --}}
                 </div>
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Jabatan</strong></label>
-                    <input type="text" name="jabatan" class="form-control" id="">
+                    <select name="jabatan" id="jabatanSelect" class="form-control py-3">
+
+                    </select>
+                    <small>Jika Tidak terdapat jabatan silahkan ketikan jabatan anda dan tekan "enter"</small>
+                    {{-- <input type="text" name="jabatan" class="form-control" id="jabatanSelect"> --}}
                 </div>
             </div>
             <div class="form-group boxed">

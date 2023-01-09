@@ -22,6 +22,7 @@ return [
     'sso_login' => env('SSO_LOGIN', false),
     'sso_siska' => env('SSO_SISKA', false),
     'andin_url' => env('ANDIN_URL', null),
+    'masayu_url' => env('MASAYU_URL', null),
 
     'jwt_secret' => env('JWT_SECRET', 'example_key'),
 

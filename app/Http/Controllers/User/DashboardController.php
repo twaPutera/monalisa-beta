@@ -10,6 +10,7 @@ use App\Services\Notification\NotificationQueryServices;
 use App\Services\SistemConfig\SistemConfigQueryServices;
 use App\Services\Notification\NotificationCommandServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class DashboardController extends Controller
 {
@@ -19,6 +20,7 @@ class DashboardController extends Controller
     protected $notificationCommandServices;
     protected $sistemConfigQueryServices;
     protected $approvalQueryServices;
+    protected $userSsoQueryServices;
 
     public function __construct(
         PengaduanQueryServices $pengaduanQueryServices,
@@ -26,7 +28,8 @@ class DashboardController extends Controller
         NotificationQueryServices $notificationQueryServices,
         NotificationCommandServices $notificationCommandServices,
         SistemConfigQueryServices $sistemConfigQueryServices,
-        ApprovalQueryServices $approvalQueryServices
+        ApprovalQueryServices $approvalQueryServices,
+        UserSsoQueryServices $userSsoQueryServices
     ) {
         $this->pengaduanQueryServices = $pengaduanQueryServices;
         $this->peminjamanAssetQueryServices = $peminjamanAssetQueryServices;
@@ -34,6 +37,7 @@ class DashboardController extends Controller
         $this->notificationCommandServices = $notificationCommandServices;
         $this->sistemConfigQueryServices = $sistemConfigQueryServices;
         $this->approvalQueryServices = $approvalQueryServices;
+        $this->userSsoQueryServices = $userSsoQueryServices;
     }
     public function index()
     {
@@ -118,6 +122,25 @@ class DashboardController extends Controller
                 'success' => false,
                 'message' => $th->getMessage(),
             ]);
+        }
+    }
+
+    public function findPositionByUsername(Request $request)
+    {
+        try {
+            $data = $this->userSsoQueryServices->getUserPositionByUsernameSSO($request->username);
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
         }
     }
 }

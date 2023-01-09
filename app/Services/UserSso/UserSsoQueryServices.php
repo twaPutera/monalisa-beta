@@ -152,4 +152,19 @@ class UserSsoQueryServices
 
         return $response_ldap['data'];
     }
+
+    public function getUserPositionByUsernameSSO(string $username)
+    {
+        $masayu_url = config('app.masayu_url') . '/Employees/byUsername?username=' . $username;
+
+        $response_masayu = Http::withHeaders([
+            'accept' => 'application/json',
+        ])->get($masayu_url);
+
+        if ($response_masayu->json()['error']) {
+            return [];
+        }
+
+        return $response_masayu->json()['data']['employee'][0]['positions'] ?? [];
+    }
 }
