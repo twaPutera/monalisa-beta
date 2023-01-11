@@ -135,6 +135,8 @@
                         $('#namaPengaju').val(response.data.pengaju.name);
                         $('#tanggalPengambilan').val(response.data.request.tanggal_pengambilan);
                         $('#unitKerjaPengaju').val(response.data.request.unit_kerja);
+                        $('#jabatanPengaju').val(response.data.request.jabatan);
+                        $('#noMemo').val(response.data.request.no_memo);
                         $("#alasanPengajuan").val(response.data.request.alasan);
 
                         $('#tableBodyDetailRequestInventori').html('');

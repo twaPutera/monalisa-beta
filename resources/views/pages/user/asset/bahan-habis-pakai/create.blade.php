@@ -149,11 +149,11 @@
         $(document).ready(function() {
             generateOptionUnitKerjaAndJabatan();
             $('#unitKerjaSelect').select2({
-                placeholder: "Pilih Unit Kerja dan Jabatan",
+                placeholder: "Pilih Unit Kerja",
                 tags: true,
             });
             $('#jabatanSelect').select2({
-                placeholder: "Pilih Unit Kerja dan Jabatan",
+                placeholder: "Pilih Jabatan",
                 tags: true,
             });
         })
@@ -200,7 +200,7 @@
                     <select name="unit_kerja" id="unitKerjaSelect" class="form-control py-3">
 
                     </select>
-                    <small>Jika Tidak terdapat unit kerja silahkan ketikan jabatan anda dan tekan "enter"</small>
+                    <small>Jika tidak terdapat unit kerja silahkan ketikkan unit kerja Anda dan tekan "enter"</small>
                     {{-- <input type="text" name="unit_kerja" class="form-control" id=""> --}}
                 </div>
             </div>
@@ -210,7 +210,7 @@
                     <select name="jabatan" id="jabatanSelect" class="form-control py-3">
 
                     </select>
-                    <small>Jika Tidak terdapat jabatan silahkan ketikan jabatan anda dan tekan "enter"</small>
+                    <small>Jika tidak terdapat jabatan silahkan ketikkan jabatan Anda dan tekan "enter"</small>
                     {{-- <input type="text" name="jabatan" class="form-control" id="jabatanSelect"> --}}
                 </div>
             </div>

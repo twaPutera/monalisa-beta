@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Detail Request Inventori</h5>
+                <h5 class="modal-title" id="">Detail Request Bahan Habis Pakai</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -15,15 +15,28 @@
                             <h5>Deskripsi Pengaju</h5>
                             <div class="form-group">
                                 <label for="nama">Nama Pengaju</label>
-                                <input type="text" class="form-control" id="namaPengaju" readonly name="nama" placeholder="Nama" value="">
+                                <input type="text" class="form-control" id="namaPengaju" readonly name="nama"
+                                    placeholder="Nama" value="">
                             </div>
                             <div class="form-group">
                                 <label for="nama">Unit Kerja</label>
-                                <input type="text" class="form-control" id="unitKerjaPengaju" readonly name="nama" placeholder="Nama" value="">
+                                <input type="text" class="form-control" id="unitKerjaPengaju" readonly name="nama"
+                                    placeholder="Nama" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Jabatan</label>
+                                <input type="text" class="form-control" id="jabatanPengaju" readonly name="nama"
+                                    placeholder="Nama" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">No Memo</label>
+                                <input type="text" class="form-control" id="noMemo" readonly name="nama"
+                                    placeholder="Nama" value="">
                             </div>
                             <div class="form-group">
                                 <label for="">Tanggal Pengambilan</label>
-                                <input type="date" class="form-control" id="tanggalPengambilan" readonly name="">
+                                <input type="date" class="form-control" id="tanggalPengambilan" readonly
+                                    name="">
                             </div>
                             <div class="form-group">
                                 <label for="">Alasan Pengajuan</label>
