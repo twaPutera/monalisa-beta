@@ -171,42 +171,67 @@
                         emptyFieldBeforeAppend();
                         const data = response.data;
                         getAllDataLogPengaduan("logContainer", data.id);
-                        $('#namaAsset').append(data.asset_data.deskripsi);
-                        if (data.asset_data.id_lokasi != null) {
-                            $('#lokasiAsset').append(data.asset_data.lokasi.nama_lokasi);
-                        } else {
-                            $('#lokasiAsset').append("Tidak Ada Lokasi");
-                        }
+                        if (data.asset_data != null) {
+                            $('#namaAsset').append(data.asset_data.deskripsi);
 
-                        if (data.asset_data.id_kategori_asset != null) {
-                            $('#kelompokAsset').append(data.asset_data.kategori_asset.group_kategori_asset
-                                .nama_group);
-                            $('#jenisAsset').append(data.asset_data.kategori_asset.nama_kategori);
+                            if (data.asset_data.id_lokasi != null) {
+                                $('#lokasiAsset').append(data.asset_data.lokasi.nama_lokasi);
+                            } else {
+                                $('#lokasiAsset').append("Tidak Ada Lokasi");
+                            }
+
+                            if (data.asset_data.id_kategori_asset != null) {
+                                if (data.asset_data.kategori_asset != null) {
+                                    $('#kelompokAsset').append(data.asset_data.kategori_asset
+                                        .group_kategori_asset
+                                        .nama_group);
+                                    $('#jenisAsset').append(data.asset_data.kategori_asset.nama_kategori);
+                                } else {
+                                    $('#kelompokAsset').append('-');
+                                    $('#jenisAsset').append('-');
+                                }
+                            } else {
+                                $('#kelompokAsset').append("Tidak Ada Kelompok Asset");
+                                $('#jenisAsset').append("Tidak Ada Jenis Asset");
+                            }
+                            if (data.asset_data.status_kondisi == 'bagus') {
+                                var kondisi = '<span class="badge badge-success">Baik</span>';
+                            } else if (data.asset_data.status_kondisi == 'rusak') {
+                                var kondisi = '<span class="badge badge-danger">Rusak</span>';
+                            } else if (data.asset_data.status_kondisi == 'maintenance') {
+                                var kondisi = '<span class="badge badge-warning">Maintenance</span>';
+                            } else if (data.asset_data.status_kondisi == 'tidak-lengkap') {
+                                var kondisi = '<span class="badge badge-dark">Tidak Lengkap</span>';
+                            } else if (data.asset_data.status_kondisi == 'pengembangan') {
+                                var kondisi = '<span class="badge badge-info">Pengembangan</span>';
+                            } else {
+                                var kondisi = '<span class="badge badge-secondary">Tidak Ada</span>';
+                            }
+                            $('#statusTerakhir').append(kondisi);
+
+                            if (data.asset_data.is_pemutihan == 0) {
+                                var pemutihan =
+                                    '<span class="badge badge-success px-3">Tidak Diputihkan</span>';
+                            } else if (data.asset_data.is_pemutihan == 1) {
+                                var pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                            } else {
+                                var pemutihan = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
+                            }
+
+                            $('#statusPemutihan').append(pemutihan);
+                            $('#tanggalPengaduan').val(data.tanggal_pengaduan);
+
                         } else {
+                            var pemutihan = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
+                            var kondisi = '<span class="badge badge-secondary">Tidak Ada</span>';
+                            $('#lokasiAsset').append(data.lokasi.nama_lokasi);
+                            $('#namaAsset').append("Tidak Ada Asset");
                             $('#kelompokAsset').append("Tidak Ada Kelompok Asset");
                             $('#jenisAsset').append("Tidak Ada Jenis Asset");
+                            $('#statusTerakhir').append(kondisi);
+                            $('#statusPemutihan').append(pemutihan);
+                            $('#tanggalPengaduan').val('Tidak Ada');
                         }
-                        if (data.asset_data.status_kondisi == 'bagus') {
-                            var kondisi = '<span class="badge badge-success">Baik</span>';
-                        } else if (data.asset_data.status_kondisi == 'rusak') {
-                            var kondisi = '<span class="badge badge-danger">Rusak</span>';
-                        } else if (data.asset_data.status_kondisi == 'maintenance') {
-                            var kondisi = '<span class="badge badge-warning">Maintenance</span>';
-                        } else if (data.asset_data.status_kondisi == 'tidak-lengkap') {
-                            var kondisi = '<span class="badge badge-dark">Tidak Lengkap</span>';
-                        } else if (data.asset_data.status_kondisi == 'pengembangan') {
-                            var kondisi = '<span class="badge badge-info">Pengembangan</span>';
-                        }
-                        $('#statusTerakhir').append(kondisi);
-
-                        if (data.asset_data.is_pemutihan == 0) {
-                            var pemutihan =
-                                '<span class="badge badge-success px-3">Tidak Diputihkan</span>';
-                        } else if (data.asset_data.is_pemutihan == 1) {
-                            var pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
-                        }
-                        $('#statusPemutihan').append(pemutihan);
-                        $('#tanggalPengaduan').val(data.tanggal_pengaduan);
 
                         if (data.prioritas == 10) {
                             var prioritas = '<span class="badge badge-danger px-3">High</span>';

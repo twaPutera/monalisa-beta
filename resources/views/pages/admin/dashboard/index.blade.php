@@ -4,11 +4,11 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
-        <style>
-            .text-summary-dashboard {
-                font-size: 16px;
-            }
-        </style>
+    <style>
+        .text-summary-dashboard {
+            font-size: 16px;
+        }
+    </style>
 @endsection
 @section('plugin_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
@@ -221,21 +221,32 @@
                         var prioritas = 'Tidak Ada';
                     }
                     form.attr('action', url_update);
+
                     if (response.data.asset_data != null) {
-                        form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
-                        form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
-                            .nama_lokasi);
-                        form.find('input[name=kelompok_asset]').val(response.data.asset_data.kategori_asset
-                            .group_kategori_asset.nama_group);
-                        form.find('input[name=jenis_asset]').val(response.data.asset_data.kategori_asset
-                            .nama_kategori);
-                    } else {
-                        form.find('input[name=nama_asset]').val("-");
-                        form.find('input[name=kelompok_asset]').val("-");
-                        form.find('input[name=jenis_asset]').val("-");
-                        form.find('input[name=lokasi_asset]').val(response.data.lokasi
-                            .nama_lokasi);
+                        if (response.data.asset_data != null) {
+                            form.find('input[name=nama_asset]').val(response.data.asset_data.deskripsi);
+                            form.find('input[name=lokasi_asset]').val(response.data.asset_data.lokasi
+                                .nama_lokasi);
+                            if (response.data.asset_data.kategori_asset != null) {
+                                form.find('input[name=kelompok_asset]').val(response.data.asset_data
+                                    .kategori_asset
+                                    .group_kategori_asset.nama_group);
+                                form.find('input[name=jenis_asset]').val(response.data.asset_data
+                                    .kategori_asset
+                                    .nama_kategori);
+                            } else {
+                                form.find('input[name=kelompok_asset]').val('-');
+                                form.find('input[name=jenis_asset]').val('-');
+                            }
+                        } else {
+                            form.find('input[name=nama_asset]').val("-");
+                            form.find('input[name=kelompok_asset]').val("-");
+                            form.find('input[name=jenis_asset]').val("-");
+                            form.find('input[name=lokasi_asset]').val(response.data.lokasi
+                                .nama_lokasi);
+                        }
                     }
+
                     form.find('input[name=tanggal_pengaduan]').val(response.data.tanggal_pengaduan);
                     form.find('input[name=prioritas_pengaduan]').val(prioritas);
                     form.find('#status_laporan').empty();
@@ -994,7 +1005,8 @@
                                     </span>
                                     <p class="mb-0 text-dark">Total Aset</p>
                                 </div>
-                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalAssetSummary">0</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalAssetSummary">0</strong>
+                                </h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -1004,7 +1016,8 @@
                                     </span>
                                     <p class="mb-0 text-dark">Nilai Beli Asset</p>
                                 </div>
-                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="nilaiBeliAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="nilaiBeliAsset">0 Jt</strong>
+                                </h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -1014,7 +1027,8 @@
                                     </span>
                                     <p class="mb-0 text-dark">Total Depresiasi</p>
                                 </div>
-                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalDepresiasiAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalDepresiasiAsset">0
+                                        Jt</strong></h2>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
@@ -1024,7 +1038,8 @@
                                     </span>
                                     <p class="mb-0 text-dark">Value Asset</p>
                                 </div>
-                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalValueAsset">0 Jt</strong></h2>
+                                <h2 class="text-dark mb-0 text-summary-dashboard"><strong id="totalValueAsset">0 Jt</strong>
+                                </h2>
                             </div>
                         </div>
                     </div>
