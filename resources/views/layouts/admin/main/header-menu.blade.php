@@ -20,7 +20,7 @@
             <!-- end:: Brand -->
 
             <!-- begin:: Header Topbar -->
-            <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid">
+            <div class="kt-header__topbar kt-grid__item kt-grid__item--fluid" style="z-index: 999">
                 <div class="kt-header__topbar-item mr-3 d-flex align-items-center">
                     <a class="kt-header__topbar-wrapper" href="{{ route('admin.approval.peminjaman.index') }}">
                         <u>Daftar Approval</u>(<span class="daftar-approval-count">0</span>)

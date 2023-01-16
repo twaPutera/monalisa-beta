@@ -5,7 +5,7 @@
 <body style="background: #FFF" class="@yield('class-body', 'kt-page--fixed kt-page-content-white kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-subheader--enabled kt-subheader--transparent kt-page--loading')">
 
     <!-- begin:: Header Mobile -->
-    <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
+    <div id="kt_header_mobile" class="kt-header-mobile mb-lg-0 mb-2 kt-header-mobile--fixed ">
         <div class="kt-header-mobile__logo">
             <a href="#">
                 <img alt="Logo" src="{{ asset('assets/images/logo-Press-103x75.png') }}" width="60px" />
@@ -14,7 +14,7 @@
         <div class="kt-header-mobile__toolbar">
             <button class="kt-header-mobile__toolbar-toggler" id="kt_header_mobile_toggler"><span></span></button>
             <button class="kt-header-mobile__toolbar-topbar-toggler" id="kt_header_mobile_topbar_toggler"><i
-                    class="flaticon-more-1 text-white"></i></button>
+                    class="flaticon-more-1 text-primary"></i></button>
         </div>
     </div>
 
