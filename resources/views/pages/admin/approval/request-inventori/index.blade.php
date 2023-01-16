@@ -125,6 +125,9 @@
             $.ajax({
                 url: url,
                 type: 'GET',
+                beforeSend: function() {
+                    $('.isDisabled').attr('disabled', false);
+                },
                 success: function(response) {
                     if (response.success) {
                         console.log(response.data);
@@ -150,12 +153,12 @@
                             `);
                         });
 
-                        if (is_approve) {
+                        if (is_approve != null) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(tanggal_approval).show();
                             const status_approval = is_approve == '1' ? 'disetujui' : 'ditolak';
-                            $('#statusApproval option[value=' + status_approval + ']').attr('selected',
-                                true);
+                            console.log(status_approval)
+                            $('#statusApproval option[value=' + status_approval + ']').attr('selected',true);
                             $('#keteranganApproval').val(keterangan);
                         }
 

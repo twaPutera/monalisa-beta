@@ -12,7 +12,7 @@ class AssetPengaduanController extends Controller
 {
     protected $assetDataQueryServices;
     protected $assetServiceCommandServices;
-
+    protected $pengaduanCommandServices;
     public function __construct(
         PengaduanCommandServices $pengaduanCommandServices,
         AssetDataQueryServices $assetDataQueryServices

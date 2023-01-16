@@ -196,7 +196,7 @@
                 }
             });
 
-            @if(isset(request()->peminjaman_id))
+            @if (isset(request()->peminjaman_id))
                 setTimeout(() => {
                     $('button[data-approvable_id="{{ request()->peminjaman_id }}"]').click();
                 }, 1000);
@@ -225,7 +225,7 @@
                         $('#tanggalApproval').hide();
                         form.attr('action', url_update);
                         $('.isDisabled').attr('disabled', false);
-                        if (is_approve) {
+                        if (is_approve != null) {
                             $('.isDisabled').attr('disabled', true);
                             $('#tanggalApproval').val(tanggal_approval).show();
                             const status_approval = is_approve == '1' ? 'disetujui' :
@@ -279,7 +279,7 @@
     </script>
 @endsection
 @section('main-content')
-    @if($user->role == 'manager_it' || $user->role == 'staff_it')
+    @if ($user->role == 'manager_it' || $user->role == 'staff_it')
         <input type="hidden" value="1" id="is_it">
     @elseif($user->role == 'manager_asset' || $user->role == 'staff_asset')
         <input type="hidden" value="0" id="is_it">
@@ -289,7 +289,8 @@
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4" style="box-shadow: unset !important;">
                     <div class="kt-portlet__head-label">
-                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span> Task</strong>)</h4>
+                        <h4>Approval Task (<strong style="text-primary"><span class="approval-task-count">0</span>
+                                Task</strong>)</h4>
                     </div>
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
