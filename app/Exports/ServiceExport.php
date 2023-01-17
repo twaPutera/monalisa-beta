@@ -18,13 +18,23 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ServiceExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
+    protected $awal;
+    protected $akhir;
+    protected $id_lokasi;
+    protected $id_kategori_asset;
+    protected $id_asset_data;
+    protected $status_service;
+    protected $number;
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
+
     public function __construct(
         $tgl_awal = null,
         $tgl_akhir = null,
         $lokasi = null,
         $kategori_asset = null,
         $status_servce = null,
-        $asset_data = null,
+        $asset_data = null
     ) {
         $this->awal = $tgl_awal;
         $this->akhir = $tgl_akhir;

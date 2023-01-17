@@ -19,6 +19,15 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
+    protected $awal_permintaan;
+    protected $akhir_permintaan;
+    protected $awal_pengambilan;
+    protected $akhir_pengambilan;
+    protected $status_permintaan;
+    protected $number;
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
+
     public function __construct(
         $awal_permintaan = null,
         $akhir_permintaan = null,

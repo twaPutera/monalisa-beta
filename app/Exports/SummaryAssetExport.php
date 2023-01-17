@@ -19,6 +19,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class SummaryAssetExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
+    protected $id_lokasi;
+    protected $id_kategori_asset;
+    protected $number;
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct($lokasi = null, $kategori_asset = null)
     {
         $this->id_lokasi = $lokasi;
