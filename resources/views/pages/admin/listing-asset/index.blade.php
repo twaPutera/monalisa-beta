@@ -439,10 +439,17 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
-                        class="btn btn-danger shadow-custom btn-sm mr-2" type="button"><i class="fas fa-backspace"></i>
+                        class="btn btn-danger shadow-custom btn-sm mr-2"><i class="fas fa-backspace"></i>
                         Pemutihan</a>
+                    <a href="{{ route('admin.listing-asset.download-qr-all', [
+                        'selects' => ['id', 'qr_code'],
+                        'is_pemutihan' => '0',
+                        'is_draft' => '0'
+                    ]) }}" target="_blank"
+                        class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
+                        Download All QR</a>
                     <a href="{{ route('admin.listing-asset.draft.index') }}"
-                        class="btn btn-primary shadow-custom btn-sm mr-2" type="button"><i class="fas fa-file"></i>
+                        class="btn btn-primary shadow-custom btn-sm mr-2"><i class="fas fa-file"></i>
                         Draft Aset</a>
                     {{-- <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
