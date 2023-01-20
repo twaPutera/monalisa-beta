@@ -383,6 +383,59 @@
             const file = $(this)[0].files[0];
             $('#preview-file-excel-text').text(file.name);
         });
+
+        const generateLinkDownloadQr = () => {
+            let url = "{{ route('admin.listing-asset.download-qr-all') }}?";
+
+            let selects = ['id', 'qr_code'];
+            let id_lokasi = $('#lokasiParentId').val();
+            let id_satuan_asset = $('#satuanAssetFilter').val();
+            let id_vendor = $('#vendorAssetFilter').val();
+            let id_kategori_asset = $('#kategoriAssetFilter').val();
+            let searchKeyword = $('#searchAsset').val();
+            let is_sparepart = $('#isSparepartFilter').val();
+            let is_pemutihan = '0';
+            let is_draft = '0';
+
+            if (id_lokasi != null) {
+                url += `&id_lokasi=${id_lokasi}`;
+            }
+
+            if (id_satuan_asset != null) {
+                url += `&id_satuan_asset=${id_satuan_asset}`;
+            }
+
+            if (id_vendor != null) {
+                url += `&id_vendor=${id_vendor}`;
+            }
+
+            if (id_kategori_asset != null) {
+                url += `&id_kategori_asset=${id_kategori_asset}`;
+            }
+
+            if (searchKeyword != null) {
+                url += `&searchKeyword=${searchKeyword}`;
+            }
+
+            if (is_sparepart != null) {
+                url += `&is_sparepart=${is_sparepart}`;
+            }
+
+            if (is_pemutihan != null) {
+                url += `&is_pemutihan=${is_pemutihan}`;
+            }
+
+            if (is_draft != null) {
+                url += `&is_draft=${is_draft}`;
+            }
+
+            selects.forEach((select) => {
+                url += `&selects[]=${select}`;
+            });
+
+            // blank page for download
+            window.open(url, '_blank');
+        }
     </script>
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
@@ -441,13 +494,8 @@
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
                         class="btn btn-danger shadow-custom btn-sm mr-2"><i class="fas fa-backspace"></i>
                         Pemutihan</a>
-                    <a href="{{ route('admin.listing-asset.download-qr-all', [
-                        'selects' => ['id', 'qr_code'],
-                        'is_pemutihan' => '0',
-                        'is_draft' => '0'
-                    ]) }}" target="_blank"
-                        class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
-                        Download All QR</a>
+                    <button type="button" onclick="generateLinkDownloadQr()" class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
+                        Download All QR</button>
                     <a href="{{ route('admin.listing-asset.draft.index') }}"
                         class="btn btn-primary shadow-custom btn-sm mr-2"><i class="fas fa-file"></i>
                         Draft Aset</a>

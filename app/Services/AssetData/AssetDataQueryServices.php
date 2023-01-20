@@ -69,15 +69,6 @@ class AssetDataQueryServices
             $query->where('is_draft', $request->is_draft);
         }
 
-        if (isset($request->is_pemutihan)) {
-            if ($request->is_pemutihan == 'all') {
-                $query->where('is_pemutihan', 0);
-                $query->orWhere('is_pemutihan', 1);
-            } else {
-                $query->where('is_pemutihan', $request->is_pemutihan);
-            }
-        }
-
         if (isset($request->status_kondisi)) {
             if ($request->status_kondisi != 'semua') {
                 $query->where('status_kondisi', $request->status_kondisi);
@@ -96,15 +87,15 @@ class AssetDataQueryServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (! isset($request->is_pemutihan)) {
-            $query->where('is_pemutihan', 0);
+        if (isset($request->is_pemutihan)) {
+            $query->where('is_pemutihan', $request->is_pemutihan);
         }
 
         $query->orderBy('created_at', 'desc');
 
-        $asset = $query->get();
+        $data = $query->get();
 
-        return $asset;
+        return $data;
     }
 
     public function findById(string $id, array $request = [])
