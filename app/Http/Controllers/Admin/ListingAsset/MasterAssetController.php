@@ -430,4 +430,28 @@ class MasterAssetController extends Controller
             ]);
         }
     }
+
+    public function downloadZipQr(Request $request)
+    {
+        $zipFile = new \PhpZip\ZipFile();
+        $outputFilename = storage_path('app/images/qr-code/all-qr-'. time() .'.zip');
+        try{
+            $data = $this->assetDataQueryServices->findAll($request);
+
+            foreach ($data as $key => $value) {
+                $zipFile->addFile(storage_path('app/images/qr-code/' . $value->qr_code), $value->qr_code);
+            }
+
+            $zipFile->saveAsFile($outputFilename);
+            $zipFile->close();
+
+            return response()->download($outputFilename);
+        }
+        catch(\PhpZip\Exception\ZipException $e){
+            // handle exception
+        }
+        finally{
+            $zipFile->close();
+        }
+    }
 }

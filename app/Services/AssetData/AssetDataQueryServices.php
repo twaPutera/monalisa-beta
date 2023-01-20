@@ -16,10 +16,95 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataQueryServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
+
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
+    }
+
+    public function findAll(Request $request)
+    {
+        $query = AssetData::query();
+
+        if (isset($request->relations)) {
+            $query->with($request->relations);
+        }
+
+        if (isset($request->selects)) {
+            $query->select($request->selects);
+        }
+
+        if (isset($request->id_satuan_asset)) {
+            $query->where('id_satuan_asset', $request->id_satuan_asset);
+        }
+
+        if (isset($request->id_vendor)) {
+            $query->where('id_vendor', $request->id_vendor);
+        }
+
+        if (isset($request->id_lokasi) && $request->id_lokasi != 'root') {
+            $query->where('id_lokasi', $request->id_lokasi);
+        }
+
+        if (isset($request->id_kelas_asset)) {
+            $query->where('id_kelas_asset', $request->id_kelas_asset);
+        }
+
+        if (isset($request->id_kategori_asset)) {
+            $query->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+        if (isset($request->categories)) {
+            $query->whereIn('id_kategori_asset', $request->categories);
+        }
+
+        if (isset($request->is_sparepart)) {
+            $query->where('is_sparepart', $request->is_sparepart);
+        }
+
+        if (isset($request->is_draft)) {
+            $query->where('is_draft', $request->is_draft);
+        }
+
+        if (isset($request->is_pemutihan)) {
+            if ($request->is_pemutihan == 'all') {
+                $query->where('is_pemutihan', 0);
+                $query->orWhere('is_pemutihan', 1);
+            } else {
+                $query->where('is_pemutihan', $request->is_pemutihan);
+            }
+        }
+
+        if (isset($request->status_kondisi)) {
+            if ($request->status_kondisi != 'semua') {
+                $query->where('status_kondisi', $request->status_kondisi);
+            }
+        }
+
+        if (isset($request->statusArray)) {
+            $query->whereIn('status_kondisi', $request->statusArray);
+        }
+
+        if (isset($request->jenis)) {
+            $query->where('id_kategori_asset', $request->jenis);
+        }
+
+        if (isset($request->is_pinjam)) {
+            $query->where('is_pinjam', $request->is_pinjam);
+        }
+
+        if (! isset($request->is_pemutihan)) {
+            $query->where('is_pemutihan', 0);
+        }
+
+        $query->orderBy('created_at', 'desc');
+
+        $asset = $query->get();
+
+        return $asset;
     }
 
     public function findById(string $id, array $request = [])
