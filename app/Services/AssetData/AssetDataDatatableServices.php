@@ -16,7 +16,8 @@ class AssetDataDatatableServices
 {
     protected $ssoServices;
     protected $userServices;
-
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
@@ -81,6 +82,14 @@ class AssetDataDatatableServices
             $query->where('is_draft', $request->is_draft);
         }
 
+        if (isset($request->awal)) {
+            $query->where('tgl_register', '>=', $request->awal);
+        }
+
+        if (isset($request->akhir)) {
+            $query->where('tgl_register', '<=', $request->akhir);
+        }
+
         if (isset($request->is_pemutihan)) {
             if ($request->is_pemutihan == 'all') {
                 $query->where('is_pemutihan', 0);
@@ -108,12 +117,12 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (! isset($request->is_pemutihan)) {
+        if (!isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', '1');
@@ -202,7 +211,7 @@ class AssetDataDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', 1);
@@ -352,8 +361,16 @@ class AssetDataDatatableServices
             $query->limit($request->limit);
         }
 
+        if (isset($request->awal)) {
+            $query->where('log_asset_opnames.created_at', '>=', $request->awal . ' 00:00:00');
+        }
+
+        if (isset($request->akhir)) {
+            $query->where('log_asset_opnames.created_at', '<=', $request->akhir . ' 23:59:00');
+        }
+
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);
