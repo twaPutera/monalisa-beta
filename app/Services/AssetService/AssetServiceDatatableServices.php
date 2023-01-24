@@ -85,7 +85,7 @@ class AssetServiceDatatableServices
         }
 
         if (isset($request->awal)) {
-            $query->where('tanggal_selesai', '>=', $request->awal);
+            $query->where('tanggal_mulai', '>=', $request->awal);
         }
 
         if (isset($request->akhir)) {

@@ -10,6 +10,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class PemutihanAssetQueryServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
@@ -36,7 +38,7 @@ class PemutihanAssetQueryServices
     public function findById(string $id, string $status = null)
     {
         $user = null;
-        if (! empty($status)) {
+        if (!empty($status)) {
             $data = PemutihanAsset::query()
                 ->with(['approval', 'detail_pemutihan_asset', 'detail_pemutihan_asset.asset_data', 'detail_pemutihan_asset.asset_data.lokasi'])
                 ->where('id', $id)

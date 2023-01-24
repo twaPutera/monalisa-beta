@@ -12,6 +12,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class PeminjamanAssetDatatableServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
