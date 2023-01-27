@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Edit Kategori Asset</h5>
+                <h5 class="modal-title" id="">Edit Lokasi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -11,17 +11,17 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Parent Lokasi</label>
+                        <label for="">Induk Lokasi</label>
                         <select name="id_parent_lokasi" id="" class="form-control select2Lokasi">
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Kode Kategori</label>
+                        <label for="">Kode Lokasi</label>
                         <input type="text" class="form-control" name="kode_lokasi">
                     </div>
                     <div class="form-group">
-                        <label for="">Nama Kategori</label>
+                        <label for="">Nama Lokasi</label>
                         <input type="text" class="form-control" name="nama_lokasi">
                     </div>
                     <div class="form-group">

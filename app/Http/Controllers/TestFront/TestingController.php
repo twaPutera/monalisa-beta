@@ -4,6 +4,8 @@ namespace App\Http\Controllers\TestFront;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MasterDataAssetExport;
 use Yajra\DataTables\Facades\DataTables;
 
 class TestingController extends Controller
@@ -83,5 +85,15 @@ class TestingController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function print()
+    {
+        return Excel::download(new MasterDataAssetExport, 'export_master_data.xlsx');
+    }
+
+    public function user()
+    {
+        return view('layouts.user.master');
     }
 }

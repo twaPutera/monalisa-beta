@@ -24,8 +24,10 @@ class KategoriAssetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'kode_kategori' => 'required|string|max:255|unique:kategori_assets,kode_kategori',
+            'id_group_kategori_asset' => 'required|uuid|exists:group_kategori_assets,id',
+            'kode_kategori' => 'required|string|max:255|unique:kategori_assets,kode_kategori,NULL,id,deleted_at,NULL',
             'nama_kategori' => 'required|string|max:255',
+            'umur_asset' => 'required|integer|min:0|max:25',
         ];
     }
 }

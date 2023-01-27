@@ -6,13 +6,20 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^2.0",
         "bgaze/laravel-php-cs-fixer": "^2.1",
+        "doctrine/dbal": "^3.4",
+        "dompdf/dompdf": "^2.0",
+        "firebase/php-jwt": "^6.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "nelexa/zip": "^4.0",
         "ramsey/uuid": "^4.2",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "yajra/laravel-datatables-oracle": "^9.21"
     },
     "require-dev": {

@@ -1,0 +1,6 @@
+*
+!asset/
+!asset-service/
+!qr-code/
+!pemutihan/
+!.gitignore

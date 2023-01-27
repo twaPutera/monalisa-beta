@@ -45,6 +45,12 @@
 <script src="{{ asset('assets/js/scripts.bundle.min.js') }}" type="text/javascript"></script>
 
 <script>
+    // Set Ajax Header
+    $.ajaxSetup({
+        headers: {
+            "Accept": "application/json",
+        }
+    });
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -67,6 +73,10 @@
         toastr.success(message, title);
     }
 
+    const showToastError = (title, message) => {
+        toastr.error(message, title);
+    }
+
     warningMessage = (msg) => {
         swal.fire({
             title: 'Warning!',
@@ -74,7 +84,105 @@
             icon: 'warning',
         });
     }
+
+    $(document).ready(function() {
+        getDataNotification();
+    });
+
+    const getDataNotification = () => {
+        $.ajax({
+            url: "{{ route('admin.notification.get-data') }}",
+            data: {
+                user_id: "{{ Auth::user()->id }}"
+            },
+            type: "GET",
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    $('.notificationContainer').empty();
+                    if (response.data.length > 0) {
+                        $(response.data).each(function (index, value) {
+                            $('.notificationContainer').append(generateTemplateNotification(value.data, value.id));
+                        });
+                        $('.notifCount').text(response.data.length);
+                        $('.notifCount').show();
+                    }
+                }
+            }
+        });
+    }
+
+    const generateTemplateNotification = (data, id) => {
+        return `
+            <a href="${data.url}" class="kt-notification__item" onclick="onNotificationClick('${id}')">
+                <div class="kt-notification__item-icon">
+                    <i class="flaticon2-bar-chart kt-font-info"></i>
+                </div>
+                <div class="kt-notification__item-details">
+                    <div class="kt-notification__item-title">
+                        ${data.message}
+                    </div>
+                    <div class="kt-notification__item-time">
+                        ${data.date}
+                    </div>
+                </div>
+            </a>
+        `;
+    }
+
+    const onNotificationClick = (id) => {
+        $.ajax({
+            url: "{{ route('admin.notification.read') }}",
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success) {
+                    getDataNotification();
+                }
+            }
+        });
+    }
 </script>
 <script src="{{ asset('custom-js/config.js') }}" type="text/javascript"></script>
 <script src="{{ asset('custom-js/general.js') }}" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{{ route('admin.dashboard.approval') }}",
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                role: "{{ $user->role }}",
+                user_id: "{{ $user->id }}"
+            },
+            success: function(response) {
+                const tab_peminjaman = $("#peminjaman-approval-count");
+                const tab_pemindahan = $("#pemindahan-approval-count");
+                const tab_pemutihan = $("#pemutihan-approval-count");
+                const daftar_approval = $(".daftar-approval-count");
+                const approval_task = $(".approval-task-count");
+                const tab_request_inventori = $("#request-inventori-approval-count");
+                if (response.success) {
+                    tab_pemindahan.empty();
+                    tab_pemutihan.empty();
+                    tab_peminjaman.empty();
+                    tab_request_inventori.empty();
+                    daftar_approval.empty();
+                    approval_task.empty();
+
+                    tab_pemindahan.append(response.data.approval_pemindahan_asset);
+                    tab_pemutihan.append(response.data.approval_pemutihan_asset);
+                    tab_peminjaman.append(response.data.approval_peminjaman + response.data.approval_perpancangan_peminjaman_asset);
+                    daftar_approval.append(response.data.total_approval);
+                    approval_task.append(response.data.total_approval);
+                    tab_request_inventori.append(response.data.approva_request_inventori);
+                }
+            }
+        })
+    });
+</script>
 @yield('custom_js')

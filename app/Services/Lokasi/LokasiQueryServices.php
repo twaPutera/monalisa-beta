@@ -3,7 +3,9 @@
 namespace App\Services\Lokasi;
 
 use App\Models\Lokasi;
+use App\Models\AssetData;
 use Illuminate\Http\Request;
+use App\Models\PerencanaanServices;
 
 class LokasiQueryServices
 {
@@ -74,10 +76,22 @@ class LokasiQueryServices
                 'text' => 'Universitas Pertamina',
             ];
         }
+
         $lokasi = Lokasi::query();
         if (isset($request->keyword)) {
             $lokasi->where('nama_lokasi', 'like', '%' . $request->keyword . '%');
         }
+
+        if (isset($request->id_asset)) {
+            $perencanaan = PerencanaanServices::where('id', $request->id_asset)->first();
+            if ($perencanaan) {
+                $asset = AssetData::where('id', $perencanaan->id_asset_data)->first();
+                if ($asset) {
+                    $lokasi->where('id', $asset->id_lokasi);
+                }
+            }
+        }
+
         $lokasi = $lokasi->where('id_parent_lokasi', null)
             ->get();
         foreach ($lokasi as $item) {

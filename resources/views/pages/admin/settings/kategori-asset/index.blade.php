@@ -1,6 +1,10 @@
 @extends('layouts.admin.main.master')
 @section('plugin_css')
     <link rel="stylesheet" href="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+@endsection
+@section('plugin_js')
+    <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
 @endsection
 @section('custom_js')
     <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.min.js') }}"></script>
@@ -28,10 +32,19 @@
                         name: 'action'
                     },
                     {
+                        data: 'group'
+                    },
+                    {
                         data: 'kode_kategori'
                     },
                     {
                         data: 'nama_kategori'
+                    },
+                    {
+                        data: 'umur_asset',
+                        render: function(o) {
+                            return o + " Tahun";
+                        }
                     },
                 ],
                 columnDefs: [
@@ -46,6 +59,7 @@
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     let modal = $(formElement).closest('.modal');
                     modal.modal('hide');
+                    generateGroupSelect();
                     table.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                 }
@@ -58,6 +72,25 @@
                     showValidation(element, errors[key][0]);
                 }
             });
+
+            generateGroupSelect();
+
+            $('.modalCreateKategoriAsset').on('shown.bs.modal', function(e) {
+                generateGroupSelect();
+                $('.selectGroup').select2({
+                    width: '91%',
+                    placeholder: 'Pilih Kelompok Asset',
+                    allowClear: true,
+                    parent: $(this)
+                });
+
+                $('.selectUmurAsset').select2({
+                    width: '100%',
+                    placeholder: 'Pilih Umur Asset',
+                    allowClear: true,
+                    parent: $(this)
+                });
+            })
         });
 
         const edit = (button) => {
@@ -73,7 +106,45 @@
                     form.attr('action', url_update);
                     form.find('input[name=kode_kategori]').val(response.data.kode_kategori);
                     form.find('input[name=nama_kategori]').val(response.data.nama_kategori);
+                    modal.on('shown.bs.modal', function(e) {
+                        // generateGroupSelect();
+                        $('#selectGroupEdit option[value="' + response.data
+                            .id_group_kategori_asset + '"]').attr('selected', 'selected');
+                        $('#selectGroupEdit').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Kelompok Asset',
+                            allowClear: true,
+                            parent: $(this)
+                        });
+                        // $('#selectGroupEdit').select2('val', response.data.id_group_kategori_asset);
+                        $('#selectUmurAssetEdit option[value="' + response.data.umur_asset + '"]')
+                            .prop('selected', 'selected');
+                        $('#selectUmurAssetEdit').select2({
+                            width: '100%',
+                            placeholder: 'Pilih Umur Asset',
+                            allowClear: true,
+                            parent: $(this)
+                        });
+                    })
                     modal.modal('show');
+                }
+            })
+        }
+
+        const generateGroupSelect = () => {
+            $.ajax({
+                url: "{{ route('admin.setting.group-kategori-asset.find-all') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        const select = $('.selectGroup');
+                        select.empty();
+                        select.append(`<option value="">Pilih Group</option>`);
+                        response.data.forEach((item) => {
+                            select.append(`<option value="${item.id}">${item.nama_group}</option>`);
+                        });
+                    }
                 }
             })
         }
@@ -89,7 +160,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Kategori Asset
+                            Data Jenis Asset
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -108,8 +179,10 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Kode</th>
-                                    <th>Nama Kategori</th>
+                                    <th>Kelompok Asset</th>
+                                    <th>Kode Jenis Asset</th>
+                                    <th>Nama Jenis Asset</th>
+                                    <th>Masa Manfaat Komersial</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -123,4 +196,5 @@
     </div>
     @include('pages.admin.settings.kategori-asset._modal_create')
     @include('pages.admin.settings.kategori-asset._modal_edit')
+    @include('pages.admin.settings.group-kategori-asset._modal_create')
 @endsection

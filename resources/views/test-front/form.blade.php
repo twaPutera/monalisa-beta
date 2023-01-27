@@ -10,7 +10,7 @@
     <script>
         $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
             //if ajax form success
-            //TODO:
+            //TODO: tes
             if (data.success) {
                 $(formElement).trigger('reset');
                 $(formElement).find(".invalid-feedback").remove();

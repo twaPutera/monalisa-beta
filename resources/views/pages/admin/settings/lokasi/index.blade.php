@@ -92,6 +92,7 @@
                     modal.modal('hide');
                     table.DataTable().ajax.reload();
                     $('#lokasiTree').jstree(true).refresh();
+                    getDataOptionSelect();
                     showToastSuccess('Sukses', data.message);
                 }
             });
@@ -105,13 +106,14 @@
             });
 
             $('.modalCreateLokasi').on('shown.bs.modal', function(e) {
+                getDataOptionSelect();
                 generateSelect2Lokasi();
             });
 
             getDataOptionSelect();
         });
 
-        const getDataOptionSelect = () => {
+        const getDataOptionSelect = (id = null) => {
             $.ajax({
                 url: "{{ route('admin.setting.lokasi.get-select2') }}",
                 type: 'GET',
@@ -124,9 +126,17 @@
                         if (element.id == $('#lokasiParentId').val()) {
                             selected = 'selected';
                         }
-                        select.append(
-                            `<option ${selected} value="${element.id}">${element.text}</option>`
-                        );
+                        if (id != null && id != element.id) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
+
+                        if (id == null) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
                     });
                 }
             })
@@ -156,6 +166,12 @@
                     form.find('input[name=kode_lokasi]').val(response.data.kode_lokasi);
                     form.find('input[name=nama_lokasi]').val(response.data.nama_lokasi);
                     form.find('textarea[name=keterangan]').val(response.data.keterangan);
+                    modal.on('shown.bs.modal', function(e) {
+                        getDataOptionSelect(response.data.id);
+                        generateSelect2Lokasi();
+                        form.find('select[name="parent_id"]').select2('val', response.data
+                            .parent_id);
+                    });
                     modal.modal('show');
                 }
             })
@@ -173,7 +189,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Data Kategori Asset
+                            Data Lokasi Asset
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -192,7 +208,7 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Parent Lokasi</th>
+                                    <th>Induk Lokasi</th>
                                     <th>Kode</th>
                                     <th>Nama Lokasi</th>
                                 </tr>

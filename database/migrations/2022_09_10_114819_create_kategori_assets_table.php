@@ -15,8 +15,11 @@ class CreateKategoriAssetsTable extends Migration
     {
         Schema::create('kategori_assets', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->foreignUuid('id_group_kategori_asset');
+            $table->foreign('id_group_kategori_asset')->references('id')->on('group_kategori_assets');
             $table->string('kode_kategori')->unique();
             $table->string('nama_kategori');
+            $table->smallInteger('umur_asset');
             $table->timestamps();
             $table->softDeletes();
         });

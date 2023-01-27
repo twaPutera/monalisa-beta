@@ -10,4 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SatuanAsset extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
+
+    public function asset_data()
+    {
+        return $this->hasMany(AssetData::class, 'id_satuan_asset', 'id');
+    }
 }

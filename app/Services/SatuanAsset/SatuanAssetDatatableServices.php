@@ -11,7 +11,7 @@ class SatuanAssetDatatableServices
     public function datatable(Request $request)
     {
         $query = SatuanAsset::query();
-
+        $query->orderBy('created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('action', function ($item) {

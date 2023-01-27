@@ -13,6 +13,26 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'sso_client_id' => env('SSO_CLIENT_ID', 'client-id'),
+    'sso_client_secret' => env('SSO_CLIENT_SECRET', 'client-secret'),
+    'sso_client_callback' => env('SSO_CLIENT_CALLBACK', 'http://third-party-app.com/callback'),
+    'sso_ldap_url' => env('SSO_LDAP_URL', null),
+    'sso_siska_url' => env('SSO_SISKA_URL', null),
+    'siska_url' => env('SISKA_URL', null),
+    'sso_login' => env('SSO_LOGIN', false),
+    'sso_siska' => env('SSO_SISKA', false),
+    'andin_url' => env('ANDIN_URL', null),
+    'masayu_url' => env('MASAYU_URL', null),
+
+    'jwt_secret' => env('JWT_SECRET', 'example_key'),
+
+    'sso_public_key' => env('SSO_PUBLIC_KEY', null),
+
+    'is_force_https' => env('FORCE_HTTPS', false),
+
+    'access_token_cookie_name' => env('ACCESS_TOKEN_COOKIE_NAME', 'access_token'),
+
+    'jwt_cookie_name' => env('JWT_COOKIE_NAME', 'jwt_token'),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,7 +86,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Makassar',
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +99,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +184,7 @@ return [
          * Package Service Providers...
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -173,6 +194,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -202,6 +224,7 @@ return [
         'DB' => Illuminate\Support\Facades\DB::class,
         'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Event' => Illuminate\Support\Facades\Event::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
@@ -227,5 +250,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 ];
