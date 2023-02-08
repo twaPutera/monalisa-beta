@@ -39,6 +39,14 @@ class PengaduanQueryServices
             $pengaduan->orderBy('tanggal_pengaduan', 'desc');
         }
 
+        if (isset($request->awal)) {
+            $pengaduan->where('tanggal_pengaduan', '>=', $request->awal);
+        }
+
+        if (isset($request->akhir)) {
+            $pengaduan->where('tanggal_pengaduan', '<=', $request->akhir);
+        }
+
         $user = SsoHelpers::getUserLogin();
         if (!isset($request->global)) {
             $pengaduan->with(['asset_data', 'asset_data.lokasi', 'image', 'lokasi']);

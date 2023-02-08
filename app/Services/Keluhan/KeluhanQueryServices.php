@@ -8,6 +8,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class KeluhanQueryServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();

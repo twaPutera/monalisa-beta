@@ -38,6 +38,8 @@
                         d.status_pengaduan = 'dilaporkan';
                         d.limit = 10;
                         d.global = true;
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
                     }
                 },
                 columns: [{
@@ -313,6 +315,8 @@
                     data: function(d) {
                         d.status = 'pending';
                         d.limit = 10;
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
                     }
                 },
                 columns: [{
@@ -355,6 +359,8 @@
                     datatableCriticalAduan.DataTable().ajax.reload();
                     datatablePerencanaanServices.DataTable().ajax.reload();
                     datatableServicesOnProgress.DataTable().ajax.reload();
+                    tableLogOpname.DataTable().ajax.reload();
+                    tableAsetPengambangan.DataTable().ajax.reload();
                 }
             });
             $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
@@ -417,6 +423,8 @@
                     data: function(d) {
                         d.status_service = 'on progress';
                         d.global = true;
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
                     }
                 },
                 columns: [{
@@ -474,6 +482,8 @@
                     data: function(d) {
                         d.limit = 10;
                         d.global = true;
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
                     }
                 },
                 columns: [{
@@ -581,6 +591,8 @@
                     'is_pemutihan': '0',
                     'is_draft': '0',
                     'global': true,
+                    'awal': $('.datepickerAwal').val(),
+                    'akhir': $('.datepickerAkhir').val()
                 },
                 success: function(response) {
                     console.log(response);
@@ -924,6 +936,8 @@
                         d.status_kondisi = 'pengembangan';
                         d.is_draft = '0';
                         d.global = true;
+                        d.awal = $('.datepickerAwal').val();
+                        d.akhir = $('.datepickerAkhir').val();
                     }
                 },
                 columns: [{
@@ -971,11 +985,48 @@
                 }
             });
         });
+
+
+        $('.datepickerAwal').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+        $('.datepickerAkhir').datepicker({
+            todayHighlight: true,
+            width: '100%',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
+        const filterTableAsset = () => {
+            const reset = $('#resetFilter').removeClass('d-none')
+            datatableCriticalAduan.DataTable().ajax.reload();
+            datatablePerencanaanServices.DataTable().ajax.reload();
+            datatableServicesOnProgress.DataTable().ajax.reload();
+            tableLogOpname.DataTable().ajax.reload();
+            tableAsetPengambangan.DataTable().ajax.reload();
+            getSummaryData();
+        }
+
+        const resetFilterData = () => {
+            const reset = $('#resetFilter').addClass('d-none')
+            const awal = $('.datepickerAwal').val(null);
+            const akhir = $('.datepickerAkhir').val(null);
+
+            datatableCriticalAduan.DataTable().ajax.reload();
+            datatablePerencanaanServices.DataTable().ajax.reload();
+            datatableServicesOnProgress.DataTable().ajax.reload();
+            tableLogOpname.DataTable().ajax.reload();
+            tableAsetPengambangan.DataTable().ajax.reload();
+            getSummaryData();
+        }
     </script>
 @endsection
 @section('main-content')
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-2 col-6">
             <h5 class="text-primary mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20.933" height="20.933" viewBox="0 0 20.933 20.933">
                     <path id="Icon_material-pie-chart-outlined" data-name="Icon material-pie-chart-outlined"
@@ -984,6 +1035,18 @@
                 </svg>
                 <strong>Data Summary</strong>
             </h5>
+        </div>
+        <div class="col-md-10 col-6">
+            <div class="d-flex justify-content-end align-items-end mb-3">
+                <div class="d-flex align-items-center">
+                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-sm btn-info shadow-custom"
+                        type="button"><i class="fas fa-sliders-h mr-2"></i>
+                        Filter</button>
+                    <button onclick="resetFilterData()" id="resetFilter"
+                        class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                            class="fas fa-sync"></i>Reset</button>
+                </div>
+            </div>
         </div>
         <div class="col-md-6 col-12">
             <div class="row">
@@ -1326,4 +1389,5 @@
     @include('pages.admin.services.components.modal._modal_detail_service')
     @include('pages.admin.services.components.modal._modal_edit_status_service')
     @include('pages.admin.keluhan.components.modal._modal_detail_keluhan')
+    @include('pages.admin.dashboard._modal_filter')
 @endsection

@@ -45,7 +45,7 @@ class DashboardController extends Controller
     {
         try {
             $countAsset = $this->assetDataQueryServices->countAsset($request);
-            $lastUpdateAsset = $this->assetDataQueryServices->lastUpdateAsset();
+            $lastUpdateAsset = $this->assetDataQueryServices->lastUpdateAsset($request);
             $nilai_asset = $this->assetDataQueryServices->getValueAsset($request);
             $data_summary_chart_asset = $this->assetDataQueryServices->getDataChartSummaryAssetByGroup($request);
             $data_summary_chart_asset_by_kondisi = $this->assetDataQueryServices->getDataChartSummaryAssetByStatus($request);

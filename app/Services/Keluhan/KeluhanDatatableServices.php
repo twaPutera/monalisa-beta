@@ -13,6 +13,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class KeluhanDatatableServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();

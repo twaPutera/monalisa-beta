@@ -14,6 +14,8 @@ use App\Services\UserSso\UserSsoQueryServices;
 
 class InventarisDataDatatableServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();

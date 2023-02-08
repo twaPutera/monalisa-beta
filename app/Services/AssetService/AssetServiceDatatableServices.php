@@ -18,7 +18,7 @@ class AssetServiceDatatableServices
 {
     protected $ssoServices;
     protected $userQueryServices;
-
+    protected $userSsoQueryServices;
     public function __construct()
     {
         $this->userSsoQueryServices = new UserSsoQueryServices();
@@ -85,7 +85,7 @@ class AssetServiceDatatableServices
         }
 
         if (isset($request->awal)) {
-            $query->where('tanggal_selesai', '>=', $request->awal);
+            $query->where('tanggal_mulai', '>=', $request->awal);
         }
 
         if (isset($request->akhir)) {
@@ -109,7 +109,7 @@ class AssetServiceDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->whereHas('detail_service', function ($query) use ($request) {
@@ -265,7 +265,7 @@ class AssetServiceDatatableServices
         ]);
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);
@@ -419,6 +419,14 @@ class AssetServiceDatatableServices
 
         if (isset($request->tanggal_perencanaan)) {
             $query->where('tanggal_perencanaan', $request->tanggal_perencanaan);
+        }
+
+        if (isset($request->awal)) {
+            $query->where('tanggal_perencanaan', '>=', $request->awal);
+        }
+
+        if (isset($request->akhir)) {
+            $query->where('tanggal_perencanaan', '<=', $request->akhir);
         }
 
         if (isset($request->limit)) {

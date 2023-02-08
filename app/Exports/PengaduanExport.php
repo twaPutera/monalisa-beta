@@ -18,6 +18,16 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PengaduanExport implements FromQuery, WithTitle, WithHeadings, WithStyles, ShouldAutoSize, WithEvents, WithMapping
 {
+    protected $awal;
+    protected $akhir;
+    protected $id_lokasi;
+    protected $number;
+    protected $id_kategori_asset;
+    protected $id_asset_data;
+    protected $status_pengaduan;
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
+
     public function __construct(
         $tgl_awal = null,
         $tgl_akhir = null,
