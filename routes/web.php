@@ -69,6 +69,7 @@ Route::get('/loginSSO', 'SsoUpController@handleToken')->name('sso-up.handle-toke
 Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.redirect');
 Route::get('/generate-qr-asset', [GenerateQrAssetController::class, 'index'])->name('generate-qr-asset.index');
 Route::post('/generate-qr-asset', [GenerateQrAssetController::class, 'generateQrAsset'])->name('generate-qr-asset.post');
+Route::get('/generate-qr-asset/queue', [GenerateQrAssetController::class, 'generateQueueQrAsset'])->name('generate-qr-asset.queue');
 
 Route::get('/callback', [SsoController::class, 'callback']);
 

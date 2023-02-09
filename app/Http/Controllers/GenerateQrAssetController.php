@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AssetData;
 use App\Helpers\QrCodeHelpers;
+use App\Jobs\GenerateAllQrCodeJob;
 
 class GenerateQrAssetController extends Controller
 {
@@ -44,6 +45,28 @@ class GenerateQrAssetController extends Controller
             'page' => $request->page,
             'next_page' => $request->page + 1,
             'last_page' => ceil(AssetData::query()->where('is_draft', '0')->where('is_pemutihan', '0')->count() / $limit) == $request->page ? true : false,
+        ]);
+    }
+
+    public function generateQueueQrAsset(Request $request)
+    {
+        $count_asset = AssetData::query()->where('is_draft', '0')
+            ->where('is_draft', '0')
+            ->where('is_pemutihan', '0')
+            ->count();
+
+        $limit = 100;
+
+        $total_page = ceil($count_asset / $limit);
+
+        for ($i = 1; $i <= $total_page; $i++) {
+            GenerateAllQrCodeJob::dispatch($i);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Generate QR Code Asset Sedang Berlangsung Di Queue',
+            'total_page' => $total_page,
         ]);
     }
 }

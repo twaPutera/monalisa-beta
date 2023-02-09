@@ -439,7 +439,9 @@ class MasterAssetController extends Controller
             $data = $this->assetDataQueryServices->findAll($request);
 
             foreach ($data as $key => $value) {
-                $zipFile->addFile(storage_path('app/images/qr-code/' . $value->qr_code), $value->qr_code);
+                if (\File::exists(storage_path('app/images/qr-code/' . $value->qr_code))) {
+                    $zipFile->addFile(storage_path('app/images/qr-code/' . $value->qr_code), $value->qr_code);
+                }
             }
 
             $zipFile->saveAsFile($outputFilename);
