@@ -67,7 +67,8 @@ use App\Http\Controllers\GenerateQrAssetController;
 
 Route::get('/loginSSO', 'SsoUpController@handleToken')->name('sso-up.handle-token');
 Route::get('/sso/redirect', [SsoController::class, 'redirectSso'])->name('sso.redirect');
-Route::get('/generate-qr-asset', [GenerateQrAssetController::class, 'generateQrAsset'])->name('generate-qr-asset.index');
+Route::get('/generate-qr-asset', [GenerateQrAssetController::class, 'index'])->name('generate-qr-asset.index');
+Route::post('/generate-qr-asset', [GenerateQrAssetController::class, 'generateQrAsset'])->name('generate-qr-asset.post');
 
 Route::get('/callback', [SsoController::class, 'callback']);
 

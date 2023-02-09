@@ -8,12 +8,20 @@ use App\Helpers\QrCodeHelpers;
 
 class GenerateQrAssetController extends Controller
 {
+    public function index()
+    {
+        return view('test-front.generate-qr');
+    }
+
     public function generateQrAsset(Request $request)
     {
+        $limit = 100;
         $asset = AssetData::query()
             ->where('is_draft', '0')
             ->where('is_pemutihan', '0')
             ->select('id', 'kode_asset')
+            ->limit($limit * $request->page)
+            ->offset($limit * ($request->page - 1))
             ->get();
 
         foreach ($asset as $key => $value) {
@@ -30,6 +38,12 @@ class GenerateQrAssetController extends Controller
             $update->save();
         }
 
-        return true;
+        return response()->json([
+            'success' => true,
+            'message' => 'Generate QR Code Asset Berhasil',
+            'page' => $request->page,
+            'next_page' => $request->page + 1,
+            'last_page' => ceil(AssetData::query()->where('is_draft', '0')->where('is_pemutihan', '0')->count() / $limit) == $request->page ? true : false,
+        ]);
     }
 }
