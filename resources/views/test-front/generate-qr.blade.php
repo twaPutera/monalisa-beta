@@ -29,7 +29,7 @@
                     if (response.success) {
                         page++;
                         $('p span').eq(0).text('Page : ' + page);
-                        $('p span').eq(1).text('Jumlah Generate: ' + (1 * (page - 1)));
+                        $('p span').eq(1).text('Jumlah Generate: ' + (100 * (page - 1)));
                     }
 
                     if (!response.last_page) {
