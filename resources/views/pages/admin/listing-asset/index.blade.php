@@ -499,6 +499,7 @@
                     <a href="{{ route('admin.listing-asset.draft.index') }}"
                         class="btn btn-primary shadow-custom btn-sm mr-2"><i class="fas fa-file"></i>
                         Draft Aset</a>
+                    <a href="{{ route('admin.listing-asset.print-qr-all') }}" target="_blank" class="btn btn-sm btn-info"><i class="fas fa-qrcode"></i> Print QR</a>
                     {{-- <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"

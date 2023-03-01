@@ -21,6 +21,7 @@ use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
+use App\Models\AssetData;
 use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller
@@ -455,5 +456,26 @@ class MasterAssetController extends Controller
         finally{
             $zipFile->close();
         }
+    }
+
+    public function printAllQr(Request $request)
+    {
+        $page = 1;
+        $limit = 50;
+
+        if (isset($request->page)) {
+            $page = $request->page;
+        }
+
+        if (isset($request->limit)) {
+            $limit = $request->limit;
+        }
+
+        $assets = AssetData::query()
+            ->where('is_draft', '0')
+            ->where('is_pemutihan', '0')
+            ->select('id', 'kode_asset', 'deskripsi', 'qr_code')
+            ->paginate($limit);
+        return view('pages.admin.listing-asset.print-all-qr', compact('assets'));
     }
 }

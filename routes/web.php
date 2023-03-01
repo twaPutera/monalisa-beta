@@ -134,6 +134,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::get('/preview-qr', [MasterAssetController::class, 'previewQr'])->name('admin.listing-asset.preview-qr');
         Route::get('/download-qr', [MasterAssetController::class, 'downloadQr'])->name('admin.listing-asset.download-qr');
         Route::get('/download-qr-all', [MasterAssetController::class, 'downloadZipQr'])->name('admin.listing-asset.download-qr-all');
+        Route::get('/print-qr-all', [MasterAssetController::class, 'printAllQr'])->name('admin.listing-asset.print-qr-all');
 
         Route::group(['prefix' => 'draft'], function () {
             Route::get('/', [MasterAssetController::class, 'indexDraft'])->name('admin.listing-asset.draft.index');
