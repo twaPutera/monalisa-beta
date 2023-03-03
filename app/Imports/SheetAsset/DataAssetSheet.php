@@ -12,6 +12,7 @@ use App\Models\SatuanAsset;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
+use DateTime;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -98,7 +99,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 
     public function prepareForValidation($data, $index)
     {
-        $data['4'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['4'])->format('d/m/Y');
+        $data['4'] =  DateTime::createFromFormat('d/m/Y', $data['4'])->format('d/m/Y');
         return $data;
     }
 
