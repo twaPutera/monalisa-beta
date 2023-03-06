@@ -473,6 +473,10 @@ class MasterAssetController extends Controller
 
         $assets = AssetData::query();
 
+        if (isset($request->deskripsi)) {
+            $assets->where('deskripsi', 'like', '%' . $request->deskripsi . '%');
+        }
+
         if (isset($request->id_satuan_asset)) {
             $assets->where('id_satuan_asset', $request->id_satuan_asset);
         }
@@ -491,6 +495,14 @@ class MasterAssetController extends Controller
 
         if (isset($request->id_kategori_asset)) {
             $assets->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+        if (isset($request->is_sparepart)) {
+            $assets->where('is_sparepart', $request->is_sparepart);
+        }
+
+        if (isset($request->is_draft)) {
+            $assets->where('is_draft', $request->is_draft);
         }
 
         $assets = $assets->where('is_draft', '0')

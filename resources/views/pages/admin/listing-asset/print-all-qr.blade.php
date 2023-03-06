@@ -24,29 +24,7 @@
                     @endif
                 </nav>
                 <form action="" method="GET" class="d-flex align-items-center">
-                    <div class="form-group mb-0 mr-2">
-                        <select name="id_kategori_asset" class="form-control" id="kategoriAssetFilter">
-                            @if (isset(request()->id_kategori_asset))
-                                <option value="{{ request()->id_kategori_asset }}" selected>{{ \App\Models\KategoriAsset::find(request()->id_kategori_asset)->nama_kategori ?? 'No Kategori' }}</option>
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group mb-0 mr-2">
-                        <select name="id_satuan_asset" class="form-control" id="satuanAssetFilter">
-                            @if (isset(request()->id_satuan_asset))
-                                <option value="{{ request()->id_satuan_asset }}" selected>{{ \App\Models\SatuanAsset::find(request()->id_satuan_asset)->nama_satuan ?? 'No Satuan' }}</option>
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group mb-0 mr-2">
-                        <select name="id_vendor" class="form-control" id="vendorAssetFilter">
-                            @if (isset(request()->id_vendor))
-                                <option value="{{ request()->id_vendor }}" selected>{{ \App\Models\Vendor::find(request()->id_vendor)->nama_vendor ?? 'No vendor' }}</option>
-                            @endif
-                        </select>
-                    </div>
-                    <input type="number" name="limit" placeholder="Limit" value="{{ isset(request()->limit) ? request()->limit : 50 }}" class="form-control mr-2" style="width: 100px;">
-                    <button type="submit" class="btn btn-primary mr-2">Refresh</button>
+                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-info mr-2 shadow-custom" type="button">Filter</button>
                     <button type="button" onclick="printQr()" class="btn btn-success">Print QR</button>
                 </form>
             </div>
@@ -61,93 +39,130 @@
             </div>
         @endforeach
     </div>
+    <div class="modal fade modalFilterAsset" id="modalFilter" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="">Filter Asset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="la la-remove"></span>
+                    </button>
+                </div>
+                <form action="">
+                    <div class="modal-body row">
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Limit</label>
+                            <input type="number" name="limit" placeholder="Limit" value="{{ isset(request()->limit) ? request()->limit : 50 }}" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Nama Asset</label>
+                            <input type="text" id="searchAsset" name="deskripsi" value="{{ isset(request()->deskripsi) ? request()->deskripsi : '' }}" class="form-control form-control-sm" placeholder="Search for...">
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Jenis Asset</label>
+                            <select name="id_kategori_asset" class="form-control" id="kategoriAssetFilter">
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Satuan</label>
+                            <select name="id_satuan_asset" class="form-control" id="satuanAssetFilter">
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Vendor</label>
+                            <select name="id_vendor" class="form-control" id="vendorAssetFilter">
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Lokasi</label>
+                            <select name="id_lokasi" id="" class="form-control select2Lokasi">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Jenis</label>
+                            <select name="is_sparepart" class="form-control" id="isSparepartFilter">
+                                <option value="">Semua Jenis</option>
+                                <option value="0">Asset</option>
+                                <option value="1">Sparepart</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Pemutihan</label>
+                            <select name="is_pemutihan" class="form-control" id="isPemutihanFilter">
+                                <option value="all">Semua Asset</option>
+                                <option value="0" selected>Asset Yang Tidak Diputihkan</option>
+                                <option value="1">Asset Yang Diputihkan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('assets/vendors/general/jquery/dist/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendors/general/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/scripts.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
     <script>
         const printQr = () => {
             window.print();
         }
-    </script>
-    <script>
-        const generateSatuanAssetFilter = () => {
-            $('#satuanAssetFilter').select2({
-                width: '150px',
-                placeholder: 'Pilih Satuan',
-                ajax: {
-                    url: '{{ route('admin.setting.satuan-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
+
+        const openModalByClass = (className) => {
+            $(`.${className}`).modal('show');
         }
 
-        const generateVendorAssetFilter = () => {
-            $('#vendorAssetFilter').select2({
-                width: '150px',
-                placeholder: 'Pilih Vendor',
-                ajax: {
-                    url: '{{ route('admin.setting.vendor.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
-            });
+        const getDataOptionSelect = (id = null) => {
+            $.ajax({
+                url: "{{ route('admin.setting.lokasi.get-select2') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const select = $('.select2Lokasi');
+                    select.empty();
+                    response.data.forEach(element => {
+                        let selected = '';
+                        if (element.id == $('#lokasiParentId').val()) {
+                            selected = 'selected';
+                        }
+                        if (id != null && id != element.id) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
+
+                        if (id == null) {
+                            select.append(
+                                `<option ${selected} value="${element.id}">${element.text}</option>`
+                            );
+                        }
+                    });
+                }
+            })
         }
 
-        const generateKategoriSelect2Filter = () => {
-            $('#kategoriAssetFilter').select2({
-                width: '150px',
-                placeholder: 'Pilih Kategori',
-                ajax: {
-                    url: '{{ route('admin.setting.kategori-asset.get-data-select2') }}',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            keyword: params.term, // search term
-                            // id_group_kategori_asset: idGroup,
-                        };
-                    },
-                    processResults: function(data, params) {
-                        params.page = params.page || 1;
-                        return {
-                            results: data.data,
-                        };
-                    },
-                    cache: true
-                },
+        const generateSelect2Lokasi = () => {
+            $('.select2Lokasi').select2({
+                'placeholder': 'Pilih Lokasi',
+                'allowClear': true,
+                'width': '100%'
             });
+            // select2('val', $('#lokasiParentId').val());
         }
 
         $(document).ready(function() {
-            generateKategoriSelect2Filter();
-            generateSatuanAssetFilter();
-            generateVendorAssetFilter();
+            getDataOptionSelect();
+            generateSelect2Lokasi();
         });
     </script>
+    @include('pages.admin.listing-asset.components.script-js._script_modal_filter')
 </body>
 </html>
