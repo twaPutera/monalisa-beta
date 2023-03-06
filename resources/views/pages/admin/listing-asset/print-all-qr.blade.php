@@ -6,22 +6,51 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print All Qr</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        .page-break {
+            page-break-after: always;
+        }
+
+        @print {
+            .page-break {
+                page-break-after: always;
+            }
+
+            @page {
+                size: A4;
+                margin-left: 0px;
+                margin-right: 0px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body style="background: white; padding: 20px;">
     <div class="row">
-        <div class="col-md-12 mb-3">
+        <div class="col-md-12 mb-3 no-print">
             <div class="d-flex align-items-center justify-content-between">
                 <nav aria-label="Page navigation example">
                     @if($assets->lastPage() > 1)
                         <ul class="pagination">
-                            <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{$assets->url($assets->currentPage()-1)}}">Previous</a></li>
-                            @for($i=1; $i<=$assets->lastPage(); $i++)
-                                <li class="page-item"><a class="page-link <?php if($assets->currentPage() == $i):?>active <?php endif; ?>" href="{{$assets->url($i)}}">{{ $i }}</a></li>
+                            <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{ request()->fullUrl() . '&page=' . ($assets->currentPage() - 1) }}">Previous</a></li>
+                            @for($i=(($assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2)); $i<=(($assets->currentPage() > ($assets->lastPage() - 3) ? $assets->lastPage() : ($assets->currentPage() + 3))); $i++)
+                                <li class="page-item"><a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>" href="{{ request()->fullUrl() . '&page=' . ($i) }}">{{ $i }}</a></li>
                             @endfor
-                            <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{$assets->url($assets->currentPage()+1)}}">Next</a></li>
+                            <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{ request()->fullUrl() . '&page=' . ($assets->currentPage() + 1) }}">Next</a></li>
                         </ul>
                     @endif
                 </nav>
@@ -32,11 +61,12 @@
             </div>
         </div>
         @foreach ($assets as $item)
-            <div class="col-md-3 border border-dark p-2">
+            <div class="col-md-3 border border-dark p-2 @if ($loop->iteration % 16 == 0) page-break @endif">
                 <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $item->qr_code }}" class="my-3" width="100%" alt="">
                 <div class="mt-3 text-center">
                     <h5>{{ $item->kode_asset }}</h5>
                     <h5>{{ $item->deskripsi }}</h5>
+                    <a href="{{ route('admin.listing-asset.download-qr') . '?filename=' . $item->qr_code }}" target="_blank" download class="btn btn-primary shadow-custom btn-sm no-print"><i class="fa fa-download"></i> Unduh QR</a>
                 </div>
             </div>
         @endforeach
