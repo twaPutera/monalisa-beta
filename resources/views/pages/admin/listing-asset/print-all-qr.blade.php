@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print All Qr</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 <body style="background: white; padding: 20px;">
@@ -98,6 +100,13 @@
                                 <option value="1">Asset Yang Diputihkan</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-6 col-12">
+                            <label for="">Tanggal Perolehan</label>
+                            <div class="d-flex align-items-center" style="gap: 10px">
+                                <input type="text" readonly placeholder="Awal" name="tgl_perolehan_awal" class="form-control datepicker w-50" id="">
+                                <input type="text" readonly placeholder="Akhir" name="tgl_perolehan_akhir" class="form-control datepicker w-50" id="">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -111,6 +120,7 @@
     <script src="{{ asset('assets/vendors/general/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/scripts.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         const printQr = () => {
             window.print();
@@ -161,6 +171,12 @@
         $(document).ready(function() {
             getDataOptionSelect();
             generateSelect2Lokasi();
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+            });
         });
     </script>
     @include('pages.admin.listing-asset.components.script-js._script_modal_filter')

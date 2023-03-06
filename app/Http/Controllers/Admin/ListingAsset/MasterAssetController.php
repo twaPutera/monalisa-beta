@@ -484,6 +484,10 @@ class MasterAssetController extends Controller
             $assets->where('id_satuan_asset', $request->id_satuan_asset);
         }
 
+        if (isset($request->tgl_perolehan_awal) && isset($request->tgl_perolehan_akhir)) {
+            $assets->whereBetween('tanggal_perolehan', [$request->tgl_perolehan_awal, $request->tgl_perolehan_akhir]);
+        }
+
         if (isset($request->id_vendor)) {
             $assets->where('id_vendor', $request->id_vendor);
         }
