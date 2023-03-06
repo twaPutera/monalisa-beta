@@ -471,8 +471,29 @@ class MasterAssetController extends Controller
             $limit = $request->limit;
         }
 
-        $assets = AssetData::query()
-            ->where('is_draft', '0')
+        $assets = AssetData::query();
+
+        if (isset($request->id_satuan_asset)) {
+            $assets->where('id_satuan_asset', $request->id_satuan_asset);
+        }
+
+        if (isset($request->id_vendor)) {
+            $assets->where('id_vendor', $request->id_vendor);
+        }
+
+        if (isset($request->id_lokasi) && $request->id_lokasi != 'root') {
+            $assets->where('id_lokasi', $request->id_lokasi);
+        }
+
+        if (isset($request->id_kelas_asset)) {
+            $assets->where('id_kelas_asset', $request->id_kelas_asset);
+        }
+
+        if (isset($request->id_kategori_asset)) {
+            $assets->where('id_kategori_asset', $request->id_kategori_asset);
+        }
+
+        $assets = $assets->where('is_draft', '0')
             ->where('is_pemutihan', '0')
             ->select('id', 'kode_asset', 'deskripsi', 'qr_code')
             ->paginate($limit);
