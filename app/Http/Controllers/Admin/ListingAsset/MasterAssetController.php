@@ -474,7 +474,10 @@ class MasterAssetController extends Controller
         $assets = AssetData::query();
 
         if (isset($request->deskripsi)) {
-            $assets->where('deskripsi', 'like', '%' . $request->deskripsi . '%');
+            $assets->where(function ($query) use($request) {
+                $query->where('deskripsi', 'like', '%' . $request->deskripsi . '%')
+                    ->orWhere('kode_asset', 'like', '%' . $request->deskripsi . '%');
+            });
         }
 
         if (isset($request->id_satuan_asset)) {

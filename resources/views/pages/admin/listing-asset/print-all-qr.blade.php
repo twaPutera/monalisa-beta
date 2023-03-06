@@ -55,7 +55,7 @@
                             <input type="number" name="limit" placeholder="Limit" value="{{ isset(request()->limit) ? request()->limit : 50 }}" class="form-control">
                         </div>
                         <div class="form-group col-md-6 col-12">
-                            <label for="">Nama Asset</label>
+                            <label for="">Nama Asset / Kode Asset</label>
                             <input type="text" id="searchAsset" name="deskripsi" value="{{ isset(request()->deskripsi) ? request()->deskripsi : '' }}" class="form-control form-control-sm" placeholder="Search for...">
                         </div>
                         <div class="form-group col-md-6 col-12">
