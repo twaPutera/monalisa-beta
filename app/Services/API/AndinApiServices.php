@@ -15,6 +15,10 @@ class AndinApiServices
             'search' => $request->keyword,
         ]);
 
+        if ($response_andin->failed()) {
+            throw new \Exception($response_andin->body(), $response_andin->status());
+        }
+
         return $response_andin['data'];
     }
 }

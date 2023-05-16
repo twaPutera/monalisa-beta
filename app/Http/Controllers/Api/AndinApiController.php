@@ -28,13 +28,13 @@ class AndinApiController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $data,
-            ]);
+            ], 200);
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
-            ]);
+            ], 500);
         }
     }
 }
