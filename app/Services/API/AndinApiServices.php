@@ -19,6 +19,12 @@ class AndinApiServices
             throw new \Exception($response_andin->body(), $response_andin->status());
         }
 
-        return $response_andin;
+        $response = [
+            'status' => $response_andin->status(),
+            'body' => $response_andin->body(),
+            'data' => $response_andin->json()['data'] ?? [],
+        ];
+
+        return $response;
     }
 }
