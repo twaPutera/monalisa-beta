@@ -18,7 +18,8 @@ class AndinApiController extends Controller
     public function findAllMemorandum(Request $request)
     {
         try {
-            $data = collect($this->andinApiServices->findAllMemorandum($request))->map(function ($item) {
+            $response = $this->andinApiServices->findAllMemorandum($request);
+            $data = collect($response['data'])->map(function ($item) {
                 return [
                     'id' => $item['id'],
                     'text' => $item['nomor_surat'],
@@ -27,14 +28,14 @@ class AndinApiController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $data['data'] ?? [],
+                'data' => $data ?? [],
                 'debug' => [
-                    'status' => $data->status(),
-                    'body' => $data->body(),
+                    'status' => $response['status'],
+                    'body' => $response['body'],
                 ]
             ], 200);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
