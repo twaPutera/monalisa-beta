@@ -27,7 +27,8 @@ class AndinApiController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $data,
+                'data' => $data['data'] ?? [],
+                'debug' => $data->body()
             ], 200);
         } catch (\Throwable $th) {
             //throw $th;
