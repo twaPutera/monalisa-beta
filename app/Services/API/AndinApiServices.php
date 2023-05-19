@@ -26,6 +26,7 @@ class AndinApiServices
             'status' => $response_andin->status(),
             'body' => $response_andin->body(),
             'data' => $response_andin->json()['data'] ?? [],
+            'url' => $url_andin . '?search=' . $keyword,
         ];
 
         return $response;

@@ -32,6 +32,7 @@ class AndinApiController extends Controller
                 'debug' => [
                     'status' => $response['status'],
                     'body' => $response['body'],
+                    'url' => $response['url'],
                 ]
             ], 200);
         } catch (\Throwable $th) {
