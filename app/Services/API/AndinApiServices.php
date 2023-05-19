@@ -11,8 +11,11 @@ class AndinApiServices
     {
         $url_andin = config('app.andin_url') . '/api/external/v1/surat-internal/memorandum/index';
 
+        // encode keyword
+        $keyword = urldecode($request->keyword);
+
         $response_andin = Http::get($url_andin, [
-            'search' => $request->keyword,
+            'search' => $keyword,
         ]);
 
         if ($response_andin->failed()) {
