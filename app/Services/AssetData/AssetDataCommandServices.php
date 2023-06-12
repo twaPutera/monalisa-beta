@@ -291,6 +291,17 @@ class AssetDataCommandServices
         foreach ($id_asset as $id) {
             $asset = AssetData::find($id);
             if ($asset) {
+                $findImage = AssetImage::where('imageable_id', $asset->id)->get();
+                foreach ($findImage as $image) {
+                    $path = storage_path('app/images/asset');
+                    $pathOld = $path . '/' . $image->path;
+                    FileHelpers::removeFile($pathOld);
+                    $image->delete();
+                }
+                $logs = LogAsset::where('asset_id', $asset->id)->get();
+                foreach ($logs as $log) {
+                    $log->delete();
+                }
                 $asset->forceDelete();
             }
         }
@@ -313,6 +324,17 @@ class AssetDataCommandServices
     {
         $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
         foreach ($query as $data) {
+            $findImage = AssetImage::where('imageable_id', $data->id)->get();
+            foreach ($findImage as $image) {
+                $path = storage_path('app/images/asset');
+                $pathOld = $path . '/' . $image->path;
+                FileHelpers::removeFile($pathOld);
+                $image->delete();
+            }
+            $logs = LogAsset::where('asset_id', $data->id)->get();
+            foreach ($logs as $log) {
+                $log->delete();
+            }
             $data->forceDelete();
         }
         return $query;
