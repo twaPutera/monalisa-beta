@@ -99,7 +99,13 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 
     public function prepareForValidation($data, $index)
     {
-        $data['4'] =  DateTime::createFromFormat('d/m/Y', $data['4'])->format('d/m/Y');
+        if (isset($data[4]) && is_numeric($data[4])) {
+            $dateValue = intval($data[4]);
+            $date = DateTime::createFromFormat('Y-m-d', '1900-01-01')->modify('+' . ($dateValue - 2) . ' days');
+            if ($date !== false) {
+                $data[4] = $date->format('d/m/Y');
+            }
+        }
         return $data;
     }
 
@@ -108,10 +114,24 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         return [
             '0' => 'nullable|exists:kelas_assets,no_akun',
             '1' => 'required|unique:asset_data,kode_asset|max:255',
-            '2' => 'nullable|numeric',
+            '2' => [
+                'nullable',
+                function ($attribute, $value, $fail) {
+                    if (!is_null($value) && !is_string($value) && !is_numeric($value)) {
+                        $fail($attribute . ' harus berupa angka atau string');
+                    }
+                },
+            ],
             '3' => 'required|string|max:255',
             '4' => 'required|date_format:d/m/Y',
-            '5' => 'required|numeric',
+            '5' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!is_null($value) && !is_string($value) && !is_numeric($value)) {
+                        $fail($attribute . ' harus berupa angka atau string');
+                    }
+                },
+            ],
             '6' => 'required|string|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             // '7' => 'required|numeric',
             // '8' => 'nullable|string|max:50',

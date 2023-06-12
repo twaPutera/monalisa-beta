@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 use App\Helpers\StatusAssetDataHelpers;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
@@ -178,6 +179,50 @@ class MasterAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mempublikasikan data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteManyAsset(AssetDataDeleteRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->deleteAssetMany($request);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteAllDraftAsset()
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->deleteAllDraftAsset();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data asset',
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -435,8 +480,8 @@ class MasterAssetController extends Controller
     public function downloadZipQr(Request $request)
     {
         $zipFile = new \PhpZip\ZipFile();
-        $outputFilename = storage_path('app/images/qr-code/all-qr-'. time() .'.zip');
-        try{
+        $outputFilename = storage_path('app/images/qr-code/all-qr-' . time() . '.zip');
+        try {
             $data = $this->assetDataQueryServices->findAll($request);
 
             foreach ($data as $key => $value) {
@@ -449,11 +494,9 @@ class MasterAssetController extends Controller
             $zipFile->close();
 
             return response()->download($outputFilename);
-        }
-        catch(\PhpZip\Exception\ZipException $e){
+        } catch (\PhpZip\Exception\ZipException $e) {
             // handle exception
-        }
-        finally{
+        } finally {
             $zipFile->close();
         }
     }
@@ -474,7 +517,7 @@ class MasterAssetController extends Controller
         $assets = AssetData::query();
 
         if (isset($request->deskripsi)) {
-            $assets->where(function ($query) use($request) {
+            $assets->where(function ($query) use ($request) {
                 $query->where('deskripsi', 'like', '%' . $request->deskripsi . '%')
                     ->orWhere('kode_asset', 'like', '%' . $request->deskripsi . '%');
             });

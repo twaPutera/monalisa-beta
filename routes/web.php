@@ -138,6 +138,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
 
         Route::group(['prefix' => 'draft'], function () {
             Route::get('/', [MasterAssetController::class, 'indexDraft'])->name('admin.listing-asset.draft.index');
+            Route::post('/delete-many-asset', [MasterAssetController::class, 'deleteManyAsset'])->name('admin.listing-asset.draft.delete-many-asset');
+            Route::post('/delete-all-draft-asset', [MasterAssetController::class, 'deleteAllDraftAsset'])->name('admin.listing-asset.draft.delete-all-draft-asset');
             Route::post('/publish-many-asset', [MasterAssetController::class, 'publishManyAsset'])->name('admin.listing-asset.draft.publish-many-asset');
             Route::post('/publish-all-draft-asset', [MasterAssetController::class, 'publishAllDraftAsset'])->name('admin.listing-asset.draft.publish-all-draft-asset');
         });

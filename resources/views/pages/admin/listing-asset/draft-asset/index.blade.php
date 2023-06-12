@@ -536,8 +536,8 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()" class="form-control form-control-sm"
-                            placeholder="Search for...">
+                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()"
+                            class="form-control form-control-sm" placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
                                 type="button"><i class="fa fa-search"></i></button>
@@ -551,21 +551,39 @@
                             class="fas fa-sync"></i>Reset</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm"
-                        method="POST">
-                        @csrf
-                        <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
-                        <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
-                                class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
-                    </form>
-                    <form action="{{ route('admin.listing-asset.draft.publish-all-draft-asset') }}" class="form-confirm"
-                        method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
-                                class="fas fa-question-circle mr-2"></i>Publish Semua Aset</button>
-                    </form>
+                    <div class="mb-2">
+                        <form action="{{ route('admin.listing-asset.draft.delete-all-draft-asset') }}" class="form-confirm"
+                            method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
+                                    class="fas fa-question-circle mr-2"></i>Hapus Semua Aset</button>
+                        </form>
+                        <form action="{{ route('admin.listing-asset.draft.delete-many-asset') }}" class="form-confirm mt-2"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
+                            <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
+                                    class="fas fa-trash mr-2"></i>Hapus Aset Terpilih</button>
+                        </form>
+                    </div>
+                    <div class="mb-2">
+                        <form action="{{ route('admin.listing-asset.draft.publish-all-draft-asset') }}"
+                            class="form-confirm" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
+                                    class="fas fa-question-circle mr-2"></i>Publish Semua Aset</button>
+                        </form>
+                        <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}"
+                            class="form-confirm mt-2" method="POST">
+                            @csrf
+                            <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
+                            <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
+                                    class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
+                        </form>
+                    </div>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
-                        type="button"><i class="fa fa-file"></i> Import Data</button>
+                        type="button"><i class="fa fa-file"></i>
+                        Import Data</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
                         type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>

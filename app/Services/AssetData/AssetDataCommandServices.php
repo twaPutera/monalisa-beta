@@ -11,6 +11,7 @@ use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
 use App\Helpers\SistemConfigHelpers;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
@@ -262,7 +263,9 @@ class AssetDataCommandServices
             throw new \Exception('Tidak bisa menghapus asset yang sudah di publish');
         }
 
-        $asset->delete();
+        if ($asset) {
+            $asset->forceDelete();
+        }
     }
 
     public function publishAssetMany(AssetDataPublishRequest $request)
@@ -279,6 +282,19 @@ class AssetDataCommandServices
         return $asset;
     }
 
+    public function deleteAssetMany(AssetDataDeleteRequest $request)
+    {
+        $id_asset = json_decode($request->json_id_asset_selected);
+        foreach ($id_asset as $id) {
+            $asset = AssetData::find($id);
+            if ($asset) {
+                $asset->forceDelete();
+            }
+        }
+
+        return true;
+    }
+
     public function publishAllDraftAsset()
     {
         $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
@@ -286,6 +302,15 @@ class AssetDataCommandServices
             $data->is_draft = '0';
             $data->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($data, $data->tanggal_awal_depresiasi);
             $data->save();
+        }
+        return $query;
+    }
+
+    public function deleteAllDraftAsset()
+    {
+        $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
+        foreach ($query as $data) {
+            $data->forceDelete();
         }
         return $query;
     }
