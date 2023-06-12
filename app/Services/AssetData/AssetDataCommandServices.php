@@ -124,6 +124,7 @@ class AssetDataCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset = AssetData::find($id);
+        $asset->kode_asset = $request->kode_asset;
         $asset->deskripsi = $request->deskripsi;
         $asset->id_vendor = $request->id_vendor;
         $asset->id_lokasi = $request->id_lokasi;

@@ -43,7 +43,8 @@
                                     transform="translate(-3.373 -1.125)" fill="#0067d4" />
                             </svg>
                         </span>
-                        <span class="kt-badge kt-badge--info notifCount" style="margin-left: -10px; display: none;">11</span>
+                        <span class="kt-badge kt-badge--info notifCount"
+                            style="margin-left: -10px; display: none;">11</span>
                     </div>
                     <div
                         class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
@@ -54,7 +55,8 @@
                                 <h3 class="kt-head__title">
                                     User Notifications
                                     &nbsp;
-                                    <span class="btn btn-label-primary btn-sm btn-bold btn-font-md notifCount" id="">0</span>
+                                    <span class="btn btn-label-primary btn-sm btn-bold btn-font-md notifCount"
+                                        id="">0</span>
                                 </h3>
                             </div>
 
@@ -194,11 +196,13 @@
                                 class="kt-menu__link "><span class="kt-menu__link-text"><span
                                         class="kt-menu__link-icon"><i class="fas fa-print"></i></span>
                                     Report</span></a></li>
-                        <li class="kt-menu__item @if (\Request::segment(2) == 'user-management') kt-menu__item--active @endif"
-                            aria-haspopup="true"><a href="{{ route('admin.user-management.user.index') }}"
-                                class="kt-menu__link "><span class="kt-menu__link-text"><span
-                                        class="kt-menu__link-icon"><i class="fas fa-users"></i></span> User
-                                    Management</span></a></li>
+                        @if (auth()->user()->role == 'admin')
+                            <li class="kt-menu__item @if (\Request::segment(2) == 'user-management') kt-menu__item--active @endif"
+                                aria-haspopup="true"><a href="{{ route('admin.user-management.user.index') }}"
+                                    class="kt-menu__link "><span class="kt-menu__link-text"><span
+                                            class="kt-menu__link-icon"><i class="fas fa-users"></i></span> User
+                                        Management</span></a></li>
+                        @endif
                     </ul>
                 </div>
             </div>

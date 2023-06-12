@@ -57,7 +57,8 @@ class AssetUpdateRequest extends FormRequest
         // ];
 
         return [
-            // 'kode_asset' => 'required|string|unique:asset_data,kode_asset|max:255',
+            'id' => 'required|uuid|exists:asset_data,id',
+            'kode_asset' => 'required|string|max:255|unique:asset_data,kode_asset,' . $this->id . ',id',
             'id_vendor' => 'nullable|uuid|exists:vendors,id',
             'id_lokasi' => 'nullable|uuid|exists:lokasis,id',
             // 'id_kelas_asset' => 'required|uuid|exists:kelas_assets,id',

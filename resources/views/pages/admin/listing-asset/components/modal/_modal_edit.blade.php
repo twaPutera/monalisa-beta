@@ -11,6 +11,7 @@
             <form class="kt-form kt-form--fit kt-form--label-right form-submit"
                 action="{{ route('admin.listing-asset.update', $asset->id) }}" method="POST">
                 @csrf
+                <input type="hidden" value="{{ $asset->id }}" name="id">
                 <div class="modal-body">
                     <div class="kt-scroll ps ps--active-y" data-scroll="true" style="overflow: hidden; height: 70vh;">
                         <div class="row">
@@ -40,7 +41,7 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kode Asset</label>
-                                <input type="text" class="form-control" disabled value="{{ $asset->kode_asset }}"
+                                <input type="text" class="form-control" value="{{ $asset->kode_asset }}"
                                     name="kode_asset">
                             </div>
                             <div class="form-group col-md-4 col-6">
@@ -97,7 +98,8 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Seri</label>
-                                <input type="text" value="{{ $asset->no_seri }}" class="form-control"
+                                <input type="text" value="{{ $asset->no_seri }}"
+                                    @if (auth()->user()->role != 'admin') readonly @endif class="form-control"
                                     name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
