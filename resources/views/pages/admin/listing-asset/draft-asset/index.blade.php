@@ -31,6 +31,7 @@
         $(document).ready(function() {
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
+                    $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     if (data.form == 'import') {
