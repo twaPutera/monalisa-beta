@@ -173,6 +173,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
             Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
         });
 
+        # Image Asset
+        Route::group(['prefix' => 'image-asset'], function () {
+            Route::get('/datatable', [MasterAssetController::class, 'image_asset_dt'])->name('admin.listing-asset.image-asset.datatable');
+            Route::post('/store', [MasterAssetController::class, 'store_image_asset_dt'])->name('admin.listing-asset.image-asset.store');
+            Route::get('/detail/{id}', [MasterAssetController::class, 'detail_image_asset_dt'])->name('admin.listing-asset.image-asset.detail');
+            Route::post('/update/{id}', [MasterAssetController::class, 'update_image_asset_dt'])->name('admin.listing-asset.image-asset.update');
+            Route::post('/delete/{id}', [MasterAssetController::class, 'delete_image_asset_dt'])->name('admin.listing-asset.image-asset.delete');
+        });
+
         # Opname Asset
         Route::group(['prefix' => 'opname-asset'], function () {
             Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('admin.listing-asset.opname-asset.store');

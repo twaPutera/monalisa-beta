@@ -454,7 +454,7 @@
                             ).prop('selected', true);
 
                         }
-                        const baseUrl = "{{ env('APP_URL') }}";
+                        const baseUrl = "{{ config('app.url') }}";
                         form.find("#preview-file-image").attr('src', baseUrl +
                             "/assets/images/no_image.png");
                         if (data.asset.image[0] != null) {

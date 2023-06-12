@@ -255,7 +255,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="">Gambar Asset</label>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
@@ -269,7 +269,7 @@
                                                 name="gambar_asset">
                                         </label>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
