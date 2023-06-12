@@ -272,15 +272,16 @@ class AssetDataCommandServices
     public function publishAssetMany(AssetDataPublishRequest $request)
     {
         $id_asset = json_decode($request->json_id_asset_selected);
-
         foreach ($id_asset as $id) {
             $asset = AssetData::find($id);
-            $asset->is_draft = '0';
-            $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
-            $asset->save();
+            if (isset($asset)) {
+                $asset->is_draft = '0';
+                $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
+                $asset->save();
+            }
         }
 
-        return $asset;
+        return true;
     }
 
     public function deleteAssetMany(AssetDataDeleteRequest $request)

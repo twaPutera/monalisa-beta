@@ -71,7 +71,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                 'no_seri' => '1123221',
                 'kode_vendor' => 'Vendor001 (Diambil dari Sheet Kode Vendor)',
                 'kode_jenis' => 'JenisAsset001 (Diambil dari Sheet Kode Jenis Asset)',
-                'kode_satuan' => 'Satuan001 (Diambil dari Sheet Kode Lokasi Asset)',
+                'kode_satuan' => 'Satuan001 (Diambil dari Sheet Kode Satuan Asset)',
                 'kode_lokasi' => 'Lokasi001 (Diambil dari Sheet Kode Lokasi Asset)',
                 'spesifikasi' => 'Contoh Spesifikasi Asset',
                 'cost_center' => 'Contoh Cost Center',

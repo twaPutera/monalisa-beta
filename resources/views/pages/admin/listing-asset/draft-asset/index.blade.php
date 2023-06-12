@@ -45,6 +45,7 @@
                     modal.modal('hide');
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
+                    $('#preview-file-error-edit').html('');
                     table.DataTable().ajax.reload();
                 } else {
 
@@ -58,6 +59,7 @@
                     showValidation(element, errors[key][0]);
                     if (key == "gambar_asset") {
                         $('#preview-file-error').html(errors[key][0]);
+                        $('#preview-file-error-edit').html(errors[key][0]);
                     }
                 }
                 if (formElement.attr('id') == 'formImportAsset') {
@@ -312,6 +314,8 @@
                 jsonTempAsset = jsonTempAsset.filter(item => item != $(element).val());
             }
             $('#jsonTempAsset').val(JSON.stringify(jsonTempAsset));
+            $('#jsonTempAssetDelete').val(JSON.stringify(jsonTempAsset));
+            $('#jsonTempAssetPublish').val(JSON.stringify(jsonTempAsset));
         }
 
         const rerenderCheckbox = () => {
@@ -450,6 +454,12 @@
                             ).prop('selected', true);
 
                         }
+                        const baseUrl = "{{ env('APP_URL') }}";
+                        form.find("#preview-file-image").attr('src', baseUrl +
+                            "/assets/images/no_image.png");
+                        if (data.asset.image[0] != null) {
+                            form.find("#preview-file-image").attr('src', data.asset.image[0].link)
+                        }
 
                         modal.on('shown.bs.modal', function() {
                             // setTimeout(() => {
@@ -520,6 +530,12 @@
             $('#preview-file-text').text(file.name);
         });
 
+        $('#gambar_asset_edit').on('change', function() {
+            const file = $(this)[0].files[0];
+            console.log(file.name);
+            $('#preview-file-text-edit').text(file.name);
+        });
+
         $('#fileImport').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-excel-text').text(file.name);
@@ -534,6 +550,7 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
+                <input type="hidden" id="jsonTempAsset" value="[]">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
                         <input type="text" id="searchAsset" onkeyup="filterTableAsset()"
@@ -561,7 +578,7 @@
                         <form action="{{ route('admin.listing-asset.draft.delete-many-asset') }}" class="form-confirm mt-2"
                             method="POST">
                             @csrf
-                            <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
+                            <input type="hidden" id="jsonTempAssetDelete" name="json_id_asset_selected" value="[]">
                             <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
                                     class="fas fa-trash mr-2"></i>Hapus Aset Terpilih</button>
                         </form>
@@ -576,7 +593,7 @@
                         <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}"
                             class="form-confirm mt-2" method="POST">
                             @csrf
-                            <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
+                            <input type="hidden" id="jsonTempAssetPublish" name="json_id_asset_selected" value="[]">
                             <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
                                     class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
                         </form>

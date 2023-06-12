@@ -8,7 +8,8 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" id="idAssetDraft">
                 <div class="modal-body">
@@ -217,15 +218,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Gambar Asset</label>
+                                    <label for="">Gambar Asset Saat Ini</label>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <img src="" id="preview-file-image" alt="Asset Image" width="150px">
+                                    </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <span id="preview-file-text">No File Choosen</span> <br>
-                                            <span id="preview-file-error" class="text-danger"></span>
+                                            <span id="preview-file-text-edit">No File
+                                                Choosen</span> <br>
+                                            <span id="preview-file-error-edit" class="text-danger"></span>
                                         </div>
-                                        <label for="gambar_asset" class="btn btn-primary">
+                                        <label for="gambar_asset_edit" class="btn btn-primary">
                                             Upload
-                                            <input type="file" id="gambar_asset"
+                                            <input type="file" id="gambar_asset_edit"
                                                 accept=".jpeg,.png,.jpg,.gif,.svg" class="d-none"
                                                 name="gambar_asset">
                                         </label>
