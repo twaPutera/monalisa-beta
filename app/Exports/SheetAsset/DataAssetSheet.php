@@ -25,31 +25,35 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
 
     public function __construct()
     {
-        $status=['bagus','rusak','maintenance','tidak-lengkap','pengembangan'];
+        $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $kategori_asset = KategoriAsset::pluck('kode_kategori')->toArray();
-        $kodeakun = KelasAsset::pluck('no_akun')->toArray();
+        // $kodeakun = KelasAsset::pluck('no_akun')->toArray();
+        $kodeakun = KelasAsset::pluck('no_akun', 'nama_kelas')->map(function ($noAkun, $namaKelas) {
+            return $noAkun . ' - ' . $namaKelas;
+        })->values()->toArray();
+
         $kodesatuan = SatuanAsset::pluck('kode_satuan')->toArray();
         $kodevendor = Vendor::pluck('kode_vendor')->toArray();
         $kodelokasi = Lokasi::pluck('kode_lokasi')->toArray();
-        $sparepart = ['iya','tidak'];
+        $sparepart = ['iya', 'tidak'];
         $status_it = ['IT', 'Asset'];
-        $status_peminjaman = ['iya','tidak'];
-        $status_perolehan = ['PO','Hibah Eksternal','Hibah Penelitian', 'Hibah Perorangan'];
+        $status_peminjaman = ['iya', 'tidak'];
+        $status_perolehan = ['PO', 'Hibah Eksternal', 'Hibah Penelitian', 'Hibah Perorangan'];
         $selects = [  //selects should have column_name and options
-            ['columns_name'=>'A','options'=>$kodeakun],
-            ['columns_name'=>'G','options'=>$status_perolehan],
-            ['columns_name'=>'M','options'=>$kodesatuan],
-            ['columns_name'=>'K','options'=>$kodevendor],
-            ['columns_name'=>'N','options'=>$kodelokasi],
-            ['columns_name'=>'L','options'=>$kategori_asset],
-            ['columns_name'=>'Q','options'=>$status],
-            ['columns_name'=>'S','options'=>$sparepart],
-            ['columns_name'=>'T','options'=>$status_it],
-            ['columns_name'=>'R','options'=>$status_peminjaman],
+            ['columns_name' => 'A', 'options' => $kodeakun],
+            ['columns_name' => 'G', 'options' => $status_perolehan],
+            ['columns_name' => 'M', 'options' => $kodesatuan],
+            ['columns_name' => 'K', 'options' => $kodevendor],
+            ['columns_name' => 'N', 'options' => $kodelokasi],
+            ['columns_name' => 'L', 'options' => $kategori_asset],
+            ['columns_name' => 'Q', 'options' => $status],
+            ['columns_name' => 'S', 'options' => $sparepart],
+            ['columns_name' => 'T', 'options' => $status_it],
+            ['columns_name' => 'R', 'options' => $status_peminjaman],
         ];
-        $this->selects=$selects;
-        $this->row_count=10000;//number of rows that will have the dropdown
-        $this->column_count=5;//number of columns to be auto sized
+        $this->selects = $selects;
+        $this->row_count = 10000; //number of rows that will have the dropdown
+        $this->column_count = 5; //number of columns to be auto sized
     }
 
     public function collection()

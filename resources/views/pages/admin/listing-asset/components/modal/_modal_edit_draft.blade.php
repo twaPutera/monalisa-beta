@@ -16,20 +16,16 @@
                     <div class="kt-scroll ps ps--active-y" data-scroll="true" style="overflow: hidden; height: 70vh;">
                         <div class="row">
                             <div class="form-group col-md-4 col-6">
+                                <label for="">Kode Asset</label>
+                                <input type="text" class="form-control" name="kode_asset">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
                                 <label for="">Deskripsi / Nama</label>
                                 <input type="text" class="form-control" name="deskripsi">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Satuan</label>
-                                <select name="id_satuan_asset" class="form-control" id="satuanAssetEdit">
-
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Lokasi Asset</label>
-                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
-
-                                </select>
+                                <label for="">Nomor Seri</label>
+                                <input type="text" class="form-control" name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
@@ -48,12 +44,13 @@
                                 <input type="text" class="form-control" name="no_urut">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Kode Asset</label>
-                                <input type="text" class="form-control" name="kode_asset">
+                                <label for="">Tanggal Perolehan</label>
+                                <input type="text" class="form-control datepickerCreate" readonly
+                                    name="tanggal_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Nomor Seri</label>
-                                <input type="text" class="form-control" name="no_seri">
+                                <label for="">Nilai Perolehan (Rp)</label>
+                                <input type="number" class="form-control" name="nilai_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Vendor</label>
@@ -62,9 +59,22 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Tanggal Perolehan</label>
-                                <input type="text" class="form-control datepickerCreate" readonly
-                                    name="tanggal_perolehan">
+                                <label for="">Lokasi Asset</label>
+                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Ownership / Dipindahkan Ke</label>
+                                <select name="ownership" class="form-control" id="ownershipAssetEdit">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Satuan</label>
+                                <select name="id_satuan_asset" class="form-control" id="satuanAssetEdit">
+
+                                </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Perolehan</label>
@@ -77,16 +87,8 @@
                                     <option data-asset-lama="1" value="Dari Asset Lama">Dari Asset Lama</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Nilai Perolehan (Rp)</label>
-                                <input type="number" class="form-control" name="nilai_perolehan">
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Ownership / Dipindahkan Ke</label>
-                                <select name="ownership" class="form-control" id="ownershipAssetEdit">
 
-                                </select>
-                            </div>
+
                             {{-- <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Buku (Rp)</label>
                                 <input type="number" class="form-control" name="nilai_buku_asset">
