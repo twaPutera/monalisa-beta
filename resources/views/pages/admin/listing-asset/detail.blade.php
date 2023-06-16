@@ -968,6 +968,11 @@
                                 style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
+                                        <td width="40%">Kode Asset</td>
+                                        <td><strong>{{ $asset->kode_asset ?? 'Kode Asset Tidak Ada' }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="40%">Kelompok</td>
                                         <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? 'Kelompok Tidak Ada' }}</strong>
                                         </td>

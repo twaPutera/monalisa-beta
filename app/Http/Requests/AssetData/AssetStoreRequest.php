@@ -28,6 +28,7 @@ class AssetStoreRequest extends FormRequest
             'id_vendor' => 'nullable|uuid|exists:vendors,id',
             'id_lokasi' => 'nullable|uuid|exists:lokasis,id',
             'id_kelas_asset' => 'nullable|uuid|exists:kelas_assets,id',
+            'id_group_asset' => 'required',
             'id_kategori_asset' => 'required|uuid|exists:kategori_assets,id',
             'id_satuan_asset' => 'required|uuid|exists:satuan_assets,id',
             'deskripsi' => 'required|string|max:255',

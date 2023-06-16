@@ -349,7 +349,11 @@
     $("#buttonSearchAsset").on('click', function() {
         $('#asal_asset_preview').val($("#assetDataSearch").children("option:selected").text());
         $('#asal_asset_id').val($("#assetDataSearch").val());
+        $('#asal_asset_preview_edit').val($("#assetDataSearch").children("option:selected").text());
+        $('#asal_asset_id_edit').val($("#assetDataSearch").val());
         $('#modalSearchAsset').modal('hide');
+        $('.select2-results').empty();
+        $('.select2-dropdown').remove();
     });
 
     const jenisAssetChange = (select) => {
@@ -363,6 +367,20 @@
             $('#asal-asset-container').hide();
             $('#asal_asset_preview').val("");
             $('#asal_asset_id').val("");
+        }
+    }
+
+    const jenisAssetChangeEdit = (select) => {
+        const assetLama = $(select).children("option:selected").data('asset-lama');
+        if (assetLama == "1") {
+            $('#asal-asset-container-edit').show();
+            $("#modalSearchAsset").on('shown.bs.modal', function() {
+                generateGroupSelect2('groupAssetSearch');
+            }).modal('show');
+        } else {
+            $('#asal-asset-container-edit').hide();
+            $('#asal_asset_preview_edit').val("");
+            $('#asal_asset_id_edit').val("");
         }
     }
 </script>

@@ -265,6 +265,11 @@ class AssetDataCommandServices
             throw new \Exception('Tidak bisa menghapus asset yang sudah di publish');
         }
 
+        $logs = LogAsset::where('asset_id', $asset->id)->get();
+        foreach ($logs as $log) {
+            $log->delete();
+        }
+
         if ($asset) {
             $asset->forceDelete();
         }

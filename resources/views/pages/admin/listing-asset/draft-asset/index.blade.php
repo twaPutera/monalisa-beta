@@ -82,7 +82,7 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: false,
+                // ordering: false,
                 scrollX: true,
                 serverSide: true,
                 ajax: {
@@ -648,4 +648,5 @@
     @include('pages.admin.listing-asset.components.modal._modal_edit_draft')
     @include('pages.admin.listing-asset.components.modal._modal_import')
     @include('pages.admin.listing-asset.components.modal._modal_filter')
+    @include('pages.admin.listing-asset.components.modal._modal_search_asset')
 @endsection

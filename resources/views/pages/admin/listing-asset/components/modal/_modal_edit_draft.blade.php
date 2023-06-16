@@ -20,6 +20,18 @@
                                 <input type="text" class="form-control" name="deskripsi">
                             </div>
                             <div class="form-group col-md-4 col-6">
+                                <label for="">Satuan</label>
+                                <select name="id_satuan_asset" class="form-control" id="satuanAssetEdit">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Lokasi Asset</label>
+                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
                                 <select name="id_group_asset" class="form-control" id="groupAssetEdit">
 
@@ -32,55 +44,16 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
+                                <label for="">Nomor Urut</label>
+                                <input type="text" class="form-control" name="no_urut">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
                                 <label for="">Kode Asset</label>
                                 <input type="text" class="form-control" name="kode_asset">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Tanggal Perolehan</label>
-                                <input type="text" class="form-control datepickerCreate" readonly
-                                    name="tanggal_perolehan">
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Nilai Perolehan (Rp)</label>
-                                <input type="number" class="form-control" name="nilai_perolehan">
-                            </div>
-                            {{-- <div class="form-group col-md-4 col-6">
-                                <label for="">Nilai Buku (Rp)</label>
-                                <input type="number" class="form-control" name="nilai_buku_asset">
-                            </div> --}}
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Jenis Perolehan</label>
-                                <select class="form-control" onchange="jenisAssetChange(this)" name="jenis_penerimaan">
-                                    <option selected="">Pilih Jenis Perolehan</option>
-                                    <option data-asset-lama="0" value="PO">PO</option>
-                                    <option data-asset-lama="0" value="Hibah Eksternal">Hibah Eksternal</option>
-                                    <option data-asset-lama="0" value="Hibah Penelitian">Hibah Penelitian</option>
-                                    <option data-asset-lama="0" value="Hibah Perorangan">Hibah Perorangan</option>
-                                    <option data-asset-lama="1" value="Dari Asset Lama">Dari Asset Lama</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 col-6" id="asal-asset-container" style="display: none;">
-                                <label for="">Asal Asset</label>
-                                <input type="text" class="form-control" readonly id="asal_asset_preview">
-                                <input type="hidden" class="form-control" name="asal_asset" id="asal_asset_id">
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Lokasi Asset</label>
-                                <select name="id_lokasi" class="form-control" id="lokasiAssetEdit">
-
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Ownership / Dipindahkan Ke</label>
-                                <select name="ownership" class="form-control" id="ownershipAssetEdit">
-
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Satuan</label>
-                                <select name="id_satuan_asset" class="form-control" id="satuanAssetEdit">
-
-                                </select>
+                                <label for="">Nomor Seri</label>
+                                <input type="text" class="form-control" name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Vendor</label>
@@ -89,13 +62,46 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Nomor Seri</label>
-                                <input type="text" class="form-control" name="no_seri">
+                                <label for="">Tanggal Perolehan</label>
+                                <input type="text" class="form-control datepickerCreate" readonly
+                                    name="tanggal_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Nomor Urut</label>
-                                <input type="text" class="form-control" name="no_urut">
+                                <label for="">Jenis Perolehan</label>
+                                <select class="form-control" onchange="jenisAssetChangeEdit(this)" name="jenis_penerimaan">
+                                    <option selected="">Pilih Jenis Perolehan</option>
+                                    <option data-asset-lama="0" value="PO">PO</option>
+                                    <option data-asset-lama="0" value="Hibah Eksternal">Hibah Eksternal</option>
+                                    <option data-asset-lama="0" value="Hibah Penelitian">Hibah Penelitian</option>
+                                    <option data-asset-lama="0" value="Hibah Perorangan">Hibah Perorangan</option>
+                                    <option data-asset-lama="1" value="Dari Asset Lama">Dari Asset Lama</option>
+                                </select>
                             </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Nilai Perolehan (Rp)</label>
+                                <input type="number" class="form-control" name="nilai_perolehan">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Ownership / Dipindahkan Ke</label>
+                                <select name="ownership" class="form-control" id="ownershipAssetEdit">
+
+                                </select>
+                            </div>
+                            {{-- <div class="form-group col-md-4 col-6">
+                                <label for="">Nilai Buku (Rp)</label>
+                                <input type="number" class="form-control" name="nilai_buku_asset">
+                            </div> --}}
+                            <div class="form-group col-md-4 col-6" id="asal-asset-container-edit" style="display: none;">
+                                <label for="">Asal Asset</label>
+                                <input type="text" class="form-control" readonly id="asal_asset_preview">
+                                <input type="hidden" class="form-control" name="asal_asset" id="asal_asset_id">
+                            </div>
+
+
+
+
+
+
                             <div class="col-12">
                                 <div class="row">
                                     <div class="form-group col-md-4 col-6 d-flex">
@@ -220,7 +226,8 @@
                                 <div class="form-group">
                                     <label for="">Gambar Asset Saat Ini</label>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <img src="" id="preview-file-image" alt="Asset Image" width="150px">
+                                        <img src="" id="preview-file-image" alt="Asset Image"
+                                            width="150px">
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>

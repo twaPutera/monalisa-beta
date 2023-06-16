@@ -134,8 +134,8 @@ class AssetDataDatatableServices
                 }
             }
         }
-        // $query->orderBy('created_at', 'ASC');
-        return DataTables::of($query)
+        $query->orderBy('tanggal_perolehan', 'DESC');
+        return DataTables::of($query->get())
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
                 return $item->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';
