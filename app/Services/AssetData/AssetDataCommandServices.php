@@ -12,11 +12,13 @@ use App\Helpers\QrCodeHelpers;
 use App\Models\DepresiasiAsset;
 use App\Helpers\DepresiasiHelpers;
 use App\Helpers\SistemConfigHelpers;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
 use App\Services\SistemConfig\SistemConfigQueryServices;
+use Illuminate\Http\Request;
 
 class AssetDataCommandServices
 {
@@ -275,21 +277,53 @@ class AssetDataCommandServices
             throw new \Exception('Tidak bisa menghapus asset yang sudah di publish');
         }
 
-        $asset->delete();
+        $logs = LogAsset::where('asset_id', $asset->id)->get();
+        foreach ($logs as $log) {
+            $log->delete();
+        }
+
+        if ($asset) {
+            $asset->forceDelete();
+        }
     }
 
     public function publishAssetMany(AssetDataPublishRequest $request)
     {
         $id_asset = json_decode($request->json_id_asset_selected);
-
         foreach ($id_asset as $id) {
             $asset = AssetData::find($id);
-            $asset->is_draft = '0';
-            $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
-            $asset->save();
+            if (isset($asset)) {
+                $asset->is_draft = '0';
+                $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
+                $asset->save();
+            }
         }
 
-        return $asset;
+        return true;
+    }
+
+    public function deleteAssetMany(AssetDataDeleteRequest $request)
+    {
+        $id_asset = json_decode($request->json_id_asset_selected);
+        foreach ($id_asset as $id) {
+            $asset = AssetData::find($id);
+            if ($asset) {
+                $findImage = AssetImage::where('imageable_id', $asset->id)->get();
+                foreach ($findImage as $image) {
+                    $path = storage_path('app/images/asset');
+                    $pathOld = $path . '/' . $image->path;
+                    FileHelpers::removeFile($pathOld);
+                    $image->delete();
+                }
+                $logs = LogAsset::where('asset_id', $asset->id)->get();
+                foreach ($logs as $log) {
+                    $log->delete();
+                }
+                $asset->forceDelete();
+            }
+        }
+
+        return true;
     }
 
     public function publishAllDraftAsset()
@@ -301,5 +335,72 @@ class AssetDataCommandServices
             $data->save();
         }
         return $query;
+    }
+
+    public function deleteAllDraftAsset()
+    {
+        $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
+        foreach ($query as $data) {
+            $findImage = AssetImage::where('imageable_id', $data->id)->get();
+            foreach ($findImage as $image) {
+                $path = storage_path('app/images/asset');
+                $pathOld = $path . '/' . $image->path;
+                FileHelpers::removeFile($pathOld);
+                $image->delete();
+            }
+            $logs = LogAsset::where('asset_id', $data->id)->get();
+            foreach ($logs as $log) {
+                $log->delete();
+            }
+            $data->forceDelete();
+        }
+        return $query;
+    }
+
+    public function updateImageAsset(Request $request, string $id)
+    {
+        $asset = AssetData::find($request->id_asset);
+        $findImage = AssetImage::where('id', $id)->where('imageable_id', $asset->id)->where('imageable_type', 'App\\Models\\AssetData')->first();
+        if ($request->hasFile('gambar_asset')) {
+            $path = storage_path('app/images/asset');
+            if (isset($findImage)) {
+                $pathOld = $path . '/' . $findImage->path;
+                FileHelpers::removeFile($pathOld);
+            }
+
+            $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $asset->kode_asset);
+            $filenamesave = FileHelpers::saveFile($request->file('gambar_asset'), $path, $filename);
+
+            $findImage->path = $filenamesave;
+            $findImage->save();
+        }
+    }
+
+    public function storeImageAsset(Request $request)
+    {
+        $asset = AssetData::find($request->id_asset);
+        if ($request->hasFile('gambar_asset')) {
+            $path = storage_path('app/images/asset');
+
+            $filename = self::generateNameImage($request->file('gambar_asset')->getClientOriginalExtension(), $asset->kode_asset);
+            $filenamesave = FileHelpers::saveFile($request->file('gambar_asset'), $path, $filename);
+
+            $asset_images = new AssetImage();
+            $asset_images->imageable_type = get_class($asset);
+            $asset_images->imageable_id = $asset->id;
+            $asset_images->path = $filenamesave;
+            $asset_images->save();
+        }
+    }
+
+    public function deleteImageAsset(string $id)
+    {
+        $findImage = AssetImage::find($id);
+        $path = storage_path('app/images/asset');
+        if (isset($findImage)) {
+            $pathOld = $path . '/' . $findImage->path;
+            FileHelpers::removeFile($pathOld);
+        }
+        $findImage->delete();
     }
 }

@@ -2,15 +2,18 @@
 
 namespace App\Services\AssetData;
 
+use App\Helpers\FileHelpers;
 use App\Models\Lokasi;
 use App\Models\LogAsset;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
+use App\Models\AssetImage;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
+use Yajra\DataTables\Contracts\DataTable;
 
 class AssetDataDatatableServices
 {
@@ -131,8 +134,8 @@ class AssetDataDatatableServices
                 }
             }
         }
-        // $query->orderBy('created_at', 'ASC');
-        return DataTables::of($query)
+        $query->orderBy('tanggal_perolehan', 'DESC');
+        return DataTables::of($query->get())
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
                 return $item->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';
@@ -339,6 +342,35 @@ class AssetDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->rawColumns([])
+            ->make(true);
+    }
+
+    public function image_asset_dt(Request $request)
+    {
+        $query = AssetImage::query();
+        if (isset($request->id_asset_data)) {
+            $query->where('imageable_id', $request->id_asset_data)->where('imageable_type', 'App\\Models\\AssetData');
+        }
+        $query->orderBy('created_at', 'ASC');
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('action', function ($item) {
+                $element = '';
+                $element .= '<form action="' . route('admin.listing-asset.image-asset.delete', $item->id) . '" class="form-confirm" method="POST">';
+                $element .= csrf_field();
+                $element .= '<a href="javascript:void(0)" onclick="editImageAsset(this)" data-url_update="' . route('admin.listing-asset.image-asset.update', $item->id) . '" data-url_detail="' . route('admin.listing-asset.image-asset.detail', $item->id) . '"  class="btn mr-1 btn-sm btn-icon me-1 btn-warning">
+                                <i class="fa fa-edit"></i>
+                            </a>';
+                $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
+                                <i class="fa fa-trash"></i>
+                            </button>';
+                $element .= '</form>';
+                return $element;
+            })
+            ->addColumn('image', function ($item) {
+                return '<img src="' . route('admin.listing-asset.image.preview') . '?filename=' . $item->path . '" alt="Img Asset"  width="150px">';
+            })
+            ->rawColumns(['action', 'image'])
             ->make(true);
     }
 

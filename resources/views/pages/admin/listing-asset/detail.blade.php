@@ -43,6 +43,48 @@
             var tableLogPemindahan = $('#tableLogPemindahan');
             var tableLogOpname = $('#tableLogOpname');
             var tableLogPeminjaman = $('#tableLogPeminjaman');
+            var tableImage = $('#imageDatatable');
+
+
+            tableImage.DataTable({
+                responsive: true,
+                // searchDelay: 500,
+                bLengthChange: false,
+                paging: false,
+                info: false,
+                processing: true,
+                searching: false,
+                bLengthChange: false,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.listing-asset.image-asset.datatable') }}",
+                    data: function(d) {
+                        d.id_asset_data = '{{ $asset->id }}';
+                    }
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: "action",
+                        class: "text-center",
+                        orderable: false,
+                        searchable: false,
+                        name: 'action'
+                    },
+                    {
+                        data: 'image'
+                    }
+                ],
+                columnDefs: [
+                    //Custom template data
+                ],
+            })
+
 
             tableLogPeminjaman.DataTable({
                 responsive: true,
@@ -392,11 +434,14 @@
                     tableLogPemindahan.DataTable().ajax.reload();
                     tableLogAsset.DataTable().ajax.reload();
                     tableLogOpname.DataTable().ajax.reload();
+                    tableImage.DataTable().ajax.reload();
                     showToastSuccess('Sukses', data.message);
                     if (data.form == 'editAsset') {
                         $('#modalEdit').modal('hide');
                         window.location.reload();
                     }
+                    $('#preview-file-error').html('');
+                    $('#preview-file-error-edit').html('');
                 } else {
                     showToastError('Gagal', data.message);
                 }
@@ -415,9 +460,24 @@
                     }
                     if (key == "gambar_asset") {
                         $('#preview-file-image-terbaru-error').html(errors[key][0]);
+                        $('#preview-file-error').html(errors[key][0]);
+                        $('#preview-file-error-edit').html(errors[key][0]);
                     }
                 }
             });
+
+            $('#gambar_asset').on('change', function() {
+                const file = $(this)[0].files[0];
+                $('#preview-file-text').text(file.name);
+            });
+
+            $('#gambar_asset_edit').on('change', function() {
+                const file = $(this)[0].files[0];
+                console.log(file.name);
+                $('#preview-file-text-edit').text(file.name);
+            });
+
+
             $('#listAssetServicesDate').select2({
                 width: '100%',
                 placeholder: 'Pilih Tanggal Services',
@@ -735,6 +795,30 @@
             })
         }
 
+        const editImageAsset = (button) => {
+            const url_detail = $(button).data('url_detail');
+            const url_update = $(button).data('url_update');
+            $.ajax({
+                url: url_detail,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success == true) {
+                        const data = response.data;
+                        const modal = $('#modalEditImage');
+                        const form = modal.find('form');
+                        form.attr('action', url_update);
+                        form.find('input[name=id_asset]').val(data.imageable_id);
+                        form.find("#preview-file-image").attr('src', data.link)
+
+                        modal.on('shown.bs.modal', function() {
+
+                        }).modal('show');
+                    }
+                },
+            })
+        }
+
         const generateOptionLokasi = () => {
             $.ajax({
                 url: '{{ route('admin.setting.lokasi.get-select2') }}',
@@ -771,7 +855,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-12">
+                <div class="col-md-5 col-12">
                     <div class="row">
                         <div class="col-md-6 col-12 detailAssetBox">
                             <div class="detail-asset-box">
@@ -884,6 +968,11 @@
                                 style="border-radius: 9px; background: #E5F3FD;">
                                 <table id="tableProperti" class="table table-striped">
                                     <tr>
+                                        <td width="40%">Kode Asset</td>
+                                        <td><strong>{{ $asset->kode_asset ?? 'Kode Asset Tidak Ada' }}</strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="40%">Kelompok</td>
                                         <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? 'Kelompok Tidak Ada' }}</strong>
                                         </td>
@@ -988,7 +1077,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-12">
+                <div class="col-md-7 col-12">
                     <ul class="nav nav-tabs mb-0" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_1_1">
@@ -1013,6 +1102,11 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_5">
                                 Log Riwayat
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#" data-target="#kt_tabs_1_6">
+                                Gambar Asset
                             </a>
                         </li>
                     </ul>
@@ -1193,12 +1287,34 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="tab-pane" id="kt_tabs_1_6" role="tabpanel">
+                            <div class="d-flex justify-content-end my-2">
+                                <button onclick="openModalByClass('modalCreateImageAsset')"
+                                    class="btn btn-primary shadow-custom btn-sm mr-2 btn-log" type="button">
+                                    <i class="fas fa-plus"></i> Add
+                                </button>
+                            </div>
+                            <table class="table table-striped mb-0 dt_table" id="imageDatatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20px">#</th>
+                                        <th>Aksi</th>
+                                        <th>Koleksi Gambar Asset</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     @include('pages.admin.listing-asset.components.modal._modal_edit')
+    @include('pages.admin.listing-asset.components.modal._modal_edit_image')
+    @include('pages.admin.listing-asset.components.modal._modal_create_image')
     @include('pages.admin.listing-asset.components.modal._modal_create_service')
     @include('pages.admin.listing-asset.components.modal._modal_preview_service')
     @include('pages.admin.listing-asset.components.modal._modal_preview_opname')

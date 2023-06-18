@@ -16,9 +16,20 @@
                     <div class="kt-scroll ps ps--active-y" data-scroll="true" style="overflow: hidden; height: 70vh;">
                         <div class="row">
                             <div class="form-group col-md-4 col-6">
+                                <label for="">Kode Asset</label>
+                                <input type="text" class="form-control" value="{{ $asset->kode_asset }}"
+                                    name="kode_asset">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
                                 <label for="">Deskripsi / Nama</label>
                                 <input type="text" class="form-control" value="{{ $asset->deskripsi }}"
                                     name="deskripsi">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
+                                <label for="">Nomor Seri</label>
+                                <input type="text" value="{{ $asset->no_seri }}"
+                                    @if (auth()->user()->role != 'admin') readonly @endif class="form-control"
+                                    name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
@@ -40,9 +51,8 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Kode Asset</label>
-                                <input type="text" class="form-control" value="{{ $asset->kode_asset }}"
-                                    name="kode_asset">
+                                <label for="">Nomor Urut</label>
+                                <input type="text" value="{{ $asset->no_urut }}" class="form-control" name="no_urut">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Tanggal Perolehan</label>
@@ -55,17 +65,12 @@
                                     value="{{ $asset->nilai_perolehan }}" name="nilai_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Jenis Perolehan</label>
-                                <select class="form-control" name="jenis_penerimaan">
-                                    <option>Pilih Jenis Perolehan</option>
-                                    <option {{ $asset->jenis_penerimaan == 'PO' ? 'selected' : '' }} value="PO">PO
-                                    </option>
-                                    <option {{ $asset->jenis_penerimaan == 'Hibah Eksternal' ? 'selected' : '' }}
-                                        value="Hibah Eksternal">Hibah Eksternal</option>
-                                    <option {{ $asset->jenis_penerimaan == 'Hibah Penelitian' ? 'selected' : '' }}
-                                        value="Hibah Penelitian">Hibah Penelitian</option>
-                                    <option {{ $asset->jenis_penerimaan == 'Hibah Perorangan' ? 'selected' : '' }}
-                                        value="Hibah Perorangan">Hibah Perorangan</option>
+                                <label for="">Vendor</label>
+                                <select name="id_vendor" class="form-control" id="vendorAssetCreate">
+                                    @if (isset($asset->vendor))
+                                        <option selected="selected" value="{{ $asset->vendor->id }}">
+                                            {{ $asset->vendor->nama_vendor }}</option>
+                                    @endif
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
@@ -88,25 +93,25 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
-                                <label for="">Vendor</label>
-                                <select name="id_vendor" class="form-control" id="vendorAssetCreate">
-                                    @if (isset($asset->vendor))
-                                        <option selected="selected" value="{{ $asset->vendor->id }}">
-                                            {{ $asset->vendor->nama_vendor }}</option>
-                                    @endif
+                                <label for="">Jenis Perolehan</label>
+                                <select class="form-control" name="jenis_penerimaan">
+                                    <option>Pilih Jenis Perolehan</option>
+                                    <option {{ $asset->jenis_penerimaan == 'PO' ? 'selected' : '' }} value="PO">PO
+                                    </option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Eksternal' ? 'selected' : '' }}
+                                        value="Hibah Eksternal">Hibah Eksternal</option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Penelitian' ? 'selected' : '' }}
+                                        value="Hibah Penelitian">Hibah Penelitian</option>
+                                    <option {{ $asset->jenis_penerimaan == 'Hibah Perorangan' ? 'selected' : '' }}
+                                        value="Hibah Perorangan">Hibah Perorangan</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Nomor Seri</label>
-                                <input type="text" value="{{ $asset->no_seri }}"
-                                    @if (auth()->user()->role != 'admin') readonly @endif class="form-control"
-                                    name="no_seri">
-                            </div>
-                            <div class="form-group col-md-4 col-6">
-                                <label for="">Nomor Urut</label>
-                                <input type="text" value="{{ $asset->no_urut }}" class="form-control"
-                                    name="no_urut">
-                            </div>
+
+
+
+
+
+
                             <div class="row ml-3">
                                 <div class="form-group col-md-4 col-6">
                                     <div class="d-flex align-items-center mt-4">
@@ -255,7 +260,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="">Gambar Asset</label>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
@@ -269,7 +274,7 @@
                                                 name="gambar_asset">
                                         </label>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

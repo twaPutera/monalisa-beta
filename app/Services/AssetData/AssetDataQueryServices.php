@@ -25,6 +25,14 @@ class AssetDataQueryServices
         $this->userQueryServices = new UserQueryServices();
     }
 
+    public function findImageById(string $id)
+    {
+        $find = AssetImage::find($id);
+        if (isset($find)) {
+            $find->link = route('admin.listing-asset.image.preview') . '?filename=' . $find->path;
+        }
+        return $find;
+    }
     public function findAll(Request $request)
     {
         $query = AssetData::query();

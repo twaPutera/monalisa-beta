@@ -111,7 +111,7 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: false,
+                // ordering: false,
                 scrollX: true,
                 serverSide: true,
                 ajax: {

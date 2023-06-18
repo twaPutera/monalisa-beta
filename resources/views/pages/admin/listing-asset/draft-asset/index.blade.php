@@ -31,6 +31,7 @@
         $(document).ready(function() {
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
+                    $(formElement).trigger('reset');
                     $(formElement).find(".invalid-feedback").remove();
                     $(formElement).find(".is-invalid").removeClass("is-invalid");
                     if (data.form == 'import') {
@@ -45,6 +46,7 @@
                     modal.modal('hide');
                     showToastSuccess('Sukses', data.message);
                     $('#preview-file-error').html('');
+                    $('#preview-file-error-edit').html('');
                     table.DataTable().ajax.reload();
                 } else {
 
@@ -58,6 +60,7 @@
                     showValidation(element, errors[key][0]);
                     if (key == "gambar_asset") {
                         $('#preview-file-error').html(errors[key][0]);
+                        $('#preview-file-error-edit').html(errors[key][0]);
                     }
                 }
                 if (formElement.attr('id') == 'formImportAsset') {
@@ -79,7 +82,7 @@
                 processing: true,
                 searching: false,
                 bLengthChange: false,
-                ordering: false,
+                // ordering: false,
                 scrollX: true,
                 serverSide: true,
                 ajax: {
@@ -312,6 +315,8 @@
                 jsonTempAsset = jsonTempAsset.filter(item => item != $(element).val());
             }
             $('#jsonTempAsset').val(JSON.stringify(jsonTempAsset));
+            $('#jsonTempAssetDelete').val(JSON.stringify(jsonTempAsset));
+            $('#jsonTempAssetPublish').val(JSON.stringify(jsonTempAsset));
         }
 
         const rerenderCheckbox = () => {
@@ -450,6 +455,12 @@
                             ).prop('selected', true);
 
                         }
+                        const baseUrl = "{{ config('app.url') }}";
+                        form.find("#preview-file-image").attr('src', baseUrl +
+                            "/assets/images/no_image.png");
+                        if (data.asset.image[0] != null) {
+                            form.find("#preview-file-image").attr('src', data.asset.image[0].link)
+                        }
 
                         modal.on('shown.bs.modal', function() {
                             // setTimeout(() => {
@@ -520,6 +531,12 @@
             $('#preview-file-text').text(file.name);
         });
 
+        $('#gambar_asset_edit').on('change', function() {
+            const file = $(this)[0].files[0];
+            console.log(file.name);
+            $('#preview-file-text-edit').text(file.name);
+        });
+
         $('#fileImport').on('change', function() {
             const file = $(this)[0].files[0];
             $('#preview-file-excel-text').text(file.name);
@@ -588,10 +605,11 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
+                <input type="hidden" id="jsonTempAsset" value="[]">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()" class="form-control form-control-sm"
-                            placeholder="Search for...">
+                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()"
+                            class="form-control form-control-sm" placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
                                 type="button"><i class="fa fa-search"></i></button>
@@ -605,21 +623,39 @@
                             class="fas fa-sync"></i>Reset</button>
                 </div>
                 <div class="d-flex align-items-center">
-                    <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}" class="form-confirm"
-                        method="POST">
-                        @csrf
-                        <input type="hidden" id="jsonTempAsset" name="json_id_asset_selected" value="[]">
-                        <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
-                                class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
-                    </form>
-                    <form action="{{ route('admin.listing-asset.draft.publish-all-draft-asset') }}" class="form-confirm"
-                        method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
-                                class="fas fa-question-circle mr-2"></i>Publish Semua Aset</button>
-                    </form>
+                    <div class="mb-2">
+                        <form action="{{ route('admin.listing-asset.draft.delete-all-draft-asset') }}" class="form-confirm"
+                            method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
+                                    class="fas fa-question-circle mr-2"></i>Hapus Semua Aset</button>
+                        </form>
+                        <form action="{{ route('admin.listing-asset.draft.delete-many-asset') }}" class="form-confirm mt-2"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" id="jsonTempAssetDelete" name="json_id_asset_selected" value="[]">
+                            <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
+                                    class="fas fa-trash mr-2"></i>Hapus Aset Terpilih</button>
+                        </form>
+                    </div>
+                    <div class="mb-2">
+                        <form action="{{ route('admin.listing-asset.draft.publish-all-draft-asset') }}"
+                            class="form-confirm" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-warning shadow-custom mr-3"><i
+                                    class="fas fa-question-circle mr-2"></i>Publish Semua Aset</button>
+                        </form>
+                        <form action="{{ route('admin.listing-asset.draft.publish-many-asset') }}"
+                            class="form-confirm mt-2" method="POST">
+                            @csrf
+                            <input type="hidden" id="jsonTempAssetPublish" name="json_id_asset_selected" value="[]">
+                            <button type="submit" class="btn btn-sm btn-secondary shadow-custom mr-3"><i
+                                    class="fas fa-info-circle mr-2"></i>Publish Aset Terpilih</button>
+                        </form>
+                    </div>
                     <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
-                        type="button"><i class="fa fa-file"></i> Import Data</button>
+                        type="button"><i class="fa fa-file"></i>
+                        Import Data</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
                         type="button"><i class="fa fa-plus"></i> Add</button>
                 </div>
@@ -666,4 +702,5 @@
     @include('pages.admin.listing-asset.components.modal._modal_edit_draft')
     @include('pages.admin.listing-asset.components.modal._modal_import')
     @include('pages.admin.listing-asset.components.modal._modal_filter')
+    @include('pages.admin.listing-asset.components.modal._modal_search_asset')
 @endsection

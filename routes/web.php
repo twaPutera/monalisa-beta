@@ -139,6 +139,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
 
         Route::group(['prefix' => 'draft'], function () {
             Route::get('/', [MasterAssetController::class, 'indexDraft'])->name('admin.listing-asset.draft.index');
+            Route::post('/delete-many-asset', [MasterAssetController::class, 'deleteManyAsset'])->name('admin.listing-asset.draft.delete-many-asset');
+            Route::post('/delete-all-draft-asset', [MasterAssetController::class, 'deleteAllDraftAsset'])->name('admin.listing-asset.draft.delete-all-draft-asset');
             Route::post('/publish-many-asset', [MasterAssetController::class, 'publishManyAsset'])->name('admin.listing-asset.draft.publish-many-asset');
             Route::post('/publish-all-draft-asset', [MasterAssetController::class, 'publishAllDraftAsset'])->name('admin.listing-asset.draft.publish-all-draft-asset');
         });
@@ -170,6 +172,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         # Log Asset
         Route::group(['prefix' => 'log-asset'], function () {
             Route::get('/datatable', [MasterAssetController::class, 'log_asset_dt'])->name('admin.listing-asset.log-asset.datatable');
+        });
+
+        # Image Asset
+        Route::group(['prefix' => 'image-asset'], function () {
+            Route::get('/datatable', [MasterAssetController::class, 'image_asset_dt'])->name('admin.listing-asset.image-asset.datatable');
+            Route::post('/store', [MasterAssetController::class, 'store_image_asset_dt'])->name('admin.listing-asset.image-asset.store');
+            Route::get('/detail/{id}', [MasterAssetController::class, 'detail_image_asset_dt'])->name('admin.listing-asset.image-asset.detail');
+            Route::post('/update/{id}', [MasterAssetController::class, 'update_image_asset_dt'])->name('admin.listing-asset.image-asset.update');
+            Route::post('/delete/{id}', [MasterAssetController::class, 'delete_image_asset_dt'])->name('admin.listing-asset.image-asset.delete');
         });
 
         # Opname Asset

@@ -56,8 +56,12 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $tanggal_perolehan = Carbon::createFromFormat('d/m/Y', $row[4])->format('Y-m-d');
 
         // Depresiasi
+        $nilai_perolehan = $row[5];
+        $nilai_perolehan = preg_replace('/[^0-9]/', '', $nilai_perolehan);
+        $nilai_perolehan = intval($nilai_perolehan);
+
         $tgl_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($tanggal_perolehan);
-        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($row[5], ($id_kategori->umur_asset * 12));
+        $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($nilai_perolehan, ($id_kategori->umur_asset * 12));
         $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($tanggal_perolehan, ($id_kategori->umur_asset * 12));
 
         $data_asset = AssetData::create([
@@ -70,7 +74,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'no_urut' => $row[2],
             'deskripsi' => $row[3],
             'tanggal_perolehan' => $tanggal_perolehan,
-            'nilai_perolehan' => $row[5],
+            'nilai_perolehan' => $nilai_perolehan,
             'jenis_penerimaan' => $row[6],
             // 'nilai_buku_asset' => $row[7],
             // 'no_memo_surat' => $row[8],
@@ -99,7 +103,13 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
 
     public function prepareForValidation($data, $index)
     {
-        $data['4'] =  DateTime::createFromFormat('d/m/Y', $data['4'])->format('d/m/Y');
+        if (isset($data[4]) && is_numeric($data[4])) {
+            $dateValue = intval($data[4]);
+            $date = DateTime::createFromFormat('Y-m-d', '1900-01-01')->modify('+' . ($dateValue - 2) . ' days');
+            if ($date !== false) {
+                $data[4] = $date->format('d/m/Y');
+            }
+        }
         return $data;
     }
 
@@ -108,30 +118,30 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         return [
             '0' => 'nullable|exists:kelas_assets,no_akun',
             '1' => 'required|unique:asset_data,kode_asset|max:255',
-            '2' => 'nullable|numeric',
-            '3' => 'required|string|max:255',
+            '2' => 'nullable',
+            '3' => 'required|max:255',
             '4' => 'required|date_format:d/m/Y',
-            '5' => 'required|numeric',
-            '6' => 'required|string|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
+            '5' => 'required',
+            '6' => 'required|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             // '7' => 'required|numeric',
-            // '8' => 'nullable|string|max:50',
-            '7' => 'nullable|string|max:50',
-            '8' => 'nullable|string|max:50',
-            '9' => 'nullable|string|max:50',
+            // '8' => 'nullable|max:50',
+            '7' => 'nullable|max:50',
+            '8' => 'nullable|max:50',
+            '9' => 'nullable|max:50',
             // '11' => 'required|numeric',
             '10' => 'nullable|exists:vendors,kode_vendor',
             '11' => 'required|exists:kategori_assets,kode_kategori',
             '12' => 'required|exists:satuan_assets,kode_satuan',
             '13' => 'nullable|exists:lokasis,kode_lokasi',
-            '14' => 'required|string|max:255',
-            '15' => 'nullable|string|max:255',
-            // '17' => 'nullable|string|max:50',
+            '14' => 'required|max:255',
+            '15' => 'nullable|max:255',
+            // '17' => 'nullable|max:50',
             // '18' => 'nullable|numeric',
             // '19' => 'nullable|numeric',
-            '16' => 'required|string|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
-            '17' => 'required|string|in:iya,tidak',
-            '18' => 'required|string|in:iya,tidak',
-            '19' => 'required|string|in:IT,Asset',
+            '16' => 'required|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
+            '17' => 'required|in:iya,tidak',
+            '18' => 'required|in:iya,tidak',
+            '19' => 'required|in:IT,Asset',
         ];
     }
 

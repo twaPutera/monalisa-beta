@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 use App\Helpers\StatusAssetDataHelpers;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
@@ -23,6 +24,7 @@ use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
 use App\Models\AssetData;
 use App\Services\AssetService\AssetServiceQueryServices;
+use Throwable;
 
 class MasterAssetController extends Controller
 {
@@ -178,6 +180,50 @@ class MasterAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil mempublikasikan data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteManyAsset(AssetDataDeleteRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->deleteAssetMany($request);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data asset',
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteAllDraftAsset()
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->deleteAllDraftAsset();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data asset',
             ]);
         } catch (\Throwable $th) {
             //throw $th;
@@ -389,10 +435,93 @@ class MasterAssetController extends Controller
         return $response;
     }
 
+    public function image_asset_dt(Request $request)
+    {
+        $response = $this->assetDataDatatableServices->image_asset_dt($request);
+        return $response;
+    }
+
     public function log_opname_dt(Request $request)
     {
         $response = $this->assetDataDatatableServices->log_opname_dt($request);
         return $response;
+    }
+
+    public function detail_image_asset_dt(string $id)
+    {
+        try {
+            $data = $this->assetDataQueryServices->findImageById($id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data image',
+                'data' => $data,
+            ]);
+        } catch (Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function update_image_asset_dt(Request $request, string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->updateImageAsset($request, $id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data image',
+                'data' => $data,
+            ]);
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function store_image_asset_dt(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->storeImageAsset($request);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengubah data image',
+                'data' => $data,
+            ]);
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function delete_image_asset_dt(string $id)
+    {
+        try {
+            DB::beginTransaction();
+            $data = $this->assetDataCommandServices->deleteImageAsset($id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data image',
+                'data' => $data,
+            ]);
+        } catch (Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
     }
 
     public function log_opname_show($id)
@@ -435,8 +564,8 @@ class MasterAssetController extends Controller
     public function downloadZipQr(Request $request)
     {
         $zipFile = new \PhpZip\ZipFile();
-        $outputFilename = storage_path('app/images/qr-code/all-qr-'. time() .'.zip');
-        try{
+        $outputFilename = storage_path('app/images/qr-code/all-qr-' . time() . '.zip');
+        try {
             $data = $this->assetDataQueryServices->findAll($request);
 
             foreach ($data as $key => $value) {
@@ -449,11 +578,9 @@ class MasterAssetController extends Controller
             $zipFile->close();
 
             return response()->download($outputFilename);
-        }
-        catch(\PhpZip\Exception\ZipException $e){
+        } catch (\PhpZip\Exception\ZipException $e) {
             // handle exception
-        }
-        finally{
+        } finally {
             $zipFile->close();
         }
     }
@@ -474,7 +601,7 @@ class MasterAssetController extends Controller
         $assets = AssetData::query();
 
         if (isset($request->deskripsi)) {
-            $assets->where(function ($query) use($request) {
+            $assets->where(function ($query) use ($request) {
                 $query->where('deskripsi', 'like', '%' . $request->deskripsi . '%')
                     ->orWhere('kode_asset', 'like', '%' . $request->deskripsi . '%');
             });
