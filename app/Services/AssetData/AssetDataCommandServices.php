@@ -9,6 +9,7 @@ use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
+use App\Models\DepresiasiAsset;
 use App\Helpers\DepresiasiHelpers;
 use App\Helpers\SistemConfigHelpers;
 use App\Http\Requests\AssetData\AssetStoreRequest;
@@ -141,6 +142,17 @@ class AssetDataCommandServices
         $asset->is_sparepart = isset($request->is_sparepart) ? $request->is_sparepart : '0';
         $asset->is_pinjam = isset($request->is_pinjam) ? $request->is_pinjam : '0';
         $asset->is_it = isset($request->is_it) ? $request->is_it : '0';
+
+        if ($request->nilai_perolehan !=  $asset->nilai_perolehan) {
+            DepresiasiAsset::query()
+                ->where('id_asset_data', $asset->id)
+                ->delete();
+
+            $nilai_buku = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi, $request->nilai_perolehan);
+            $asset->nilai_buku_asset = $nilai_buku;
+            $asset->nilai_perolehan = $request->nilai_perolehan;
+        }
+
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {

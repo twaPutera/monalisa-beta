@@ -940,4 +940,21 @@ class AssetDataQueryServices
 
         return $avg_depresiiasi * 100;
     }
+
+    public function getMaxValueNoUrutAssetByKelompokId(string $id)
+    {
+        $asset = AssetData::query()
+            ->where('is_pemutihan', '0')
+            ->where('is_draft', '0')
+            ->whereHas('kategori_asset', function($query) use($id) {
+                $query->where('id_group_kategori_asset', $id);
+            })
+            ->max('no_urut');
+
+        if (isset($asset)) {
+            return $asset + 1;
+        } else {
+            return 1;
+        }
+    }
 }

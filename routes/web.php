@@ -135,6 +135,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::get('/download-qr', [MasterAssetController::class, 'downloadQr'])->name('admin.listing-asset.download-qr');
         Route::get('/download-qr-all', [MasterAssetController::class, 'downloadZipQr'])->name('admin.listing-asset.download-qr-all');
         Route::get('/print-qr-all', [MasterAssetController::class, 'printAllQr'])->name('admin.listing-asset.print-qr-all');
+        Route::get('/get-no-urut-by-kelompok-id/{id}', [MasterAssetController::class, 'getMaxValueNoUrutAssetByKelompokId'])->name('admin.listing-asset.get-no-urut-by-kelompok-id');
 
         Route::group(['prefix' => 'draft'], function () {
             Route::get('/', [MasterAssetController::class, 'indexDraft'])->name('admin.listing-asset.draft.index');

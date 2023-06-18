@@ -524,6 +524,60 @@
             const file = $(this)[0].files[0];
             $('#preview-file-excel-text').text(file.name);
         });
+
+        const getNoUrutByKelompok = (select) => {
+            var route = "{{ route('admin.listing-asset.get-no-urut-by-kelompok-id', ':id') }}";
+            route = route.replace(':id', $(select).val());
+
+            $.ajax({
+                url: route,
+                type: 'GET',
+                dataType: 'JSON',
+                beforeSend: function() {
+                    $(".backdrop").show();
+                },
+                success: function(response) {
+                    $(".backdrop").hide();
+                    if (response.success) {
+                        console.log(response);
+                        const modal = $(select).closest('.modal');
+                        const form = modal.find('form');
+
+                        form.find('input[name="no_urut"]').val(response.data);
+
+                        generateKodeAsset($(select));
+                    } else {
+                        // console.log(response);
+                        // showToaster(response.error, "Error");
+                    }
+                },
+                error: function(response) {
+                    $(".backdrop").hide();
+                },
+            });
+        }
+
+        const generateKodeAsset = (element) => {
+            const form = $(element).closest('form');
+            const kelompok = form.find('select[name="id_group_asset"]').select2('data')[0].dataKodeGroup;
+            const no_urut = form.find('input[name="no_urut"]').val();
+            const kategori_asset = form.find('select[name="id_kategori_asset"]').select2('data')[0].dataKodeKategori;
+
+            if (kelompok && no_urut && kategori_asset) {
+                const kode_asset = kelompok + kategori_asset + no_urut + '-' + generateRandomString(3);
+                form.find('input[name="kode_asset"]').val(kode_asset);
+            }
+        }
+
+        const generateRandomString = (num) => {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+            for (var i = 0; i < num; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+        }
     </script>
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')

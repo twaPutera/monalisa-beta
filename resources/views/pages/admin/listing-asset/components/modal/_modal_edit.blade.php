@@ -51,7 +51,7 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Perolehan (Rp)</label>
-                                <input type="number" disabled class="form-control"
+                                <input type="number" class="form-control" @if (auth()->user()->role != 'admin') readonly @endif
                                     value="{{ $asset->nilai_perolehan }}" name="nilai_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">

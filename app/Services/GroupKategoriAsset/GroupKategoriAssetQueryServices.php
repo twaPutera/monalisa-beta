@@ -38,6 +38,7 @@ class GroupKategoriAssetQueryServices
             $results[] = [
                 'id' => $item->id,
                 'text' => $item->nama_group,
+                'dataKodeGroup' => $item->kode_group ?? ''
             ];
         }
 

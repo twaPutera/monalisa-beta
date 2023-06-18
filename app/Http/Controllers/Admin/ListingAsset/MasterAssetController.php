@@ -518,4 +518,23 @@ class MasterAssetController extends Controller
             ->paginate($limit);
         return view('pages.admin.listing-asset.print-all-qr', compact('assets'));
     }
+
+    public function getMaxValueNoUrutAssetByKelompokId($id)
+    {
+        try {
+            $data = $this->assetDataQueryServices->getMaxValueNoUrutAssetByKelompokId($id);
+            //code...
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menampilkan data',
+                'data' => $data,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
 }

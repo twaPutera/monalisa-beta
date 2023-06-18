@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\AssetData;
 use App\Models\DepresiasiAsset;
+use App\Models\KategoriAsset;
 
 class DepresiasiHelpers
 {
