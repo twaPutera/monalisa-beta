@@ -8,8 +8,11 @@ use App\Models\LogAsset;
 use App\Models\AssetData;
 use App\Helpers\SsoHelpers;
 use App\Models\AssetImage;
+use App\Models\KategoriAsset;
 use Illuminate\Http\Request;
 use App\Models\LogAssetOpname;
+use App\Models\SatuanAsset;
+use App\Models\Vendor;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
@@ -29,8 +32,9 @@ class AssetDataDatatableServices
 
     public function datatable(Request $request)
     {
-        $query = AssetData::query()
-            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'image']);
+        $query = AssetData::query();
+        $query->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset', 'kategori_asset.group_kategori_asset', 'image']);
+        $filter = $request->toArray();
 
         if (isset($request->searchKeyword)) {
             $query->where(function ($querySearch) use ($request) {
@@ -134,8 +138,161 @@ class AssetDataDatatableServices
                 }
             }
         }
-        $query->orderBy('tanggal_perolehan', 'DESC');
-        return DataTables::of($query->get())
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if (0 == $order_column_index) {
+            $query->orderBy('tanggal_perolehan', 'DESC');
+        }
+
+        if (isset($request->is_draft) && $request->is_draft == "1") {
+            // SORT DRAFT
+            if (3 == $order_column_index) {
+                $query->orderBy('asset_data.kode_asset', $order_column_dir);
+            }
+            if (4 == $order_column_index) {
+                $query->orderBy('asset_data.deskripsi', $order_column_dir);
+            }
+            if (5 == $order_column_index) {
+                $query->orderBy('asset_data.is_inventaris', $order_column_dir);
+            }
+            if (6 == $order_column_index) {
+                $query->orderBy('asset_data.is_it', $order_column_dir);
+            }
+            if (7 == $order_column_index) {
+                $subquery = KategoriAsset::select('kategori_assets.id')
+                    ->join('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id')
+                    ->whereColumn('kategori_assets.id', 'asset_data.id_kategori_asset')
+                    ->orderBy('group_kategori_assets.kode_group', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (8 == $order_column_index) {
+                $subquery = KategoriAsset::select('kategori_assets.id')
+                    ->whereColumn('kategori_assets.id', 'asset_data.id_kategori_asset')
+                    ->orderBy('nama_kategori', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (9 == $order_column_index) {
+                $query->orderBy('status_kondisi', $order_column_dir);
+            }
+            if (10 == $order_column_index) {
+                $query->orderBy('tanggal_perolehan', $order_column_dir);
+            }
+            if (11 == $order_column_index) {
+                $query->orderBy('nilai_perolehan', $order_column_dir);
+            }
+            if (12 == $order_column_index) {
+                $subquery = Lokasi::select('lokasis.id')
+                    ->whereColumn('lokasis.id', 'asset_data.id_lokasi')
+                    ->orderBy('nama_lokasi', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (13 == $order_column_index) {
+                $query->orderBy('ownership', $order_column_dir);
+            }
+            if (14 == $order_column_index) {
+                $query->orderBy('created_by', $order_column_dir);
+            }
+            if (15 == $order_column_index) {
+                $subquery = SatuanAsset::select('satuan_assets.id')
+                    ->whereColumn('satuan_assets.id', 'asset_data.id_satuan_asset')
+                    ->orderBy('nama_satuan', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (16 == $order_column_index) {
+                $subquery = Vendor::select('vendors.id')
+                    ->whereColumn('vendors.id', 'asset_data.id_vendor')
+                    ->orderBy('nama_vendor', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            // END SORT DRAFT
+        }
+
+        if (isset($request->is_draft) && $request->is_draft == "0") {
+            // SORT GENERAL
+            if (2 == $order_column_index) {
+                $query->orderBy('asset_data.kode_asset', $order_column_dir);
+            }
+            if (3 == $order_column_index) {
+                $query->orderBy('asset_data.deskripsi', $order_column_dir);
+            }
+            if (4 == $order_column_index) {
+                $query->orderBy('asset_data.is_inventaris', $order_column_dir);
+            }
+            if (5 == $order_column_index) {
+                $query->orderBy('asset_data.is_it', $order_column_dir);
+            }
+            if (6 == $order_column_index) {
+                $subquery = KategoriAsset::select('kategori_assets.id')
+                    ->join('group_kategori_assets', 'kategori_assets.id_group_kategori_asset', '=', 'group_kategori_assets.id')
+                    ->whereColumn('kategori_assets.id', 'asset_data.id_kategori_asset')
+                    ->orderBy('group_kategori_assets.kode_group', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (7 == $order_column_index) {
+                $subquery = KategoriAsset::select('kategori_assets.id')
+                    ->whereColumn('kategori_assets.id', 'asset_data.id_kategori_asset')
+                    ->orderBy('nama_kategori', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (8 == $order_column_index) {
+                $query->orderBy('status_kondisi', $order_column_dir);
+            }
+            if (9 == $order_column_index) {
+                $query->orderBy('tanggal_perolehan', $order_column_dir);
+            }
+            if (10 == $order_column_index) {
+                $query->orderBy('nilai_perolehan', $order_column_dir);
+            }
+            if (11 == $order_column_index) {
+                $subquery = Lokasi::select('lokasis.id')
+                    ->whereColumn('lokasis.id', 'asset_data.id_lokasi')
+                    ->orderBy('nama_lokasi', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (12 == $order_column_index) {
+                $query->orderBy('ownership', $order_column_dir);
+            }
+            if (13 == $order_column_index) {
+                $query->orderBy('created_by', $order_column_dir);
+            }
+            if (14 == $order_column_index) {
+                $subquery = SatuanAsset::select('satuan_assets.id')
+                    ->whereColumn('satuan_assets.id', 'asset_data.id_satuan_asset')
+                    ->orderBy('nama_satuan', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (15 == $order_column_index) {
+                $subquery = Vendor::select('vendors.id')
+                    ->whereColumn('vendors.id', 'asset_data.id_vendor')
+                    ->orderBy('nama_vendor', $order_column_dir)
+                    ->limit(1);
+
+                $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            // END SORT GENERAL
+        }
+
+
+        return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('group', function ($item) {
                 return $item->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';

@@ -27,10 +27,34 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
     {
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $kategori_asset = KategoriAsset::pluck('kode_kategori')->toArray();
-        // $kodeakun = KelasAsset::pluck('no_akun')->toArray();
-        $kodeakun = KelasAsset::pluck('no_akun', 'nama_kelas')->map(function ($noAkun, $namaKelas) {
-            return $noAkun . ' - ' . $namaKelas;
-        })->values()->toArray();
+        $kodeakun1 = KelasAsset::pluck('no_akun')->toArray();
+        $kodeakun = KelasAsset::get(['no_akun', 'nama_kelas'])
+            ->map(function ($kelas) {
+                $shortenedWords = array_map(function ($word) {
+                    $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
+                    return substr($lettersOnly, 0, 1);
+                }, explode(' ', $kelas['nama_kelas']));
+                $shortenedString = implode('', $shortenedWords);
+
+                return $kelas['no_akun'] . '--' . strtoupper($shortenedString);
+            })
+            ->toArray();
+
+        // $kodeakun = [
+        //     0 => "1221710PeralatanLaboratoium",
+        //     1 => "1221310AlatTelekomunikasiIT",
+        //     2 => "1221210Kendaraan",
+        //     3 => "1221010Tanah",
+        //     4 => "1221410PeralatanKantor",
+        //     5 => "1311000IntangibleAset",
+        //     6 => "1221510Perabotan",
+        //     7 => "1221810BukumediaPerpustakaan",
+        //     8 => "1221910AsetLeasing",
+        //     9 => "1310000IntangibleAset"
+        //     // 8 => "'1221110GedungBangunan",
+        //     // 9 => "'1221610PeralatanPendinginAC",
+        // ];
+        dd($kodeakun1, $kodeakun,  KelasAsset::pluck('nama_kelas')->toArray());
 
         $kodesatuan = SatuanAsset::pluck('kode_satuan')->toArray();
         $kodevendor = Vendor::pluck('kode_vendor')->toArray();
