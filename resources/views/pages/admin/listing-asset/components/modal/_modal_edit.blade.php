@@ -28,7 +28,7 @@
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Seri</label>
                                 <input type="text" value="{{ $asset->no_seri }}"
-                                    @if (auth()->user()->role != 'admin') readonly @endif class="form-control"
+                                @if (auth()->user()->role != 'admin' || auth()->user()->role != 'manager_asset' || auth()->user()->role != 'manager_it') readonly @endif class="form-control"
                                     name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
@@ -61,7 +61,7 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Perolehan (Rp)</label>
-                                <input type="number" class="form-control" @if (auth()->user()->role != 'admin') readonly @endif
+                                <input type="number" class="form-control" @if (auth()->user()->role != 'admin' || auth()->user()->role != 'manager_asset' || auth()->user()->role != 'manager_it') readonly @endif
                                     value="{{ $asset->nilai_perolehan }}" name="nilai_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
