@@ -34,9 +34,6 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         } else {
             $id_kelas = $get_kelas->id;
         }
-        $qr_name = 'qr-asset-' . $row[1] . '.png';
-        $path = storage_path('app/images/qr-code/' . $qr_name);
-        $qr_code = QrCodeHelpers::generateQrCode($row[1], $path);
 
         $get_vendor = Vendor::where('kode_vendor', $row[10])->first();
         if ($get_vendor == null) {
@@ -44,7 +41,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         } else {
             $id_vendor = $get_vendor->id;
         }
-        $id_kategori = KategoriAsset::where('kode_kategori', $row[11])->first();
+        $id_kategori = KategoriAsset::query()->with(['group_kategori_asset'])->where('kode_kategori', $row[11])->first();
         $id_satuan = SatuanAsset::where('kode_satuan', $row[12])->first();
         $get_lokasi = Lokasi::where('kode_lokasi', $row[13])->first();
         if ($get_lokasi == null) {
@@ -63,6 +60,18 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $tgl_awal_depresiasi = DepresiasiHelpers::getAwalTanggalDepresiasi($tanggal_perolehan);
         $nilai_depresiasi = DepresiasiHelpers::getNilaiDepresiasi($nilai_perolehan, ($id_kategori->umur_asset * 12));
         $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($tanggal_perolehan, ($id_kategori->umur_asset * 12));
+
+        if ($row[2] == null) {
+            $row[2] = self::getMaxValueNoUrutAssetByKelompokId($id_kategori->group_kategori_asset->id);
+        }
+
+        if ($row[1] == null) {
+            $row[1] = self::generateKodeAsset($id_kategori->group_kategori_asset->kode_group, $id_kategori->kode_kategori, $row[2]);
+        }
+
+        $qr_name = 'qr-asset-' . $row[1] . '.png';
+        $path = storage_path('app/images/qr-code/' . $qr_name);
+        $qr_code = QrCodeHelpers::generateQrCode($row[1], $path);
 
         $data_asset = AssetData::create([
             'id_vendor' => $id_vendor,
@@ -116,8 +125,8 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
     public function rules(): array
     {
         return [
-            '0' => 'nullable|exists:kelas_assets,no_akun',
-            '1' => 'required|unique:asset_data,kode_asset|max:255',
+            '0' => 'nullable|max:255',
+            '1' => 'nullable|unique:asset_data,kode_asset|max:255',
             '2' => 'nullable',
             '3' => 'required|max:255',
             '4' => 'required|date_format:d/m/Y',
@@ -175,5 +184,29 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '18' => 'Status Sparepart',
             '19' => 'Status Pemilik Barang',
         ];
+    }
+
+    private static function generateKodeAsset($kode_kelompok, $kode_kategori, $satuan)
+    {
+        $kode_asset = $kode_kelompok . $kode_kategori . $satuan . \Str::random(3);
+        $kode_asset = str_replace(' ', '', $kode_asset);
+        return $kode_asset;
+    }
+
+    private static function getMaxValueNoUrutAssetByKelompokId(string $id)
+    {
+        $asset = AssetData::query()
+            ->where('is_pemutihan', '0')
+            ->where('is_draft', '0')
+            ->whereHas('kategori_asset', function($query) use($id) {
+                $query->where('id_group_kategori_asset', $id);
+            })
+            ->max('no_urut');
+
+        if (isset($asset)) {
+            return $asset + 1;
+        } else {
+            return 1;
+        }
     }
 }
