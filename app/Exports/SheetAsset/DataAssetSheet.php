@@ -26,56 +26,56 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
     public function __construct()
     {
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
-        // $kategori_asset = KategoriAsset::pluck('kode_kategori')->toArray();
-        // $kodeakun = KelasAsset::pluck('no_akun')->toArray();
-        // $kodesatuan = SatuanAsset::pluck('kode_satuan')->toArray();
-        // $kodevendor = Vendor::pluck('kode_vendor')->toArray();
-        // $kodelokasi = Lokasi::pluck('kode_lokasi')->toArray();
-        $kategori_asset = KategoriAsset::get(['kode_kategori', 'nama_kategori'])
-            ->map(function ($kategori) {
-                $shortenedWords = array_map(function ($word) {
-                    $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
-                    return substr($lettersOnly, 0, 1);
-                }, explode(' ', $kategori['nama_kategori']));
-                $shortenedString = implode('', $shortenedWords);
-
-                return $kategori['kode_kategori'] . '--' . strtoupper($shortenedString);
-            })
-            ->toArray();
-        $kodeakun = KelasAsset::get(['no_akun', 'nama_kelas'])
-            ->map(function ($kelas) {
-                $shortenedWords = array_map(function ($word) {
-                    $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
-                    return substr($lettersOnly, 0, 1);
-                }, explode(' ', $kelas['nama_kelas']));
-                $shortenedString = implode('', $shortenedWords);
-
-                return $kelas['no_akun'] . '--' . strtoupper($shortenedString);
-            })
-            ->toArray();
+        $kategori_asset = KategoriAsset::pluck('kode_kategori')->toArray();
+        $kodeakun = KelasAsset::pluck('no_akun')->toArray();
         $kodesatuan = SatuanAsset::pluck('kode_satuan')->toArray();
-        $kodevendor = Vendor::get(['kode_vendor', 'nama_vendor'])
-            ->map(function ($vendor) {
-                $shortenedWords = array_map(function ($word) {
-                    $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
-                    return substr($lettersOnly, 0, 1);
-                }, explode(' ', $vendor['nama_vendor']));
-                $shortenedString = implode('', $shortenedWords);
+        $kodevendor = Vendor::pluck('kode_vendor')->toArray();
+        $kodelokasi = Lokasi::pluck('kode_lokasi')->toArray();
+        // $kategori_asset = KategoriAsset::get(['kode_kategori', 'nama_kategori'])
+        //     ->map(function ($kategori) {
+        //         $shortenedWords = array_map(function ($word) {
+        //             $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
+        //             return substr($lettersOnly, 0, 1);
+        //         }, explode(' ', $kategori['nama_kategori']));
+        //         $shortenedString = implode('', $shortenedWords);
 
-                return $vendor['kode_vendor'] . '--' . strtoupper($shortenedString);
-            })
-            ->toArray();
-        $kodelokasi = Lokasi::get(['kode_lokasi', 'nama_lokasi'])
-            ->map(function ($lokasi) {
-                $shortenedWords = array_map(function ($word) {
-                    $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
-                    return substr($lettersOnly, 0, 1);
-                }, explode(' ', $lokasi['nama_lokasi']));
-                $shortenedString = implode('', $shortenedWords);
+        //         return $kategori['kode_kategori'] . '--' . strtoupper($shortenedString);
+        //     })
+        //     ->toArray();
+        // $kodeakun = KelasAsset::get(['no_akun', 'nama_kelas'])
+        //     ->map(function ($kelas) {
+        //         $shortenedWords = array_map(function ($word) {
+        //             $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
+        //             return substr($lettersOnly, 0, 1);
+        //         }, explode(' ', $kelas['nama_kelas']));
+        //         $shortenedString = implode('', $shortenedWords);
 
-                return $lokasi['kode_lokasi'] . '--' . strtoupper($shortenedString);
-            })
-            ->toArray();
+        //         return $kelas['no_akun'] . '--' . strtoupper($shortenedString);
+        //     })
+        //     ->toArray();
+        // $kodesatuan = SatuanAsset::pluck('kode_satuan')->toArray();
+        // $kodevendor = Vendor::get(['kode_vendor', 'nama_vendor'])
+        //     ->map(function ($vendor) {
+        //         $shortenedWords = array_map(function ($word) {
+        //             $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
+        //             return substr($lettersOnly, 0, 1);
+        //         }, explode(' ', $vendor['nama_vendor']));
+        //         $shortenedString = implode('', $shortenedWords);
+
+        //         return $vendor['kode_vendor'] . '--' . strtoupper($shortenedString);
+        //     })
+        //     ->toArray();
+        // $kodelokasi = Lokasi::get(['kode_lokasi', 'nama_lokasi'])
+        //     ->map(function ($lokasi) {
+        //         $shortenedWords = array_map(function ($word) {
+        //             $lettersOnly = preg_replace('/[^a-zA-Z]/', '', $word);
+        //             return substr($lettersOnly, 0, 1);
+        //         }, explode(' ', $lokasi['nama_lokasi']));
+        //         $shortenedString = implode('', $shortenedWords);
+
+        //         return $lokasi['kode_lokasi'] . '--' . strtoupper($shortenedString);
+        //     })
+        //     ->toArray();
 
 
         // dd($kategori_asset, $kodeakun, $kodesatuan, $kodevendor, $kodelokasi);
