@@ -600,6 +600,10 @@ class MasterAssetController extends Controller
 
         $assets = AssetData::query();
 
+        if (isset($request->id)) {
+            $assets->where('id', $request->id);
+        }
+
         if (isset($request->deskripsi)) {
             $assets->where(function ($query) use ($request) {
                 $query->where('deskripsi', 'like', '%' . $request->deskripsi . '%')

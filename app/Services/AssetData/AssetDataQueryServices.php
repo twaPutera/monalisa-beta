@@ -13,6 +13,7 @@ use App\Models\PerencanaanServices;
 use App\Models\DetailPemindahanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
+use App\Models\SistemConfig;
 
 class AssetDataQueryServices
 {
@@ -954,15 +955,23 @@ class AssetDataQueryServices
         $asset = AssetData::query()
             ->where('is_pemutihan', '0')
             ->where('is_draft', '0')
-            ->whereHas('kategori_asset', function($query) use($id) {
-                $query->where('id_group_kategori_asset', $id);
-            })
+            ->where('id_kategori_asset', $id)
             ->max('no_urut');
 
+        $no_urut_config = SistemConfig::query()
+            ->where('config', 'min_no_urut')
+            ->first();
+
+        $config = $no_urut_config->value ?? 5;
+
+        $no = 1;
+
         if (isset($asset)) {
-            return $asset + 1;
-        } else {
-            return 1;
+            $no = $asset + 1;
         }
+
+        $no_urut = str_pad($no, $config, '0', STR_PAD_LEFT);
+
+        return $no_urut;
     }
 }

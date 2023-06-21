@@ -576,12 +576,11 @@
 
         const generateKodeAsset = (element) => {
             const form = $(element).closest('form');
-            const kelompok = form.find('select[name="id_group_asset"]').select2('data')[0].dataKodeGroup;
             const no_urut = form.find('input[name="no_urut"]').val();
             const kategori_asset = form.find('select[name="id_kategori_asset"]').select2('data')[0].dataKodeKategori;
-
-            if (kelompok && no_urut && kategori_asset) {
-                const kode_asset = kelompok + kategori_asset + no_urut + '-' + generateRandomString(3);
+            console.log(no_urut);
+            if (kategori_asset) {
+                const kode_asset = `${kategori_asset}${no_urut !== "" ? no_urut : generateRandomString(5)}`;
                 form.find('input[name="kode_asset"]').val(kode_asset);
             }
         }

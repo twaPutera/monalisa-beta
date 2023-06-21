@@ -3,6 +3,7 @@
 namespace App\Http\Requests\AssetData;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\SistemConfig;
 
 class AssetUpdateDraftRequest extends FormRequest
 {
@@ -23,7 +24,9 @@ class AssetUpdateDraftRequest extends FormRequest
      */
     public function rules()
     {
-        logger('id: ', [$this->id]);
+        $min_no_urut = SistemConfig::where('config', 'min_no_urut')->first();
+        $min_no_urut = $min_no_urut->value ?? '5';
+
         return [
             'kode_asset' => 'string|unique:asset_data,kode_asset,' . $this->id,
             'id_vendor' => 'nullable|uuid|exists:vendors,id',
@@ -46,7 +49,7 @@ class AssetUpdateDraftRequest extends FormRequest
             'no_sp3' => 'nullable|string|max:50',
             'status_kondisi' => 'required|string|max:50',
             'no_seri' => 'nullable|string|max:50',
-            'no_urut' => 'nullable|string|max:50',
+            'no_urut' => 'nullable|string|max:50|min:'.$min_no_urut,
             'cost_center' => 'nullable|string|max:255',
             'call_center' => 'nullable|string|max:50',
             'spesifikasi' => 'required|string',

@@ -29,13 +29,13 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
-                                <select name="id_group_asset" onchange="getNoUrutByKelompok(this)" class="form-control" id="groupAssetEdit">
+                                <select name="id_group_asset" class="form-control" id="groupAssetEdit">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="id_kategori_asset" class="form-control" onchange="generateKodeAsset(this)" id="kategoriAssetEdit">
+                                <select name="id_kategori_asset" class="form-control" onchange="getNoUrutByKelompok(this)" id="kategoriAssetEdit">
 
                                 </select>
                             </div>

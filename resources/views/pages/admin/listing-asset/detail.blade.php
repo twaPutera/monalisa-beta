@@ -1066,8 +1066,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-center">
-                                            <a href="{{ route('admin.listing-asset.download-qr') . '?filename=' . $asset->qr_code }}"
-                                                download class="btn btn-primary shadow-custom btn-sm"><i
+                                            <a href="{{ route('admin.listing-asset.print-qr-all') }}?id={{ $asset->id }}" target="_blank"
+                                                class="btn btn-primary shadow-custom btn-sm"><i
                                                     class="fa fa-download"></i>
                                                 Unduh QR</a>
                                         </td>

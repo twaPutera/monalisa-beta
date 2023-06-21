@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\AssetData;
 
+use App\Models\SistemConfig;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AssetStoreRequest extends FormRequest
@@ -23,6 +24,9 @@ class AssetStoreRequest extends FormRequest
      */
     public function rules()
     {
+        $min_no_urut = SistemConfig::where('config', 'min_no_urut')->first();
+        $min_no_urut = $min_no_urut->value ?? '5';
+
         return [
             'kode_asset' => 'required|string|unique:asset_data,kode_asset|max:255',
             'id_vendor' => 'nullable|uuid|exists:vendors,id',
@@ -48,7 +52,7 @@ class AssetStoreRequest extends FormRequest
             'status_kondisi' => 'required|string|max:50',
             'status_akunting' => 'required|string|max:50',
             'no_seri' => 'nullable|string|max:50',
-            'no_urut' => 'nullable|string|max:50',
+            'no_urut' => 'nullable|string|max:50|min:'.$min_no_urut,
             'cost_center' => 'nullable|string|max:255',
             'call_center' => 'nullable|string|max:50',
             'spesifikasi' => 'required|string|max:255',
