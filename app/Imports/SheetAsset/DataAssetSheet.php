@@ -2,6 +2,7 @@
 
 namespace App\Imports\SheetAsset;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\Lokasi;
 use App\Models\Vendor;
@@ -9,10 +10,10 @@ use App\Models\AssetData;
 use App\Models\KelasAsset;
 use App\Helpers\SsoHelpers;
 use App\Models\SatuanAsset;
+use App\Models\SistemConfig;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
 use App\Helpers\DepresiasiHelpers;
-use DateTime;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -62,11 +63,11 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         $umur_manfaat_komersial = DepresiasiHelpers::generateUmurAsset($tanggal_perolehan, ($id_kategori->umur_asset * 12));
 
         if ($row[2] == null) {
-            $row[2] = self::getMaxValueNoUrutAssetByKelompokId($id_kategori->group_kategori_asset->id);
+            $row[2] = self::getMaxValueNoUrutAssetByKelompokId($id_kategori->id);
         }
 
         if ($row[1] == null) {
-            $row[1] = self::generateKodeAsset($id_kategori->group_kategori_asset->kode_group, $id_kategori->kode_kategori, $row[2]);
+            $row[1] = self::generateKodeAsset($id_kategori->kode_kategori, $row[2]);
         }
 
         $qr_name = 'qr-asset-' . $row[1] . '.png';
@@ -186,9 +187,9 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         ];
     }
 
-    private static function generateKodeAsset($kode_kelompok, $kode_kategori, $satuan)
+    private static function generateKodeAsset($kode_kategori, $satuan)
     {
-        $kode_asset = $kode_kelompok . $kode_kategori . $satuan . \Str::random(3);
+        $kode_asset = $kode_kategori . $satuan;
         $kode_asset = str_replace(' ', '', $kode_asset);
         return $kode_asset;
     }
@@ -196,17 +197,28 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
     private static function getMaxValueNoUrutAssetByKelompokId(string $id)
     {
         $asset = AssetData::query()
-            ->where('is_pemutihan', '0')
-            ->where('is_draft', '0')
-            ->whereHas('kategori_asset', function($query) use($id) {
-                $query->where('id_group_kategori_asset', $id);
-            })
+            ->where('id_kategori_asset', $id)
+            ->whereRaw('no_urut REGEXP "^([,|.]?[0-9])+$"')
             ->max('no_urut');
 
+        $no_urut_config = SistemConfig::query()
+            ->where('config', 'min_no_urut')
+            ->first();
+
+        $config = $no_urut_config->value ?? 5;
+
+        $no = 1;
+
+        logger('asset', [$asset]);
+
         if (isset($asset)) {
-            return $asset + 1;
-        } else {
-            return 1;
+            $no = $asset + 1;
         }
+
+        $no_urut = str_pad($no, $config, '0', STR_PAD_LEFT);
+
+        logger('no_urut', [$no_urut]);
+
+        return $no_urut;
     }
 }

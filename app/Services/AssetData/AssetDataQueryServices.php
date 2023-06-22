@@ -953,9 +953,8 @@ class AssetDataQueryServices
     public function getMaxValueNoUrutAssetByKelompokId(string $id)
     {
         $asset = AssetData::query()
-            ->where('is_pemutihan', '0')
-            ->where('is_draft', '0')
             ->where('id_kategori_asset', $id)
+            ->whereRaw('no_urut REGEXP "^([,|.]?[0-9])+$"')
             ->max('no_urut');
 
         $no_urut_config = SistemConfig::query()
