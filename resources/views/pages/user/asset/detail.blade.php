@@ -24,6 +24,17 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
+                        <p class="mb-0 text-green">Kode Asset</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-0 text-green text-end">
+                            {{ $asset_data->kode_asset ?? 'Tidak Ada Kode Asset' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
                         <p class="mb-0 text-green">Kelompok Asset</p>
                     </div>
                     <div class="col">
