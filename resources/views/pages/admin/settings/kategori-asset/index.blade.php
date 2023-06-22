@@ -77,11 +77,16 @@
 
             $('.modalCreateKategoriAsset').on('shown.bs.modal', function(e) {
                 generateGroupSelect();
+                const form = $(this).find('form');
                 $('.selectGroup').select2({
                     width: '91%',
                     placeholder: 'Pilih Kelompok Asset',
                     allowClear: true,
                     parent: $(this)
+                }).on('change', function() {
+                    const kode = $(this).find(':selected').data('kode');
+                    console.log(kode);
+                    form.find('input[name=kode_kategori]').val(kode);
                 });
 
                 $('.selectUmurAsset').select2({
@@ -115,6 +120,10 @@
                             placeholder: 'Pilih Kelompok Asset',
                             allowClear: true,
                             parent: $(this)
+                        }).on('change', function() {
+                            const kode = $(this).find(':selected').data('kode');
+                            console.log(kode);
+                            form.find('input[name=kode_kategori]').val(kode);
                         });
                         // $('#selectGroupEdit').select2('val', response.data.id_group_kategori_asset);
                         $('#selectUmurAssetEdit option[value="' + response.data.umur_asset + '"]')
@@ -142,7 +151,7 @@
                         select.empty();
                         select.append(`<option value="">Pilih Group</option>`);
                         response.data.forEach((item) => {
-                            select.append(`<option value="${item.id}">${item.nama_group}</option>`);
+                            select.append(`<option value="${item.id}" data-kode="${item.kode_group}">${item.nama_group}</option>`);
                         });
                     }
                 }

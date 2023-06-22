@@ -28,19 +28,19 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>
-                                <select name="id_group_asset" onchange="getNoUrutByKelompok(this)" class="form-control" id="groupAssetCreate">
+                                <select name="id_group_asset" class="form-control" id="groupAssetCreate">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="id_kategori_asset" onchange="generateKodeAsset(this)" class="form-control" id="kategoriAssetCreate">
+                                <select name="id_kategori_asset" onchange="getNoUrutByKelompok(this)" class="form-control" id="kategoriAssetCreate">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Urut</label>
-                                <input type="text" class="form-control" name="no_urut">
+                                <input type="text" class="form-control" onkeyup="generateKodeAsset(this)" name="no_urut">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Tanggal Perolehan</label>
