@@ -43,7 +43,7 @@ class DeleteAssetDraft extends Command
     {
         $query = AssetData::withTrashed()
             ->where('is_pemutihan', '0')
-            ->where('is_draft', '1')
+            // ->where('is_draft', '1')
             ->whereNotNull('deleted_at')
             ->get();
 
