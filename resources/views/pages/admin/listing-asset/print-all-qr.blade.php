@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print All Qr</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
-    <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
+    <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+        type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .page-break {
@@ -39,34 +42,48 @@
         }
     </style>
 </head>
+
 <body style="background: white; padding: 20px;">
     <div class="row">
         <div class="col-md-12 mb-3 no-print">
             <div class="d-flex align-items-center justify-content-between">
                 <nav aria-label="Page navigation example">
-                    @if($assets->lastPage() > 1)
+                    @if ($assets->lastPage() > 1)
                         <ul class="pagination">
-                            <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{ request()->fullUrl() . '&page=' . ($assets->currentPage() - 1) }}">Previous</a></li>
-                            @for($i=(($assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2)); $i<=(($assets->currentPage() > ($assets->lastPage() - 3) ? $assets->lastPage() : ($assets->currentPage() + 3))); $i++)
-                                <li class="page-item"><a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>" href="{{ request()->fullUrl() . '&page=' . ($i) }}">{{ $i }}</a></li>
+                            <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
+                                <a class="page-link"
+                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() - 1) }}">Previous</a>
+                            </li>
+                            @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
+                                <li class="page-item">
+                                    <a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>"
+                                        href="{{ url()->current() . '?page=' . $i }}">{{ $i }}</a>
+                                </li>
                             @endfor
-                            <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>><a class="page-link" href="{{ request()->fullUrl() . '&page=' . ($assets->currentPage() + 1) }}">Next</a></li>
+                            <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
+                                <a class="page-link"
+                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() + 1) }}">Next</a>
+                            </li>
                         </ul>
                     @endif
                 </nav>
                 <form action="" method="GET" class="d-flex align-items-center">
-                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-info mr-2 shadow-custom" type="button">Filter</button>
+                    <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-info mr-2 shadow-custom"
+                        type="button">Filter</button>
                     <button type="button" onclick="printQr()" class="btn btn-success">Print QR</button>
                 </form>
             </div>
         </div>
         @foreach ($assets as $item)
             <div class="col-md-3 border border-dark p-2 @if ($loop->iteration % 16 == 0) page-break @endif">
-                <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $item->qr_code }}" class="my-3" width="100%" alt="">
+                <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $item->qr_code }}" class="my-3"
+                    width="100%" alt="">
                 <div class="mt-3 text-center">
                     <h5>{{ $item->kode_asset }}</h5>
                     <h5>{{ $item->deskripsi }}</h5>
-                    <a href="{{ route('admin.listing-asset.download-qr') . '?filename=' . $item->qr_code }}" target="_blank" download class="btn btn-primary shadow-custom btn-sm no-print"><i class="fa fa-download"></i> Unduh QR</a>
+                    <a href="{{ route('admin.listing-asset.download-qr') . '?filename=' . $item->qr_code }}"
+                        target="_blank" download class="btn btn-primary shadow-custom btn-sm no-print"><i
+                            class="fa fa-download"></i> Unduh QR</a>
                 </div>
             </div>
         @endforeach
@@ -84,11 +101,14 @@
                     <div class="modal-body row">
                         <div class="form-group col-md-6 col-12">
                             <label for="">Limit</label>
-                            <input type="number" name="limit" placeholder="Limit" value="{{ isset(request()->limit) ? request()->limit : 50 }}" class="form-control">
+                            <input type="number" name="limit" placeholder="Limit"
+                                value="{{ isset(request()->limit) ? request()->limit : 50 }}" class="form-control">
                         </div>
                         <div class="form-group col-md-6 col-12">
                             <label for="">Nama Asset / Kode Asset</label>
-                            <input type="text" id="searchAsset" name="deskripsi" value="{{ isset(request()->deskripsi) ? request()->deskripsi : '' }}" class="form-control form-control-sm" placeholder="Search for...">
+                            <input type="text" id="searchAsset" name="deskripsi"
+                                value="{{ isset(request()->deskripsi) ? request()->deskripsi : '' }}"
+                                class="form-control form-control-sm" placeholder="Search for...">
                         </div>
                         <div class="form-group col-md-6 col-12">
                             <label for="">Jenis Asset</label>
@@ -133,8 +153,10 @@
                         <div class="form-group col-md-6 col-12">
                             <label for="">Tanggal Perolehan</label>
                             <div class="d-flex align-items-center" style="gap: 10px">
-                                <input type="text" readonly placeholder="Awal" name="tgl_perolehan_awal" class="form-control datepicker w-50" id="">
-                                <input type="text" readonly placeholder="Akhir" name="tgl_perolehan_akhir" class="form-control datepicker w-50" id="">
+                                <input type="text" readonly placeholder="Awal" name="tgl_perolehan_awal"
+                                    class="form-control datepicker w-50" id="">
+                                <input type="text" readonly placeholder="Akhir" name="tgl_perolehan_akhir"
+                                    class="form-control datepicker w-50" id="">
                             </div>
                         </div>
                     </div>
@@ -211,4 +233,5 @@
     </script>
     @include('pages.admin.listing-asset.components.script-js._script_modal_filter')
 </body>
+
 </html>
