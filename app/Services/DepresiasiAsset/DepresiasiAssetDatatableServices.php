@@ -57,6 +57,12 @@ class DepresiasiAssetDatatableServices
             ->addColumn('group', function ($item) {
                 return $item->asset_data->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak ada Grup';
             })
+            ->addColumn('kode_asset', function ($item) {
+                return $item->asset_data->kode_asset ?? 'Tidak ada Lokasi';
+            })
+            ->addColumn('deskripsi', function ($item) {
+                return $item->asset_data->deskripsi ?? 'Tidak ada Lokasi';
+            })
             ->addColumn('nama_lokasi', function ($item) {
                 return $item->asset_data->lokasi->nama_lokasi ?? 'Tidak ada Lokasi';
             })

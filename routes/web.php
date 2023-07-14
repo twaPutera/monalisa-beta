@@ -127,6 +127,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::post('/update/{id}', [MasterAssetController::class, 'update'])->name('admin.listing-asset.update');
         Route::post('/update-draft/{id}', [MasterAssetController::class, 'updateDraft'])->name('admin.listing-asset.update.draft');
         Route::post('/destroy/{id}', [MasterAssetController::class, 'destroy'])->name('admin.listing-asset.destroy');
+        Route::post('/put-to-trash/{id}', [MasterAssetController::class, 'putToTrash'])->name('admin.listing-asset.putToTrash');
         Route::get('/download-template-import', [MasterAssetController::class, 'downloadTemplateImport'])->name('admin.listing-asset.download-template-import');
         Route::get('/get-all-data-owner-select2', [MasterAssetController::class, 'getDataAllOwnerSelect2'])->name('admin.listing-asset.get-all-data-owner-select2');
         Route::get('/get-all-data-asset-select2', [MasterAssetController::class, 'getDataAllAssetSelect2'])->name('admin.listing-asset.get-all-data-asset-select2');

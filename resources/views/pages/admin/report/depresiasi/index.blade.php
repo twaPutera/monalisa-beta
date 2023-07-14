@@ -56,12 +56,12 @@
                         data: 'nama_kategori'
                     },
                     {
-                        name: 'asset_data.kode_asset',
-                        data: 'asset_data.kode_asset'
+                        name: 'kode_asset',
+                        data: 'kode_asset'
                     },
                     {
-                        name: 'asset_data.deskripsi',
-                        data: 'asset_data.deskripsi'
+                        name: 'deskripsi',
+                        data: 'deskripsi'
                     },
                     {
                         name: 'tanggal_depresiasi',

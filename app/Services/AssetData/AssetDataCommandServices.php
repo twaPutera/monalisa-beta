@@ -17,8 +17,21 @@ use App\Http\Requests\AssetData\AssetStoreRequest;
 use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
+use App\Models\DetailPemindahanAsset;
+use App\Models\DetailPeminjamanAsset;
+use App\Models\DetailPemutihanAsset;
+use App\Models\DetailService;
+use App\Models\LogAssetOpname;
+use App\Models\LogPeminjamanAsset;
+use App\Models\LogPengaduanAsset;
+use App\Models\LogServiceAsset;
+use App\Models\PeminjamanAsset;
+use App\Models\Pengaduan;
+use App\Models\PerencanaanServices;
+use App\Models\Service;
 use App\Services\SistemConfig\SistemConfigQueryServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssetDataCommandServices
 {
@@ -269,13 +282,18 @@ class AssetDataCommandServices
         return $name;
     }
 
-    public function delete($id)
+    public function delete(string $id)
     {
         $asset = AssetData::find($id);
 
         if ($asset->is_draft == '0') {
             throw new \Exception('Tidak bisa menghapus asset yang sudah di publish');
         }
+        $image = AssetImage::where('imageable_id', $asset->id)->first();
+        $path = storage_path('app/images/asset');
+        $pathOld = $path . '/' . $image->path;
+        FileHelpers::removeFile($pathOld);
+        $image->delete();
 
         $logs = LogAsset::where('asset_id', $asset->id)->get();
         foreach ($logs as $log) {
@@ -285,6 +303,102 @@ class AssetDataCommandServices
         if ($asset) {
             $asset->forceDelete();
         }
+    }
+
+    public function putToTrash(string $id)
+    {
+        $asset = AssetData::find($id);
+
+        if ($asset->is_draft == '1') {
+            throw new \Exception('Tidak bisa menghapus asset yang belum di publish');
+        }
+
+        if ($asset->deleted_at != null) {
+            throw new \Exception('Tidak bisa menghapus asset yang sudah di tempat sampah');
+        }
+
+        // Remove Asset Image
+        // $images = AssetImage::where('imageable_id', $asset->id)->get();
+        // foreach ($images as $image) {
+        //     $path = storage_path('app/images/asset');
+        //     $pathOld = $path . '/' . $image->path;
+        //     FileHelpers::removeFile($pathOld);
+        //     $image->delete();
+        // }
+
+        // Remove Depresiasi Asset
+        $depresiasis = DepresiasiAsset::where('id_asset_data', $asset->id)->get();
+        foreach ($depresiasis as $depresiasi) {
+            $depresiasi->delete();
+        }
+
+        // Remove Detail Pemindahan Assets
+        $detail_pemindahan_assets = DetailPemindahanAsset::where('id_asset', $asset->id)->get();
+        foreach ($detail_pemindahan_assets as $detail_pemindahan_asset) {
+            $detail_pemindahan_asset->delete();
+        }
+
+        // Remove Detail Peminjaman Asset
+        $detail_peminjaman_assets = DetailPeminjamanAsset::where('id_asset', $asset->id)->get();
+        foreach ($detail_peminjaman_assets as $detail_peminjaman_asset) {
+            $peminjaman_asset = PeminjamanAsset::where('id', $detail_peminjaman_asset->id_peminjaman_asset)->first();
+
+            $log_peminjaman_asset = new LogPeminjamanAsset();
+            $log_peminjaman_asset->peminjaman_asset_id = $peminjaman_asset->id;
+            $log_peminjaman_asset->created_by = Auth::user()->id;
+            $log_peminjaman_asset->log_message = "Asset " . $asset->deskripsi . " dengan kode asset " . $asset->kode_asset . " telah dihapus dari daftar peminjaman dikarenakan Asset dihapus oleh Admin";
+            $log_peminjaman_asset->save();
+
+            $detail_peminjaman_asset->delete();
+        }
+
+        // Remove Detail Pemutihan Asset
+        $detail_pemutihan_assets = DetailPemutihanAsset::where('id_asset_data', $asset->id)->get();
+        foreach ($detail_pemutihan_assets as $detail_pemutihan_asset) {
+            $detail_pemutihan_asset->delete();
+        }
+
+        // Remove Detail Service
+        $detail_services = DetailService::where('id_asset_data', $asset->id)->get();
+        foreach ($detail_services as $detail_service) {
+            $service = Service::where('id', $detail_service->id_service)->first();
+            $log_services = LogServiceAsset::where('id_service', $service->id)->get();
+            foreach ($log_services as $log_service) {
+                $log_service->delete();
+            }
+            $service->delete();
+            $detail_service->delete();
+        }
+
+        // Remove Log Asset
+        $log_assets = LogAsset::where('asset_id', $asset->id)->get();
+        foreach ($log_assets as $log_asset) {
+            $log_asset->delete();
+        }
+
+        // Remove Log Asset Opname
+        $log_opnames = LogAssetOpname::where('id_asset_data', $asset->id)->get();
+        foreach ($log_opnames as $log_opname) {
+            $log_opname->delete();
+        }
+
+        // Remove Pengaduan dan Log Pengaduan Asset
+        $pengaduans = Pengaduan::where('id_asset_data', $asset->id)->get();
+        foreach ($pengaduans as $pengaduan) {
+            $log_pengaduans = LogPengaduanAsset::where('id_pengaduan', $pengaduan->id)->get();
+            foreach ($log_pengaduans as $log_pengaduan) {
+                $log_pengaduan->delete();
+            }
+            $pengaduan->delete();
+        }
+
+        // Remove Perencanaan Services
+        $perencanaan_services = PerencanaanServices::where('id_asset_data', $asset->id)->get();
+        foreach ($perencanaan_services as $perencanaan_service) {
+            $perencanaan_service->delete();
+        }
+
+        return $asset->delete();
     }
 
     public function publishAssetMany(AssetDataPublishRequest $request)

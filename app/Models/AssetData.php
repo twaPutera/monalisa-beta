@@ -80,4 +80,9 @@ class AssetData extends Model
     {
         return $this->hasMany(PerencanaanServices::class, 'id_asset_data', 'id');
     }
+
+    public function depresiasi_asset()
+    {
+        return $this->hasMany(DepresiasiAsset::class, 'id_asset_data', 'id');
+    }
 }

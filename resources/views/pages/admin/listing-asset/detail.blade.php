@@ -671,6 +671,61 @@
             })
         }
 
+        const formSubmitRedirect = (button) => {
+            const url = $(button).data('url');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak",
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                        },
+                        cache: false,
+                        beforeSend: function() {
+                            $(".backdrop").show();
+                        },
+                        success: function(response) {
+                            $(".backdrop").hide();
+                            if (response.success) {
+                                $("body").trigger("_EventAjaxSuccess", [$(this), response]);
+                                setTimeout(function() {
+                                    window.location = response.location;
+                                }, 1000);
+                            } else {
+                                console.log(response);
+                                // showToaster(response.error, "Error");
+                            }
+                        },
+                        error: function(response) {
+                            // console.log(response)
+                            $(".backdrop").hide();
+                            $(".loadingSpiner").hide();
+                            let errors;
+                            if (response.status == 500) {
+                                errors = response.responseJSON;
+                            } else if (response.status == 422) {
+                                errors = response.responseJSON.errors;
+                            } else if (response.status == 400) {
+                                errors = response.responseJSON.errors;
+                            }
+                            $("body").trigger("_EventAjaxErrors", [$(this), errors]);
+                        },
+                    });
+                }
+            });
+        };
+
+
         const showOpname = (button) => {
             const url = $(button).data('url_detail');
             $.ajax({
@@ -958,9 +1013,23 @@
                                     @endif
                                 @else
                                     @if ($asset->is_pemutihan != 1)
-                                        <button onclick="openModalByClass('modalEditAsset')"
-                                            class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
-                                                class="fa fa-edit"></i></button>
+                                        <div class="text-center">
+                                            @if ($user->role == 'admin')
+                                                <form action="#" method="post">
+                                                    <button onclick="openModalByClass('modalEditAsset')"
+                                                        class="btn btn-primary btn-icon btn-sm shadow-custom"
+                                                        type="button"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-danger btn-icon btn-sm shadow-custom btn-submit"
+                                                        type="button" onclick="formSubmitRedirect(this)"
+                                                        data-url="{{ route('admin.listing-asset.putToTrash', $asset->id) }}"><i
+                                                            class="fa fa-trash"></i></button>
+                                                </form>
+                                            @else
+                                                <button onclick="openModalByClass('modalEditAsset')"
+                                                    class="btn btn-primary btn-icon btn-sm shadow-custom" type="button"><i
+                                                        class="fa fa-edit"></i></button>
+                                            @endif
+                                        </div>
                                     @endif
                                 @endif
                             </div>
@@ -1066,8 +1135,8 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-center">
-                                            <a href="{{ route('admin.listing-asset.print-qr-all') }}?id={{ $asset->id }}" target="_blank"
-                                                class="btn btn-primary shadow-custom btn-sm"><i
+                                            <a href="{{ route('admin.listing-asset.print-qr-all') }}?id={{ $asset->id }}"
+                                                target="_blank" class="btn btn-primary shadow-custom btn-sm"><i
                                                     class="fa fa-download"></i>
                                                 Unduh QR</a>
                                         </td>
