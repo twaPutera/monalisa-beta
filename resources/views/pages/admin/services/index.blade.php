@@ -69,21 +69,23 @@
                         data: 'kode_services'
                     },
                     {
-                        name: 'asset_data.deskripsi',
-                        data: 'asset_data.deskripsi'
+                        name: 'asset_deskripsi',
+                        data: 'asset_deskripsi'
                     },
                     {
-                        name: 'asset_data.is_inventaris',
-                        data: 'asset_data.is_inventaris',
+                        name: 'is_inventaris',
+                        data: 'is_inventaris',
                         render: function(type) {
                             return type == 1 ? "Inventaris" : "Asset";
                         }
                     },
                     {
-                        data: 'asset_data.nama_group'
+                        data: 'nama_group',
+                        name: 'nama_group'
                     },
                     {
-                        data: 'asset_data.nama_kategori'
+                        data: 'nama_kategori',
+                        name: 'nama_kategori'
                     },
                     {
                         name: 'status_service',

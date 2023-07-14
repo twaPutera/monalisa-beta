@@ -34,13 +34,15 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="id_kategori_asset" onchange="getNoUrutByKelompok(this)" class="form-control" id="kategoriAssetCreate">
+                                <select name="id_kategori_asset" onchange="getNoUrutByKelompok(this)"
+                                    class="form-control" id="kategoriAssetCreate">
 
                                 </select>
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Urut</label>
-                                <input type="text" class="form-control" onkeyup="generateKodeAsset(this)" name="no_urut">
+                                <input type="text" class="form-control" onkeyup="generateKodeAsset(this)"
+                                    name="no_urut">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Tanggal Perolehan</label>
@@ -139,6 +141,7 @@
                                         onchange="changeMemorandumStatus(this.value)">
                                         {{-- <option value="draft">Draft</option> --}}
                                         <option value="">Pilih Asal Memorandum</option>
+                                        <option value="tidak-ada">Tidak Ada Memorandum</option>
                                         <option value="andin">Dari ANDIN</option>
                                         <option value="manual">Input Manual</option>
                                     </select>

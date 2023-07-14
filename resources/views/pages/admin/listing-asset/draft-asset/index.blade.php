@@ -439,7 +439,7 @@
                             form.find('input[name="is_it"]').prop('checked', false);
                         }
 
-                        if (data.asset.id_surat_memo_andin) {
+                        if (data.asset.id_surat_memo_andin && data.asset.no_memo_surat) {
                             form.find('select[name="id_surat_memo_andin"]').append(
                                 `<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`
                             );
@@ -447,13 +447,22 @@
                                 `select[name="status_memorandum"] option[value="andin"]`
                             ).prop('selected', true);
                             changeMemorandumStatusEdit('andin');
-                        } else {
+                        } else if (
+                            (typeof data.asset.id_surat_memo_andin === 'undefined' ||
+                                !data.asset.id_surat_memo_andin) &&
+                            data.asset.no_memo_surat
+                        ) {
                             changeMemorandumStatusEdit('manual');
                             form.find('input[name="no_memo_surat_manual"]').val(data.asset.no_memo_surat);
                             form.find(
                                 `select[name="status_memorandum"] option[value="manual"]`
                             ).prop('selected', true);
 
+                        } else {
+                            changeMemorandumStatusEdit('tidak-ada');
+                            form.find(
+                                `select[name="status_memorandum"] option[value="tidak-ada"]`
+                            ).prop('selected', true);
                         }
                         const baseUrl = "{{ config('app.url') }}";
                         form.find("#preview-file-image").attr('src', baseUrl +

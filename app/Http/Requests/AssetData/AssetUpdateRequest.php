@@ -74,7 +74,7 @@ class AssetUpdateRequest extends FormRequest
             'no_memo_surat' => 'nullable|required_if:status_memorandum,andin|string|max:50',
             'no_memo_surat_manual' => 'nullable|required_if:status_memorandum,manual|string|max:50',
             'id_surat_memo_andin' => 'nullable|required_if:status_memorandum,andin|uuid',
-            'status_memorandum' => 'nullable|string|in:andin,manual',
+            'status_memorandum' => 'required|string|in:andin,manual,tidak-ada',
             'no_po' => 'nullable|string|max:50',
             'no_sp3' => 'nullable|string|max:50',
             // 'status_kondisi' => 'required|string|max:50',

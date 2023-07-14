@@ -155,11 +155,15 @@
                                         onchange="changeMemorandumStatusEdit(this.value)">
                                         {{-- <option value="draft">Draft</option> --}}
                                         <option value="">Pilih Asal Memorandum</option>
+                                        <option value="tidak-ada"
+                                            {{ !isset($asset->id_surat_memo_andin) && !isset($asset->no_memo_surat) ? 'selected' : '' }}>
+                                            Tidak Ada Memorandum</option>
                                         <option value="andin"
-                                            {{ isset($asset->id_surat_memo_andin) ? 'selected' : '' }}>
+                                            {{ isset($asset->id_surat_memo_andin) && isset($asset->no_memo_surat) ? 'selected' : '' }}>
                                             Dari ANDIN</option>
                                         <option value="manual"
-                                            {{ !isset($asset->id_surat_memo_andin) ? 'selected' : '' }}>Input Manual
+                                            {{ !isset($asset->id_surat_memo_andin) && isset($asset->no_memo_surat) ? 'selected' : '' }}>
+                                            Input Manual
                                         </option>
                                     </select>
                                 </div>

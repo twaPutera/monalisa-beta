@@ -35,7 +35,8 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Asset</label>
-                                <select name="id_kategori_asset" class="form-control" onchange="getNoUrutByKelompok(this)" id="kategoriAssetEdit">
+                                <select name="id_kategori_asset" class="form-control"
+                                    onchange="getNoUrutByKelompok(this)" id="kategoriAssetEdit">
 
                                 </select>
                             </div>
@@ -78,7 +79,8 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Jenis Perolehan</label>
-                                <select class="form-control" onchange="jenisAssetChangeEdit(this)" name="jenis_penerimaan">
+                                <select class="form-control" onchange="jenisAssetChangeEdit(this)"
+                                    name="jenis_penerimaan">
                                     <option selected="">Pilih Jenis Perolehan</option>
                                     <option data-asset-lama="0" value="PO">PO</option>
                                     <option data-asset-lama="0" value="Hibah Eksternal">Hibah Eksternal</option>
@@ -93,23 +95,19 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Urut</label>
-                                <input type="text" onkeyup="generateKodeAsset(this)" class="form-control" name="no_urut">
+                                <input type="text" onkeyup="generateKodeAsset(this)" class="form-control"
+                                    name="no_urut">
                             </div>
                             {{-- <div class="form-group col-md-4 col-6">
                                 <label for="">Nilai Buku (Rp)</label>
                                 <input type="number" class="form-control" name="nilai_buku_asset">
                             </div> --}}
-                            <div class="form-group col-md-4 col-6" id="asal-asset-container-edit" style="display: none;">
+                            <div class="form-group col-md-4 col-6" id="asal-asset-container-edit"
+                                style="display: none;">
                                 <label for="">Asal Asset</label>
                                 <input type="text" class="form-control" readonly id="asal_asset_preview">
                                 <input type="hidden" class="form-control" name="asal_asset" id="asal_asset_id">
                             </div>
-
-
-
-
-
-
                             <div class="col-12">
                                 <div class="row">
                                     <div class="form-group col-md-4 col-6 d-flex">
@@ -160,6 +158,7 @@
                                         onchange="changeMemorandumStatusEdit(this.value)">
                                         {{-- <option value="draft">Draft</option> --}}
                                         <option value="">Pilih Asal Memorandum</option>
+                                        <option value="tidak-ada">Tidak Ada Memorandum</option>
                                         <option value="andin">Dari ANDIN</option>
                                         <option value="manual">Input Manual</option>
                                     </select>
