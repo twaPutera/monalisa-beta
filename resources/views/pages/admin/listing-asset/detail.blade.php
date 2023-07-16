@@ -936,7 +936,7 @@
                                     {!! $kondisi !!}
                                 </div>
                                 <div class="d-flex justify-content-between mb-1 py-2 border-bottom">
-                                    <h6>Status Pemutihan</h6>
+                                    <h6>Status Penghapusan Asset</h6>
                                     @php
                                         if ($asset->is_pemutihan == 0) {
                                             $pemutihan = '<h6 class="text-center text-danger" style="font-size: 24px"><i

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Detail Pemutihan Asset</h5>
+                <h5 class="modal-title" id="">Detail Penghapusan Asset</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -12,10 +12,10 @@
                 <div class="modal-body row">
                     <div class="col-md-3 col-12">
                         <div class="mb-2">
-                            <h5>Deskripsi Pemutihan Asset</h5>
+                            <h5>Deskripsi Penghapusan Asset</h5>
                         </div>
                         <div class="form-group">
-                            <label for="">Tanggal Pemutihan</label>
+                            <label for="">Tanggal Penghapusan</label>
                             <input type="date" class="form-control" id="tanggalPemutihan" readonly>
                         </div>
                         <div class="form-group">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6 col-12">
                         <div class="mb-2">
-                            <h5>Detail item yang diputihkan</h5>
+                            <h5>Detail Item Dalam Penghapusan Asset</h5>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered">
@@ -50,7 +50,7 @@
                                         <th>Kode Asset</th>
                                         <th>Nama Asset</th>
                                         <th>Lokasi Asset</th>
-                                        <th>Keterangan Pemutihan</th>
+                                        <th>Keterangan Penghapusan Asset</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBodyDetailPeminjaman">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-md-3 col-12">
                         <div class="mb-2">
-                            <h5>Status Approval Pemutihan</h5>
+                            <h5>Status Approval Penghapusan Asset</h5>
                         </div>
                         <div class="form-group">
                             <label for="nama">Tanggal Approval</label>

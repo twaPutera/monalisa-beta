@@ -211,9 +211,9 @@
 
                             if (data.asset_data.is_pemutihan == 0) {
                                 var pemutihan =
-                                    '<span class="badge badge-success px-3">Tidak Diputihkan</span>';
+                                    '<span class="badge badge-success px-3">Tidak Dalam Penghapusan Asset</span>';
                             } else if (data.asset_data.is_pemutihan == 1) {
-                                var pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                                var pemutihan = '<span class="badge badge-danger px-3">Dalam Penghapusan Asset</span>';
                             } else {
                                 var pemutihan = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                             }

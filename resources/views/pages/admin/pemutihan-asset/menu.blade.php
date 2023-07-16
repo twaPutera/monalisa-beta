@@ -7,7 +7,7 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-list"></i>
             </span>
-            <span class="kt-nav__link-text">Asset Diputihkan</span> </a>
+            <span class="kt-nav__link-text">Asset Dalam Penghapusan</span> </a>
     </li>
     <li class="kt-nav__item">
         <a
@@ -17,6 +17,6 @@
             <span class="kt-nav__link-icon">
                 <i class="fas fa-map"></i>
             </span>
-            <span class="kt-nav__link-text">BAST Pemutihan</span> </a>
+            <span class="kt-nav__link-text">BA Penghapusan Asset</span> </a>
     </li>
 </ul>

@@ -84,7 +84,7 @@ class PemutihanAssetController extends Controller
                 if ($findAssetWhere->is_pemutihan == 1) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
+                        'message' => 'Terdapat item asset yang sudah dalam penghapusan asset sebelumnya',
                     ], 500);
                     break;
                 }
@@ -102,7 +102,7 @@ class PemutihanAssetController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil menambahkan data pemutihan asset',
+                'message' => 'Berhasil menambahkan data penghapusan asset',
                 'data' => $pemutihan,
                 'redirect' => true,
             ], 200);
@@ -136,7 +136,7 @@ class PemutihanAssetController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil menambahkan data pemutihan asset',
+                'message' => 'Berhasil menambahkan data penghapusan asset',
                 'data' => $pemutihan,
                 'redirect' => true,
             ], 200);
@@ -195,13 +195,13 @@ class PemutihanAssetController extends Controller
             if ($pemutihan) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Berhasil menghapus data pemutihan asset',
+                    'message' => 'Berhasil menghapus data penghapusan asset',
                     'data' => $pemutihan,
                 ], 200);
             }
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menghapus data pemutihan asset',
+                'message' => 'Gagal menghapus data penghapusan asset',
             ], 500);
         } catch (Throwable $th) {
             DB::rollBack();
@@ -238,7 +238,7 @@ class PemutihanAssetController extends Controller
             $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id, 'Draft');
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil mengambil data pemutihan asset',
+                'message' => 'Berhasil mengambil data penghapusan asset',
                 'data' => $pemutihan_asset,
             ], 200);
         } catch (\Throwable $th) {
@@ -293,7 +293,7 @@ class PemutihanAssetController extends Controller
             $pemutihan_asset = $this->pemutihanAssetQueryServices->findById($id);
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil mengambil data detail pemutihan asset',
+                'message' => 'Berhasil mengambil data detail penghapusan asset',
                 'data' => $pemutihan_asset,
             ], 200);
         } catch (\Throwable $th) {
@@ -315,7 +315,7 @@ class PemutihanAssetController extends Controller
                     break;
                     return response()->json([
                         'success' => false,
-                        'message' => 'Terdapat item asset yang sudah diputihkan sebelumnya',
+                        'message' => 'Terdapat item asset yang sudah dalam penghapusan asset sebelumnya',
                     ], 500);
                 }
             }
@@ -324,7 +324,7 @@ class PemutihanAssetController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil mengubah data pemutihan asset',
+                'message' => 'Berhasil mengubah data penghapusan asset',
                 'data' => $pemutihan,
                 'reload' => true,
             ], 200);
@@ -345,7 +345,7 @@ class PemutihanAssetController extends Controller
             DB::commit();
             return response()->json([
                 'success' => true,
-                'message' => 'Berhasil mengubah data pemutihan asset',
+                'message' => 'Berhasil mengubah data penghapusan asset',
                 'data' => $pemutihan,
                 'redirect' => true,
             ], 200);

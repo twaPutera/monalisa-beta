@@ -43,7 +43,7 @@
                             <div id="statusTerakhir"></div>
                         </div>
                         <div class="mt-2">
-                            <p class="text-dark mb-1"><strong>Status Pemutihan</strong></p>
+                            <p class="text-dark mb-1"><strong>Status Penghapusan Asset</strong></p>
                             <div id="statusPemutihan"></div>
                         </div>
                         <div class="form-group boxed">

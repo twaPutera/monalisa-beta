@@ -76,11 +76,11 @@ class PemutihanAssetCommandServices
             $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
             $find_asset_in_detail = DetailPemutihanAsset::where('id_asset_data', $find_asset->id)->first();
             if ($find_asset_in_detail) {
-                throw new Exception('Asset Yang Dipilih Sudah Ada Pada BAST Pemutihan!');
+                throw new Exception('Asset Yang Dipilih Sudah Ada Pada BA Penghapusan!');
                 break;
             }
             if ($find_asset->is_pemutihan != 0) {
-                throw new Exception('Asset Sudah Diputihkan!');
+                throw new Exception('Asset Sudah Dalam Penghapusan Asset!');
                 break;
             }
             $detail_pemutihan = new DetailPemutihanAsset();
@@ -126,8 +126,8 @@ class PemutihanAssetCommandServices
         // Notifikasi
         $created_by = User::find($pemutihan->created_by);
         $notifikasi = [
-            'title' => 'Pemutihan Asset',
-            'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
+            'title' => 'Penghapusan Asset',
+            'message' => 'Penghapusan Asset dengan nama penghapusan asset ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
             'url' => route('admin.pemutihan-asset.index'),
             'date' => date('d/m/Y H:i'),
         ];
@@ -138,8 +138,8 @@ class PemutihanAssetCommandServices
 
             // Notifikasi
             $notifikasi = [
-                'title' => 'Pemutihan Asset',
-                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
+                'title' => 'Penghapusan Asset',
+                'message' => 'Penghapusan Asset dengan nama penghapusan asset ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
                 'url' => route('admin.pemutihan-asset.index'),
                 'date' => date('d/m/Y H:i'),
             ];
@@ -206,8 +206,8 @@ class PemutihanAssetCommandServices
         if ($request->status_pemutihan == 'Publish') {
             // Notifikasi
             $notifikasi = [
-                'title' => 'Pemutihan Asset',
-                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
+                'title' => 'Penghapusan Asset',
+                'message' => 'Penghapusan Asset dengan nama penghapusan asset ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
                 'url' => route('admin.approval.pemutihan.index', ['pemutihan_id' => $pemutihan->id]),
                 'date' => date('d/m/Y H:i'),
             ];
@@ -262,7 +262,7 @@ class PemutihanAssetCommandServices
             if ($cek_detail_pemutihan == null) {
                 $find_asset = AssetData::with(['lokasi', 'kategori_asset'])->where('id', $id_checkbox)->first();
                 if ($find_asset->is_pemutihan != 0) {
-                    throw new Exception('Asset Sudah Diputihkan!');
+                    throw new Exception('Asset Sudah Dalam Penghapusan Asset!');
                     break;
                 }
                 $detail_pemutihan_create = new DetailPemutihanAsset();
@@ -367,8 +367,8 @@ class PemutihanAssetCommandServices
         if ($request->status_pemutihan == 'Publish') {
             // Notifikasi
             $notifikasi = [
-                'title' => 'Pemutihan Asset',
-                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
+                'title' => 'Penghapusan Asset',
+                'message' => 'Penghapusan Asset dengan nama penghapusan asset ' . $pemutihan->nama_pemutihan . ' telah diajukan oleh ' . $user->name,
                 'url' => route('admin.approval.pemutihan.index', ['pemutihan_id' => $pemutihan->id]),
                 'date' => date('d/m/Y H:i'),
             ];
@@ -398,11 +398,11 @@ class PemutihanAssetCommandServices
         $pemutihan = PemutihanAsset::findOrFail($id);
 
         if ($pemutihan->status != 'pending') {
-            throw new Exception('Pemutihan asset tidak dapat diubah statusnya');
+            throw new Exception('Penghapusan asset tidak dapat diubah statusnya');
         }
 
         if ($user->guid != $pemutihan->approval->guid_approver) {
-            throw new Exception('Anda tidak dapat mengubah status pemutihan asset ini');
+            throw new Exception('Anda tidak dapat mengubah status penghapusan asset ini');
         }
 
         $pemutihan->status = $request->status;
@@ -419,8 +419,8 @@ class PemutihanAssetCommandServices
         $created_by = User::find($pemutihan->created_by);
         // Notifikasi
         $notifikasi = [
-            'title' => 'Pemutihan Asset',
-            'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
+            'title' => 'Penghapusan Asset',
+            'message' => 'Penghapusan Asset dengan nama penghapusan ' . $pemutihan->nama_pemutihan . ' ditolak oleh ' . $user->name,
             'url' => route('admin.pemutihan-asset.index'),
             'date' => date('d/m/Y H:i'),
         ];
@@ -433,8 +433,8 @@ class PemutihanAssetCommandServices
 
             // Notifikasi
             $notifikasi = [
-                'title' => 'Pemutihan Asset',
-                'message' => 'Pemutihan Asset dengan nama pemutihan ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
+                'title' => 'Penghapusan Asset',
+                'message' => 'Penghapusan Asset dengan nama penghapusan asset ' . $pemutihan->nama_pemutihan . ' telah disetujui oleh ' . $user->name,
                 'url' => route('admin.pemutihan-asset.index'),
                 'date' => date('d/m/Y H:i'),
             ];

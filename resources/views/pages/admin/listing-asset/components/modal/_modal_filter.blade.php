@@ -35,11 +35,11 @@
                     </select>
                 </div>
                 <div class="form-group col-md-6 col-12">
-                    <label for="">Pemutihan</label>
+                    <label for="">Penghapusan Asset</label>
                     <select name="is_pemutihan" class="form-control" id="isPemutihanFilter">
                         <option value="all">Semua Asset</option>
-                        <option value="0" selected>Asset Yang Tidak Diputihkan</option>
-                        <option value="1">Asset Yang Diputihkan</option>
+                        <option value="0" selected>Asset Yang Tidak Dalam Penghapusan</option>
+                        <option value="1">Asset Yang Dalam Penghapusan</option>
                     </select>
                 </div>
             </div>

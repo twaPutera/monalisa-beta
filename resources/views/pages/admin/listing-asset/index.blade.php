@@ -493,7 +493,7 @@
                 <div class="d-flex align-items-center">
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
                         class="btn btn-danger shadow-custom btn-sm mr-2"><i class="fas fa-backspace"></i>
-                        Pemutihan</a>
+                        Penghapusan Asset</a>
                     <button type="button" onclick="generateLinkDownloadQr()" class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
                         Download All QR</button>
                     <a href="{{ route('admin.listing-asset.draft.index') }}"

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">List Asset Yang Akan Diputihkan</h5>
+                <h5 class="modal-title" id="">List Asset Yang Akan Penghapusan Asset</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="alert alert-danger d-none" id="alert-list-asset">List asset yang diputihkan wajib
+                        <div class="alert alert-danger d-none" id="alert-list-asset">List asset dalam penghapusan asset wajib
                             diisi
                         </div>
                         <div class="table-responsive">

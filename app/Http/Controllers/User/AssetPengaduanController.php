@@ -46,7 +46,7 @@ class AssetPengaduanController extends Controller
             }
             return response()->json([
                 'success' => false,
-                'message' => 'Asset Telah Diputihkan, Tidak Dapat Diadukan',
+                'message' => 'Asset Dalam Penghapusan, Tidak Dapat Diadukan',
             ], 500);
         } catch (\Throwable $th) {
             //throw $th;

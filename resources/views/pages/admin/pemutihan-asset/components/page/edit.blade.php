@@ -48,7 +48,7 @@
                         let errorAlert = $('#alert-error');
                         errorAlert.empty();
                         errorAlert.removeClass('d-none');
-                        errorAlert.append("Keterangan Pemutihan Asset Wajib Diisi");
+                        errorAlert.append("Keterangan Penghapusan Asset Wajib Diisi");
                     }
                     if (key.includes("gambar_asset")) {
                         let errorAlert = $('#alert-error');
@@ -224,12 +224,12 @@
         @csrf
         <div class="row">
             <div class="col-md-4 col-12">
-                <h5 class="mb-3"><strong class="text-primary">Pemutihan Asset</strong> <span class="text-gray"> -
-                        Ubah Data Pemutihan Asset</span></h5>
+                <h5 class="mb-3"><strong class="text-primary">Penghapusan Asset</strong> <span class="text-gray"> -
+                        Ubah Data Penghapusan Asset</span></h5>
                 <div class="pt-3 pb-1" style="border-radius: 9px; background: #E5F3FD;">
                     <table id="tableProperti" class="table table-striped">
                         <tr>
-                            <td width="40%">Tanggal Pemutihan</td>
+                            <td width="40%">Tanggal Penghapusan Asset</td>
                             <td>
                                 <input type="text" class="form-control datepickerCreate"
                                     value="{{ $pemutihan_asset->tanggal }}" readonly name="tanggal">
@@ -243,7 +243,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="40%">Nama Pemutihan</td>
+                            <td width="40%">Nama Penghapusan Asset</td>
                             <td>
                                 <input type="text" class="form-control" value="{{ $pemutihan_asset->nama_pemutihan }}"
                                     name="nama_pemutihan">
@@ -256,7 +256,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td width="40%">Status Pemutihan</td>
+                            <td width="40%">Status Penghapusan Asset</td>
                             <td>
                                 <select name="status_pemutihan" class="form-control">
                                     <option value="Draft" {{ $pemutihan_asset->status == 'Draft' ?? 'selected' }}>Draft
@@ -316,7 +316,7 @@
                     <div class="kt-portlet__head px-4">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                Daftar Asset Diputihkan <span
+                                Daftar Asset Dalam Penghapusan <span
                                     class="text-primary"><b>({{ $pemutihan_asset->detail_pemutihan_asset->count() }}
                                         Asset)</b></span>
                             </h3>
@@ -334,7 +334,7 @@
                     </div>
 
                     <div class="kt-portlet__body">
-                        <label for="">List Asset Yang Akan Diputihkan</label>
+                        <label for="">List Asset Yang Akan Penghapusan Asset</label>
                         <div class="table-responsive">
                             <table class="table table-striped dt_table" id="datatableExample">
                                 <thead>
@@ -346,7 +346,7 @@
                                         <th>Jenis Asset</th>
                                         <th>Tipe</th>
                                         <th>Lokasi Asset</th>
-                                        <th>Keterangan Pemutihan</th>
+                                        <th>Keterangan Penghapusan Asset</th>
                                         <th>Ubah Foto Asset</th>
                                     </tr>
                                 </thead>

@@ -7,7 +7,7 @@
     @if (Auth::user()->role == 'manager_it' || Auth::user()->role == 'manager_asset' || Auth::user()->role == 'admin')
         <li class="nav-item dropdown">
             <a class="nav-link @if (\Request::segment(3) == 'pemutihan') active @endif"
-                href="{{ route('admin.approval.pemutihan.index') }}">Pemutihan (<span
+                href="{{ route('admin.approval.pemutihan.index') }}">Penghapusan Asset (<span
                     id="pemutihan-approval-count">0</span>)</a>
         </li>
     @endif

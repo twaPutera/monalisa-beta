@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="">Detail Pemutihan Asset</h5>
+                <h5 class="modal-title" id="">Detail Penghapusan Asset</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
@@ -12,7 +12,7 @@
                 <div class="modal-body row">
                     <div class="col-12 col-md-4">
                         <div class="form-group">
-                            <label for="">Tanggal Pemutihan</label>
+                            <label for="">Tanggal Penghapusan Asset</label>
                             <input type="text" class="form-control" disabled name="tanggal">
                         </div>
                         <div class="form-group">
@@ -20,11 +20,11 @@
                             <input type="text" class="form-control" disabled name="no_memo">
                         </div>
                         <div class="form-group">
-                            <label for="">Keterangan Pemutihan</label>
+                            <label for="">Keterangan Penghapusan Asset</label>
                             <textarea cols="30" rows="10" class="form-control" disabled name="keterangan_pemutihan"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="">Status Pemutihan</label>
+                            <label for="">Status Penghapusan Asset</label>
                             <input type="text" class="form-control" disabled name="status_pemutihan">
                         </div>
                         <div class="form-group">
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="form-group">
-                            <label for="">Item Asset Yang Di Putihkan</label>
+                            <label for="">Item Asset Yang Dalam Penghapusan Asset</label>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0 detailAssetData" id="detailAssetData">
                                     <thead>
@@ -50,7 +50,7 @@
                                             <th>Tipe</th>
                                             <th>Lokasi Asset</th>
                                             <th>Kondisi Asset</th>
-                                            <th>Keterangan Pemutihan</th>
+                                            <th>Keterangan Penghapusan Asset</th>
                                         </tr>
                                     </thead>
                                     <tbody>

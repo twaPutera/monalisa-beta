@@ -130,7 +130,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Daftar Asset yang Diputihkan</span>
+                            Daftar Asset yang Dalam Penghapusan</span>
                         </h3>
                     </div>
                     <div class="kt-portlet__head-toolbar">
@@ -154,7 +154,7 @@
                                     <th>Tipe</th>
                                     <th>Lokasi Asset</th>
                                     <th>Kondisi Asset</th>
-                                    <th>Keterangan Pemutihan</th>
+                                    <th>Keterangan Penghapusan Asset</th>
                                 </tr>
                             </thead>
                             <tbody>

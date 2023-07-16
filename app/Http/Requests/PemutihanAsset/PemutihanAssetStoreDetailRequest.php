@@ -33,4 +33,12 @@ class PemutihanAssetStoreDetailRequest extends FormRequest
             'gambar_asset' => 'required|min:1',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'status_pemutihan' => 'Status penghapusan asset',
+            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset'
+        ];
+    }
 }

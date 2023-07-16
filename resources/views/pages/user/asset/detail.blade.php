@@ -114,14 +114,14 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Status Pemutihan</p>
+                        <p class="mb-0 text-green">Status Penghapusan Asset</p>
                     </div>
                     <div class="col text-end">
                         @php
                             if ($asset_data->is_pemutihan == 0) {
                                 $pemutihan = '<span class="badge badge-success px-3">Aktif</span>';
                             } elseif ($asset_data->is_pemutihan == 1) {
-                                $pemutihan = '<span class="badge badge-danger px-3">Diputihkan</span>';
+                                $pemutihan = '<span class="badge badge-danger px-3">Penghapusan Asset</span>';
                             } else {
                                 $pemutihan = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                             }

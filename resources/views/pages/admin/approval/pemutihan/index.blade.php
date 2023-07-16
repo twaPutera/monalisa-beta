@@ -237,7 +237,7 @@
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
                                     <th>No BAST</th>
-                                    <th>Jenis Pemutihan</th>
+                                    <th>Jenis Penghapusan</th>
                                     <th>Status</th>
                                     <th>Pemohon</th>
                                 </tr>

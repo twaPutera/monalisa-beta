@@ -422,7 +422,7 @@
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Daftar Berita Acara Pemutihan <span class="text-primary"><b>({{ $total_asset }} Berita
+                            Daftar Berita Acara Penghapusan Asset <span class="text-primary"><b>({{ $total_asset }} Berita
                                     Acara)</b></span>
                         </h3>
                     </div>
@@ -442,12 +442,12 @@
                                 <tr>
                                     <th width="50px">No</th>
                                     <th width="100px">#</th>
-                                    <th>Tanggal Pemutihan</th>
-                                    <th>Nama Pemutihan</th>
+                                    <th>Tanggal Penghapusan Asset</th>
+                                    <th>Nama Penghapusan Asset</th>
                                     <th>No Berita Acara</th>
-                                    <th>Keterangan Pemutihan</th>
-                                    <th>Status Pemutihan</th>
-                                    <th>Kepemilikan Pemutihan</th>
+                                    <th>Keterangan Penghapusan Asset</th>
+                                    <th>Status Penghapusan Asset</th>
+                                    <th>Kepemilikan Penghapusan Asset</th>
                                     <th>Diajukan Oleh</th>
                                 </tr>
                             </thead>

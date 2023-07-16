@@ -37,4 +37,13 @@ class PemutihanAssetUpdateRequest extends FormRequest
             'file_berita_acara' => 'nullable|mimes:pdf,docx,doc|max:4048',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'nama_pemutihan' => 'Nama penghapusan asset',
+            'keterangan_pemutihan' => 'Keterangan penghapusan asset',
+            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset'
+        ];
+    }
 }
