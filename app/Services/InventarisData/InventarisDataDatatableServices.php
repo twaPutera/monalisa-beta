@@ -4,6 +4,7 @@ namespace App\Services\InventarisData;
 
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
+use App\Models\KategoriInventori;
 use App\Models\RequestInventori;
 use Yajra\DataTables\DataTables;
 use App\Models\LogRequestInventori;
@@ -25,9 +26,42 @@ class InventarisDataDatatableServices
     public function datatable(Request $request)
     {
         $query = InventoriData::query();
-        $query->with(['kategori_inventori', 'satuan_inventori']);
-        $query->orderBy('created_at', 'ASC');
 
+        $query->with(['kategori_inventori', 'satuan_inventori']);
+
+        $filter = $request->toArray();
+
+        $order_column_index = $filter['order'][0]['column'] ?? 0;
+        $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
+
+        if (2 == $order_column_index) {
+            $query->orderBy('kode_inventori', $order_column_dir);
+        }
+
+        if (3 == $order_column_index) {
+            $query->orderBy('nama_inventori', $order_column_dir);
+        }
+
+        if (4 == $order_column_index) {
+            $subquery = KategoriInventori::select('kategori_inventories.id')
+                ->whereColumn('kategori_inventories.id', 'inventori_data.id_kategori_inventori')
+                ->orderBy('kategori_inventories.nama_kategori', $order_column_dir)
+                ->limit(1);
+
+            $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+        }
+
+        if (5== $order_column_index) {
+            $query->orderBy('jumlah_sebelumnya', $order_column_dir);
+        }
+
+        if (6== $order_column_index) {
+            $query->orderBy('jumlah_saat_ini', $order_column_dir);
+        }
+
+        if (7== $order_column_index) {
+            $query->orderBy('deskripsi_inventori', $order_column_dir);
+        }
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kategori', function ($item) {
