@@ -127,7 +127,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['sso_up:web', 'auth', 'role:
         Route::post('/update/{id}', [MasterAssetController::class, 'update'])->name('admin.listing-asset.update');
         Route::post('/update-draft/{id}', [MasterAssetController::class, 'updateDraft'])->name('admin.listing-asset.update.draft');
         Route::post('/destroy/{id}', [MasterAssetController::class, 'destroy'])->name('admin.listing-asset.destroy');
-        Route::post('/put-to-trash/{id}', [MasterAssetController::class, 'putToTrash'])->name('admin.listing-asset.putToTrash');
+        Route::post('/put-to-trash/{id}', [MasterAssetController::class, 'putToTrash'])->name('admin.listing-asset.putToTrash')->middleware('role:admin');
         Route::get('/download-template-import', [MasterAssetController::class, 'downloadTemplateImport'])->name('admin.listing-asset.download-template-import');
         Route::get('/get-all-data-owner-select2', [MasterAssetController::class, 'getDataAllOwnerSelect2'])->name('admin.listing-asset.get-all-data-owner-select2');
         Route::get('/get-all-data-asset-select2', [MasterAssetController::class, 'getDataAllAssetSelect2'])->name('admin.listing-asset.get-all-data-asset-select2');
@@ -485,7 +485,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::get('/detail/{id}', [UserPemindahanAssetController::class, 'detail'])->name('user.asset-data.pemindahan.detail');
             Route::post('/approve/{id}', [UserPemindahanAssetController::class, 'approve'])->name('user.asset-data.pemindahan.approve');
         });
-        Route::group(['prefix' => 'service'], function () {
+        Route::group(['prefix' => 'service', 'middleware' => ['role:manager_asset|manager_it|staff_asset|staff_it|admin']], function () {
             Route::get('/get-data-select2', [KategoriServiceController::class, 'getDataSelect2'])->name('user.asset-data.service.getDataSelect2');
             Route::get('/create/{id}', [UserAssetServicesController::class, 'create'])->name('user.asset-data.service.create');
             Route::post('/store/{id}', [UserAssetServicesController::class, 'store'])->name('user.asset-data.service.store');
@@ -499,7 +499,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['sso_up:web', 'auth', 'role:u
             Route::post('/store', [UserPeminjamanAssetController::class, 'store'])->name('user.asset-data.peminjaman.store');
             Route::post('/perpanjangan/{id}/store', [UserPeminjamanAssetController::class, 'storePerpanjangan'])->name('user.asset-data.peminjaman.perpanjangan.store');
         });
-        Route::group(['prefix' => 'opname'], function () {
+        Route::group(['prefix' => 'opname', 'middleware' => ['role:manager_asset|manager_it|staff_asset|staff_it|admin']], function () {
             Route::get('/create/{id}', [AssetOpnameController::class, 'create'])->name('user.asset-data.opname.create');
             Route::post('/store/{id}', [AssetOpnameController::class, 'store'])->name('user.asset-data.opname.store');
         });

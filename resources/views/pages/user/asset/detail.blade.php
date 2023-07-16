@@ -222,15 +222,18 @@
                 <ion-icon name="add-outline"></ion-icon>
                 <span class="">Pengaduan</span>
             </a>
-            <a class="btn btn-primary border-radius-sm px-3 me-2"
-                href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
-                <ion-icon name="add-outline"></ion-icon>
-                <span class="">Service</span>
-            </a>
-            <a class="btn btn-success border-radius-sm px-3"
-                href="{{ route('user.asset-data.opname.create', $asset_data->id) }}">
-                <ion-icon name="add-outline"></ion-icon>
-                <span class="">Opname</span>
-            </a>
+            
+            @if (Auth::user()->role != 'user')
+                <a class="btn btn-primary border-radius-sm px-3 me-2"
+                    href="{{ route('user.asset-data.service.create', $asset_data->id) }}">
+                    <ion-icon name="add-outline"></ion-icon>
+                    <span class="">Service</span>
+                </a>
+                <a class="btn btn-success border-radius-sm px-3"
+                    href="{{ route('user.asset-data.opname.create', $asset_data->id) }}">
+                    <ion-icon name="add-outline"></ion-icon>
+                    <span class="">Opname</span>
+                </a>
+            @endif
     </div @else @include('layouts.user.bottom-menu') @endif
     @endsection
