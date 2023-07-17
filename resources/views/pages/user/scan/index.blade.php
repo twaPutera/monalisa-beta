@@ -63,6 +63,7 @@
         //         preferFrontCamera: false,
         //     });
         // html5QrcodeScanner.render(onScanSuccess, onScanError);
+        
         // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
         function createCameraOptions(devices) {
             var cameraSelect = document.getElementById('camera-select');
@@ -160,69 +161,6 @@
             .catch(function(error) {
                 console.error('Failed to get media device list:', error);
             });
-
-
-        // navigator.mediaDevices.enumerateDevices()
-        //     .then(function(devices) {
-        //         var cameraSelect = document.getElementById('camera-select');
-
-        //         // Function to create camera options
-        //         function createCameraOptions(devices) {
-        //             cameraSelect.innerHTML = ''; // Clear previous options
-
-        //             var videoInputs = devices.filter(function(device) {
-        //                 return device.kind === 'videoinput';
-        //             });
-
-        //             videoInputs.forEach(function(device) {
-        //                 var option = document.createElement('option');
-        //                 option.value = device.deviceId;
-        //                 option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
-        //                 cameraSelect.appendChild(option);
-        //             });
-        //         }
-
-        //         // Update camera options initially
-        //         createCameraOptions(devices);
-
-        //         const html5QrCode = new Html5Qrcode("reader");
-
-        //         // Function to start QR code scanning
-        //         function startQrCodeScanning(cameraId) {
-        //             html5QrCode.start(
-        //                 cameraId, {
-        //                     fps: 30,
-        //                     qrbox: {
-        //                         width: 250,
-        //                         height: 250
-        //                     }
-        //                 },
-        //                 function(decodedText, decodedResult) {
-        //                     onScanSuccess(decodedText);
-        //                 },
-        //                 function(errorMessage) {
-        //                     onScanError(errorMessage);
-        //                 }
-        //             ).catch(function(err) {
-        //                 console.error('Failed to start QR code scanning:', err);
-        //             });
-        //         }
-
-        //         // Event listener for camera selection change
-        //         cameraSelect.addEventListener('change', function(event) {
-        //             var selectedCameraId = event.target.value;
-        //             html5QrCode.stop().then(function() {
-        //                 startQrCodeScanning(selectedCameraId);
-        //             });
-        //         });
-
-        //         // Start QR code scanning with the default camera
-        //         var defaultCameraId = cameraSelect.value;
-        //         startQrCodeScanning(defaultCameraId);
-        //     })
-        //     .catch(function(error) {
-        //         console.error('Failed to get media device list:', error);
-        //     });
     </script>
 @endsection
 @section('back-button')
@@ -238,7 +176,7 @@
                 <div class="col-md-5 col-12">
                     {{-- Scan Div --}}
                     <div id="reader"></div>
-                    <select id="camera-select"></select>
+                    <select id="camera-select" class="form-control"></select>
 
                 </div>
                 <div class="col-md-7 col-12">
