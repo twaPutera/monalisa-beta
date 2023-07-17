@@ -66,7 +66,7 @@
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
                 var backCameraId = null;
-                for (var i = 0; i < devices.length; i++) {
+                for (var i = devices.length - 1; i >= 0; i--) {
                     var device = devices[i];
                     if (device.kind === 'videoinput') {
                         backCameraId = device.deviceId;
