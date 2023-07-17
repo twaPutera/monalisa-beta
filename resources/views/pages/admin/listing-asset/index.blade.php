@@ -9,7 +9,7 @@
 @section('custom_css')
     <style>
         div.dataTables_wrapper {
-            width: 200% !important;
+            width: 250% !important;
         }
 
         #imgPreviewAsset {
