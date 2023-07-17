@@ -452,6 +452,7 @@
                             form.find('select[name="id_surat_memo_andin"]').append(
                                 `<option value="${data.asset.id_surat_memo_andin}" selected>${data.asset.no_memo_surat}</option>`
                             );
+                            form.find('input[name="no_memo_surat"]').val(data.asset.no_memo_surat);
                             form.find(
                                 `select[name="status_memorandum"] option[value="andin"]`
                             ).prop('selected', true);
