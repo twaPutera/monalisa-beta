@@ -84,7 +84,7 @@
                             }
                         },
                         (decodedText, decodedResult) => {
-                            // onScanSuccess(decodedText)
+                            onScanSuccess(decodedText)
                         },
                         (errorMessage) => {
                             onScanError(errorMessage)
