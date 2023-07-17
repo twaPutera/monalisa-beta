@@ -59,7 +59,8 @@
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "reader", {
                 fps: 30,
-                qrbox: 250
+                qrbox: 250,
+                preferFrontCamera: false,
             });
         html5QrcodeScanner.render(onScanSuccess, onScanError);
     </script>
