@@ -76,8 +76,10 @@
         </div>
         @foreach ($assets as $item)
             <div class="col-md-3 border border-dark p-2 @if ($loop->iteration % 16 == 0) page-break @endif">
-                <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $item->qr_code }}" class="my-3"
-                    width="100%" alt="">
+                <div class="text-center">
+                    <img src="{{ route('admin.listing-asset.preview-qr') . '?filename=' . $item->qr_code }}"
+                        class="my-3 mx-3" width="90%" alt="">
+                </div>
                 <div class="mt-3 text-center">
                     <h5>{{ $item->kode_asset }}</h5>
                     <h5>{{ $item->deskripsi }}</h5>
