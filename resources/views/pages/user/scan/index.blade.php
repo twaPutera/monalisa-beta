@@ -63,7 +63,7 @@
         //         preferFrontCamera: false,
         //     });
         // html5QrcodeScanner.render(onScanSuccess, onScanError);
-        
+
         // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
         function createCameraOptions(devices) {
             var cameraSelect = document.getElementById('camera-select');
@@ -80,6 +80,7 @@
                 cameraSelect.appendChild(option);
             });
         }
+        var html5QrCode;
 
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
@@ -104,7 +105,7 @@
                 // Update camera options initially
                 createCameraOptions(devices);
 
-                const html5QrCode = new Html5Qrcode("reader");
+               html5QrCode = new Html5Qrcode("reader");
 
                 // Function to start QR code scanning
                 function startQrCodeScanning(cameraId) {
@@ -161,6 +162,27 @@
             .catch(function(error) {
                 console.error('Failed to get media device list:', error);
             });
+
+        // Fungsi untuk memulai pemindaian dengan file
+        function startFileScanning(file) {
+            html5QrCode.stop().then(function() {
+                html5QrCode.scanFile(file, true)
+                    .then(function(decodedText, decodedResult) {
+                        onScanSuccess(decodedText);
+                    })
+                    .catch(function(error) {
+                        console.error('Failed to scan file:', error);
+                        onScanError('Failed to scan file: ' + error.message);
+                    });
+            });
+        }
+
+        // Event listener untuk memilih file
+        var fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            startFileScanning(file);
+        });
     </script>
 @endsection
 @section('back-button')
@@ -176,8 +198,18 @@
                 <div class="col-md-5 col-12">
                     {{-- Scan Div --}}
                     <div id="reader"></div>
-                    <select id="camera-select" class="form-control"></select>
+                    <div class="row gutters">
+                        <div class="col-6">
+                            <label for="file-input">Ganti Opsi Kamera</label>
+                            <select id="camera-select" class="form-control"></select>
 
+                        </div>
+                        <div class="col-6">
+                            <label for="file-input">Unggah QR Asset</label>
+                            <input type="file" id="file-input" class="form-control" accept=".png,.jpg,.jpeg">
+
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-7 col-12">
                     {{-- Info Div --}}
