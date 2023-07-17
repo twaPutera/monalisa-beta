@@ -56,13 +56,34 @@
         function onScanError(errorMessage) {
             document.getElementById('resultError').innerHTML = '<span class="result">' + errorMessage + '</span>';
         }
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", {
-                fps: 30,
-                qrbox: 250,
-                preferFrontCamera: false,
+        // var html5QrcodeScanner = new Html5QrcodeScanner(
+        //     "reader", {
+        //         fps: 30,
+        //         qrbox: 250,
+        //         preferFrontCamera: false,
+        //     });
+        // html5QrcodeScanner.render(onScanSuccess, onScanError);
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                var backCameraId = null;
+                devices.forEach(function(device) {
+                    if (device.kind === 'videoinput' && !device.label.toLowerCase().includes('front')) {
+                        backCameraId = device.deviceId;
+                    }
+                });
+
+                var scannerConfig = {
+                    fps: 30,
+                    qrbox: 250,
+                    preferFrontCamera: false,
+                    cameraId: backCameraId
+                };
+                var html5QrcodeScanner = new Html5QrcodeScanner("reader", scannerConfig);
+                html5QrcodeScanner.render(onScanSuccess, onScanError);
+            })
+            .catch(function(error) {
+                console.error('Gagal mendapatkan daftar perangkat media:', error);
             });
-        html5QrcodeScanner.render(onScanSuccess, onScanError);
     </script>
 @endsection
 @section('back-button')
