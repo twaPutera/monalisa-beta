@@ -92,95 +92,97 @@
             // Meminta izin pengguna untuk menggunakan kamera
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(function(stream) {
-                    // Kamera diizinkan, lanjutkan dengan logika pemindaian atau tampilan kamera yang diperlukan
+                    startCameraScaning();
                 })
                 .catch(function(error) {
-                    // Izin kamera ditolak atau terjadi kesalahan
                     console.error('Gagal meminta izin kamera:', error);
                 });
         } else {
             console.error('getUserMedia tidak didukung di peramban ini.');
         }
 
-        navigator.mediaDevices.enumerateDevices()
-            .then(function(devices) {
-                var cameraSelect = document.getElementById('camera-select');
+        function startCameraScaning() {
+            navigator.mediaDevices.enumerateDevices()
+                .then(function(devices) {
+                    var cameraSelect = document.getElementById('camera-select');
 
-                // Function to create camera options
-                function createCameraOptions(devices) {
-                    cameraSelect.innerHTML = ''; // Clear previous options
+                    // Function to create camera options
+                    function createCameraOptions(devices) {
+                        cameraSelect.innerHTML = ''; // Clear previous options
 
+                        var videoInputs = devices.filter(function(device) {
+                            return device.kind === 'videoinput';
+                        });
+
+                        videoInputs.forEach(function(device) {
+                            var option = document.createElement('option');
+                            option.value = device.deviceId;
+                            option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
+                            cameraSelect.appendChild(option);
+                        });
+                    }
+
+                    // Update camera options initially
+                    createCameraOptions(devices);
+
+                    html5QrCode = new Html5Qrcode("reader");
+
+                    // Function to start QR code scanning
+                    function startQrCodeScanning(cameraId) {
+                        html5QrCode.start(
+                            cameraId, {
+                                fps: 30,
+                                qrbox: {
+                                    width: 250,
+                                }
+                            },
+                            function(decodedText, decodedResult) {
+                                onScanSuccess(decodedText);
+                            },
+                            function(errorMessage) {
+                                onScanError(errorMessage);
+                            }
+                        ).catch(function(err) {
+                            console.error('Failed to start QR code scanning:', err);
+                        });
+                    }
+
+                    // Event listener for camera selection change
+                    cameraSelect.addEventListener('change', function(event) {
+                        var selectedCameraId = event.target.value;
+                        html5QrCode.stop().then(function() {
+                            startQrCodeScanning(selectedCameraId);
+                        });
+                    });
+
+                    // Find the back camera ID
+                    var backCameraId = null;
                     var videoInputs = devices.filter(function(device) {
                         return device.kind === 'videoinput';
                     });
 
-                    videoInputs.forEach(function(device) {
-                        var option = document.createElement('option');
-                        option.value = device.deviceId;
-                        option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
-                        cameraSelect.appendChild(option);
-                    });
-                }
-
-                // Update camera options initially
-                createCameraOptions(devices);
-
-                html5QrCode = new Html5Qrcode("reader");
-
-                // Function to start QR code scanning
-                function startQrCodeScanning(cameraId) {
-                    html5QrCode.start(
-                        cameraId, {
-                            fps: 30,
-                            qrbox: {
-                                width: 250,
-                            }
-                        },
-                        function(decodedText, decodedResult) {
-                            onScanSuccess(decodedText);
-                        },
-                        function(errorMessage) {
-                            onScanError(errorMessage);
+                    for (var i = 0; i < videoInputs.length; i++) {
+                        var device = videoInputs[i];
+                        if (!device.label.toLowerCase().includes('front')) {
+                            backCameraId = device.deviceId;
+                            break;
                         }
-                    ).catch(function(err) {
-                        console.error('Failed to start QR code scanning:', err);
-                    });
-                }
-
-                // Event listener for camera selection change
-                cameraSelect.addEventListener('change', function(event) {
-                    var selectedCameraId = event.target.value;
-                    html5QrCode.stop().then(function() {
-                        startQrCodeScanning(selectedCameraId);
-                    });
-                });
-
-                // Find the back camera ID
-                var backCameraId = null;
-                var videoInputs = devices.filter(function(device) {
-                    return device.kind === 'videoinput';
-                });
-
-                for (var i = 0; i < videoInputs.length; i++) {
-                    var device = videoInputs[i];
-                    if (!device.label.toLowerCase().includes('front')) {
-                        backCameraId = device.deviceId;
-                        break;
                     }
-                }
 
-                // Set the back camera as the default selection
-                if (backCameraId) {
-                    cameraSelect.value = backCameraId;
-                }
+                    // Set the back camera as the default selection
+                    if (backCameraId) {
+                        cameraSelect.value = backCameraId;
+                    }
 
-                // Start QR code scanning with the default camera
-                var defaultCameraId = cameraSelect.value;
-                startQrCodeScanning(defaultCameraId);
-            })
-            .catch(function(error) {
-                console.error('Failed to get media device list:', error);
-            });
+                    // Start QR code scanning with the default camera
+                    var defaultCameraId = cameraSelect.value;
+                    startQrCodeScanning(defaultCameraId);
+                })
+                .catch(function(error) {
+                    console.error('Failed to get media device list:', error);
+                });
+        }
+
 
         // Fungsi untuk memulai pemindaian dengan file
         function startFileScanning(file) {
