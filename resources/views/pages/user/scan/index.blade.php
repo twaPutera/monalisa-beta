@@ -63,35 +63,56 @@
         //         preferFrontCamera: false,
         //     });
         // html5QrcodeScanner.render(onScanSuccess, onScanError);
+        // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
+        function createCameraOptions(devices) {
+            var cameraSelect = document.getElementById('camera-select');
+            cameraSelect.innerHTML = ''; // Menghapus opsi yang ada sebelumnya
+
+            var videoInputs = devices.filter(function(device) {
+                return device.kind === 'videoinput';
+            });
+
+            videoInputs.forEach(function(device) {
+                var option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = device.label || 'Kamera ' + (videoInputs.indexOf(device) + 1);
+                cameraSelect.appendChild(option);
+            });
+        }
 
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
-                var backCameraId = null;
-                for (var i = devices.length - 1; i >= 0; i--) {
-                    var device = devices[i];
-                    if (device.kind === 'videoinput') {
-                        backCameraId = device.deviceId;
-                        break;
-                    }
-                }
+                createCameraOptions(devices);
+
+                var cameraSelect = document.getElementById('camera-select');
+                var selectedCameraId = cameraSelect.value;
+
                 const html5QrCode = new Html5Qrcode("reader");
                 html5QrCode.start(
-                        backCameraId, {
-                            fps: 30,
-                            qrbox: {
-                                width: 250,
-                                height: 250
-                            }
-                        },
-                        (decodedText, decodedResult) => {
-                            onScanSuccess(decodedText)
-                        },
-                        (errorMessage) => {
-                            onScanError(errorMessage)
-                        })
-                    .catch((err) => {
-                        console.error('Gagal mendapatkan daftar perangkat media:', error);
+                    selectedCameraId, {
+                        fps: 30,
+                        qrbox: {
+                            width: 250,
+                            height: 250
+                        }
+                    },
+                    function(decodedText, decodedResult) {
+                        onScanSuccess(decodedText);
+                    },
+                    function(errorMessage) {
+                        onScanError(errorMessage);
+                    }
+                ).catch(function(err) {
+                    console.error('Gagal mendapatkan daftar perangkat media:', err);
+                });
+
+                // Memperbarui pemindaian saat opsi kamera berubah
+                cameraSelect.addEventListener('change', function(event) {
+                    selectedCameraId = event.target.value;
+                    html5QrCode.stop().then(function() {
+                        html5QrCode.start(selectedCameraId);
                     });
+                });
             })
             .catch(function(error) {
                 console.error('Gagal mendapatkan daftar perangkat media:', error);
@@ -111,6 +132,8 @@
                 <div class="col-md-5 col-12">
                     {{-- Scan Div --}}
                     <div id="reader"></div>
+                    <select id="camera-select"></select>
+
                 </div>
                 <div class="col-md-7 col-12">
                     {{-- Info Div --}}
