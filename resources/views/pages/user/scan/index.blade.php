@@ -63,6 +63,7 @@
         //         preferFrontCamera: false,
         //     });
         // html5QrcodeScanner.render(onScanSuccess, onScanError);
+
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
                 var backCameraId = null;
@@ -73,16 +74,24 @@
                         break;
                     }
                 }
-
-                var scannerConfig = {
-                    fps: 30,
-                    qrbox: 250,
-                    preferFrontCamera: false,
-                    cameraId: backCameraId
-                };
-
-                var html5QrcodeScanner = new Html5QrcodeScanner("reader", scannerConfig);
-                html5QrcodeScanner.render(onScanSuccess, onScanError);
+                const html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start(
+                        backCameraId, {
+                            fps: 30,
+                            qrbox: {
+                                width: 250,
+                                height: 250
+                            }
+                        },
+                        (decodedText, decodedResult) => {
+                            // onScanSuccess(decodedText)
+                        },
+                        (errorMessage) => {
+                            onScanError(errorMessage)
+                        })
+                    .catch((err) => {
+                        console.error('Gagal mendapatkan daftar perangkat media:', error);
+                    });
             })
             .catch(function(error) {
                 console.error('Gagal mendapatkan daftar perangkat media:', error);
