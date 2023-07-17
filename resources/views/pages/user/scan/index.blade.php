@@ -66,11 +66,13 @@
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
                 var backCameraId = null;
-                devices.forEach(function(device) {
-                    if (device.kind === 'videoinput' && !device.label.toLowerCase().includes('front')) {
+                for (var i = 0; i < devices.length; i++) {
+                    var device = devices[i];
+                    if (device.kind === 'videoinput') {
                         backCameraId = device.deviceId;
+                        break;
                     }
-                });
+                }
 
                 var scannerConfig = {
                     fps: 30,
