@@ -188,6 +188,9 @@
                     },
                     {
                         data: 'nama_vendor'
+                    },
+                    {
+                        data: 'updated_at'
                     }
                 ],
                 columnDefs: [{
@@ -195,6 +198,12 @@
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         }
+                    },
+                    {
+                        targets: 16,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        },
                     },
                     {
                         targets: 8,
@@ -476,8 +485,8 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
-                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()" class="form-control form-control-sm"
-                            placeholder="Search for...">
+                        <input type="text" id="searchAsset" onkeyup="filterTableAsset()"
+                            class="form-control form-control-sm" placeholder="Search for...">
                         <div class="input-group-append">
                             <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButtonAsset"
                                 type="button"><i class="fa fa-search"></i></button>
@@ -494,12 +503,14 @@
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
                         class="btn btn-danger shadow-custom btn-sm mr-2"><i class="fas fa-backspace"></i>
                         Penghapusan Asset</a>
-                    <button type="button" onclick="generateLinkDownloadQr()" class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
+                    <button type="button" onclick="generateLinkDownloadQr()"
+                        class="btn btn-success shadow-custom btn-sm mr-2"><i class="fas fa-download"></i>
                         Download All QR</button>
                     <a href="{{ route('admin.listing-asset.draft.index') }}"
                         class="btn btn-primary shadow-custom btn-sm mr-2"><i class="fas fa-file"></i>
                         Draft Aset</a>
-                    <a href="{{ route('admin.listing-asset.print-qr-all') }}" target="_blank" class="btn btn-sm btn-info"><i class="fas fa-qrcode"></i> Print QR</a>
+                    <a href="{{ route('admin.listing-asset.print-qr-all') }}" target="_blank"
+                        class="btn btn-sm btn-info"><i class="fas fa-qrcode"></i> Print QR</a>
                     {{-- <button onclick="openModalByClass('modalImportAsset')" class="btn btn-success shadow-custom btn-sm mr-2"
                         type="button"><i class="fa fa-file"></i> Import CSV</button>
                     <button onclick="openModalByClass('modalCreateAsset')" class="btn btn-primary shadow-custom btn-sm"
@@ -533,6 +544,7 @@
                                     <th width="150px">Register Oleh</th>
                                     <th width="150px">Satuan</th>
                                     <th width="150px">Vendor</th>
+                                    <th width="150px">Last Update</th>
                                 </tr>
                             </thead>
                             <tbody>

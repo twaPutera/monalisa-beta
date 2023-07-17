@@ -167,12 +167,21 @@
                     },
                     {
                         data: 'nama_vendor'
+                    },
+                    {
+                        data: 'updated_at'
                     }
                 ],
                 columnDefs: [{
                         targets: 1,
                         render: function(data, type, full, meta) {
                             return `<input type="checkbox" class="check-item" onchange="checklistAsset(this)" name="id_asset[]" value="${data}">`;
+                        },
+                    },
+                    {
+                        targets: 17,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
                         },
                     },
                     {
@@ -695,6 +704,7 @@
                                     <th width="150px">Register Oleh</th>
                                     <th width="150px">Satuan</th>
                                     <th width="150px">Vendor</th>
+                                    <th width="150px">Last Update</th>
                                 </tr>
                             </thead>
                             <tbody>

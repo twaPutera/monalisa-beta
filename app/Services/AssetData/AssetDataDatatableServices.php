@@ -215,6 +215,9 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
+            if (17 == $order_column_index) {
+                $query->orderBy('updated_at', $order_column_dir);
+            }
             // END SORT DRAFT
         }
 
@@ -287,6 +290,9 @@ class AssetDataDatatableServices
                     ->limit(1);
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
+            }
+            if (16 == $order_column_index) {
+                $query->orderBy('updated_at', $order_column_dir);
             }
             // END SORT GENERAL
         }
