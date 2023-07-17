@@ -82,6 +82,26 @@
         }
         var html5QrCode;
 
+        // Periksa apakah perangkat mendukung getUserMedia
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Konfigurasi konstrain video
+            var constraints = {
+                video: true
+            };
+
+            // Meminta izin pengguna untuk menggunakan kamera
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    // Kamera diizinkan, lanjutkan dengan logika pemindaian atau tampilan kamera yang diperlukan
+                })
+                .catch(function(error) {
+                    // Izin kamera ditolak atau terjadi kesalahan
+                    console.error('Gagal meminta izin kamera:', error);
+                });
+        } else {
+            console.error('getUserMedia tidak didukung di peramban ini.');
+        }
+
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
                 var cameraSelect = document.getElementById('camera-select');
@@ -105,7 +125,7 @@
                 // Update camera options initially
                 createCameraOptions(devices);
 
-               html5QrCode = new Html5Qrcode("reader");
+                html5QrCode = new Html5Qrcode("reader");
 
                 // Function to start QR code scanning
                 function startQrCodeScanning(cameraId) {
