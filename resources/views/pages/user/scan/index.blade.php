@@ -114,7 +114,6 @@
                             fps: 30,
                             qrbox: {
                                 width: 250,
-                                height: 250
                             }
                         },
                         function(decodedText, decodedResult) {
@@ -226,9 +225,7 @@
                             <div class="alert alert-success d-none" id="resultSuccess"></div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
