@@ -78,6 +78,7 @@
                     preferFrontCamera: false,
                     cameraId: backCameraId
                 };
+                alert(backCameraId);
                 var html5QrcodeScanner = new Html5QrcodeScanner("reader", scannerConfig);
                 html5QrcodeScanner.render(onScanSuccess, onScanError);
             })
