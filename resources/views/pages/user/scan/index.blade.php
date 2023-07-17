@@ -70,7 +70,7 @@
                     if (device.kind === 'videoinput' && !device.label.toLowerCase().includes('front')) {
                         backCameraId = device.deviceId;
                     }
-                    alert(device);
+                    alert(device.kind, device.label);
                 });
 
                 var scannerConfig = {
