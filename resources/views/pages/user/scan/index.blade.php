@@ -82,40 +82,64 @@
 
         navigator.mediaDevices.enumerateDevices()
             .then(function(devices) {
+                var cameraSelect = document.getElementById('camera-select');
+
+                // Function to create camera options
+                function createCameraOptions(devices) {
+                    cameraSelect.innerHTML = ''; // Clear previous options
+
+                    var videoInputs = devices.filter(function(device) {
+                        return device.kind === 'videoinput';
+                    });
+
+                    videoInputs.forEach(function(device) {
+                        var option = document.createElement('option');
+                        option.value = device.deviceId;
+                        option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
+                        cameraSelect.appendChild(option);
+                    });
+                }
+
+                // Update camera options initially
                 createCameraOptions(devices);
 
-                var cameraSelect = document.getElementById('camera-select');
-                var selectedCameraId = cameraSelect.value;
-
                 const html5QrCode = new Html5Qrcode("reader");
-                html5QrCode.start(
-                    selectedCameraId, {
-                        fps: 30,
-                        qrbox: {
-                            width: 250,
-                            height: 250
-                        }
-                    },
-                    function(decodedText, decodedResult) {
-                        onScanSuccess(decodedText);
-                    },
-                    function(errorMessage) {
-                        onScanError(errorMessage);
-                    }
-                ).catch(function(err) {
-                    console.error('Gagal mendapatkan daftar perangkat media:', err);
-                });
 
-                // Memperbarui pemindaian saat opsi kamera berubah
+                // Function to start QR code scanning
+                function startQrCodeScanning(cameraId) {
+                    html5QrCode.start(
+                        cameraId, {
+                            fps: 30,
+                            qrbox: {
+                                width: 250,
+                                height: 250
+                            }
+                        },
+                        function(decodedText, decodedResult) {
+                            onScanSuccess(decodedText);
+                        },
+                        function(errorMessage) {
+                            onScanError(errorMessage);
+                        }
+                    ).catch(function(err) {
+                        console.error('Failed to start QR code scanning:', err);
+                    });
+                }
+
+                // Event listener for camera selection change
                 cameraSelect.addEventListener('change', function(event) {
-                    selectedCameraId = event.target.value;
+                    var selectedCameraId = event.target.value;
                     html5QrCode.stop().then(function() {
-                        html5QrCode.start(selectedCameraId);
+                        startQrCodeScanning(selectedCameraId);
                     });
                 });
+
+                // Start QR code scanning with the default camera
+                var defaultCameraId = cameraSelect.value;
+                startQrCodeScanning(defaultCameraId);
             })
             .catch(function(error) {
-                console.error('Gagal mendapatkan daftar perangkat media:', error);
+                console.error('Failed to get media device list:', error);
             });
     </script>
 @endsection
