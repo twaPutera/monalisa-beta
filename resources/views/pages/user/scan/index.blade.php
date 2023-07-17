@@ -70,6 +70,7 @@
                     if (device.kind === 'videoinput' && !device.label.toLowerCase().includes('front')) {
                         backCameraId = device.deviceId;
                     }
+                    alert(device);
                 });
 
                 var scannerConfig = {
@@ -78,7 +79,6 @@
                     preferFrontCamera: false,
                     cameraId: backCameraId
                 };
-                alert(backCameraId);
                 var html5QrcodeScanner = new Html5QrcodeScanner("reader", scannerConfig);
                 html5QrcodeScanner.render(onScanSuccess, onScanError);
             })
