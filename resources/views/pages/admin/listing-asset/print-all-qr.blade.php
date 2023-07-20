@@ -52,23 +52,36 @@
                         <ul class="pagination">
                             <!-- Tautan Halaman Sebelumnya -->
                             <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link" href="{{ $assets->url($assets->currentPage() - 1) }}">Previous</a>
+                                @php
+                                    $params = array_merge(request()->all(), ['page' => $assets->currentPage() - 1]);
+                                    $queryString = http_build_query($params);
+                                @endphp
+                                <a class="page-link" href="{{ url()->current() . '?' . $queryString }}">Previous</a>
                             </li>
 
                             <!-- Tautan Halaman -->
                             @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
                                 <li class="page-item">
+                                    @php
+                                        $params = array_merge(request()->all(), ['page' => $i]);
+                                        $queryString = http_build_query($params);
+                                    @endphp
                                     <a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>"
-                                        href="{{ $assets->url($i) }}">{{ $i }}</a>
+                                        href="{{ url()->current() . '?' . $queryString }}">{{ $i }}</a>
                                 </li>
                             @endfor
 
                             <!-- Tautan Halaman Berikutnya -->
                             <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link" href="{{ $assets->url($assets->currentPage() + 1) }}">Next</a>
+                                @php
+                                    $params = array_merge(request()->all(), ['page' => $assets->currentPage() + 1]);
+                                    $queryString = http_build_query($params);
+                                @endphp
+                                <a class="page-link" href="{{ url()->current() . '?' . $queryString }}">Next</a>
                             </li>
                         </ul>
                     @endif
+
 
                 </nav>
                 <form action="" method="GET" class="d-flex align-items-center">
