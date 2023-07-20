@@ -50,22 +50,26 @@
                 <nav aria-label="Page navigation example">
                     @if ($assets->lastPage() > 1)
                         <ul class="pagination">
+                            <!-- Tautan Halaman Sebelumnya -->
                             <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link"
-                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() - 1) }}">Previous</a>
+                                <a class="page-link" href="{{ $assets->url($assets->currentPage() - 1) }}">Previous</a>
                             </li>
+
+                            <!-- Tautan Halaman -->
                             @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
                                 <li class="page-item">
                                     <a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>"
-                                        href="{{ url()->current() . '?page=' . $i }}">{{ $i }}</a>
+                                        href="{{ $assets->url($i) }}">{{ $i }}</a>
                                 </li>
                             @endfor
+
+                            <!-- Tautan Halaman Berikutnya -->
                             <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link"
-                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() + 1) }}">Next</a>
+                                <a class="page-link" href="{{ $assets->url($assets->currentPage() + 1) }}">Next</a>
                             </li>
                         </ul>
                     @endif
+
                 </nav>
                 <form action="" method="GET" class="d-flex align-items-center">
                     <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-info mr-2 shadow-custom"
