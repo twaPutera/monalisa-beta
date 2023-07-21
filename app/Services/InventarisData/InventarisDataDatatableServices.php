@@ -226,7 +226,7 @@ class InventarisDataDatatableServices
     {
         $query = RequestInventori::query();
         $query->with(['detail_request_inventori']);
-        $query->orderBy('created_at', 'ASC');
+        // $query->orderBy('created_at', 'ASC');
 
         // Search
         $request_arr = $request->toArray();
