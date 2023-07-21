@@ -51,15 +51,15 @@ class InventarisDataDatatableServices
             $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
         }
 
-        if (5== $order_column_index) {
+        if (5 == $order_column_index) {
             $query->orderBy('jumlah_sebelumnya', $order_column_dir);
         }
 
-        if (6== $order_column_index) {
+        if (6 == $order_column_index) {
             $query->orderBy('jumlah_saat_ini', $order_column_dir);
         }
 
-        if (7== $order_column_index) {
+        if (7 == $order_column_index) {
             $query->orderBy('deskripsi_inventori', $order_column_dir);
         }
         return DataTables::of($query)
@@ -229,8 +229,8 @@ class InventarisDataDatatableServices
         $query->orderBy('created_at', 'ASC');
 
         // Search
-        $search = $request->toArray();
-        $search_column = $search['search']['value'];
+        $request_arr = $request->toArray();
+        $search_column = $request_arr['search']['value'];
         if ($search_column != null) {
             // $query->where(function ($query) use ($search_column) {
             $query->where('created_at', 'like', '%' . $search_column . '%')
@@ -247,6 +247,47 @@ class InventarisDataDatatableServices
                 ->orWhere('jabatan', 'like', '%' . $search_column . '%')
                 ->orWhere('no_memo', 'like', '%' . $search_column . '%');
             // });
+        }
+
+        // Filter
+        $order_column_index = $request_arr['order'][0]['column'] ?? 0;
+        $order_column_dir = $request_arr['order'][0]['dir'] ?? 'desc';
+
+
+        if (2 == $order_column_index) {
+            $query->orderBy('created_at', $order_column_dir);
+        }
+
+        if (3 == $order_column_index) {
+            $query->orderBy('kode_request', $order_column_dir);
+        }
+
+        if (4 == $order_column_index) {
+            $query->orderBy('tanggal_pengambilan', $order_column_dir);
+        }
+
+        if (5 == $order_column_index) {
+            $query->orderBy('no_memo', $order_column_dir);
+        }
+
+        if (6 == $order_column_index) {
+            $query->orderBy('guid_pengaju', $order_column_dir);
+        }
+
+        if (7 == $order_column_index) {
+            $query->orderBy('unit_kerja', $order_column_dir);
+        }
+
+        if (8 == $order_column_index) {
+            $query->orderBy('jabatan', $order_column_dir);
+        }
+
+        if (9 == $order_column_index) {
+            $query->orderBy('status', $order_column_dir);
+        }
+
+        if (10 == $order_column_index) {
+            $query->orderBy('alasan', $order_column_dir);
         }
 
         return DataTables::of($query)

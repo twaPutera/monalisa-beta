@@ -7,11 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print All Qr</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link href="{{ asset('assets/vendors/custom/vendors/line-awesome/css/line-awesome.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
     <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
+    
     <style>
         .page-break {
             page-break-after: always;
@@ -61,12 +63,12 @@
 
                             <!-- Tautan Halaman -->
                             @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
-                                <li class="page-item">
+                                <li class="page-item <?php if($assets->currentPage() == $i):?> active <?php endif; ?>">
                                     @php
                                         $params = array_merge(request()->all(), ['page' => $i]);
                                         $queryString = http_build_query($params);
                                     @endphp
-                                    <a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>"
+                                    <a class="page-link"
                                         href="{{ url()->current() . '?' . $queryString }}">{{ $i }}</a>
                                 </li>
                             @endfor
@@ -113,7 +115,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="">Filter Asset</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="la la-remove"></span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <form action="">
