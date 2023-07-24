@@ -218,7 +218,7 @@
                 <div class="col-md-5 col-12">
                     {{-- Scan Div --}}
                     <div id="reader"></div>
-                    {{-- <div class="row gutters">
+                    <div class="row gutters">
                         <div class="col-6">
                             <label for="file-input">Ganti Opsi Kamera</label>
                             <select id="camera-select" class="form-control"></select>
@@ -229,7 +229,7 @@
                             <input type="file" id="file-input" class="form-control" accept=".png,.jpg,.jpeg">
 
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="col-md-7 col-12">
                     {{-- Info Div --}}
