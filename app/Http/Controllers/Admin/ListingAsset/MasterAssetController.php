@@ -663,6 +663,8 @@ class MasterAssetController extends Controller
             $assets->where('is_draft', $request->is_draft);
         }
 
+        $assets->orderBy('kode_asset', 'ASC');
+
         $assets = $assets->where('is_draft', '0')
             ->where('is_pemutihan', '0')
             ->select('id', 'kode_asset', 'deskripsi', 'qr_code')
