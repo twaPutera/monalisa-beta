@@ -7,11 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print All Qr</title>
     <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+    <link href="{{ asset('assets/vendors/custom/vendors/line-awesome/css/line-awesome.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet"
         href="{{ asset('assets/vendors/general/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
     <link href="{{ asset('assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.min.css') }}" rel="stylesheet" type="text/css" />
+    
     <style>
         .page-break {
             page-break-after: always;
@@ -50,22 +52,39 @@
                 <nav aria-label="Page navigation example">
                     @if ($assets->lastPage() > 1)
                         <ul class="pagination">
+                            <!-- Tautan Halaman Sebelumnya -->
                             <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link"
-                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() - 1) }}">Previous</a>
+                                @php
+                                    $params = array_merge(request()->all(), ['page' => $assets->currentPage() - 1]);
+                                    $queryString = http_build_query($params);
+                                @endphp
+                                <a class="page-link" href="{{ url()->current() . '?' . $queryString }}">Previous</a>
                             </li>
+
+                            <!-- Tautan Halaman -->
                             @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
-                                <li class="page-item">
-                                    <a class="page-link <?php if($assets->currentPage() == $i):?> active <?php endif; ?>"
-                                        href="{{ url()->current() . '?page=' . $i }}">{{ $i }}</a>
+                                <li class="page-item <?php if($assets->currentPage() == $i):?> active <?php endif; ?>">
+                                    @php
+                                        $params = array_merge(request()->all(), ['page' => $i]);
+                                        $queryString = http_build_query($params);
+                                    @endphp
+                                    <a class="page-link"
+                                        href="{{ url()->current() . '?' . $queryString }}">{{ $i }}</a>
                                 </li>
                             @endfor
+
+                            <!-- Tautan Halaman Berikutnya -->
                             <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
-                                <a class="page-link"
-                                    href="{{ url()->current() . '?page=' . ($assets->currentPage() + 1) }}">Next</a>
+                                @php
+                                    $params = array_merge(request()->all(), ['page' => $assets->currentPage() + 1]);
+                                    $queryString = http_build_query($params);
+                                @endphp
+                                <a class="page-link" href="{{ url()->current() . '?' . $queryString }}">Next</a>
                             </li>
                         </ul>
                     @endif
+
+
                 </nav>
                 <form action="" method="GET" class="d-flex align-items-center">
                     <button onclick="openModalByClass('modalFilterAsset')" class="btn btn-info mr-2 shadow-custom"
@@ -96,7 +115,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="">Filter Asset</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="la la-remove"></span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <form action="">
