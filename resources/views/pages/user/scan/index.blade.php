@@ -11,7 +11,8 @@
             //
         });
     </script>
-    <script src="{{ asset('custom-js/html5-qrcode.min.js') }}"></script>
+    {{-- <script src="{{ asset('custom-js/html5-qrcode.min.js') }}"></script> --}}
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script type="text/javascript">
         function onScanSuccess(qrCodeMessage) {
             $.ajax({
@@ -56,12 +57,25 @@
         function onScanError(errorMessage) {
             document.getElementById('resultError').innerHTML = '<span class="result">' + errorMessage + '</span>';
         }
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", {
-                fps: 30,
-                qrbox: 250,
-            });
-        html5QrcodeScanner.render(onScanSuccess, onScanError);
+        // var html5QrcodeScanner = new Html5QrcodeScanner(
+        //     "reader", {
+        //         fps: 30,
+        //         qrbox: 250,
+        //     });
+        // html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+        const html5QrCode = new Html5Qrcode("reader");
+        const config = {
+            fps: 10,
+            qrbox: {
+                width: 250,
+                height: 250
+            }
+        };
+        // If you want to prefer back camera
+        html5QrCode.start({
+            facingMode: "environment"
+        }, config, onScanSuccess, onScanError);
 
         // // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
         // function createCameraOptions(devices) {
