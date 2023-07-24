@@ -56,153 +56,153 @@
         function onScanError(errorMessage) {
             document.getElementById('resultError').innerHTML = '<span class="result">' + errorMessage + '</span>';
         }
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", {
-                fps: 30,
-                qrbox: 250,
+        // var html5QrcodeScanner = new Html5QrcodeScanner(
+        //     "reader", {
+        //         fps: 30,
+        //         qrbox: 250,
+        //     });
+        // html5QrcodeScanner.render(onScanSuccess, onScanError);
+
+        // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
+        function createCameraOptions(devices) {
+            var cameraSelect = document.getElementById('camera-select');
+            cameraSelect.innerHTML = ''; // Menghapus opsi yang ada sebelumnya
+
+            var videoInputs = devices.filter(function(device) {
+                return device.kind === 'videoinput';
             });
-        html5QrcodeScanner.render(onScanSuccess, onScanError);
 
-        // // Membuat opsi kamera dalam elemen select dengan id 'camera-select'
-        // function createCameraOptions(devices) {
-        //     var cameraSelect = document.getElementById('camera-select');
-        //     cameraSelect.innerHTML = ''; // Menghapus opsi yang ada sebelumnya
+            videoInputs.forEach(function(device) {
+                var option = document.createElement('option');
+                option.value = device.deviceId;
+                option.text = device.label || 'Kamera ' + (videoInputs.indexOf(device) + 1);
+                cameraSelect.appendChild(option);
+            });
+        }
+        var html5QrCode;
 
-        //     var videoInputs = devices.filter(function(device) {
-        //         return device.kind === 'videoinput';
-        //     });
+        // Periksa apakah perangkat mendukung getUserMedia
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Konfigurasi konstrain video
+            var constraints = {
+                video: true
+            };
 
-        //     videoInputs.forEach(function(device) {
-        //         var option = document.createElement('option');
-        //         option.value = device.deviceId;
-        //         option.text = device.label || 'Kamera ' + (videoInputs.indexOf(device) + 1);
-        //         cameraSelect.appendChild(option);
-        //     });
-        // }
-        // var html5QrCode;
+            // Meminta izin pengguna untuk menggunakan kamera
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    startCameraScaning();
+                })
+                .catch(function(error) {
+                    console.error('Gagal meminta izin kamera:', error);
+                });
+        } else {
+            console.error('getUserMedia tidak didukung di peramban ini.');
+        }
 
-        // // Periksa apakah perangkat mendukung getUserMedia
-        // if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        //     // Konfigurasi konstrain video
-        //     var constraints = {
-        //         video: true
-        //     };
+        function startCameraScaning() {
+            navigator.mediaDevices.enumerateDevices()
+                .then(function(devices) {
+                    var cameraSelect = document.getElementById('camera-select');
 
-        //     // Meminta izin pengguna untuk menggunakan kamera
-        //     navigator.mediaDevices.getUserMedia(constraints)
-        //         .then(function(stream) {
-        //             startCameraScaning();
-        //         })
-        //         .catch(function(error) {
-        //             console.error('Gagal meminta izin kamera:', error);
-        //         });
-        // } else {
-        //     console.error('getUserMedia tidak didukung di peramban ini.');
-        // }
+                    // Function to create camera options
+                    function createCameraOptions(devices) {
+                        cameraSelect.innerHTML = ''; // Clear previous options
 
-        // function startCameraScaning() {
-        //     navigator.mediaDevices.enumerateDevices()
-        //         .then(function(devices) {
-        //             var cameraSelect = document.getElementById('camera-select');
+                        var videoInputs = devices.filter(function(device) {
+                            return device.kind === 'videoinput';
+                        });
 
-        //             // Function to create camera options
-        //             function createCameraOptions(devices) {
-        //                 cameraSelect.innerHTML = ''; // Clear previous options
+                        videoInputs.forEach(function(device) {
+                            var option = document.createElement('option');
+                            option.value = device.deviceId;
+                            option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
+                            cameraSelect.appendChild(option);
+                        });
+                    }
 
-        //                 var videoInputs = devices.filter(function(device) {
-        //                     return device.kind === 'videoinput';
-        //                 });
+                    // Update camera options initially
+                    createCameraOptions(devices);
 
-        //                 videoInputs.forEach(function(device) {
-        //                     var option = document.createElement('option');
-        //                     option.value = device.deviceId;
-        //                     option.text = device.label || 'Camera ' + (videoInputs.indexOf(device) + 1);
-        //                     cameraSelect.appendChild(option);
-        //                 });
-        //             }
+                    html5QrCode = new Html5Qrcode("reader");
 
-        //             // Update camera options initially
-        //             createCameraOptions(devices);
+                    // Function to start QR code scanning
+                    function startQrCodeScanning(cameraId) {
+                        html5QrCode.start(
+                            cameraId, {
+                                fps: 30,
+                                qrbox: {
+                                    width: 250,
+                                }
+                            },
+                            function(decodedText, decodedResult) {
+                                onScanSuccess(decodedText);
+                            },
+                            function(errorMessage) {
+                                onScanError(errorMessage);
+                            }
+                        ).catch(function(err) {
+                            console.error('Failed to start QR code scanning:', err);
+                        });
+                    }
 
-        //             html5QrCode = new Html5Qrcode("reader");
+                    // Event listener for camera selection change
+                    cameraSelect.addEventListener('change', function(event) {
+                        var selectedCameraId = event.target.value;
+                        html5QrCode.stop().then(function() {
+                            startQrCodeScanning(selectedCameraId);
+                        });
+                    });
 
-        //             // Function to start QR code scanning
-        //             function startQrCodeScanning(cameraId) {
-        //                 html5QrCode.start(
-        //                     cameraId, {
-        //                         fps: 30,
-        //                         qrbox: {
-        //                             width: 250,
-        //                         }
-        //                     },
-        //                     function(decodedText, decodedResult) {
-        //                         onScanSuccess(decodedText);
-        //                     },
-        //                     function(errorMessage) {
-        //                         onScanError(errorMessage);
-        //                     }
-        //                 ).catch(function(err) {
-        //                     console.error('Failed to start QR code scanning:', err);
-        //                 });
-        //             }
+                    // Find the back camera ID
+                    var backCameraId = null;
+                    var videoInputs = devices.filter(function(device) {
+                        return device.kind === 'videoinput';
+                    });
 
-        //             // Event listener for camera selection change
-        //             cameraSelect.addEventListener('change', function(event) {
-        //                 var selectedCameraId = event.target.value;
-        //                 html5QrCode.stop().then(function() {
-        //                     startQrCodeScanning(selectedCameraId);
-        //                 });
-        //             });
+                    for (var i = 0; i < videoInputs.length; i++) {
+                        var device = videoInputs[i];
+                        if (!device.label.toLowerCase().includes('front')) {
+                            backCameraId = device.deviceId;
+                            break;
+                        }
+                    }
 
-        //             // Find the back camera ID
-        //             var backCameraId = null;
-        //             var videoInputs = devices.filter(function(device) {
-        //                 return device.kind === 'videoinput';
-        //             });
+                    // Set the back camera as the default selection
+                    if (backCameraId) {
+                        cameraSelect.value = backCameraId;
+                    }
 
-        //             for (var i = 0; i < videoInputs.length; i++) {
-        //                 var device = videoInputs[i];
-        //                 if (!device.label.toLowerCase().includes('front')) {
-        //                     backCameraId = device.deviceId;
-        //                     break;
-        //                 }
-        //             }
-
-        //             // Set the back camera as the default selection
-        //             if (backCameraId) {
-        //                 cameraSelect.value = backCameraId;
-        //             }
-
-        //             // Start QR code scanning with the default camera
-        //             var defaultCameraId = cameraSelect.value;
-        //             startQrCodeScanning(defaultCameraId);
-        //         })
-        //         .catch(function(error) {
-        //             console.error('Failed to get media device list:', error);
-        //         });
-        // }
+                    // Start QR code scanning with the default camera
+                    var defaultCameraId = cameraSelect.value;
+                    startQrCodeScanning(defaultCameraId);
+                })
+                .catch(function(error) {
+                    console.error('Failed to get media device list:', error);
+                });
+        }
 
 
-        // // Fungsi untuk memulai pemindaian dengan file
-        // function startFileScanning(file) {
-        //     html5QrCode.stop().then(function() {
-        //         html5QrCode.scanFile(file, true)
-        //             .then(function(decodedText, decodedResult) {
-        //                 onScanSuccess(decodedText);
-        //             })
-        //             .catch(function(error) {
-        //                 console.error('Failed to scan file:', error);
-        //                 onScanError('Failed to scan file: ' + error.message);
-        //             });
-        //     });
-        // }
+        // Fungsi untuk memulai pemindaian dengan file
+        function startFileScanning(file) {
+            html5QrCode.stop().then(function() {
+                html5QrCode.scanFile(file, true)
+                    .then(function(decodedText, decodedResult) {
+                        onScanSuccess(decodedText);
+                    })
+                    .catch(function(error) {
+                        console.error('Failed to scan file:', error);
+                        onScanError('Failed to scan file: ' + error.message);
+                    });
+            });
+        }
 
-        // // Event listener untuk memilih file
-        // var fileInput = document.getElementById('file-input');
-        // fileInput.addEventListener('change', function(event) {
-        //     var file = event.target.files[0];
-        //     startFileScanning(file);
-        // });
+        // Event listener untuk memilih file
+        var fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            startFileScanning(file);
+        });
     </script>
 @endsection
 @section('back-button')
