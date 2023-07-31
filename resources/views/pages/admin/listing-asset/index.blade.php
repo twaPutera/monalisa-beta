@@ -445,6 +445,31 @@
             // blank page for download
             window.open(url, '_blank');
         }
+
+        let isTreeShown = false;
+        const showTree = (table, detail, tree, sectionTable) => {
+            const idTable = $('#' + table);
+            const idDetail = $('#' + detail);
+            const idTree = $('#' + tree);
+            const idSection = $('#' + sectionTable);
+
+            if (isTreeShown) {
+                // Kembalikan ke tampilan sebelumnya
+                idTable.removeClass('col-8').addClass('col-9');
+                idDetail.removeClass('col-4').addClass('col-3');
+                idTree.addClass('d-none');
+                idSection.removeClass('col-md-10').addClass('col-md-12');
+            } else {
+                // Tampilkan tree
+                idTable.removeClass('col-9').addClass('col-8');
+                idDetail.removeClass('col-3').addClass('col-4');
+                idTree.removeClass('d-none');
+                idSection.removeClass('col-md-12').addClass('col-md-10');
+            }
+
+            // Toggle status
+            isTreeShown = !isTreeShown;
+        }
     </script>
 
     @include('pages.admin.listing-asset.components.script-js._script_modal_create')
@@ -453,7 +478,7 @@
 @section('main-content')
     <input type="hidden" value="" id="lokasiParentId">
     <div class="row">
-        <div class="col-md-2 col-12">
+        <div class="col-md-2 col-12 d-none" id="colLokasi">
             <div class="kt-portlet shadow-custom">
                 <div class="kt-portlet__head px-4">
                     <div class="kt-portlet__head-label">
@@ -481,7 +506,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-10 col-12">
+        <div class="col-md-12 col-12" id="colAllTableDetail">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
                     <div class="input-group mr-3" style="width: 250px;">
@@ -498,6 +523,9 @@
                     <button onclick="resetFilterData()" id="resetFilter"
                         class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
                             class="fas fa-sync"></i>Reset</button>
+                    <button onclick="showTree('colTable','colDetail','colLokasi','colAllTableDetail')" id="resetFilter"
+                        class="btn btn-sm btn-primary shadow-custom mr-2 ml-2" type="button"><i
+                            class="fas fa-project-diagram"></i>Tree Lokasi</button>
                 </div>
                 <div class="d-flex align-items-center">
                     <a href="{{ route('admin.pemutihan-asset.asset.index') }}"
@@ -518,7 +546,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8" id="colTable">
+                <div class="col-9" id="colTable">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0"><strong class="text-primary">Data Asset</strong> <span class="text-gray"> -
                                 Lokasi Asset (<span id="lokasiFilterAktif">Universitas Pertamina</span>)</span></h5>
@@ -553,7 +581,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-4" id="colDetail">
+                <div class="col-3" id="colDetail">
                     <h5 class="text-primary mb-0 mb-3"><strong class="">Overview</strong></h5>
                     <div class="detail-asset-box">
                         <h5 class="title" id="assetNamePreview">ASSET NAME</h5>
