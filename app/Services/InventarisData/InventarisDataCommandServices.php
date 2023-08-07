@@ -214,6 +214,11 @@ class InventarisDataCommandServices
         return $inventori_data;
     }
 
+    public function delete(string $id){
+        $inventori_data = InventoriData::findOrFail($id);
+        return $inventori_data;
+    }
+
     public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id)
     {
         $request->validated();

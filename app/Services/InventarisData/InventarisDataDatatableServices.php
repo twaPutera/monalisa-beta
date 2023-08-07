@@ -75,6 +75,8 @@ class InventarisDataDatatableServices
             })
             ->addColumn('action', function ($item) {
                 $element = '';
+                $element .= '<form action="' . route('admin.listing-inventaris.delete', $item->id) . '" class="form-confirm" method="POST">';
+                $element .= csrf_field();
                 $element .= '<a href="' . route('admin.listing-inventaris.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
                                 <i class="fa fa-eye"></i>
                             </a>';
@@ -84,6 +86,10 @@ class InventarisDataDatatableServices
                 $element .= '<button type="button" onclick="stokEdit(this)" data-url_edit="' . route('admin.listing-inventaris.edit.stok', $item->id) . '" data-url_update="' . route('admin.listing-inventaris.update.stok', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-info">
                                 <i class="fa fa-box"></i>
                             </button>';
+                $element .= '<button type="submit" class="btn btn-sm btn-icon btn-danger btn-confirm">
+                            <i class="fa fa-trash"></i>
+                        </button>';
+                $element .= '</form>';
                 return $element;
             })
             ->rawColumns(['action'])

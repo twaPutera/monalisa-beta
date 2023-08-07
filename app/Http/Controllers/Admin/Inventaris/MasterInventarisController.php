@@ -120,7 +120,7 @@ class MasterInventarisController extends Controller
         }
     }
 
-    public function update(InventarisDataUpdateRequest $request, $id)
+    public function update(InventarisDataUpdateRequest $request, string $id)
     {
         $request->request->add(['id' => $id]);
         try {
@@ -142,7 +142,27 @@ class MasterInventarisController extends Controller
         }
     }
 
-    public function updateStok(InventarisDataUpdateStokRequest $request, $id)
+    public function delete(string $id){
+        try {
+            DB::beginTransaction();
+            $data = $this->inventarisDataCommandServices->delete($id);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil menghapus data inventaris',
+                'data' => $data,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function updateStok(InventarisDataUpdateStokRequest $request,string $id)
     {
         $request->request->add(['id' => $id]);
         try {
