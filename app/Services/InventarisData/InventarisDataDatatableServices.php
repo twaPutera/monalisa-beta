@@ -208,7 +208,7 @@ class InventarisDataDatatableServices
             $query->orderBy('message', $order_column_dir);
         }
 
-        $query->orderBy('log_request_inventories.created_at', 'ASC');
+        // $query->orderBy('log_request_inventories.created_at', 'ASC');
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kode_permintaan', function ($item) {
