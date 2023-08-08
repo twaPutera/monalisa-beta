@@ -64,6 +64,12 @@
                         data: 'kode_permintaan'
                     },
                     {
+                        name: 'kode_bahan_habis_pakai',
+                        data: 'kode_bahan_habis_pakai',
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
                         name: 'log_terakhir',
                         data: 'log_terakhir'
                     },
@@ -108,13 +114,13 @@
 
                 ],
                 columnDefs: [{
-                        targets: [1, 3, 4],
+                        targets: [1, 4, 5],
                         render: function(data, type, full, meta) {
                             return data != 'Tidak Ada' ? formatDateIntoIndonesia(data) : '-';
                         },
                     },
                     {
-                        targets: 11,
+                        targets: 12,
                         render: function(data, type, full, meta) {
                             let element = "";
                             if (data == "pending") {
@@ -300,8 +306,8 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center">
                             <div class="input-group mr-3" style="width: 250px;">
-                                <input type="text" id="searchServices" onkeyup="filterTableService()" class="form-control form-control-sm"
-                                    placeholder="Search for...">
+                                <input type="text" id="searchServices" onkeyup="filterTableService()"
+                                    class="form-control form-control-sm" placeholder="Search for...">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary btn-icon" onclick="filterTableService()"
                                         id="searchButton" type="button"><i class="fa fa-search"></i></button>
@@ -319,6 +325,7 @@
                                     <th>No</th>
                                     <th>Tanggal Permintaan</th>
                                     <th>Kode Permintaan</th>
+                                    <th>Kode Bahan Habis Pakai Dalam Permintaan Ini</th>
                                     <th>Log Terakhir</th>
                                     <th>Tanggal Pengambilan</th>
                                     <th>User Pengaju</th>

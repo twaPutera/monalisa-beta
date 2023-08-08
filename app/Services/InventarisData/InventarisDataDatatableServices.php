@@ -2,6 +2,7 @@
 
 namespace App\Services\InventarisData;
 
+use App\Models\DetailRequestInventori;
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
 use App\Models\KategoriInventori;
@@ -164,7 +165,10 @@ class InventarisDataDatatableServices
         $order_column_index = $filter['order'][0]['column'] ?? 0;
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
 
-        if (0 == $order_column_index || 1 == $order_column_index) {
+        if (0 == $order_column_index) {
+            $query->orderBy('request_inventories.created_at', "DESC");
+        }
+        if (1 == $order_column_index) {
             $query->orderBy('request_inventories.created_at', $order_column_dir);
         }
 
@@ -172,23 +176,35 @@ class InventarisDataDatatableServices
             $query->orderBy('kode_request', $order_column_dir);
         }
 
-        if (3 == $order_column_index) {
+        if (4 == $order_column_index) {
             $query->orderBy('created_at', $order_column_dir);
         }
 
-        if (4 == $order_column_index) {
+        if (5 == $order_column_index) {
             $query->orderBy('tanggal_pengambilan', $order_column_dir);
         }
 
-        if (5 == $order_column_index) {
-            $query->orderBy('no_memo', $order_column_dir);
-        }
-
         if (6 == $order_column_index) {
-            $query->orderBy('alasan', $order_column_dir);
+            $query->orderBy('guid_pengaju', $order_column_dir);
         }
 
         if (7 == $order_column_index) {
+            $query->orderBy('no_memo', $order_column_dir);
+        }
+
+        if (8 == $order_column_index) {
+            $query->orderBy('unit_kerja', $order_column_dir);
+        }
+
+        if (9 == $order_column_index) {
+            $query->orderBy('jabatan', $order_column_dir);
+        }
+
+        if (10 == $order_column_index) {
+            $query->orderBy('alasan', $order_column_dir);
+        }
+
+        if (11 == $order_column_index) {
             $query->orderBy('message', $order_column_dir);
         }
 
@@ -238,6 +254,18 @@ class InventarisDataDatatableServices
             })
             ->addColumn('log_terakhir', function ($item) {
                 return !empty($item->created_at) ? $item->created_at : 'Tidak Ada';
+            })
+            ->addColumn('kode_bahan_habis_pakai', function ($item) {
+                $find_detail_asset = DetailRequestInventori::with(['inventori'])->where('request_inventori_id', $item->request_inventori_id)->get();
+                $element = '';
+                foreach ($find_detail_asset as $index => $item) {
+                    if ($index >= 1) {
+                        $element .= ", ";
+                    }
+                    $element .= $item->inventori->kode_inventori . " (" . $item->inventori->deskripsi_inventori . ")";
+                }
+
+                return $element;
             })
             ->make(true);
     }
