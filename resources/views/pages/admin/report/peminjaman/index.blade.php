@@ -47,6 +47,12 @@
                         data: 'code'
                     },
                     {
+                        name: 'kode_asset',
+                        data: 'kode_asset',
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
                         name: 'created_by_name',
                         data: 'created_by_name',
                         orderable: false,
@@ -154,8 +160,8 @@
                 <div class="kt-portlet__body">
                     <div class="d-flex align-items-center">
                         <div class="input-group mr-3" style="width: 250px;">
-                            <input type="text" id="searchDepresiasi" onkeyup="filterTableAsset()" class="form-control form-control-sm"
-                                placeholder="Search for...">
+                            <input type="text" id="searchDepresiasi" onkeyup="filterTableAsset()"
+                                class="form-control form-control-sm" placeholder="Search for...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary btn-icon" onclick="filterTableAsset()" id="searchButton"
                                     type="button"><i class="fa fa-search"></i></button>
@@ -169,6 +175,7 @@
                                     <th width="50px">No</th>
                                     <th>Tanggal</th>
                                     <th>Kode Peminjaman</th>
+                                    <th>Kode Asset Pada Peminjaman Ini</th>
                                     <th>Pembuat</th>
                                     <th>Log</th>
                                 </tr>

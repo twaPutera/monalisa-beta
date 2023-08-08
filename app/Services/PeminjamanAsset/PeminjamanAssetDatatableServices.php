@@ -136,6 +136,7 @@ class PeminjamanAssetDatatableServices
             ->select([
                 'log_peminjaman_assets.*',
                 'peminjaman_assets.code',
+                'peminjaman_assets.id as id_peminjaman_asset'
             ])
             ->join('peminjaman_assets', 'peminjaman_assets.id', '=', 'log_peminjaman_assets.peminjaman_asset_id');
 
@@ -168,7 +169,11 @@ class PeminjamanAssetDatatableServices
         $order_column_index = $filter['order'][0]['column'] ?? 0;
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
 
-        if (0 == $order_column_index || 1 == $order_column_index) {
+        if (0 == $order_column_index) {
+            $query->orderBy('created_at', "DESC");
+        }
+
+        if (1 == $order_column_index) {
             $query->orderBy('created_at', $order_column_dir);
         }
 
@@ -188,6 +193,18 @@ class PeminjamanAssetDatatableServices
                 }
 
                 return $name;
+            })
+            ->addColumn('kode_asset', function ($item) {
+                $find_detail_asset = DetailPeminjamanAsset::with(['asset'])->where('id_peminjaman_asset', $item->id_peminjaman_asset)->get();
+                $element = '';
+                foreach ($find_detail_asset as $index=>$item) {
+                    if ($index >= 1) {
+                        $element .= ", ";
+                    }
+                    $element .= $item->asset->kode_asset . " (" . $item->asset->deskripsi . ")";
+                }
+
+                return $element;
             })
             ->addIndexColumn()
             ->make(true);
