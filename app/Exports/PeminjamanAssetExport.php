@@ -12,8 +12,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Services\UserSso\UserSsoQueryServices;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, WithEvents
+class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, WithEvents, ShouldAutoSize, WithStyles
 {
     use Exportable;
 
@@ -35,6 +38,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
         $this->array_merge_cell = [
             'no' => [],
             'code' => [],
+            'asset' => [],
         ];
         $this->temp_row_num = 1;
     }
@@ -89,7 +93,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                 $data[] = [
                     '',
                     '',
-                    $element,
+                    '',
                     $log->created_at,
                     $name,
                     $log->log_message,
@@ -102,6 +106,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
 
         $this->array_merge_cell['no'][] = $t;
         $this->array_merge_cell['code'][] = $t;
+        $this->array_merge_cell['asset'][] = $t;
 
         return $data;
     }
@@ -115,6 +120,13 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
             'Tanggal',
             'Pembuat',
             'Log',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            1 => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center']],
         ];
     }
 
@@ -141,6 +153,11 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                 foreach ($this->array_merge_cell['code'] as $key => $value) {
                     $event->sheet->mergeCells('B' . $value['start'] . ':B' . $value['end']);
                     $event->sheet->getStyle('B' . $value['start'] . ':B' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+
+                foreach ($this->array_merge_cell['asset'] as $key => $value) {
+                    $event->sheet->mergeCells('C' . $value['start'] . ':C' . $value['end']);
+                    $event->sheet->getStyle('C' . $value['start'] . ':C' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 }
 
                 $highestRow = $event->sheet->getHighestRow();

@@ -4,7 +4,9 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use App\Helpers\DateIndoHelpers;
+use App\Models\DetailRequestInventori;
 use App\Models\LogRequestInventori;
+use App\Models\RequestInventori;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -25,6 +27,8 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
     protected $akhir_pengambilan;
     protected $status_permintaan;
     protected $number;
+    protected $array_merge_cell;
+    protected $temp_row_num;
     protected $userSsoQueryServices;
     protected $userQueryServices;
 
@@ -43,23 +47,19 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
         $this->number = 0;
         $this->userSsoQueryServices = new UserSsoQueryServices();
         $this->userQueryServices = new UserQueryServices();
+        $this->array_merge_cell = [
+            'no' => [],
+            'code' => [],
+            'bahan_habis_pakai' => []
+        ];
+        $this->temp_row_num = 1;
     }
 
     public function query()
     {
-        $query = LogRequestInventori::query();
-        $query->leftJoin('request_inventories', 'request_inventories.id', 'log_request_inventories.request_inventori_id');
-        $query->select([
-            'log_request_inventories.*',
-            'request_inventories.kode_request',
-            'request_inventories.tanggal_pengambilan',
-            'request_inventories.created_at as tanggal_permintaan',
-            'request_inventories.alasan',
-            'request_inventories.no_memo',
-            'request_inventories.guid_pengaju',
-            'request_inventories.unit_kerja',
-            'request_inventories.jabatan',
-        ]);
+        $query = RequestInventori::query()
+            ->with(['log_request_inventori'])
+            ->has('log_request_inventori');
 
         if (isset($this->awal_permintaan)) {
             $query->where('request_inventories.created_at', '>=', $this->awal_permintaan . ' 00:00:00');
@@ -79,11 +79,12 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
 
         if (isset($this->status_permintaan)) {
             if ($this->status_permintaan != 'all') {
-                $query->where('log_request_inventories.status', $this->status_permintaan);
+                $query->whereHas('log_request_inventori', function ($subQuery) {
+                    $subQuery->where('status', $this->status_permintaan);
+                });
             }
         }
 
-        $query->orderBy('log_request_inventories.created_at', 'ASC');
         return $query;
     }
 
@@ -94,35 +95,96 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
 
     public function map($item): array
     {
-        $name = 'Not Found';
-        if (config('app.sso_siska')) {
-            $user = $item->guid_pengaju == null ? null : $this->userSsoQueryServices->getUserByGuid($item->guid_pengaju);
-            $name = isset($user[0]) ? collect($user[0]) : null;
-        } else {
-            $user = $this->userQueryServices->findById($item->guid_pengaju);
-            $name = isset($user) ? $user->name : 'Not Found';
+        $this->temp_row_num++;
+        $data = [];
+        $t = [
+            'start' => $this->temp_row_num,
+            'end' => null,
+        ];
+        foreach ($item->log_request_inventori as $key => $log) {
+            $name = '-';
+            if (config('app.sso_siska')) {
+                $user = $log->request_inventori->guid_pengaju == null ? null : $this->userSsoQueryServices->getUserByGuid($log->request_inventori->guid_pengaju);
+                $name = isset($user[0]) ? collect($user[0]) : null;
+            } else {
+                $user = $this->userQueryServices->findById($log->request_inventori->guid_pengaju);
+                $name = isset($user) ? $user->name : 'Not Found';
+            }
+
+            $find_detail_asset = DetailRequestInventori::with(['inventori'])->where('request_inventori_id', $log->request_inventori_id)->get();
+            $element = '';
+            foreach ($find_detail_asset as $index => $item_inventori) {
+                if ($index >= 1) {
+                    $element .= ", ";
+                }
+                $element .= $item_inventori->inventori->kode_inventori . " (" . $item_inventori->inventori->deskripsi_inventori . ")";
+            }
+
+            if ($key == 0) {
+                $data[] = [
+                    $this->number += 1,
+                    $log->request_inventori->kode_request,
+                    $element,
+                    DateIndoHelpers::formatDateToIndo(Carbon::parse($log->tanggal_permintaan)->format('Y-m-d')),
+                    DateIndoHelpers::formatDateToIndo(Carbon::parse($log->created_at)->format('Y-m-d')),
+                    DateIndoHelpers::formatDateToIndo($log->request_inventori->tanggal_pengambilan),
+                    $name,
+                    $log->request_inventori->no_memo,
+                    $log->request_inventori->unit_kerja,
+                    $log->request_inventori->jabatan,
+                    $log->request_inventori->alasan,
+                    $log->message,
+                    $log->status,
+                    $log->created_by,
+                ];
+            } else {
+                $data[] = [
+                    '',
+                    '',
+                    '',
+                    DateIndoHelpers::formatDateToIndo(Carbon::parse($log->tanggal_permintaan)->format('Y-m-d')),
+                    DateIndoHelpers::formatDateToIndo(Carbon::parse($log->created_at)->format('Y-m-d')),
+                    DateIndoHelpers::formatDateToIndo($log->request_inventori->tanggal_pengambilan),
+                    $name,
+                    $log->request_inventori->no_memo,
+                    $log->request_inventori->unit_kerja,
+                    $log->request_inventori->jabatan,
+                    $log->request_inventori->alasan,
+                    $log->message,
+                    $log->status,
+                    $log->created_by,
+                ];
+                $this->temp_row_num++;
+                $end = $this->temp_row_num;
+                $t['end'] = $end;
+            }
         }
 
-        return [
-            $this->number += 1,
-            DateIndoHelpers::formatDateToIndo(Carbon::parse($item->tanggal_permintaan)->format('Y-m-d')),
-            $item->kode_request,
-            DateIndoHelpers::formatDateToIndo(Carbon::parse($item->created_at)->format('Y-m-d')),
-            DateIndoHelpers::formatDateToIndo($item->tanggal_pengambilan),
-            $name,
-            $item->no_memo,
-            $item->unit_kerja,
-            $item->jabatan,
-            $item->alasan,
-            $item->message,
-            $item->status,
-            $item->created_by,
-        ];
+        $this->array_merge_cell['no'][] = $t;
+        $this->array_merge_cell['code'][] = $t;
+        $this->array_merge_cell['bahan_habis_pakai'][] = $t;
+
+        return $data;
     }
 
     public function headings(): array
     {
-        return ['No', 'Tanggal Permintaan', 'Kode Permintaan', 'Log Terakhir', 'Tanggal Pengambilan', 'User Pengaju', 'No Memo', 'Unit Kerja', 'Jabatan', 'Alasan Permintaan', 'Aktifitas', 'Status', 'Dilakukan Oleh'];
+        return [
+            'No',
+            'Kode Permintaan',
+            'Bahan Habis Pakai Dalam Permintaan Ini',
+            'Tanggal Permintaan',
+            'Log Terakhir',
+            'Tanggal Pengambilan',
+            'User Pengaju',
+            'No Memo',
+            'Unit Kerja',
+            'Jabatan',
+            'Alasan Permintaan',
+            'Aktifitas',
+            'Status',
+            'Dilakukan Oleh'
+        ];
     }
 
     public function styles(Worksheet $sheet)
@@ -131,15 +193,42 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
             1 => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center']],
         ];
     }
+
     public function registerEvents(): array
     {
         return [
             // Handle by a closure.
             AfterSheet::class => function (AfterSheet $event) {
+                //set heading bold and center
+                $event->sheet->getStyle('A1:N1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                foreach ($this->array_merge_cell['no'] as $key => $value) {
+                    $event->sheet->mergeCells('A' . $value['start'] . ':A' . $value['end']);
+                    $event->sheet->getStyle('A' . $value['start'] . ':A' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+
+                foreach ($this->array_merge_cell['code'] as $key => $value) {
+                    $event->sheet->mergeCells('B' . $value['start'] . ':B' . $value['end']);
+                    $event->sheet->getStyle('B' . $value['start'] . ':B' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+
+                foreach ($this->array_merge_cell['bahan_habis_pakai'] as $key => $value) {
+                    $event->sheet->mergeCells('C' . $value['start'] . ':C' . $value['end']);
+                    $event->sheet->getStyle('C' . $value['start'] . ':C' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                }
+
                 $highestRow = $event->sheet->getHighestRow();
                 $highestColumn = $event->sheet->getHighestColumn();
                 $lastCell = $highestColumn . $highestRow;
                 $rangeCell = 'A1:' . $lastCell;
+
                 $event->sheet->getDelegate()->getStyle($rangeCell)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             },
         ];
