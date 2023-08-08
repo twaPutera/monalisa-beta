@@ -22,6 +22,7 @@ use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
 use App\Models\User;
 use App\Notifications\UserNotification;
+use Illuminate\Support\Facades\Auth;
 
 class InventarisDataCommandServices
 {
@@ -214,9 +215,34 @@ class InventarisDataCommandServices
         return $inventori_data;
     }
 
-    public function delete(string $id){
+    public function delete(string $id)
+    {
         $inventori_data = InventoriData::findOrFail($id);
-        return $inventori_data;
+
+        $find_all_request_inventori = DetailRequestInventori::where('inventori_id', $inventori_data->id)->get();
+        foreach ($find_all_request_inventori as $item) {
+            $request_inventori = RequestInventori::where('id', $item->request_inventori_id)->first();
+
+            $log_request_inventori = new LogRequestInventori();
+            $log_request_inventori->request_inventori_id = $request_inventori->id;
+            $log_request_inventori->message = "Barang habis pakai " . $item->inventori->nama_inventori . " dengan kode inventori " . $item->inventori->kode_inventori . " telah dihapus dari daftar permintaan dikarenakan Barang Habis Pakai dihapus oleh Admin";
+            $log_request_inventori->status = "ditolak";
+            $log_request_inventori->created_by = Auth::user()->id;
+            $log_request_inventori->save();
+
+            $item->delete();
+        }
+
+        $find_all_log_penambahan = LogPenambahanInventori::where('id_inventori', $inventori_data->id)->get();
+        foreach ($find_all_log_penambahan as $item) {
+            $item->delete();
+        }
+
+        $find_all_log_pengurangan = LogPenguranganInventori::where('id_inventori', $inventori_data->id)->get();
+        foreach ($find_all_log_pengurangan as $item) {
+            $item->delete();
+        }
+        return $inventori_data->delete();
     }
 
     public function storeRealisasi(InventarisDataRealisasiRequest $request, string $id)

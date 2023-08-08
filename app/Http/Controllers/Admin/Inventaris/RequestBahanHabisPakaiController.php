@@ -19,6 +19,8 @@ class RequestBahanHabisPakaiController extends Controller
     protected $inventarisDataDatatableServices;
     protected $inventarisDataQueryServices;
     protected $inventarisDataCommandServices;
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
     public function __construct(
         InventarisDataCommandServices $inventarisDataCommandServices,
         InventarisDataDatatableServices $inventarisDataDatatableServices,

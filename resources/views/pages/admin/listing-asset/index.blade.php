@@ -521,7 +521,7 @@
                         type="button"><i class="fas fa-sliders-h mr-2"></i>
                         Filter</button>
                     <button onclick="resetFilterData()" id="resetFilter"
-                        class="btn btn-sm d-none btn-danger shadow-custom mr-2 ml-2" type="button"><i
+                        class="btn btn-sm d-none btn-danger shadow-custom ml-2" type="button"><i
                             class="fas fa-sync"></i>Reset</button>
                     <button onclick="showTree('colTable','colDetail','colLokasi','colAllTableDetail')" id="resetFilter"
                         class="btn btn-sm btn-primary shadow-custom mr-2 ml-2" type="button"><i
