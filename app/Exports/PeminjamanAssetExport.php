@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\DetailPeminjamanAsset;
 use App\Models\PeminjamanAsset;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -65,10 +66,21 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                 $user = $log->created_by == null ? null : $this->userQueryServices->findById($log->created_by);
                 $name = isset($user) ? $user->name : 'Not Found';
             }
+
+            $find_detail_asset = DetailPeminjamanAsset::with(['asset'])->where('id_peminjaman_asset', $log->peminjaman_asset_id)->get();
+            $element = '';
+            foreach ($find_detail_asset as $index => $item_asset) {
+                if ($index >= 1) {
+                    $element .= ", ";
+                }
+                $element .= $item_asset->asset->kode_asset . " (" . $item_asset->asset->deskripsi . ")";
+            }
+
             if ($key == 0) {
                 $data[] = [
                     $this->number += 1,
                     $item->code,
+                    $element,
                     $log->created_at,
                     $name,
                     $log->log_message,
@@ -77,6 +89,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                 $data[] = [
                     '',
                     '',
+                    $element,
                     $log->created_at,
                     $name,
                     $log->log_message,
@@ -98,6 +111,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
         return [
             '#',
             'Kode Peminjaman',
+            'Asset Dalam Peminjaman Ini',
             'Tanggal',
             'Pembuat',
             'Log',
@@ -110,7 +124,7 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
             // Handle by a closure.
             AfterSheet::class => function (AfterSheet $event) {
                 //set heading bold and center
-                $event->sheet->getStyle('A1:E1')->applyFromArray([
+                $event->sheet->getStyle('A1:F1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -120,13 +134,13 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
                 ]);
 
                 foreach ($this->array_merge_cell['no'] as $key => $value) {
-                    $event->sheet->mergeCells('A'.$value['start'].':A'.$value['end']);
-                    $event->sheet->getStyle('A'.$value['start'].':A'.$value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $event->sheet->mergeCells('A' . $value['start'] . ':A' . $value['end']);
+                    $event->sheet->getStyle('A' . $value['start'] . ':A' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 }
 
                 foreach ($this->array_merge_cell['code'] as $key => $value) {
-                    $event->sheet->mergeCells('B'.$value['start'].':B'.$value['end']);
-                    $event->sheet->getStyle('B'.$value['start'].':B'.$value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $event->sheet->mergeCells('B' . $value['start'] . ':B' . $value['end']);
+                    $event->sheet->getStyle('B' . $value['start'] . ':B' . $value['end'])->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 }
 
                 $highestRow = $event->sheet->getHighestRow();
