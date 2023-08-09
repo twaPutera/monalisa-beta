@@ -138,14 +138,14 @@
                     }
                 ],
                 rowCallback: function(row, data, index) {
-                    arrayKategori = arrayKategori.map((item) => {
-                        return {
-                            id: item.id,
-                            nama_kategori: item.nama_kategori,
-                            jumlah: item.id == data.asset_data.id_kategori_asset ? (parseInt(
-                                item.jumlah) - 1) : item.jumlah,
-                        };
-                    });
+                    // arrayKategori = arrayKategori.map((item) => {
+                    //     return {
+                    //         id: item.id,
+                    //         nama_kategori: item.nama_kategori,
+                    //         jumlah: item.id == data.asset_data.id_kategori_asset ? (parseInt(
+                    //             item.jumlah) - 1) : item.jumlah,
+                    //     };
+                    // });
                 }
             });
 
@@ -296,9 +296,10 @@
 
             $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
                 if (data.success) {
+                    console.log(data);
                     if (data.data.command == 'storeManyDetailPeminjaman' || data.data.command ==
                         'deleteDetailPeminjaman') {
-                        arrayKategori = data.data.quota;
+                        // arrayKategori = data.data.quota;
                     }
                     if (data.data.command == 'changeStatus') {
                         window.location.reload();
@@ -326,10 +327,12 @@
         const checkIfQuotaExists = (element) => {
             const id_kategori_asset = $(element).data('id_kategori_asset');
             const kategori = arrayKategori.find(item => item.id == id_kategori_asset);
+            // console.log(arrayKategori, kategori, $(element).is(':checked'));
             if (kategori.jumlah == 0 && $(element).is(':checked')) {
                 showToastError('Gagal', 'Kuota untuk kategori ini sudah habis');
                 $(element).prop('checked', false);
             } else {
+                // console.log(id_kategori_asset);
                 if ($(element).is(':checked')) {
                     arrayKategori = arrayKategori.map((item) => {
                         return {
