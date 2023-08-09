@@ -110,7 +110,18 @@ class AssetDataQueryServices
     public function findById(string $id, array $request = [])
     {
         $data =  AssetData::query()
-            ->with(['satuan_asset', 'vendor', 'lokasi', 'kelas_asset', 'kategori_asset.group_kategori_asset', 'image', 'detail_service', 'log_asset_opname'])
+            ->with([
+                'satuan_asset',
+                'vendor',
+                'lokasi',
+                'kelas_asset',
+                'kategori_asset.group_kategori_asset',
+                'image',
+                'detail_service',
+                'log_asset_opname' => function ($query) {
+                    $query->orderBy('created_at', 'desc'); // Urutkan berdasarkan created_at descending
+                }
+            ])
             ->where('id', $id)
             ->firstOrFail();
         if (is_null($data->qr_code)) {
