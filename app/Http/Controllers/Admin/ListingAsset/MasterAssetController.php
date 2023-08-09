@@ -102,7 +102,7 @@ class MasterAssetController extends Controller
             $array_search = ['peminjaman' => true];
             $data = $this->assetDataQueryServices->findById($id, $array_search);
             $service = $this->assetServiceQueryServices->findLastestLogByAssetId($id);
-            //code...
+            // dd($data);
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil menampilkan data asset',

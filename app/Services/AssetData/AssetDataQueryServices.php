@@ -150,7 +150,10 @@ class AssetDataQueryServices
                 ->wherehas('detail_peminjaman_asset', function ($query) use ($id) {
                     $query->where('id_asset', $id);
                 })
-                ->where('status', 'diproses')
+                ->where(function ($query) use ($id) {
+                    $query->where('status', 'dipinjam')
+                        ->orWhere('status', 'diproses');
+                })
                 ->first();
             $data->peminjam = null;
             if (isset($peminjaman)) {

@@ -7,9 +7,20 @@ use App\Helpers\SsoHelpers;
 use Illuminate\Http\Request;
 use App\Helpers\DateIndoHelpers;
 use App\Models\PerencanaanServices;
+use App\Services\User\UserQueryServices;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetServiceQueryServices
 {
+    protected $userSsoQueryServices;
+    protected $userQueryServices;
+
+    public function __construct()
+    {
+        $this->userSsoQueryServices = new UserSsoQueryServices();
+        $this->userQueryServices = new UserQueryServices();
+    }
+
     public function findAll()
     {
         return Service::all();
@@ -38,6 +49,16 @@ class AssetServiceQueryServices
             ->where('status_service', 'selesai')
             ->orderby('created_at', 'desc')
             ->first();
+
+        if(isset($services)){
+            if (config('app.sso_siska')) {
+                $user = $this->userSsoQueryServices->getUserByGuid($services->guid_pembuat);
+                $user = isset($user[0]) ? collect($user[0]) : null;
+            } else {
+                $user = $this->userQueryServices->findById($services->guid_pembuat);
+            }
+            $services->dibuat_oleh = $user->name;
+        }
 
         return $services;
     }

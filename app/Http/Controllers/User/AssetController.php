@@ -53,7 +53,8 @@ class AssetController extends Controller
 
     public function detail($id)
     {
-        $asset_data = $this->assetDataQueryServices->findById($id);
+        $array_search = ['peminjaman' => true];
+        $asset_data = $this->assetDataQueryServices->findById($id, $array_search);
         $last_service = $this->assetServiceQueryServices->findLastestLogByAssetId($id);
         return view('pages.user.asset.detail', compact('asset_data', 'last_service'));
     }

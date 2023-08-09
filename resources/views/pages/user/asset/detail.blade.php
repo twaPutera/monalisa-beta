@@ -146,7 +146,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Log Terakhir</p>
+                        <p class="mb-0 text-green">Log Service Terakhir</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
@@ -158,11 +158,11 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Dicek Oleh</p>
+                        <p class="mb-0 text-green">Service Dibuat Oleh</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            <strong>{{ isset($last_service) ? $last_service->guid_pembuat : '-' }}</strong>
+                            <strong>{{ isset($last_service) ? $last_service->dibuat_oleh : '-' }}</strong>
                         </p>
                     </div>
                 </div>
@@ -170,12 +170,44 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Status Peminjam</p>
+                        <p class="mb-0 text-green">Log Opname Terakhir</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-0 text-green text-end">
+                            {{ isset($asset_data->log_asset_opname) ? App\Helpers\DateIndoHelpers::formatDateToIndo($asset_data->log_asset_opname[0]->tanggal_opname) : '-' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Opname Terakhir Dicek Oleh</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-0 text-green text-end">
+                            <strong>{{ isset($asset_data) ? $asset_data->created_by_opname : '-' }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0 text-green">Status Peminjaman</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
                             <strong>
-                                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                @if ($asset_data->peminjam != null)
+                                    <span class="badge badge-success px-3">
+                                        <ion-icon name="checkmark-circle-outline"></ion-icon> Sedang Dipinjam
+                                    </span>
+                                @else
+                                    <span class="badge badge-danger px-3">
+                                        <ion-icon name="ban-outline"></ion-icon> Tidak Dipinjam
+                                    </span>
+                                @endif
                             </strong>
                         </p>
                     </div>
@@ -188,18 +220,8 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            -
+                            {{ $asset_data->peminjam != null ? $asset_data->peminjam->name : '-' }}
                         </p>
-                    </div>
-                </div>
-            </div>
-            <div class="py-2 border-bottom border-secondary">
-                <div class="row">
-                    <div class="col">
-                        <p class="mb-0 text-green">Status Service</p>
-                    </div>
-                    <div class="col text-end">
-                        Tidak Ada
                     </div>
                 </div>
             </div>
