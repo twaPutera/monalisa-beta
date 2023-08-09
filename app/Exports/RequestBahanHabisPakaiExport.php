@@ -172,7 +172,7 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
         return [
             'No',
             'Kode Permintaan',
-            'Bahan Habis Pakai Dalam Permintaan Ini',
+            'Jenis Bahan Habis Pakai Dalam Permintaan Ini',
             'Tanggal Permintaan',
             'Log Terakhir',
             'Tanggal Pengambilan',

@@ -325,7 +325,7 @@
                                     <th>No</th>
                                     <th>Tanggal Permintaan</th>
                                     <th>Kode Permintaan</th>
-                                    <th>Kode Bahan Habis Pakai Dalam Permintaan Ini</th>
+                                    <th>Jenis Bahan Habis Pakai Dalam Permintaan Ini</th>
                                     <th>Log Terakhir</th>
                                     <th>Tanggal Pengambilan</th>
                                     <th>User Pengaju</th>
