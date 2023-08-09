@@ -136,7 +136,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Catatan</p>
+                        <p class="mb-0 text-green">Catatan Service Terakhir</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">{{ $last_service->detail_service->catatan ?? '-' }}</p>
@@ -170,6 +170,16 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
+                        <p class="mb-0 text-green">Catatan Opname Terakhir</p>
+                    </div>
+                    <div class="col">
+                        <p class="mb-0 text-green text-end">{{ isset($asset_data->log_asset_opname) ? $asset_data->log_asset_opname[0]->keterangan : "-" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="py-2 border-bottom border-secondary">
+                <div class="row">
+                    <div class="col">
                         <p class="mb-0 text-green">Log Opname Terakhir</p>
                     </div>
                     <div class="col">
@@ -194,7 +204,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Status Peminjaman</p>
+                        <p class="mb-0 text-green">Status Peminjaman Asset</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
@@ -205,7 +215,7 @@
                                     </span>
                                 @else
                                     <span class="badge badge-danger px-3">
-                                        <ion-icon name="ban-outline"></ion-icon> Tidak Dipinjam
+                                        <ion-icon name="ban-outline"></ion-icon> Dapat Dipinjam
                                     </span>
                                 @endif
                             </strong>
@@ -216,7 +226,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Peminjam</p>
+                        <p class="mb-0 text-green">Peminjam Asset</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
@@ -228,7 +238,7 @@
             <div class="py-2 border-bottom border-secondary">
                 <div class="row">
                     <div class="col">
-                        <p class="mb-0 text-green">Spesifikasi</p>
+                        <p class="mb-0 text-green">Spesifikasi Asset</p>
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">{{ $asset_data->spesifikasi }}</p>
