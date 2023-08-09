@@ -102,6 +102,8 @@
                             $kondisi = '<span class="badge badge-dark px-3">Tidak Lengkap</span>';
                         } elseif ($asset_data->status_kondisi == 'pengembangan') {
                             $kondisi = '<span class="badge badge-info px-3">Pengembangan</span>';
+                        } elseif ($asset_data->status_kondisi == 'tidak-ditemukan') {
+                            $kondisi = '<span class="badge badge-secondary px-3">Tidak Ditemukan</span>';
                         } else {
                             $kondisi = '<span class="badge badge-secondary px-3">Tidak Ada</span>';
                         }
@@ -222,7 +224,7 @@
                 <ion-icon name="add-outline"></ion-icon>
                 <span class="">Pengaduan</span>
             </a>
-            
+
             @if (Auth::user()->role != 'user')
                 <a class="btn btn-primary border-radius-sm px-3 me-2"
                     href="{{ route('user.asset-data.service.create', $asset_data->id) }}">

@@ -323,6 +323,33 @@
                         },
                     },
                     {
+                        targets: [2,3],
+                        render: function(data, type, full, meta) {
+                            let element = '';
+                            if (data == 'rusak') {
+                                element =
+                                    `<span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill kt-badge--rounded">Rusak</span>`;
+                            } else if (data == 'maintenance') {
+                                element =
+                                    `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Maintenance</span>`;
+                            } else if (data == 'tidak-lengkap') {
+                                element =
+                                    `<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tdk_Lengkap</span>`;
+                            } else if (data == 'pengembangan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
+                            } else if (data == 'tidak-ditemukan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">Tdk_Ditemukan</span>`;
+                            } else {
+                                element =
+                                    `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
+                            }
+
+                            return element;
+                        }
+                    },
+                    {
                         targets: 6,
                         render: function(data, type, full, meta) {
                             let element = "";
@@ -929,6 +956,8 @@
                                             $kondisi = '<span class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Lengkap</span>';
                                         } elseif ($asset->status_kondisi == 'pengembangan') {
                                             $kondisi = '<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>';
+                                        } elseif ($asset->status_kondisi == 'tidak-ditemukan') {
+                                            $kondisi = '<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Ditemukan</span>';
                                         } else {
                                             $kondisi = '<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>';
                                         }

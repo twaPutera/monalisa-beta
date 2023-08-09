@@ -63,6 +63,8 @@
             generateOwnerAssetEdit();
             generateMemorandumAndinSelect2(false);
             generateKategoriSelect2Edit();
+            select2StatusKondisiEdit();
+            select2StatusAkuntingEdit();
         }, 1000);
     });
 
@@ -279,4 +281,20 @@
     //         $('#asal_asset_id').val("");
     //     }
     // }
+
+    const select2StatusAkuntingEdit = () => {
+        $('#status_akunting_edit').select2({
+            width: '60%',
+            placeholder: 'Pilih Status Akunting',
+            dropdownParent: $('.modal.show'),
+        });
+    }
+
+    const select2StatusKondisiEdit = () => {
+        $('#status_kondisi_edit').select2({
+            width: '60%',
+            placeholder: 'Pilih Status Kondisi',
+            dropdownParent: $('.modal.show'),
+        });
+    }
 </script>

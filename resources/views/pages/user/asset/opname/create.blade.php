@@ -52,6 +52,8 @@
             getDataOptionSelect();
             setTimeout(() => {
                 generateSelect2Lokasi();
+                select2StatusAkunting();
+                select2StatusKondisi();
             }, 200);
         });
 
@@ -107,6 +109,30 @@
         }
         const submitForm = () => {
             $('.form-submit').submit();
+        }
+
+        const changeStatusKondisiAsset = (value, id) => {
+            const targetSelect = $('#' + id);
+            if (value == "tidak-ditemukan") {
+                targetSelect.find('option[value="TX"]').prop('selected', true);
+            }
+            select2StatusAkunting();
+        }
+
+        const select2StatusAkunting = () => {
+            $('#status_akunting').select2({
+                width: '100%',
+                allowClear: true,
+                placeholder: 'Pilih Status Akunting',
+            });
+        }
+
+        const select2StatusKondisi = () => {
+            $('#status_kondisi').select2({
+                width: '100%',
+                allowClear: true,
+                placeholder: 'Pilih Status Kondisi',
+            });
         }
     </script>
 @endsection
@@ -185,6 +211,8 @@
                             <div class="badge badge-warning">Maintenance</div>
                         @elseif($asset_data->status_kondisi == 'pengembangan')
                             <div class="badge badge-info">Pengembangan</div>
+                        @elseif($asset_data->status_kondisi == 'tidak-ditemukan')
+                            <div class="badge badge-secondary">Tidak Ditemukan</div>
                         @else
                             <div class="badge badge-dark">Tidak Lengkap</div>
                         @endif
@@ -193,20 +221,22 @@
                 <div class="form-group boxed">
                     <div class="input-wrapper">
                         <label class="text-dark" for=""><strong>Status Kondisi Aset</strong></label>
-                        <select name="status_kondisi" class="form-control mr-3" id="">
+                        <select name="status_kondisi" class="form-control mr-3"
+                            onchange="changeStatusKondisiAsset(this.value,'status_akunting')" id="status_kondisi">
                             <option value="bagus">Bagus</option>
                             <option value="rusak">Rusak</option>
                             <option value="maintenance">Maintenance</option>
                             <option value="tidak-lengkap">Tidak Lengkap</option>
                             <option value="pengembangan">Pengembangan</option>
+                            <option value="tidak-ditemukan">Tidak Ditemukan</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group boxed">
                     <div class="input-wrapper">
-                        <label class="text-dark" for=""><strong>Status Akunting Aset</strong></label>
-                        <select name="status_akunting" class="form-control mr-3" id="">
+                        <label class="text-dark" for="status_akunting"><strong>Status Akunting Aset</strong></label>
+                        <select name="status_akunting" class="form-control mr-3" id="status_akunting">
                             @foreach ($list_status as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                             @endforeach

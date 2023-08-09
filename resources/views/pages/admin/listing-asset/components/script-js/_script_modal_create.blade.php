@@ -99,6 +99,8 @@
             generateVendorAsset();
             generateOwnerAsset();
             generateMemorandumAndinSelect2();
+            select2StatusKondisi();
+            select2StatusAkunting();
         }, 2000);
     });
 
@@ -124,6 +126,8 @@
             placeholder: 'Pilih Lokasi',
             dropdownParent: $('.modal.show'),
         });
+        select2StatusKondisi();
+        select2StatusAkunting();
     });
 
     $('#groupAssetCreate').on('change', function() {
@@ -382,5 +386,35 @@
             $('#asal_asset_preview_edit').val("");
             $('#asal_asset_id_edit').val("");
         }
+    }
+
+    const changeStatusKondisiAsset = (value, id) => {
+        const targetSelect = $('#' + id);
+        if (value == "tidak-ditemukan") {
+            targetSelect.find('option[value="TX"]').prop('selected', true);
+        }
+        if (id == "status_akunting") {
+            select2StatusAkunting();
+        }
+
+        if (id == "status_akunting_edit") {
+            select2StatusAkuntingEdit();
+        }
+    }
+
+    const select2StatusAkunting = () => {
+        $('#status_akunting').select2({
+            width: '60%',
+            placeholder: 'Pilih Status Akunting',
+            dropdownParent: $('.modal.show'),
+        });
+    }
+
+    const select2StatusKondisi = () => {
+        $('#status_kondisi').select2({
+            width: '60%',
+            placeholder: 'Pilih Status Kondisi',
+            dropdownParent: $('.modal.show'),
+        });
     }
 </script>

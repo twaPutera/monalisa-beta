@@ -57,6 +57,8 @@
                                         <div class="badge badge-warning">Maintenance</div>
                                     @elseif($asset->status_kondisi == 'pengembangan')
                                         <div class="badge badge-info">Pengembangan</div>
+                                    @elseif($asset->status_kondisi == 'tidak-ditemukan')
+                                        <div class="badge badge-dark">Tidak Ditemukan</div>
                                     @else
                                         <div class="badge badge-dark">Tidak Lengkap</div>
                                     @endif
@@ -66,16 +68,16 @@
                         <div class="form-group">
                             <div class="d-flex justify-content-between align-items-center">
                                 <label for="">Status Kondisi Asset</label>
-                                <div>
-                                    <select name="status_kondisi" class="form-control" style="width: 200px"
-                                        id="">
-                                        <option value="bagus">Bagus</option>
-                                        <option value="rusak">Rusak</option>
-                                        <option value="maintenance">Maintenance</option>
-                                        <option value="tidak-lengkap">Tidak Lengkap</option>
-                                        <option value="pengembangan">Pengembangan</option>
-                                    </select>
-                                </div>
+                                <select name="status_kondisi"
+                                    onchange="changeStatusKondisiAsset(this.value,'status_akunting')"
+                                    class="form-control" style="width: 200px" id="status_kondisi">
+                                    <option value="bagus">Bagus</option>
+                                    <option value="rusak">Rusak</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="tidak-lengkap">Tidak Lengkap</option>
+                                    <option value="pengembangan">Pengembangan</option>
+                                    <option value="tidak-ditemukan">Tidak Ditemukan</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -91,12 +93,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Status Akunting Aset</label>
-                            <select name="status_akunting" class="form-control" id="">
-                                @foreach ($list_status as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label for="">Status Akunting Aset</label>
+                                <select name="status_akunting" class="form-control" id="status_akunting">
+                                    @foreach ($list_status as $key => $item)
+                                        <option value="{{ $key }}">{{ $item }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">Catatan</label>

@@ -232,6 +232,9 @@
                             } else if (data == 'draft') {
                                 element =
                                     `<span class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill kt-badge--rounded">Draft</span>`;
+                            } else if (data == 'tidak-ditemukan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Ditemukan</span>`;
                             } else {
                                 element =
                                     `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;

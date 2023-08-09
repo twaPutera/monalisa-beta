@@ -221,6 +221,9 @@
                             } else if (data == 'pengembangan') {
                                 element =
                                     `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
+                            } else if (data == 'tidak-ditemukan') {
+                                element =
+                                    `<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Ditemukan</span>`;
                             } else {
                                 element =
                                     `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
@@ -313,6 +316,9 @@
                         } else if (asset.status_kondisi == 'pengembangan') {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill kt-badge--rounded">Pengembangan</span>`;
+                        } else if (asset.status_kondisi == 'tidak-ditemukan') {
+                            var kondisi =
+                                `<span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">Tidak Ditemukan</span>`;
                         } else {
                             var kondisi =
                                 `<span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill kt-badge--rounded">Bagus</span>`;
