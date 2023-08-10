@@ -3,12 +3,31 @@
 namespace App\Helpers;
 
 use File;
+use Intervention\Image\Facades\Image;
 
 class FileHelpers
 {
     public static function saveFile($file, $path, $filename)
     {
         $file->move($path, $filename);
+
+        // Get File Save Path
+        $path_file_save = $path . '/' . $filename;
+
+        // Get Width and Height Of Image
+        $imageSize = getimagesize($path_file_save);
+        $width = $imageSize[0] / 2;  // Lebar gambar
+        $height = $imageSize[1] / 2; // Tinggi gambar
+
+        // Read the uploaded image using file_get_contents
+        $imageContents = file_get_contents($path_file_save);
+
+        // Load the image from contents using Intervention Image
+        $image = Image::make($imageContents)->resize($width, $height);
+
+        // Compress the image
+        $image->save($path_file_save, 50);
+
         return $filename;
     }
 
