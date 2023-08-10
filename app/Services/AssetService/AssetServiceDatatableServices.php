@@ -109,7 +109,7 @@ class AssetServiceDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->whereHas('detail_service', function ($query) use ($request) {
@@ -265,7 +265,7 @@ class AssetServiceDatatableServices
         ]);
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);

@@ -4,14 +4,17 @@ namespace App\Services\InventarisData;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Approval;
 use App\Helpers\SsoHelpers;
 use App\Models\InventoriData;
 use App\Models\RequestInventori;
 use App\Models\LogRequestInventori;
+use Illuminate\Support\Facades\Auth;
 use App\Models\DetailRequestInventori;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
+use App\Notifications\UserNotification;
 use App\Http\Requests\Approval\RequestInventoriUpdate;
 use App\Http\Requests\InventarisData\InventarisDataStoreRequest;
 use App\Http\Requests\InventarisData\InventarisDataUpdateRequest;
@@ -20,9 +23,6 @@ use App\Http\Requests\InventarisData\InventarisDataUpdateStokRequest;
 use App\Http\Requests\InventarisData\InventarisDataStoreUpdateRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriStoreRequest;
 use App\Http\Requests\InventarisData\UserRequestInventoriUpdateRequest;
-use App\Models\User;
-use App\Notifications\UserNotification;
-use Illuminate\Support\Facades\Auth;
 
 class InventarisDataCommandServices
 {
@@ -225,8 +225,8 @@ class InventarisDataCommandServices
 
             $log_request_inventori = new LogRequestInventori();
             $log_request_inventori->request_inventori_id = $request_inventori->id;
-            $log_request_inventori->message = "Barang habis pakai " . $item->inventori->nama_inventori . " dengan kode inventori " . $item->inventori->kode_inventori . " telah dihapus dari daftar permintaan dikarenakan Barang Habis Pakai dihapus oleh Admin";
-            $log_request_inventori->status = "ditolak";
+            $log_request_inventori->message = 'Barang habis pakai ' . $item->inventori->nama_inventori . ' dengan kode inventori ' . $item->inventori->kode_inventori . ' telah dihapus dari daftar permintaan dikarenakan Barang Habis Pakai dihapus oleh Admin';
+            $log_request_inventori->status = 'ditolak';
             $log_request_inventori->created_by = Auth::user()->id;
             $log_request_inventori->save();
 

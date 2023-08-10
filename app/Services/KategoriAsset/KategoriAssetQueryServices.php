@@ -37,7 +37,7 @@ class KategoriAssetQueryServices
             $results[] = [
                 'id' => $item->id,
                 'text' => $item->nama_kategori,
-                'dataKodeKategori' => $item->kode_kategori ?? ''
+                'dataKodeKategori' => $item->kode_kategori ?? '',
             ];
         }
 

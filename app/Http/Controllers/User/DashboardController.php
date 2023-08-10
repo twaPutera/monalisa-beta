@@ -4,13 +4,13 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\UserSso\UserSsoQueryServices;
 use App\Services\Approval\ApprovalQueryServices;
 use App\Services\Pengaduan\PengaduanQueryServices;
 use App\Services\Notification\NotificationQueryServices;
 use App\Services\SistemConfig\SistemConfigQueryServices;
 use App\Services\Notification\NotificationCommandServices;
 use App\Services\PeminjamanAsset\PeminjamanAssetQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 
 class DashboardController extends Controller
 {

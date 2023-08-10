@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\ListingAsset;
 
+use Throwable;
+use App\Models\AssetData;
 use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
 use App\Imports\DataAssetImport;
@@ -10,7 +12,6 @@ use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\MasterDataAssetExport;
 use App\Helpers\StatusAssetDataHelpers;
-use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\AssetData\AssetStoreRequest;
@@ -20,11 +21,10 @@ use App\Http\Requests\AssetData\AssetUpdateRequest;
 use App\Services\AssetData\AssetDataCommandServices;
 use App\Services\AssetData\AssetDataDatatableServices;
 use App\Services\AssetOpname\AssetOpnameQueryServices;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
-use App\Models\AssetData;
 use App\Services\AssetService\AssetServiceQueryServices;
-use Throwable;
 
 class MasterAssetController extends Controller
 {
@@ -285,7 +285,7 @@ class MasterAssetController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Berhasil menghapus sementara data asset',
-                'location' => route('admin.listing-asset.index')
+                'location' => route('admin.listing-asset.index'),
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();

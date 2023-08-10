@@ -43,7 +43,7 @@ class PemutihanAssetUpdateRequest extends FormRequest
         return [
             'nama_pemutihan' => 'Nama penghapusan asset',
             'keterangan_pemutihan' => 'Keterangan penghapusan asset',
-            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset'
+            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset',
         ];
     }
 }

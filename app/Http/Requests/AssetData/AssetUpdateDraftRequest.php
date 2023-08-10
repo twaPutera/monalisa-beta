@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\AssetData;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\SistemConfig;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AssetUpdateDraftRequest extends FormRequest
 {

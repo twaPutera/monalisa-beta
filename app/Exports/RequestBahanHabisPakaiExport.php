@@ -4,9 +4,8 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use App\Helpers\DateIndoHelpers;
-use App\Models\DetailRequestInventori;
-use App\Models\LogRequestInventori;
 use App\Models\RequestInventori;
+use App\Models\DetailRequestInventori;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -50,7 +49,7 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
         $this->array_merge_cell = [
             'no' => [],
             'code' => [],
-            'bahan_habis_pakai' => []
+            'bahan_habis_pakai' => [],
         ];
         $this->temp_row_num = 1;
     }
@@ -115,9 +114,9 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
             $element = '';
             foreach ($find_detail_asset as $index => $item_inventori) {
                 if ($index >= 1) {
-                    $element .= ", ";
+                    $element .= ', ';
                 }
-                $element .= $item_inventori->inventori->kode_inventori . " (" . $item_inventori->inventori->deskripsi_inventori . ")";
+                $element .= $item_inventori->inventori->kode_inventori . ' (' . $item_inventori->inventori->deskripsi_inventori . ')';
             }
 
             if ($key == 0) {
@@ -183,7 +182,7 @@ class RequestBahanHabisPakaiExport implements FromQuery, WithTitle, WithHeadings
             'Alasan Permintaan',
             'Aktifitas',
             'Status',
-            'Dilakukan Oleh'
+            'Dilakukan Oleh',
         ];
     }
 

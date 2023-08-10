@@ -2,36 +2,36 @@
 
 namespace App\Services\AssetData;
 
+use App\Models\Service;
 use App\Models\LogAsset;
 use App\Models\AssetData;
+use App\Models\Pengaduan;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
 use App\Helpers\FileHelpers;
+use Illuminate\Http\Request;
+use App\Models\DetailService;
 use App\Models\KategoriAsset;
 use App\Helpers\QrCodeHelpers;
-use App\Models\DepresiasiAsset;
-use App\Helpers\DepresiasiHelpers;
-use App\Helpers\SistemConfigHelpers;
-use App\Http\Requests\AssetData\AssetDataDeleteRequest;
-use App\Http\Requests\AssetData\AssetStoreRequest;
-use App\Http\Requests\AssetData\AssetUpdateRequest;
-use App\Http\Requests\AssetData\AssetDataPublishRequest;
-use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
-use App\Models\DetailPemindahanAsset;
-use App\Models\DetailPeminjamanAsset;
-use App\Models\DetailPemutihanAsset;
-use App\Models\DetailService;
 use App\Models\LogAssetOpname;
-use App\Models\LogPeminjamanAsset;
-use App\Models\LogPengaduanAsset;
+use App\Models\DepresiasiAsset;
 use App\Models\LogServiceAsset;
 use App\Models\PeminjamanAsset;
-use App\Models\Pengaduan;
+use App\Models\LogPengaduanAsset;
+use App\Helpers\DepresiasiHelpers;
+use App\Models\LogPeminjamanAsset;
 use App\Models\PerencanaanServices;
-use App\Models\Service;
-use App\Services\SistemConfig\SistemConfigQueryServices;
-use Illuminate\Http\Request;
+use App\Helpers\SistemConfigHelpers;
+use App\Models\DetailPemutihanAsset;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DetailPemindahanAsset;
+use App\Models\DetailPeminjamanAsset;
+use App\Http\Requests\AssetData\AssetStoreRequest;
+use App\Http\Requests\AssetData\AssetUpdateRequest;
+use App\Http\Requests\AssetData\AssetDataDeleteRequest;
+use App\Http\Requests\AssetData\AssetDataPublishRequest;
+use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
+use App\Services\SistemConfig\SistemConfigQueryServices;
 
 class AssetDataCommandServices
 {
@@ -72,8 +72,8 @@ class AssetDataCommandServices
         $asset->ownership = $request->ownership;
         $asset->tgl_register = date('Y-m-d');
         $asset->register_oleh = config('app.sso_siska') ? $user->guid : $user->id;
-        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
-        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_urut = $request->no_urut;
@@ -145,8 +145,8 @@ class AssetDataCommandServices
         $asset->id_lokasi = $request->id_lokasi;
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
-        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
-        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_seri = $request->no_seri;
@@ -203,8 +203,8 @@ class AssetDataCommandServices
         $asset->id_lokasi = $request->id_lokasi;
         $asset->id_satuan_asset = $request->id_satuan_asset;
         $asset->jenis_penerimaan = $request->jenis_penerimaan;
-        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
-        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == "tidak-ada" ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
+        $asset->no_memo_surat = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->no_memo_surat : $request->no_memo_surat_manual);
+        $asset->id_surat_memo_andin = isset($request->status_memorandum) && $request->status_memorandum == 'tidak-ada' ? null : ($request->status_memorandum == 'andin' ? $request->id_surat_memo_andin : null);
         $asset->no_po = $request->no_po;
         $asset->no_sp3 = $request->no_sp3;
         $asset->no_seri = $request->no_seri;
@@ -346,7 +346,7 @@ class AssetDataCommandServices
             $log_peminjaman_asset = new LogPeminjamanAsset();
             $log_peminjaman_asset->peminjaman_asset_id = $peminjaman_asset->id;
             $log_peminjaman_asset->created_by = Auth::user()->id;
-            $log_peminjaman_asset->log_message = "Asset " . $asset->deskripsi . " dengan kode asset " . $asset->kode_asset . " telah dihapus dari daftar peminjaman dikarenakan Asset dihapus oleh Admin";
+            $log_peminjaman_asset->log_message = 'Asset ' . $asset->deskripsi . ' dengan kode asset ' . $asset->kode_asset . ' telah dihapus dari daftar peminjaman dikarenakan Asset dihapus oleh Admin';
             $log_peminjaman_asset->save();
 
             $detail_peminjaman_asset->delete();

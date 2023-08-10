@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AssetData;
+use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
 use App\Jobs\GenerateAllQrCodeJob;
 

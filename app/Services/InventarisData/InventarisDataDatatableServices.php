@@ -2,18 +2,18 @@
 
 namespace App\Services\InventarisData;
 
-use App\Models\DetailRequestInventori;
 use Illuminate\Http\Request;
 use App\Models\InventoriData;
-use App\Models\KategoriInventori;
 use App\Models\RequestInventori;
 use Yajra\DataTables\DataTables;
+use App\Models\KategoriInventori;
 use App\Models\LogRequestInventori;
+use Illuminate\Support\Facades\Auth;
+use App\Models\DetailRequestInventori;
 use App\Models\LogPenambahanInventori;
 use App\Models\LogPenguranganInventori;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
-use Illuminate\Support\Facades\Auth;
 
 class InventarisDataDatatableServices
 {
@@ -67,18 +67,18 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kategori', function ($item) {
-                return !empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
+                return ! empty($item->kategori_inventori->nama_kategori) ? $item->kategori_inventori->nama_kategori : 'Tidak Ada';
             })
             ->addColumn('sebelumnya', function ($item) {
-                return !empty($item->jumlah_sebelumnya) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return ! empty($item->jumlah_sebelumnya) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_sebelumnya . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('saat_ini', function ($item) {
-                return !empty($item->jumlah_saat_ini) || !empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
+                return ! empty($item->jumlah_saat_ini) || ! empty($item->satuan_inventori->nama_satuan) ? $item->jumlah_saat_ini . ' ' . $item->satuan_inventori->nama_satuan : 'Tidak Ada';
             })
             ->addColumn('action', function ($item) {
                 $element = '';
 
-                if (Auth::user()->role == "admin") {
+                if (Auth::user()->role == 'admin') {
                     $element .= '<form action="' . route('admin.listing-inventaris.delete', $item->id) . '" class="form-confirm" method="POST">';
                     $element .= csrf_field();
                     $element .= '<a href="' . route('admin.listing-inventaris.detail', $item->id) . '" class="btn mr-1 btn-sm btn-icon me-1 btn-primary">
@@ -166,7 +166,7 @@ class InventarisDataDatatableServices
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
 
         if (0 == $order_column_index) {
-            $query->orderBy('request_inventories.created_at', "DESC");
+            $query->orderBy('request_inventories.created_at', 'DESC');
         }
         if (1 == $order_column_index) {
             $query->orderBy('request_inventories.created_at', $order_column_dir);
@@ -212,22 +212,22 @@ class InventarisDataDatatableServices
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('kode_permintaan', function ($item) {
-                return !empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
+                return ! empty($item->kode_request) ? $item->kode_request : 'Tidak Ada';
             })
             ->addColumn('message', function ($item) {
-                return !empty($item->message) ? $item->message : 'Tidak Ada';
+                return ! empty($item->message) ? $item->message : 'Tidak Ada';
             })
             ->addColumn('status', function ($item) {
-                return !empty($item->status) ? $item->status : 'Tidak Ada';
+                return ! empty($item->status) ? $item->status : 'Tidak Ada';
             })
             ->addColumn('no_memo', function ($item) {
-                return !empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
+                return ! empty($item->no_memo) ? $item->no_memo : 'Tidak Ada';
             })
             ->addColumn('jabatan', function ($item) {
-                return !empty($item->jabatan) ? $item->jabatan : 'Tidak Ada';
+                return ! empty($item->jabatan) ? $item->jabatan : 'Tidak Ada';
             })
             ->addColumn('unit_kerja', function ($item) {
-                return !empty($item->unit_kerja) ? $item->unit_kerja : 'Tidak Ada';
+                return ! empty($item->unit_kerja) ? $item->unit_kerja : 'Tidak Ada';
             })
             ->addColumn('user_pengaju', function ($item) {
                 $name = 'Not Found';
@@ -241,28 +241,28 @@ class InventarisDataDatatableServices
                 return $name;
             })
             ->addColumn('alasan', function ($item) {
-                return !empty($item->alasan) ? $item->alasan : 'Tidak Ada';
+                return ! empty($item->alasan) ? $item->alasan : 'Tidak Ada';
             })
             ->addColumn('created_by', function ($item) {
-                return !empty($item->created_by) ? $item->created_by : 'Tidak Ada';
+                return ! empty($item->created_by) ? $item->created_by : 'Tidak Ada';
             })
             ->addColumn('tanggal_permintaan', function ($item) {
-                return !empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
+                return ! empty($item->tanggal_permintaan) ? $item->tanggal_permintaan : 'Tidak Ada';
             })
             ->addColumn('tanggal_pengambilan', function ($item) {
-                return !empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
+                return ! empty($item->tanggal_pengambilan) ? $item->tanggal_pengambilan : 'Tidak Ada';
             })
             ->addColumn('log_terakhir', function ($item) {
-                return !empty($item->created_at) ? $item->created_at : 'Tidak Ada';
+                return ! empty($item->created_at) ? $item->created_at : 'Tidak Ada';
             })
             ->addColumn('kode_bahan_habis_pakai', function ($item) {
                 $find_detail_asset = DetailRequestInventori::with(['inventori'])->where('request_inventori_id', $item->request_inventori_id)->get();
                 $element = '';
                 foreach ($find_detail_asset as $index => $item) {
                     if ($index >= 1) {
-                        $element .= ", ";
+                        $element .= ', ';
                     }
-                    $element .= $item->inventori->kode_inventori . " (" . $item->inventori->deskripsi_inventori . ")";
+                    $element .= $item->inventori->kode_inventori . ' (' . $item->inventori->deskripsi_inventori . ')';
                 }
 
                 return $element;
@@ -300,7 +300,6 @@ class InventarisDataDatatableServices
         // Filter
         $order_column_index = $request_arr['order'][0]['column'] ?? 0;
         $order_column_dir = $request_arr['order'][0]['dir'] ?? 'desc';
-
 
         if (2 == $order_column_index) {
             $query->orderBy('created_at', $order_column_dir);
