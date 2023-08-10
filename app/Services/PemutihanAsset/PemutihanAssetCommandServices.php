@@ -3,6 +3,7 @@
 namespace App\Services\PemutihanAsset;
 
 use Exception;
+use App\Models\User;
 use App\Models\Approval;
 use App\Models\AssetData;
 use App\Models\AssetImage;
@@ -11,6 +12,7 @@ use App\Helpers\FileHelpers;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PemutihanAsset;
 use App\Models\DetailPemutihanAsset;
+use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Session;
 use App\Services\UserSso\UserSsoQueryServices;
 use App\Http\Requests\Approval\PemutihanApprovalUpdate;
@@ -19,8 +21,6 @@ use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetStoreDetailRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetChangeStatusRequest;
 use App\Http\Requests\PemutihanAsset\PemutihanAssetUpdateListingRequest;
-use App\Models\User;
-use App\Notifications\UserNotification;
 
 class PemutihanAssetCommandServices
 {
@@ -36,7 +36,7 @@ class PemutihanAssetCommandServices
         $request->validated();
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
@@ -147,7 +147,6 @@ class PemutihanAssetCommandServices
         }
         $created_by->notify(new UserNotification($notifikasi));
 
-
         $approval->save();
         return $pemutihan;
     }
@@ -156,7 +155,7 @@ class PemutihanAssetCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');
@@ -226,7 +225,6 @@ class PemutihanAssetCommandServices
             $approval->save();
         }
 
-
         return $pemutihan;
     }
 
@@ -274,7 +272,7 @@ class PemutihanAssetCommandServices
         }
 
         foreach ($detail_pemutihan as $item_pemutihan) {
-            if (!in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
+            if (! in_array($item_pemutihan->id_asset_data, $request_checkbox)) {
                 $path = storage_path('app/images/asset-pemutihan');
                 if (isset($item_pemutihan->image[0])) {
                     $pathOld = $path . '/' . $item_pemutihan->image[0]->path;
@@ -293,7 +291,7 @@ class PemutihanAssetCommandServices
         $request->validated();
         $pemutihan = PemutihanAsset::findOrFail($id);
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $approver = $this->userSsoQueryServices->getDataUserByRoleId($request, 'manager_it');

@@ -49,6 +49,6 @@ class GenerateNoUrutFormat extends Command
             }
             $data->save();
         }
-        $this->info("Updated " . $count . " records of AssetData no_urut.");
+        $this->info('Updated ' . $count . ' records of AssetData no_urut.');
     }
 }

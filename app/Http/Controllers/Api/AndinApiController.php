@@ -33,7 +33,7 @@ class AndinApiController extends Controller
                     'status' => $response['status'],
                     'body' => $response['body'],
                     'url' => $response['url'],
-                ]
+                ],
             ], 200);
         } catch (\Throwable $th) {
             throw $th;

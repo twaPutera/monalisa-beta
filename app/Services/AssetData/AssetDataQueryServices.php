@@ -5,6 +5,7 @@ namespace App\Services\AssetData;
 use App\Models\AssetData;
 use App\Models\AssetImage;
 use App\Helpers\SsoHelpers;
+use App\Models\SistemConfig;
 use Illuminate\Http\Request;
 use App\Helpers\QrCodeHelpers;
 use App\Models\PeminjamanAsset;
@@ -13,7 +14,6 @@ use App\Models\PerencanaanServices;
 use App\Models\DetailPemindahanAsset;
 use App\Services\User\UserQueryServices;
 use App\Services\UserSso\UserSsoQueryServices;
-use App\Models\SistemConfig;
 
 class AssetDataQueryServices
 {
@@ -120,7 +120,7 @@ class AssetDataQueryServices
                 'detail_service',
                 'log_asset_opname' => function ($query) {
                     $query->orderBy('created_at', 'desc'); // Urutkan berdasarkan created_at descending
-                }
+                },
             ])
             ->where('id', $id)
             ->firstOrFail();
@@ -226,7 +226,7 @@ class AssetDataQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $data->where('is_it', 1);
@@ -383,7 +383,7 @@ class AssetDataQueryServices
 
     public function getValueAsset(Request $request)
     {
-        if (isset($request->awal) && !isset($request->akhir)) {
+        if (isset($request->awal) && ! isset($request->akhir)) {
             $nilai_beli_asset = AssetData::query()
                 ->where('is_pemutihan', '0')
                 ->where('is_draft', '0')
@@ -397,7 +397,7 @@ class AssetDataQueryServices
                 ->where('tgl_register', '>=', $request->awal)
                 ->where('status_kondisi', '!=', 'pengembangan')
                 ->sum('nilai_buku_asset');
-        } else if (!isset($request->awal) && isset($request->akhir)) {
+        } elseif (! isset($request->awal) && isset($request->akhir)) {
             $nilai_beli_asset = AssetData::query()
                 ->where('is_pemutihan', '0')
                 ->where('is_draft', '0')
@@ -411,7 +411,7 @@ class AssetDataQueryServices
                 ->where('tgl_register', '<=', $request->akhir)
                 ->where('status_kondisi', '!=', 'pengembangan')
                 ->sum('nilai_buku_asset');
-        } else if (isset($request->awal) && isset($request->akhir)) {
+        } elseif (isset($request->awal) && isset($request->akhir)) {
             $nilai_beli_asset = AssetData::query()
                 ->where('is_pemutihan', '0')
                 ->where('is_draft', '0')
@@ -461,7 +461,7 @@ class AssetDataQueryServices
             ->get();
 
         foreach ($group_kategori_asset as $item) {
-            if (isset($request->awal) && !isset($request->akhir)) {
+            if (isset($request->awal) && ! isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereHas('kategori_asset', function ($query) use ($item) {
                         $query->where('id_group_kategori_asset', $item->id);
@@ -471,7 +471,7 @@ class AssetDataQueryServices
                     ->where('tgl_register', '>=', $request->awal)
                     ->where('status_kondisi', '!=', 'pengembangan')
                     ->count();
-            } else if (!isset($request->awal) && isset($request->akhir)) {
+            } elseif (! isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereHas('kategori_asset', function ($query) use ($item) {
                         $query->where('id_group_kategori_asset', $item->id);
@@ -481,7 +481,7 @@ class AssetDataQueryServices
                     ->where('tgl_register', '<=', $request->akhir)
                     ->where('status_kondisi', '!=', 'pengembangan')
                     ->count();
-            } else if (isset($request->awal) && isset($request->akhir)) {
+            } elseif (isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereHas('kategori_asset', function ($query) use ($item) {
                         $query->where('id_group_kategori_asset', $item->id);
@@ -526,7 +526,7 @@ class AssetDataQueryServices
         foreach ($group_kategori_asset as $item) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -537,7 +537,7 @@ class AssetDataQueryServices
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->where('tgl_register', '>=', $request->awal)
                             ->sum('nilai_buku_asset');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -548,7 +548,7 @@ class AssetDataQueryServices
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->where('tgl_register', '<=', $request->akhir)
                             ->sum('nilai_buku_asset');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -572,7 +572,7 @@ class AssetDataQueryServices
                             ->sum('nilai_buku_asset');
                     }
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -583,7 +583,7 @@ class AssetDataQueryServices
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->where('tgl_register', '>=', $request->awal)
                             ->sum('nilai_buku_asset');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -594,7 +594,7 @@ class AssetDataQueryServices
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->where('tgl_register', '<=', $request->akhir)
                             ->sum('nilai_buku_asset');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -618,7 +618,7 @@ class AssetDataQueryServices
                             ->sum('nilai_buku_asset');
                     }
                 } else {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -628,7 +628,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '>=', $request->awal)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_buku_asset');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -638,7 +638,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '<=', $request->akhir)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_buku_asset');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_buku = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -685,7 +685,7 @@ class AssetDataQueryServices
         foreach ($group_kategori_asset as $item) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -696,7 +696,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '>=', $request->awal)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -707,7 +707,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '<=', $request->akhir)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -731,7 +731,7 @@ class AssetDataQueryServices
                             ->sum('nilai_perolehan');
                     }
                 } elseif ($user->role == 'manager_asset' || $user->role == 'staff_asset') {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -742,7 +742,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '>=', $request->awal)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -753,7 +753,7 @@ class AssetDataQueryServices
                             ->where('is_draft', '0')
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -777,7 +777,7 @@ class AssetDataQueryServices
                             ->sum('nilai_perolehan');
                     }
                 } else {
-                    if (isset($request->awal) && !isset($request->akhir)) {
+                    if (isset($request->awal) && ! isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -787,7 +787,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '>=', $request->awal)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (!isset($request->awal) && isset($request->akhir)) {
+                    } elseif (! isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -797,7 +797,7 @@ class AssetDataQueryServices
                             ->where('tgl_register', '<=', $request->akhir)
                             ->where('status_kondisi', '!=', 'pengembangan')
                             ->sum('nilai_perolehan');
-                    } else if (isset($request->awal) && isset($request->akhir)) {
+                    } elseif (isset($request->awal) && isset($request->akhir)) {
                         $nilai_perolehan = AssetData::query()
                             ->whereHas('kategori_asset', function ($query) use ($item) {
                                 $query->where('id_group_kategori_asset', $item->id);
@@ -835,21 +835,21 @@ class AssetDataQueryServices
         $status = ['bagus', 'rusak', 'maintenance', 'tidak-lengkap', 'pengembangan'];
         $data = [];
         foreach ($status as $item) {
-            if (isset($request->awal) && !isset($request->akhir)) {
+            if (isset($request->awal) && ! isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->where('status_kondisi', $item)
                     ->where('is_pemutihan', '0')
                     ->where('updated_at', '>=', $request->awal . ' 00:00:00')
                     ->where('is_draft', '0')
                     ->count();
-            } else if (!isset($request->awal) && isset($request->akhir)) {
+            } elseif (! isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->where('status_kondisi', $item)
                     ->where('is_pemutihan', '0')
                     ->where('updated_at', '<=', $request->akhir . ' 00:00:00')
                     ->where('is_draft', '0')
                     ->count();
-            } else if (isset($request->awal) && isset($request->akhir)) {
+            } elseif (isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->where('status_kondisi', $item)
                     ->where('is_pemutihan', '0')
@@ -891,8 +891,7 @@ class AssetDataQueryServices
             'Des',
         ];
         foreach ($month as $key => $item) {
-
-            if (isset($request->awal) && !isset($request->akhir)) {
+            if (isset($request->awal) && ! isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereMonth('tgl_register', $key + 1)
                     ->whereYear('tgl_register', date('Y'))
@@ -901,7 +900,7 @@ class AssetDataQueryServices
                     ->where('is_pemutihan', '0')
                     ->where('is_draft', '0')
                     ->count();
-            } else if (!isset($request->awal) && isset($request->akhir)) {
+            } elseif (! isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereMonth('tgl_register', $key + 1)
                     ->whereYear('tgl_register', date('Y'))
@@ -910,7 +909,7 @@ class AssetDataQueryServices
                     ->where('is_pemutihan', '0')
                     ->where('is_draft', '0')
                     ->count();
-            } else if (isset($request->awal) && isset($request->akhir)) {
+            } elseif (isset($request->awal) && isset($request->akhir)) {
                 $count_asset = AssetData::query()
                     ->whereMonth('tgl_register', $key + 1)
                     ->whereYear('tgl_register', date('Y'))
@@ -929,8 +928,6 @@ class AssetDataQueryServices
                     ->where('is_draft', '0')
                     ->count();
             }
-
-
 
             $data['name'][] = $item;
             $data['value'][] = $count_asset;

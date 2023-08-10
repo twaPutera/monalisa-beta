@@ -50,7 +50,7 @@ class AssetServiceQueryServices
             ->orderby('created_at', 'desc')
             ->first();
 
-        if(isset($services)){
+        if (isset($services)) {
             if (config('app.sso_siska')) {
                 $user = $this->userSsoQueryServices->getUserByGuid($services->guid_pembuat);
                 $user = isset($user[0]) ? collect($user[0]) : null;
@@ -131,7 +131,7 @@ class AssetServiceQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $status_backlog->where('asset_data.is_it', '1');
@@ -183,7 +183,7 @@ class AssetServiceQueryServices
                 $query->whereMonth('services.created_at', $request->month);
             }
 
-            if (!isset($request->global)) {
+            if (! isset($request->global)) {
                 if ($user) {
                     if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                         $query->where('asset_data.is_it', '1');

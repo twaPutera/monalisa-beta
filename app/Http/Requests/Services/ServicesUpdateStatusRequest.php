@@ -28,7 +28,8 @@ class ServicesUpdateStatusRequest extends FormRequest
             'status_service' => 'required|in:onprogress,backlog,selesai',
             'keterangan_service' => 'required|string|max:255',
             'status_kondisi' => 'required|in:baik,rusak',
-            'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
         ];
     }
 }

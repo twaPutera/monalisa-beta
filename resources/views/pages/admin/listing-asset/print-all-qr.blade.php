@@ -53,7 +53,7 @@
                     @if ($assets->lastPage() > 1)
                         <ul class="pagination">
                             <!-- Tautan Halaman Sebelumnya -->
-                            <li class="page-item" <?php if($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
+                            <li class="page-item" <?php if ($assets->currentPage() == 1): ?> style="display: none;" <?php endif; ?>>
                                 @php
                                     $params = array_merge(request()->all(), ['page' => $assets->currentPage() - 1]);
                                     $queryString = http_build_query($params);
@@ -63,7 +63,7 @@
 
                             <!-- Tautan Halaman -->
                             @for ($i = $assets->currentPage() < 3 ? 1 : $assets->currentPage() - 2; $i <= ($assets->currentPage() > $assets->lastPage() - 3 ? $assets->lastPage() : $assets->currentPage() + 3); $i++)
-                                <li class="page-item <?php if($assets->currentPage() == $i):?> active <?php endif; ?>">
+                                <li class="page-item <?php if ($assets->currentPage() == $i):?> active <?php endif; ?>">
                                     @php
                                         $params = array_merge(request()->all(), ['page' => $i]);
                                         $queryString = http_build_query($params);
@@ -74,7 +74,7 @@
                             @endfor
 
                             <!-- Tautan Halaman Berikutnya -->
-                            <li class="page-item" <?php if($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
+                            <li class="page-item" <?php if ($assets->currentPage() == $assets->lastPage()): ?> style="display: none;" <?php endif; ?>>
                                 @php
                                     $params = array_merge(request()->all(), ['page' => $assets->currentPage() + 1]);
                                     $queryString = http_build_query($params);

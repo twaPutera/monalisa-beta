@@ -2,18 +2,18 @@
 
 namespace App\Exports;
 
-use App\Models\DetailPeminjamanAsset;
 use App\Models\PeminjamanAsset;
+use App\Models\DetailPeminjamanAsset;
 use App\Services\User\UserQueryServices;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Services\UserSso\UserSsoQueryServices;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, WithEvents, ShouldAutoSize, WithStyles
@@ -75,9 +75,9 @@ class PeminjamanAssetExport implements FromQuery, WithMapping, WithHeadings, Wit
             $element = '';
             foreach ($find_detail_asset as $index => $item_asset) {
                 if ($index >= 1) {
-                    $element .= ", ";
+                    $element .= ', ';
                 }
-                $element .= $item_asset->asset->kode_asset . " (" . $item_asset->asset->deskripsi . ")";
+                $element .= $item_asset->asset->kode_asset . ' (' . $item_asset->asset->deskripsi . ')';
             }
 
             if ($key == 0) {

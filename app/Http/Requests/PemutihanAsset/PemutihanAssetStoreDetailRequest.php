@@ -38,7 +38,7 @@ class PemutihanAssetStoreDetailRequest extends FormRequest
     {
         return [
             'status_pemutihan' => 'Status penghapusan asset',
-            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset'
+            'keterangan_pemutihan_asset' => 'Keterangan penghapusan asset',
         ];
     }
 }
