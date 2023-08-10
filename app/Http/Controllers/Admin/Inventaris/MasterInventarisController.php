@@ -142,7 +142,8 @@ class MasterInventarisController extends Controller
         }
     }
 
-    public function delete(string $id){
+    public function delete(string $id)
+    {
         try {
             DB::beginTransaction();
             $data = $this->inventarisDataCommandServices->delete($id);
@@ -162,7 +163,7 @@ class MasterInventarisController extends Controller
         }
     }
 
-    public function updateStok(InventarisDataUpdateStokRequest $request,string $id)
+    public function updateStok(InventarisDataUpdateStokRequest $request, string $id)
     {
         $request->request->add(['id' => $id]);
         try {

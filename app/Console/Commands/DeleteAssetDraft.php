@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\FileHelpers;
+use App\Models\LogAsset;
 use App\Models\AssetData;
 use App\Models\AssetImage;
-use App\Models\LogAsset;
+use App\Helpers\FileHelpers;
 use Illuminate\Console\Command;
 
 class DeleteAssetDraft extends Command
@@ -63,6 +63,6 @@ class DeleteAssetDraft extends Command
             }
             $data->forceDelete();
         }
-        $this->info("Deleted " . $query->count() . " records of AssetData with is_draft = 1 and deleted_at is not null.");
+        $this->info('Deleted ' . $query->count() . ' records of AssetData with is_draft = 1 and deleted_at is not null.');
     }
 }

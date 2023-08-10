@@ -77,9 +77,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
         //     })
         //     ->toArray();
 
-
         // dd($kategori_asset, $kodeakun, $kodesatuan, $kodevendor, $kodelokasi);
-
 
         $sparepart = ['iya', 'tidak'];
         $status_it = ['IT', 'Asset'];

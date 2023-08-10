@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\AssetData;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\SistemConfig;
+use Illuminate\Foundation\Http\FormRequest;
 
 class AssetUpdateDraftRequest extends FormRequest
 {
@@ -58,7 +58,8 @@ class AssetUpdateDraftRequest extends FormRequest
             // 'umur_manfaat_komersial' => 'nullable|numeric',
             'is_sparepart' => 'nullable|in:0,1',
             'is_pinjam' => 'nullable|in:0,1',
-            'gambar_asset' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'gambar_asset' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar_asset' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
         ];
     }
 }

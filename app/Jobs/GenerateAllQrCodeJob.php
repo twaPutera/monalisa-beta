@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Models\AssetData;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Helpers\QrCodeHelpers;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Models\AssetData;
-use App\Helpers\QrCodeHelpers;
 
 class GenerateAllQrCodeJob implements ShouldQueue
 {
@@ -19,6 +18,8 @@ class GenerateAllQrCodeJob implements ShouldQueue
     public $timeout = 0;
     /**
      * Create a new job instance.
+     *
+     * @param mixed $page
      *
      * @return void
      */

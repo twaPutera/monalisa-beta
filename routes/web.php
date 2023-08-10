@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Sso\SsoDataController;
 use App\Http\Controllers\Api\AndinApiController;
+use App\Http\Controllers\GenerateQrAssetController;
 use App\Http\Controllers\User\ScanQrCodeController;
 use App\Http\Controllers\User\AssetOpnameController;
 use App\Http\Controllers\TestFront\TestingController;
@@ -52,7 +53,6 @@ use App\Http\Controllers\Admin\UserManagement\UserController as AdminUserManagem
 use App\Http\Controllers\Admin\Inventaris\RequestInventoriController as AdminRequestInventoriController;
 use App\Http\Controllers\Admin\PeminjamanAsset\PeminjamanAssetController as AdminPeminjamanAssetController;
 use App\Http\Controllers\Admin\Approval\RequestInventoriController as AdminApprovalRequestInventoriController;
-use App\Http\Controllers\GenerateQrAssetController;
 
 /*
 |--------------------------------------------------------------------------

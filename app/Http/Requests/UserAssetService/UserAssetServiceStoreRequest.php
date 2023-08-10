@@ -34,7 +34,8 @@ class UserAssetServiceStoreRequest extends FormRequest
             'catatan' => 'required|string|max:255',
             'status_service' => 'required|in:onprogress,backlog,selesai',
             'status_kondisi' => 'required|in:baik,rusak',
-            'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10048',
         ];
     }
 }

@@ -2,21 +2,20 @@
 
 namespace App\Services\AssetData;
 
-use App\Helpers\FileHelpers;
 use App\Models\Lokasi;
+use App\Models\Vendor;
 use App\Models\LogAsset;
 use App\Models\AssetData;
-use App\Helpers\SsoHelpers;
 use App\Models\AssetImage;
-use App\Models\KategoriAsset;
-use Illuminate\Http\Request;
-use App\Models\LogAssetOpname;
+use App\Helpers\SsoHelpers;
 use App\Models\SatuanAsset;
-use App\Models\Vendor;
+use Illuminate\Http\Request;
+use App\Models\KategoriAsset;
+use App\Models\LogAssetOpname;
 use Yajra\DataTables\DataTables;
 use App\Services\User\UserQueryServices;
-use App\Services\UserSso\UserSsoQueryServices;
 use Yajra\DataTables\Contracts\DataTable;
+use App\Services\UserSso\UserSsoQueryServices;
 
 class AssetDataDatatableServices
 {
@@ -124,12 +123,12 @@ class AssetDataDatatableServices
             $query->where('is_pinjam', $request->is_pinjam);
         }
 
-        if (!isset($request->is_pemutihan)) {
+        if (! isset($request->is_pemutihan)) {
             $query->where('is_pemutihan', 0);
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', '1');
@@ -145,7 +144,7 @@ class AssetDataDatatableServices
             $query->orderBy('tanggal_perolehan', 'DESC');
         }
 
-        if (isset($request->is_draft) && $request->is_draft == "1") {
+        if (isset($request->is_draft) && $request->is_draft == '1') {
             // SORT DRAFT
             if (3 == $order_column_index) {
                 $query->orderBy('asset_data.kode_asset', $order_column_dir);
@@ -221,7 +220,7 @@ class AssetDataDatatableServices
             // END SORT DRAFT
         }
 
-        if (isset($request->is_draft) && $request->is_draft == "0") {
+        if (isset($request->is_draft) && $request->is_draft == '0') {
             // SORT GENERAL
             if (2 == $order_column_index) {
                 $query->orderBy('asset_data.kode_asset', $order_column_dir);
@@ -296,7 +295,6 @@ class AssetDataDatatableServices
             }
             // END SORT GENERAL
         }
-
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -377,7 +375,7 @@ class AssetDataDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('is_it', 1);
@@ -565,7 +563,7 @@ class AssetDataDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);

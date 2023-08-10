@@ -136,7 +136,7 @@ class PeminjamanAssetDatatableServices
             ->select([
                 'log_peminjaman_assets.*',
                 'peminjaman_assets.code',
-                'peminjaman_assets.id as id_peminjaman_asset'
+                'peminjaman_assets.id as id_peminjaman_asset',
             ])
             ->join('peminjaman_assets', 'peminjaman_assets.id', '=', 'log_peminjaman_assets.peminjaman_asset_id');
 
@@ -170,7 +170,7 @@ class PeminjamanAssetDatatableServices
         $order_column_dir = $filter['order'][0]['dir'] ?? 'desc';
 
         if (0 == $order_column_index) {
-            $query->orderBy('created_at', "DESC");
+            $query->orderBy('created_at', 'DESC');
         }
 
         if (1 == $order_column_index) {
@@ -199,9 +199,9 @@ class PeminjamanAssetDatatableServices
                 $element = '';
                 foreach ($find_detail_asset as $index=>$item) {
                     if ($index >= 1) {
-                        $element .= ", ";
+                        $element .= ', ';
                     }
-                    $element .= $item->asset->kode_asset . " (" . $item->asset->deskripsi . ")";
+                    $element .= $item->asset->kode_asset . ' (' . $item->asset->deskripsi . ')';
                 }
 
                 return $element;
