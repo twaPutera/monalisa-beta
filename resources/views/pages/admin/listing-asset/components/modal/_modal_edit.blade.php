@@ -27,10 +27,7 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Nomor Seri</label>
-                                <input type="text" value="{{ $asset->no_seri }}"
-                                       @if (auth()->user()->role != 'admin' || auth()->user()->role != 'manager_asset' || auth()->user()->role != 'manager_it') readonly
-                                       @endif class="form-control"
-                                       name="no_seri">
+                                <input type="text" value="{{ $asset->no_seri }}" @if (!auth()->user()->checkAccessEditAsset(auth()->user()->role)) readonly @endif class="form-control" name="no_seri">
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Kelompok Aset</label>

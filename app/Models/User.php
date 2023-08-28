@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function checkAccessEditAsset($role) {
+        return $role == 'admin' || $role == 'manager_asset' || $role == 'manager_it';
+    }
 }
