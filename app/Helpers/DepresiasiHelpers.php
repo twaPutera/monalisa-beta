@@ -63,7 +63,7 @@ class DepresiasiHelpers
         return isset($depresiasi) ? $depresiasi->nilai_buku_akhir : 0;
     }
 
-    public static function getDataAssetDepresiasi()
+    public static function getDataAssetDepresiasi($date)
     {
         $asset = AssetData::query()
             ->select([
@@ -78,6 +78,10 @@ class DepresiasiHelpers
             ->where('nilai_buku_asset', '>', 1)
             ->where('nilai_depresiasi', '>', 0)
             ->whereNotIn('status_kondisi', ['draft', 'pengembangan'])
+            ->whereDoesntHave('depresiasi_asset', function ($query) use ($date) {
+                $query->whereMonth('tanggal_depresiasi', date('m', strtotime($date)))
+                    ->whereYear('tanggal_depresiasi', date('Y', strtotime($date)));
+            })
             ->get();
         return $asset;
     }
