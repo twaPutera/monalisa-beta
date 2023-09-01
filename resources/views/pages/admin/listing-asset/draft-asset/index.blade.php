@@ -154,6 +154,9 @@
                         data: 'nilai_perolehan'
                     },
                     {
+                        data: 'tgl_pelunasan'
+                    },
+                    {
                         data: 'nama_lokasi'
                     },
                     {
@@ -179,7 +182,7 @@
                         },
                     },
                     {
-                        targets: 17,
+                        targets: 18,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         },
@@ -205,6 +208,12 @@
                             `;
                             element += `</form>`;
                             return element;
+                        }
+                    },
+                    {
+                        targets: 12,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
                         }
                     },
                     {
@@ -365,6 +374,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response);
                     if (response.success == true) {
                         const data = response.data;
                         const modal = $('.modalEditDraftAsset');
@@ -373,6 +383,7 @@
                         form.find('input[name="id"]').val(data.asset.id);
                         form.find('input[name="deskripsi"]').val(data.asset.deskripsi);
                         form.find('input[name="tanggal_perolehan"]').val(data.asset.tanggal_perolehan);
+                        form.find('input[name="tanggal_pelunasan"]').val(data.asset.tgl_pelunasan);
                         form.find('input[name="kode_asset"]').val(data.asset.kode_asset);
                         form.find('input[name="nilai_perolehan"]').val(data.asset.nilai_perolehan);
                         // form.find('input[name="nilai_buku_asset"]').val(data.asset.nilai_buku_asset);
@@ -703,6 +714,7 @@
                                     <th width="180px">Status Kondisi</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
+                                    <th width="100px">Tgl. Pelunasan</th>
                                     <th width="150px">Lokasi</th>
                                     <th width="150px">Ownership</th>
                                     <th width="150px">Register Oleh</th>

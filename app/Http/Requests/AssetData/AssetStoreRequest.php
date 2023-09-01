@@ -37,6 +37,7 @@ class AssetStoreRequest extends FormRequest
             'id_satuan_asset' => 'required|uuid|exists:satuan_assets,id',
             'deskripsi' => 'required|string|max:255',
             'tanggal_perolehan' => 'required|date',
+            'tanggal_pelunasan' => 'required|date',
             'nilai_perolehan' => 'required|numeric',
             // 'nilai_buku_asset' => 'required|numeric|lte:nilai_perolehan',
             'jenis_penerimaan' => 'required|string|max:255|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',

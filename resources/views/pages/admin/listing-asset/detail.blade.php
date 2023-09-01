@@ -323,7 +323,7 @@
                         },
                     },
                     {
-                        targets: [2,3],
+                        targets: [2, 3],
                         render: function(data, type, full, meta) {
                             let element = '';
                             if (data == 'rusak') {
@@ -1097,6 +1097,10 @@
                                     <tr>
                                         <td width="40%">Tgl. Perolehan</td>
                                         <td><strong>{{ $asset->tanggal_perolehan }}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%">Tgl. Pelunasan</td>
+                                        <td><strong>{{ $asset->tgl_pelunasan }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td width="40%">Jenis Penerimaan</td>

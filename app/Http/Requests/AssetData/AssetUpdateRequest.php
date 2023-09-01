@@ -66,6 +66,7 @@ class AssetUpdateRequest extends FormRequest
             'id_satuan_asset' => 'required|uuid|exists:satuan_assets,id',
             'deskripsi' => 'required|string|max:255',
             // 'tanggal_perolehan' => 'required|date',
+            'tanggal_pelunasan' => 'nullable|date',
             'nilai_perolehan' => 'required|numeric',
             'jenis_penerimaan' => 'required|string|max:255|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             // 'ownership' => 'nullable|uuid',

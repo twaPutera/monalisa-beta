@@ -175,6 +175,9 @@
                         data: 'nilai_perolehan'
                     },
                     {
+                        data: 'tgl_pelunasan'
+                    },
+                    {
                         data: 'nama_lokasi'
                     },
                     {
@@ -200,7 +203,13 @@
                         }
                     },
                     {
-                        targets: 16,
+                        targets: 11,
+                        render: function(data, type, full, meta) {
+                            return formatDateIntoIndonesia(data);
+                        }
+                    },
+                    {
+                        targets: 17,
                         render: function(data, type, full, meta) {
                             return formatDateIntoIndonesia(data);
                         },
@@ -573,6 +582,7 @@
                                     <th width="180px">Status Kondisi</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
+                                    <th width="100px">Tgl. Pelunasan</th>
                                     <th width="150px">Lokasi</th>
                                     <th width="150px">Ownership</th>
                                     <th width="150px">Register Oleh</th>

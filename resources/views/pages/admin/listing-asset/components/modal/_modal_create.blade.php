@@ -54,6 +54,11 @@
                                 <input type="number" class="form-control" name="nilai_perolehan">
                             </div>
                             <div class="form-group col-md-4 col-6">
+                                <label for="">Tanggal Pelunasan</label>
+                                <input type="text" class="form-control datepickerCreate" readonly
+                                    name="tanggal_pelunasan">
+                            </div>
+                            <div class="form-group col-md-4 col-6">
                                 <label for="">Vendor</label>
                                 <select name="id_vendor" class="form-control" id="vendorAssetCreate">
 

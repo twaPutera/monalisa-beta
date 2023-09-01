@@ -36,15 +36,15 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             $id_kelas = $get_kelas->id;
         }
 
-        $get_vendor = Vendor::where('kode_vendor', $row[10])->first();
+        $get_vendor = Vendor::where('kode_vendor', $row[11])->first();
         if ($get_vendor == null) {
             $id_vendor = null;
         } else {
             $id_vendor = $get_vendor->id;
         }
-        $id_kategori = KategoriAsset::query()->with(['group_kategori_asset'])->where('kode_kategori', $row[11])->first();
-        $id_satuan = SatuanAsset::where('kode_satuan', $row[12])->first();
-        $get_lokasi = Lokasi::where('kode_lokasi', $row[13])->first();
+        $id_kategori = KategoriAsset::query()->with(['group_kategori_asset'])->where('kode_kategori', $row[12])->first();
+        $id_satuan = SatuanAsset::where('kode_satuan', $row[13])->first();
+        $get_lokasi = Lokasi::where('kode_lokasi', $row[14])->first();
         if ($get_lokasi == null) {
             $id_lokasi = null;
         } else {
@@ -52,6 +52,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
         }
         $user = SsoHelpers::getUserLogin();
         $tanggal_perolehan = Carbon::createFromFormat('d/m/Y', $row[4])->format('Y-m-d');
+        $tgl_pelunasan = Carbon::createFromFormat('d/m/Y', $row[6])->format('Y-m-d');
 
         // Depresiasi
         $nilai_perolehan = $row[5];
@@ -84,21 +85,22 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'no_urut' => $row[2],
             'deskripsi' => $row[3],
             'tanggal_perolehan' => $tanggal_perolehan,
+            'tgl_pelunasan' => $tgl_pelunasan,
             'nilai_perolehan' => $nilai_perolehan,
-            'jenis_penerimaan' => $row[6],
+            'jenis_penerimaan' => $row[7],
             // 'nilai_buku_asset' => $row[7],
             // 'no_memo_surat' => $row[8],
-            'no_po' => $row[7],
-            'no_sp3' => $row[8],
-            'no_seri' => $row[9],
+            'no_po' => $row[8],
+            'no_sp3' => $row[9],
+            'no_seri' => $row[10],
             'tgl_register' => date('Y-m-d'),
             'register_oleh' => config('app.sso_siska') ? $user->guid : $user->id,
-            'spesifikasi' => $row[14],
-            'cost_center' => $row[15],
+            'spesifikasi' => $row[15],
+            'cost_center' => $row[16],
             // 'call_center' => $row[17],
-            'status_kondisi' => $row[16],
-            'is_pinjam' => $row[17] == 'iya' ? 1 : 0,
-            'is_sparepart' => $row[18]  == 'iya' ? 1 : 0,
+            'status_kondisi' => $row[17],
+            'is_pinjam' => $row[18] == 'iya' ? 1 : 0,
+            'is_sparepart' => $row[19]  == 'iya' ? 1 : 0,
             'nilai_depresiasi' => $nilai_depresiasi,
             'umur_manfaat_komersial' => $umur_manfaat_komersial,
             'created_by' => config('app.sso_siska') ? $user->guid : $user->id,
@@ -106,7 +108,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             'tanggal_awal_depresiasi' => $tgl_awal_depresiasi,
             'tanggal_akhir_depresiasi' => DepresiasiHelpers::getAkhirTanggalDepresiasi($tgl_awal_depresiasi, $id_kategori->umur_asset),
             'is_draft' => 1,
-            'is_it' => $row[19] == 'IT' ? 1 : 0,
+            'is_it' => $row[20] == 'IT' ? 1 : 0,
         ]);
         return $data_asset;
     }
@@ -132,26 +134,27 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '3' => 'required|max:255',
             '4' => 'required|date_format:d/m/Y',
             '5' => 'required',
-            '6' => 'required|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
+            '6' => 'required|date_format:d/m/Y',
+            '7' => 'required|in:PO,Hibah Eksternal,Hibah Penelitian,Hibah Perorangan',
             // '7' => 'required|numeric',
             // '8' => 'nullable|max:50',
-            '7' => 'nullable|max:50',
             '8' => 'nullable|max:50',
             '9' => 'nullable|max:50',
+            '10' => 'nullable|max:50',
             // '11' => 'required|numeric',
-            '10' => 'nullable|exists:vendors,kode_vendor',
-            '11' => 'required|exists:kategori_assets,kode_kategori',
-            '12' => 'required|exists:satuan_assets,kode_satuan',
-            '13' => 'nullable|exists:lokasis,kode_lokasi',
-            '14' => 'required|max:255',
-            '15' => 'nullable|max:255',
+            '11' => 'nullable|exists:vendors,kode_vendor',
+            '12' => 'required|exists:kategori_assets,kode_kategori',
+            '13' => 'required|exists:satuan_assets,kode_satuan',
+            '14' => 'nullable|exists:lokasis,kode_lokasi',
+            '15' => 'required|max:255',
+            '16' => 'nullable|max:255',
             // '17' => 'nullable|max:50',
             // '18' => 'nullable|numeric',
             // '19' => 'nullable|numeric',
-            '16' => 'required|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
-            '17' => 'required|in:iya,tidak',
+            '17' => 'required|in:bagus,rusak,maintenance,tidak-lengkap,pengembangan',
             '18' => 'required|in:iya,tidak',
-            '19' => 'required|in:IT,Asset',
+            '19' => 'required|in:iya,tidak',
+            '20' => 'required|in:IT,Asset',
         ];
     }
 
@@ -164,26 +167,27 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '3' => 'Deskripsi Asset',
             '4' => 'Tanggal Perolehan',
             '5' => 'Nilai Perolehan',
-            '6' => 'Jenis Perolehan',
+            '6' => 'Tanggal Perolehan',
+            '7' => 'Jenis Perolehan',
             // '7' => 'Nilai Buku Asset',
             // '8' => 'No Memorandum',
-            '7' => 'No PO',
-            '8' => 'No SP3',
-            '9' => 'No Seri Asset',
+            '8' => 'No PO',
+            '9' => 'No SP3',
+            '10' => 'No Seri Asset',
             // '11' => 'Nilai Depresiasi',
-            '10' => 'Kode Vendor Asset',
-            '11' => 'Kode Jenis Asset',
-            '12' => 'Kode Satuan Asset',
-            '13' => 'Kode Lokasi Asset',
-            '14' => 'Spesifikasi Asset',
-            '15' => 'Cost Center/Asset Holder',
+            '11' => 'Kode Vendor Asset',
+            '12' => 'Kode Jenis Asset',
+            '13' => 'Kode Satuan Asset',
+            '14' => 'Kode Lokasi Asset',
+            '15' => 'Spesifikasi Asset',
+            '16' => 'Cost Center/Asset Holder',
             // '17' => 'Call Center',
             // '18' => 'Umur Manfaat Fisikal',
             // '19' => 'Umur Manfaat Komersial',
-            '16' => 'Status Kondisi Asset',
-            '17' => 'Status Peminjaman',
-            '18' => 'Status Sparepart',
-            '19' => 'Status Pemilik Barang',
+            '17' => 'Status Kondisi Asset',
+            '18' => 'Status Peminjaman',
+            '19' => 'Status Sparepart',
+            '20' => 'Status Pemilik Barang',
         ];
     }
 

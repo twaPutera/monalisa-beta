@@ -8,7 +8,8 @@
                     <span aria-hidden="true" class="la la-remove"></span>
                 </button>
             </div>
-            <form class="kt-form kt-form--fit kt-form--label-right form-submit" action="{{ route('admin.listing-asset.pemindahan-asset.store') }}" method="POST">
+            <form class="kt-form kt-form--fit kt-form--label-right form-submit"
+                action="{{ route('admin.listing-asset.pemindahan-asset.store') }}" method="POST">
                 @csrf
                 <input type="hidden" value="{{ $asset->id }}" name="asset_id">
                 <div class="modal-body row">
@@ -22,12 +23,13 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">Asset Group</td>
-                                    <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? "Tidak Ada Group" }}</strong>
+                                    <td><strong>{{ $asset->kategori_asset->group_kategori_asset->nama_group ?? 'Tidak Ada Group' }}</strong>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="40%">Kategori</td>
-                                    <td><strong>{{ $asset->kategori_asset->nama_kategori ?? "Tidak Ada Kategori" }}</strong></td>
+                                    <td><strong>{{ $asset->kategori_asset->nama_kategori ?? 'Tidak Ada Kategori' }}</strong>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="40%">Nilai perolehan</td>
@@ -38,12 +40,17 @@
                                     <td><strong>{{ $asset->tanggal_perolehan }}</strong></td>
                                 </tr>
                                 <tr>
+                                    <td width="40%">Tgl. Pelunasan</td>
+                                    <td><strong>{{ $asset->tgl_pelunasan }}</strong></td>
+                                </tr>
+                                <tr>
                                     <td width="40%">Jenis Penerimaan</td>
                                     <td><strong>{{ $asset->jenis_penerimaan }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td width="40%">Satuan</td>
-                                    <td><strong>{{ $asset->satuan_asset->nama_satuan ?? "Tidak Ada Satuan" }}</strong></td>
+                                    <td><strong>{{ $asset->satuan_asset->nama_satuan ?? 'Tidak Ada Satuan' }}</strong>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="40%">No. Surat / Memo</td>
@@ -75,12 +82,15 @@
                         </div>
                         <div class="form-group">
                             <label for="">Tanggal Pemindahan</label>
-                            <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate" readonly name="tanggal_pemindahan">
+                            <input type="text" value="{{ date('Y-m-d') }}" class="form-control datepickerCreate"
+                                readonly name="tanggal_pemindahan">
                         </div>
                         <div class="form-group">
                             <label for="">Penanggung Jawab Sebelumnya</label>
-                            <input type="text" value="{{ $asset->owner_name }}" readonly class="form-control" name="penyerah_asset_nama">
-                            <input type="hidden" value="{{ $asset->ownership }}" class="form-control" name="penyerah_asset">
+                            <input type="text" value="{{ $asset->owner_name }}" readonly class="form-control"
+                                name="penyerah_asset_nama">
+                            <input type="hidden" value="{{ $asset->ownership }}" class="form-control"
+                                name="penyerah_asset">
                         </div>
                         <div class="form-group">
                             <label for="">Jabatan Penanggung Jawab Sebelumnya</label>

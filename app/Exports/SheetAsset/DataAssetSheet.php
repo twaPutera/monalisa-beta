@@ -85,15 +85,15 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
         $status_perolehan = ['PO', 'Hibah Eksternal', 'Hibah Penelitian', 'Hibah Perorangan'];
         $selects = [  //selects should have column_name and options
             ['columns_name' => 'A', 'options' => $kodeakun],
-            ['columns_name' => 'G', 'options' => $status_perolehan],
-            ['columns_name' => 'M', 'options' => $kodesatuan],
-            ['columns_name' => 'K', 'options' => $kodevendor],
-            ['columns_name' => 'N', 'options' => $kodelokasi],
-            ['columns_name' => 'L', 'options' => $kategori_asset],
-            ['columns_name' => 'Q', 'options' => $status],
-            ['columns_name' => 'S', 'options' => $sparepart],
-            ['columns_name' => 'T', 'options' => $status_it],
-            ['columns_name' => 'R', 'options' => $status_peminjaman],
+            ['columns_name' => 'H', 'options' => $status_perolehan],
+            ['columns_name' => 'N', 'options' => $kodesatuan],
+            ['columns_name' => 'L', 'options' => $kodevendor],
+            ['columns_name' => 'O', 'options' => $kodelokasi],
+            ['columns_name' => 'M', 'options' => $kategori_asset],
+            ['columns_name' => 'R', 'options' => $status],
+            ['columns_name' => 'T', 'options' => $sparepart],
+            ['columns_name' => 'U', 'options' => $status_it],
+            ['columns_name' => 'S', 'options' => $status_peminjaman],
         ];
         $this->selects = $selects;
         $this->row_count = 10000; //number of rows that will have the dropdown
@@ -111,6 +111,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
                 // 'tanggal_register' => '22-06-2022',
                 'tanggal_perolehan' => '25/08/2022',
                 'nilai_perolehan' => '250000',
+                'tgl_pelunasan' => '25/09/2022',
                 'jenis_perolehan' => 'PO',
                 // 'nilai_buku_asset' => '12000',
                 // 'no_memo' => '4123/UP-SU3/MEMO/AK.00/X/2022',
@@ -149,6 +150,7 @@ class DataAssetSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             // 'Tanggal Register',
             'Tanggal Perolehan (Format: d/m/Y)*',
             'Nilai Perolehan *',
+            'Tanggal Pelunasan (Format: d/m/Y)',
             'Jenis Perolehan (Opsi: PO/Hibah Eksternal/Hibah Penelitian/Hibah Perorangan) *',
             // 'Nilai Buku Asset *',
             // 'No Memorandum',

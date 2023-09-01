@@ -93,6 +93,9 @@
                         data: 'nilai_perolehan'
                     },
                     {
+                        data: 'tgl_pelunasan'
+                    },
+                    {
                         data: 'nama_lokasi',
                         orderable: false,
                     },
@@ -169,7 +172,7 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: [9, 16, 20, 21, 24],
+                        targets: [9, 11, 17, 21, 22, 25],
                         render: function(data, type, full, meta) {
                             if (data != '-') {
                                 return formatDateIntoIndonesia(data);
@@ -184,7 +187,7 @@
                         }
                     },
                     {
-                        targets: 22,
+                        targets: 23,
                         render: function(data, type, full, meta) {
                             let element = '-';
                             if (data == 'disetujui') {
@@ -427,8 +430,8 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center">
                             <div class="input-group mr-3" style="width: 250px;">
-                                <input type="text" id="searchAsset" onkeyup="filterTableService()" class="form-control form-control-sm"
-                                    placeholder="Search for...">
+                                <input type="text" id="searchAsset" onkeyup="filterTableService()"
+                                    class="form-control form-control-sm" placeholder="Search for...">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary btn-icon" onclick="filterTableService()"
                                         id="searchButton" type="button"><i class="fa fa-search"></i></button>
@@ -454,6 +457,7 @@
                                     <th width="180px">Status Akunting</th>
                                     <th width="100px">Tgl. Perolehan</th>
                                     <th width="150px">Nilai Perolehan</th>
+                                    <th width="100px">Tgl. Pelunasan</th>
                                     <th width="150px">Lokasi</th>
                                     <th width="150px">Ownership</th>
                                     <th width="150px">Register Oleh</th>

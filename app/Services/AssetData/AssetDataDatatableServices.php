@@ -185,6 +185,9 @@ class AssetDataDatatableServices
                 $query->orderBy('nilai_perolehan', $order_column_dir);
             }
             if (12 == $order_column_index) {
+                $query->orderBy('tgl_pelunasan', $order_column_dir);
+            }
+            if (13 == $order_column_index) {
                 $subquery = Lokasi::select('lokasis.id')
                     ->whereColumn('lokasis.id', 'asset_data.id_lokasi')
                     ->orderBy('nama_lokasi', $order_column_dir)
@@ -192,13 +195,13 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (13 == $order_column_index) {
+            if (14 == $order_column_index) {
                 $query->orderBy('ownership', $order_column_dir);
             }
-            if (14 == $order_column_index) {
+            if (15 == $order_column_index) {
                 $query->orderBy('created_by', $order_column_dir);
             }
-            if (15 == $order_column_index) {
+            if (16 == $order_column_index) {
                 $subquery = SatuanAsset::select('satuan_assets.id')
                     ->whereColumn('satuan_assets.id', 'asset_data.id_satuan_asset')
                     ->orderBy('nama_satuan', $order_column_dir)
@@ -206,7 +209,7 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (16 == $order_column_index) {
+            if (17 == $order_column_index) {
                 $subquery = Vendor::select('vendors.id')
                     ->whereColumn('vendors.id', 'asset_data.id_vendor')
                     ->orderBy('nama_vendor', $order_column_dir)
@@ -214,7 +217,7 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (17 == $order_column_index) {
+            if (18 == $order_column_index) {
                 $query->orderBy('updated_at', $order_column_dir);
             }
             // END SORT DRAFT
@@ -261,6 +264,9 @@ class AssetDataDatatableServices
                 $query->orderBy('nilai_perolehan', $order_column_dir);
             }
             if (11 == $order_column_index) {
+                $query->orderBy('tgl_pelunasan', $order_column_dir);
+            }
+            if (12 == $order_column_index) {
                 $subquery = Lokasi::select('lokasis.id')
                     ->whereColumn('lokasis.id', 'asset_data.id_lokasi')
                     ->orderBy('nama_lokasi', $order_column_dir)
@@ -268,13 +274,13 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (12 == $order_column_index) {
+            if (13 == $order_column_index) {
                 $query->orderBy('ownership', $order_column_dir);
             }
-            if (13 == $order_column_index) {
+            if (14 == $order_column_index) {
                 $query->orderBy('created_by', $order_column_dir);
             }
-            if (14 == $order_column_index) {
+            if (15 == $order_column_index) {
                 $subquery = SatuanAsset::select('satuan_assets.id')
                     ->whereColumn('satuan_assets.id', 'asset_data.id_satuan_asset')
                     ->orderBy('nama_satuan', $order_column_dir)
@@ -282,7 +288,7 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (15 == $order_column_index) {
+            if (16 == $order_column_index) {
                 $subquery = Vendor::select('vendors.id')
                     ->whereColumn('vendors.id', 'asset_data.id_vendor')
                     ->orderBy('nama_vendor', $order_column_dir)
@@ -290,7 +296,7 @@ class AssetDataDatatableServices
 
                 $query->orderByRaw('(' . $subquery->toSql() . ') ' . $order_column_dir, $subquery->getBindings());
             }
-            if (16 == $order_column_index) {
+            if (17 == $order_column_index) {
                 $query->orderBy('updated_at', $order_column_dir);
             }
             // END SORT GENERAL
