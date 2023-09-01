@@ -133,7 +133,7 @@ class PengaduanController extends Controller
     public function getAllData(Request $request)
     {
         try {
-            $pengaduan = $this->pengaduanQueryServices->findAll($request)->map(function ($item) {
+            $pengaduan = $this->pengaduanQueryServices->findAllPengaduanUser($request)->map(function ($item) {
                 $item->link_detail = route('user.pengaduan.detail', $item->id);
                 $item->tanggal_pengaduan = date('d/m/Y', strtotime($item->tanggal_pengaduan));
                 return $item;

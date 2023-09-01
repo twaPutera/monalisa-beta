@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         JWT::$leeway = 5;
+        // To redirect access for ngrok server
+        if (env('NGROK_STATUS') == true) {
+            URL::forceScheme('https');
+        }
     }
 
     /**
