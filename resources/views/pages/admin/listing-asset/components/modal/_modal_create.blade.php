@@ -196,7 +196,6 @@
                                             onchange="changeStatusKondisiAsset(this.value, 'status_akunting')"
                                             class="form-control mr-3 status_kondisi" style="width: 60%;"
                                             id="status_kondisi">
-                                            {{-- <option value="draft">Draft</option> --}}
                                             <option value="bagus">Bagus</option>
                                             <option value="rusak">Rusak</option>
                                             <option value="maintenance">Maintenance</option>

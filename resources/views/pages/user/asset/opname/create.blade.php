@@ -113,9 +113,31 @@
 
         const changeStatusKondisiAsset = (value, id) => {
             const targetSelect = $('#' + id);
+
             if (value == "tidak-ditemukan") {
                 targetSelect.find('option[value="TX"]').prop('selected', true);
             }
+
+            if (value == "bagus") {
+                targetSelect.find('option[value="DB"]').prop('selected', true);
+            }
+
+            if (value == "rusak") {
+                targetSelect.find('option[value="TR"]').prop('selected', true);
+            }
+
+            if (value == "tidak-lengkap") {
+                targetSelect.find('option[value="DL"]').prop('selected', true);
+            }
+
+            if (value == "pengembangan") {
+                targetSelect.find('option[value="TT"]').prop('selected', true);
+            }
+
+            if (value == "maintenance") {
+                targetSelect.find('option[value="TP"]').prop('selected', true);
+            }
+
             select2StatusAkunting();
         }
 

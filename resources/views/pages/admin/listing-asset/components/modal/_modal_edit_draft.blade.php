@@ -208,9 +208,10 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Kondisi Aset</label>
-                                        <select name="status_kondisi" onchange="changeStatusKondisiAsset(this.value,'status_akunting_edit')"
-                                            class="form-control mr-3 status_kondisi" style="width: 60%;" id="status_kondisi_edit">
-                                            <option value="pengembangan">Pengembangan</option>
+                                        <select name="status_kondisi"
+                                            onchange="changeStatusKondisiAsset(this.value,'status_akunting_edit')"
+                                            class="form-control mr-3 status_kondisi" style="width: 60%;"
+                                            id="status_kondisi_edit">
                                             <option value="bagus">Bagus</option>
                                             <option value="rusak">Rusak</option>
                                             <option value="maintenance">Maintenance</option>
@@ -223,8 +224,8 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label for="">Status Akunting Aset</label>
-                                        <select name="status_akunting" class="form-control mr-3 status_akunting" style="width: 60%;"
-                                            id="status_akunting_edit">
+                                        <select name="status_akunting" class="form-control mr-3 status_akunting"
+                                            style="width: 60%;" id="status_akunting_edit">
                                             @foreach ($list_status as $key => $item)
                                                 <option value="{{ $key }}">{{ $item }}</option>
                                             @endforeach
