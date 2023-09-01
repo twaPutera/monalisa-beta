@@ -173,7 +173,9 @@
                         <p class="mb-0 text-green">Catatan Opname Terakhir</p>
                     </div>
                     <div class="col">
-                        <p class="mb-0 text-green text-end">{{ isset($asset_data->log_asset_opname) ? $asset_data->log_asset_opname[0]->keterangan : "-" }}</p>
+                        <p class="mb-0 text-green text-end">
+                            {{ $asset_data->log_asset_opname != null ? $asset_data->log_asset_opname[0]->keterangan : '-' }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -184,7 +186,7 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            {{ isset($asset_data->log_asset_opname) ? App\Helpers\DateIndoHelpers::formatDateToIndo($asset_data->log_asset_opname[0]->tanggal_opname) : '-' }}
+                            {{ $asset_data->log_asset_opname != null ? App\Helpers\DateIndoHelpers::formatDateToIndo($asset_data->log_asset_opname[0]->tanggal_opname) : '-' }}
                         </p>
                     </div>
                 </div>
