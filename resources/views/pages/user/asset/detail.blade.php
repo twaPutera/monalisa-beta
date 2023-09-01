@@ -175,7 +175,7 @@
                     <div class="col">
                         <p class="mb-0 text-green text-end">
                             @dd($asset_data->log_asset_opname);
-                            {{ $asset_data->log_asset_opname != null ? $asset_data->log_asset_opname[0]->keterangan : '-' }}
+                            {{ $asset_data->log_asset_opname->isNotEmpty() ? $asset_data->log_asset_opname[0]->keterangan : '-' }}
                         </p>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
-                            {{ $asset_data->log_asset_opname != null ? App\Helpers\DateIndoHelpers::formatDateToIndo($asset_data->log_asset_opname[0]->tanggal_opname) : '-' }}
+                            {{ $asset_data->log_asset_opname->isNotEmpty() ? App\Helpers\DateIndoHelpers::formatDateToIndo($asset_data->log_asset_opname[0]->tanggal_opname) : '-' }}
                         </p>
                     </div>
                 </div>
