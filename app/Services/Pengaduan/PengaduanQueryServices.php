@@ -48,7 +48,7 @@ class PengaduanQueryServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             $pengaduan->with(['asset_data', 'asset_data.lokasi', 'image', 'lokasi']);
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
