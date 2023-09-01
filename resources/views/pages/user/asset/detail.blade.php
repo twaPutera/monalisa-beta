@@ -174,6 +174,7 @@
                     </div>
                     <div class="col">
                         <p class="mb-0 text-green text-end">
+                            @dd($asset_data->log_asset_opname);
                             {{ $asset_data->log_asset_opname != null ? $asset_data->log_asset_opname[0]->keterangan : '-' }}
                         </p>
                     </div>
