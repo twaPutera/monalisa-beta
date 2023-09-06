@@ -140,6 +140,15 @@ class AssetDataCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset = AssetData::find($id);
+
+        if ($request->kode_asset != $asset->kode_asset) {
+            \File::delete(storage_path('app/images/qr-code/' . $asset->qr_code));
+            $qr_name = 'qr-asset-' . $request->kode_asset . '.png';
+            $path = storage_path('app/images/qr-code/' . $qr_name);
+            $qr_code = QrCodeHelpers::generateQrCode($request->kode_asset, $path);
+            $asset->qr_code = $qr_name;
+        }
+
         $asset->kode_asset = $request->kode_asset;
         $asset->deskripsi = $request->deskripsi;
         $asset->id_vendor = $request->id_vendor;
