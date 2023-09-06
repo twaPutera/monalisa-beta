@@ -175,6 +175,7 @@ class AssetDataQueryServices
 
         $data->link_detail = route('admin.listing-asset.detail', $data->id);
         $data->owner_name = $user == null ? 'Tidak ada' : $user->name ?? $user->nama;
+        $data->owner = $user;
         $data->created_by_opname = $created_by == null ? 'Tidak Ada' : $created_by->name ?? $created_by->nama;
         return $data;
     }

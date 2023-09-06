@@ -130,8 +130,12 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        $('#unitKerjaSelect').empty();
-                        $('#jabatanSelect').empty();
+                        $('#unitKerjaSelect').html(
+                            `<option value="{{ auth()->user()->unit_kerja }}" selected>{{ auth()->user()->unit_kerja }}</option>`
+                        );
+                        $('#jabatanSelect').html(
+                            `<option value="{{ auth()->user()->jabatan }}" selected>{{ auth()->user()->jabatan }}</option>`
+                        );
                         $(response.data).each(function(index, item) {
                             $('#unitKerjaSelect').append(`
                                 <option value="${item.unit_kerja}">${item.unit_kerja}</option>
@@ -198,7 +202,7 @@
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Unit Kerja</strong></label>
                     <select name="unit_kerja" id="unitKerjaSelect" class="form-control py-3">
-
+                        <option value="{{ auth()->user()->unit_kerja }}" selected>{{ auth()->user()->unit_kerja }}</option>
                     </select>
                     <small>Jika tidak terdapat unit kerja silahkan ketikkan unit kerja Anda dan tekan "enter"</small>
                     {{-- <input type="text" name="unit_kerja" class="form-control" id=""> --}}
@@ -208,7 +212,7 @@
                 <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Jabatan</strong></label>
                     <select name="jabatan" id="jabatanSelect" class="form-control py-3">
-
+                        <option value="{{ auth()->user()->jabatan }}" selected>{{ auth()->user()->jabatan }}</option>
                     </select>
                     <small>Jika tidak terdapat jabatan silahkan ketikkan jabatan Anda dan tekan "enter"</small>
                     {{-- <input type="text" name="jabatan" class="form-control" id="jabatanSelect"> --}}

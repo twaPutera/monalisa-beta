@@ -20,6 +20,8 @@ class UserCommandServices
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
         $user->is_active = isset($request->status) ? $request->status : '0';
+        $user->unit_kerja = $request->unit_kerja;
+        $user->jabatan = $request->jabatan;
         $user->save();
 
         return $user;
@@ -35,6 +37,8 @@ class UserCommandServices
         $user->username_sso = $request->username_sso;
         $user->role = $request->role;
         $user->is_active = isset($request->status) ? $request->status : '0';
+        $user->unit_kerja = $request->unit_kerja;
+        $user->jabatan = $request->jabatan;
         $user->save();
 
         return $user;

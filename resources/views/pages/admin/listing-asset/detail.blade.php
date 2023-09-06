@@ -541,8 +541,26 @@
                     },
                     cache: true
                 },
+            }).on('select2:select', function(e) {
+                const data = e.params.data;
+                getDetailUser(data.id);
             });
         }
+
+        const getDetailUser = (id) => {
+            let url = '{{ route('admin.user-management.user.show', ':id') }}';
+            url = url.replace(':id', id);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $("#unitKerjaPenerima").val(response.data.unit_kerja);
+                    $("#jabatanPenerima").val(response.data.jabatan);
+                }
+            })
+        }
+
         const selectServiceDate = (v) => {
             const tanggalBaru = $('#tanggalBaru');
             const tanggalPerencanaan = $('#tanggalPerencanaan');

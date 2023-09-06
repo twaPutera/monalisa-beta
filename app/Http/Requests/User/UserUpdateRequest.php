@@ -30,6 +30,8 @@ class UserUpdateRequest extends FormRequest
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string|max:50|in:user,admin,manager_asset,manager_it,staff_asset,staff_it',
             'status' => 'nullable|string|max:50|in:1,0',
+            'unit_kerja' => 'nullable|string|max:255',
+            'jabatan' => 'nullable|string|max:255',
         ];
     }
 }
