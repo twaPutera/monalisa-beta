@@ -93,7 +93,10 @@
                         data: 'nilai_perolehan'
                     },
                     {
-                        data: 'tgl_pelunasan'
+                        data: 'tgl_pelunasan',
+                        render: function(data) {
+                            return data == null ? '-' : data;
+                        }
                     },
                     {
                         data: 'nama_lokasi',

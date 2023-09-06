@@ -36,9 +36,9 @@ class PengaduanCommandServices
         $asset_pengaduan->save();
 
         if ($asset_data->is_it == 1) {
-            $target_user = User::where('role', 'staff_it')->get();
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
         } else {
-            $target_user = User::where('role', 'staff_asset')->get();
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
         }
 
         $notifikasi = [
@@ -84,19 +84,19 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = new Pengaduan();
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
 
             if ($asset_data->is_it == 1) {
-                $target_user = User::where('role', 'staff_it')->get();
+                $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
             } else {
-                $target_user = User::where('role', 'staff_asset')->get();
+                $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
             }
         } else {
-            $target_user = User::where('role', 'admin')->orWhere('role', 'staff_it')->orWhere('role', 'staff_asset')->get();
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'manager_asset', 'staff_it', 'staff_asset'])->get();
         }
 
         $asset_pengaduan->kode_pengaduan =  self::generateCode();
@@ -141,18 +141,18 @@ class PengaduanCommandServices
         $user = SsoHelpers::getUserLogin();
 
         $asset_pengaduan = Pengaduan::findOrFail($id);
-        if (! empty($request->id_asset)) {
+        if (!empty($request->id_asset)) {
             $asset_data = AssetData::where('is_pemutihan', 0)
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
             $asset_pengaduan->id_asset_data = $asset_data->id;
             if ($asset_data->is_it == 1) {
-                $target_user = User::where('role', 'staff_it')->get();
+                $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
             } else {
-                $target_user = User::where('role', 'staff_asset')->get();
+                $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
             }
         } else {
-            $target_user = User::where('role', 'admin')->orWhere('role', 'staff_it')->orWhere('role', 'staff_asset')->get();
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'manager_asset', 'staff_it', 'staff_asset'])->get();
         }
 
         $asset_pengaduan->id_lokasi = $request->id_lokasi;

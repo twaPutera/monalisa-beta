@@ -167,7 +167,7 @@ class DataAssetSheet implements ToModel, WithStartRow, WithValidation
             '3' => 'Deskripsi Asset',
             '4' => 'Tanggal Perolehan',
             '5' => 'Nilai Perolehan',
-            '6' => 'Tanggal Perolehan',
+            '6' => 'Tanggal Pelunasan',
             '7' => 'Jenis Perolehan',
             // '7' => 'Nilai Buku Asset',
             // '8' => 'No Memorandum',
