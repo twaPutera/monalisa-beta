@@ -95,7 +95,7 @@
                     {
                         data: 'tgl_pelunasan',
                         render: function(data) {
-                            return data == null ? '-' : data;
+                            return data == null ? '-' : formatDateIntoIndonesia(data);
                         }
                     },
                     {
@@ -175,7 +175,7 @@
                     }
                 ],
                 columnDefs: [{
-                        targets: [9, 11, 17, 21, 22, 25],
+                        targets: [9, 17, 21, 22, 25],
                         render: function(data, type, full, meta) {
                             if (data != '-') {
                                 return formatDateIntoIndonesia(data);
