@@ -32,6 +32,7 @@ class UserAssetServiceStoreRequest extends FormRequest
             'id_kategori_service' => 'required|uuid|exists:kategori_services,id',
             'tindakan' => 'required|string|max:255',
             'catatan' => 'required|string|max:255',
+            'keterangan_service' => 'required|string|max:255',
             'status_service' => 'required|in:onprogress,backlog,selesai',
             'status_kondisi' => 'required|in:baik,rusak',
             // 'file_asset_service' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -183,6 +183,12 @@
             });
         }
 
+        @if (isset(request()->service_id))
+            setTimeout(() => {
+                $('button[data-id_detail_service="{{ request()->service_id }}"]').click();
+            }, 1000);
+        @endif
+
         const filterTableService = () => {
             const reset = $('#resetFilter').removeClass('d-none')
             table.DataTable().ajax.reload();

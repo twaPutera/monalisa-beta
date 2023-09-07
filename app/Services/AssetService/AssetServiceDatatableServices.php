@@ -109,7 +109,7 @@ class AssetServiceDatatableServices
         }
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->whereHas('detail_service', function ($query) use ($request) {
@@ -171,9 +171,9 @@ class AssetServiceDatatableServices
                 if ($item->status_service != 'selesai') {
                     $element .= '<button type="button" onclick="editService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit="' . route('admin.services.edit', $item->id) . '" data-url_update="' . route('admin.services.update', $item->id) . '" class="btn btn-sm btn-warning mr-1 me-1 btn-icon"><i class="fa fa-edit"></i></button>';
                     $element .= '<button type="button" onclick="editStatusService(this)" data-id_asset="' . $item->detail_service->id_asset_data . '" data-url_edit_status="' . route('admin.services.edit.status', $item->id) . '" data-url_update_status="' . route('admin.services.update.status', $item->id) . '" class="btn btn-sm btn-success mr-1 me-1 btn-icon"><i class="fa fa-info-circle"></i></button>';
-                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    $element .= '<button type="button" data-id_detail_service="' . $item->id . '" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
                 } else {
-                    $element .= '<button type="button" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
+                    $element .= '<button type="button" data-id_detail_service="' . $item->id . '" onclick="detailService(this)" data-url_detail="' . route('admin.services.detail', $item->id) . '" class="btn btn-sm btn-primary mr-1 me-1 btn-icon"><i class="fa fa-eye"></i></button>';
                 }
                 return $element;
             })
@@ -265,7 +265,7 @@ class AssetServiceDatatableServices
         ]);
 
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $query->where('asset_data.is_it', 1);

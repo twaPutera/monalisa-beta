@@ -17,6 +17,8 @@ use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\Services\ServicesUpdateStatusRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
+use App\Models\User;
+use App\Notifications\UserNotification;
 
 class AssetServiceCommandServices
 {
@@ -24,7 +26,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
@@ -67,6 +69,12 @@ class AssetServiceCommandServices
         $asset_service->status_kondisi = $request->status_kondisi;
         $asset_service->save();
 
+        if ($asset_data->is_it == '1') {
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
+        } else {
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
+        }
+
         if ($request->status_service == 'selesai') {
             $asset_data->status_kondisi = $request->status_kondisi == 'baik' ? 'bagus' : $request->status_kondisi;
             $asset_data->save();
@@ -97,6 +105,18 @@ class AssetServiceCommandServices
             $asset_images->path = $filenamesave;
             $asset_images->save();
         }
+
+        $notifikasi = [
+            'title' => 'Service Asset',
+            'message' => 'Service Asset dengan kode ' . $asset_service->kode_services . ' telah dibuat oleh ' . $user->name,
+            'url' => route('admin.services.index', ['service_id' => $asset_service->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
+
         return $asset_service;
     }
     private static function generateCode()
@@ -114,7 +134,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
@@ -137,6 +157,13 @@ class AssetServiceCommandServices
                 ->where('is_draft', '0')
                 ->where('id', $request->id_asset)->first();
         }
+
+        if ($asset_data->is_it == '1') {
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
+        } else {
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
+        }
+
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
@@ -172,7 +199,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
+        self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -185,6 +212,18 @@ class AssetServiceCommandServices
             $asset_images->path = $filenamesave;
             $asset_images->save();
         }
+
+        $notifikasi = [
+            'title' => 'Service Asset',
+            'message' => 'Service Asset dengan kode ' . $asset_service->kode_services . ' telah dibuat oleh ' . $user->name,
+            'url' => route('admin.services.index', ['service_id' => $asset_service->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
+
         return $asset_service;
     }
 
@@ -192,7 +231,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (! isset($request->global)) {
+        if (!isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
@@ -216,6 +255,12 @@ class AssetServiceCommandServices
                 ->where('id', $id)->first();
         }
 
+        if ($asset_data->is_it == '1') {
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
+        } else {
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
+        }
+
         if ($request->select_service_date == 'baru') {
             $tanggal_mulai = $request->tanggal_mulai_service;
         } else {
@@ -252,7 +297,7 @@ class AssetServiceCommandServices
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
+        self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Penambahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $filename = self::generateNameImage($request->file('file_asset_service')->getClientOriginalExtension(), $asset_service->id);
@@ -264,6 +309,17 @@ class AssetServiceCommandServices
             $asset_images->imageable_id = $asset_service->id;
             $asset_images->path = $filenamesave;
             $asset_images->save();
+        }
+
+        $notifikasi = [
+            'title' => 'Service Asset',
+            'message' => 'Service Asset dengan kode ' . $asset_service->kode_services . ' telah dibuat oleh ' . $user->name,
+            'url' => route('admin.services.index', ['service_id' => $asset_service->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
         }
         return $asset_service;
     }
@@ -282,7 +338,25 @@ class AssetServiceCommandServices
         $detail_asset_service->tindakan = $request->tindakan;
         $detail_asset_service->catatan = $request->catatan;
         $detail_asset_service->save();
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', 'Perubahan Informasi Services');
+        self::storeLog($asset_service->id, $asset_data->deskripsi, $asset_service->status_service, 'Perubahan', 'Perubahan Informasi Services');
+
+        if ($asset_data->is_it == '1') {
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
+        } else {
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
+        }
+
+        $notifikasi = [
+            'title' => 'Service Asset',
+            'message' => 'Service Asset dengan kode ' . $asset_service->kode_services . ' telah diperbaharui oleh ' . $user->name,
+            'url' => route('admin.services.index', ['service_id' => $asset_service->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
+        }
+
         return $detail_asset_service;
     }
 
@@ -308,7 +382,7 @@ class AssetServiceCommandServices
             $asset_data->save();
         }
 
-        $log = self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Perubahan', $request->keterangan_service);
+        self::storeLog($asset_service->id, $asset_data->deskripsi, $request->status_service, 'Perubahan', $request->keterangan_service);
 
         if ($request->hasFile('file_asset_service')) {
             $path = storage_path('app/images/asset-service');
@@ -325,6 +399,23 @@ class AssetServiceCommandServices
             $asset_images->imageable_id = $asset_service->id;
             $asset_images->path = $filenamesave;
             $asset_images->save();
+        }
+
+        if ($asset_data->is_it == '1') {
+            $target_user = User::whereIn('role', ['admin', 'manager_it', 'staff_it'])->get();
+        } else {
+            $target_user = User::whereIn('role', ['admin', 'manager_asset', 'staff_asset'])->get();
+        }
+
+        $notifikasi = [
+            'title' => 'Service Asset',
+            'message' => 'Status service Asset dengan kode ' . $asset_service->kode_services . ' telah diperbaharui oleh ' . $user->name,
+            'url' => route('admin.services.index', ['service_id' => $asset_service->id]),
+            'date' => date('d/m/Y H:i'),
+        ];
+
+        foreach ($target_user as $target) {
+            $target->notify(new UserNotification($notifikasi));
         }
         return $asset_service;
     }
