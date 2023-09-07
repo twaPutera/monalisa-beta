@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\ListingAsset;
 
 use Throwable;
+use App\Models\ZipFile;
 use App\Models\AssetData;
 use App\Helpers\FileHelpers;
 use Illuminate\Http\Request;
@@ -24,7 +25,6 @@ use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
-use App\Models\ZipFile;
 use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller

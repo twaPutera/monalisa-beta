@@ -3,13 +3,12 @@
 namespace App\Jobs;
 
 use App\Models\ZipFile;
+use Illuminate\Log\Logger;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Log\Logger;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
 class DeleteZipFileJob implements ShouldQueue
 {
@@ -43,6 +42,6 @@ class DeleteZipFileJob implements ShouldQueue
             $file->delete();
         }
 
-        logger("Deleted all zip files at " . date("Y-m-d H:i:s"), []);
+        logger('Deleted all zip files at ' . date('Y-m-d H:i:s'), []);
     }
 }
