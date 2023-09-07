@@ -2,6 +2,7 @@
 
 namespace App\Services\AssetService;
 
+use App\Models\User;
 use App\Models\Service;
 use App\Helpers\CutText;
 use App\Models\AssetData;
@@ -12,13 +13,12 @@ use App\Models\DetailService;
 use App\Models\LogServiceAsset;
 use App\Models\PerencanaanServices;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserNotification;
 use App\Http\Requests\Services\ServicesStoreRequest;
 use App\Http\Requests\Services\ServicesUpdateRequest;
 use App\Http\Requests\Services\ServicesUpdateStatusRequest;
 use App\Http\Requests\AssetService\AssetServiceStoreRequest;
 use App\Http\Requests\UserAssetService\UserAssetServiceStoreRequest;
-use App\Models\User;
-use App\Notifications\UserNotification;
 
 class AssetServiceCommandServices
 {
@@ -26,7 +26,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
@@ -134,7 +134,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
@@ -231,7 +231,7 @@ class AssetServiceCommandServices
     {
         $request->validated();
         $user = SsoHelpers::getUserLogin();
-        if (!isset($request->global)) {
+        if (! isset($request->global)) {
             if ($user) {
                 if ($user->role == 'manager_it' || $user->role == 'staff_it') {
                     $asset_data = AssetData::where('is_pemutihan', 0)
