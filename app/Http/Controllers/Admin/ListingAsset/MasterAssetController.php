@@ -24,6 +24,7 @@ use App\Services\AssetOpname\AssetOpnameQueryServices;
 use App\Http\Requests\AssetData\AssetDataDeleteRequest;
 use App\Http\Requests\AssetData\AssetDataPublishRequest;
 use App\Http\Requests\AssetData\AssetUpdateDraftRequest;
+use App\Models\ZipFile;
 use App\Services\AssetService\AssetServiceQueryServices;
 
 class MasterAssetController extends Controller
@@ -584,7 +585,8 @@ class MasterAssetController extends Controller
     public function downloadZipQr(Request $request)
     {
         $zipFile = new \PhpZip\ZipFile();
-        $outputFilename = storage_path('app/images/qr-code/all-qr-' . time() . '.zip');
+        $filename = 'all-qr-' . time() . '.zip';
+        $outputFilename = storage_path('app/images/qr-code/' . $filename);
         try {
             $data = $this->assetDataQueryServices->findAll($request);
 
@@ -596,6 +598,11 @@ class MasterAssetController extends Controller
 
             $zipFile->saveAsFile($outputFilename);
             $zipFile->close();
+
+            $zip = new ZipFile();
+            $zip->name = $filename;
+            $zip->path = 'app/images/qr-code/' . $filename;
+            $zip->save();
 
             return response()->download($outputFilename);
         } catch (\PhpZip\Exception\ZipException $e) {

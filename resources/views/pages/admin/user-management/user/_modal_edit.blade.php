@@ -34,6 +34,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="">Unit Kerja</label>
+                        <input type="text" class="form-control" name="unit_kerja">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Jabatan</label>
+                        <input type="text" class="form-control" name="jabatan">
+                    </div>
+                    <div class="form-group">
                         <span class="kt-switch kt-switch--sm">
                             <label>
                                 <input type="checkbox" value="1" checked="checked" name="status">

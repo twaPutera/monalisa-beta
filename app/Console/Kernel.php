@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DeleteZipFileJob;
 use App\Jobs\DepresiasionAllAssetJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -18,6 +19,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(DepresiasionAllAssetJob::class)->monthlyOn(15, '01:00');
+
+        // run job for every day
+        $schedule->job(DeleteZipFileJob::class)->dailyAt('01:00');
     }
 
     /**

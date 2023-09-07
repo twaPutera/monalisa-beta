@@ -113,6 +113,8 @@
                     form.find('input[name=username_sso]').val(response.data.username_sso);
                     form.find(`select[name=role] option[value="${response.data.role}"]`).prop('selected', true);
                     form.find(`input[name=status][value="${response.data.is_active}"]`).prop('checked', true);
+                    form.find('input[name=unit_kerja]').val(response.data.unit_kerja);
+                    form.find('input[name=jabatan]').val(response.data.jabatan);
                     modal.modal('show');
                 }
             })
