@@ -1,12 +1,13 @@
 @extends('layouts.user.master-detail')
 @section('page-title', 'Add Service')
 @section('pluggin-css')
-<link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
-<link rel="stylesheet" @endsection @section('pluggin-js') <script
+    <link rel="stylesheet" href="{{ asset('assets/vendors/general/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" @endsection
+    @section('pluggin-js') <script
     src="{{ asset('assets/vendors/general/select2/dist/js/select2.full.min.js') }}">
 </script>
 @endsection
-@section('custom-js')
+    @section('custom-js')
 <script>
     $('body').on('_EventAjaxSuccess', function(event, formElement, data) {
             if (data.success) {
@@ -115,12 +116,12 @@
         }
 </script>
 @endsection
-@section('back-button')
+    @section('back-button')
 <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="headerButton">
     <ion-icon name="chevron-back-outline" role="img" class="md hydrated" aria-label="chevron back outline"></ion-icon>
 </a>
 @endsection
-@section('content')
+    @section('content')
 <form action="{{ route('user.asset-data.service.store', $asset_data->id) }}" class="form-submit" method="POST">
     @csrf
     <div class="section mt-2">
@@ -217,6 +218,12 @@
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
+                    <label class="text-dark" for=""><strong>Keterangan Service</strong></label>
+                    <textarea name="keterangan_service" class="form-control" id="" cols="30" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group boxed">
+                <div class="input-wrapper">
                     <label class="text-dark" for=""><strong>Gambar Pengaduan</strong></label>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -235,12 +242,12 @@
     </div>
 </form>
 @endsection
-@section('button-menu') <div class="d-flex justify-content-center">
+    @section('button-menu') <div class="d-flex justify-content-center">
     <a href="{{ route('user.asset-data.detail', $asset_data->id) }}" class="btn btn-danger border-radius-sm px-3 me-2">
         <span class="">Batal</span>
     </a>
     <button class="btn btn-success border-radius-sm px-3" onclick="submitForm()" type="button">
         <span class="">Simpan</span>
     </button>
-</div>
+    </div>
 @endsection
