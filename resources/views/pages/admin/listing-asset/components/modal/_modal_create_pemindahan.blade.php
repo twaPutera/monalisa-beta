@@ -94,14 +94,14 @@
                         </div>
                         <div class="form-group">
                             <label for="">Jabatan Penanggung Jawab Sebelumnya</label>
-                            <input type="text" value="{{ $asset->owner->jabatan }}" class="form-control" name="jabatan_penyerah">
+                            <input type="text" value="{{ $asset->owner->jabatan ?? "" }}" class="form-control" name="jabatan_penyerah">
                             {{-- <select name="jabatan_penyerah" onchange="getUnitByPosition(this, 'unitKerjaPenyerahSelect')" class="form-control" id="positionPenyerahSelect">
 
                             </select> --}}
                         </div>
                         <div class="form-group">
                             <label for="">Unit Kerja Penanggung Jawab Sebelumnya</label>
-                            <input type="text" value="{{ $asset->owner->unit_kerja }}" class="form-control" name="unit_kerja_penyerah">
+                            <input type="text" value="{{ $asset->owner->unit_kerja ?? "" }}" class="form-control" name="unit_kerja_penyerah">
                             {{-- <select name="unit_kerja_penyerah" class="form-control" id="unitKerjaPenyerahSelect">
 
                             </select> --}}
