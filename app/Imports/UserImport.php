@@ -21,6 +21,8 @@ class UserImport implements ToModel, WithStartRow, WithValidation
         $user->is_active = '1';
         $user->no_induk = $row[5];
         $user->no_telp = $row[6];
+        $user->jabatan = $row[7];
+        $user->unit_kerja = $row[8];
         $user->save();
     }
 
@@ -37,8 +39,10 @@ class UserImport implements ToModel, WithStartRow, WithValidation
             '2' => 'required',
             '3' => 'required|string|unique:users,username_sso',
             '4' => 'required|string|in:admin,manager,staff,user',
-            '5' => 'nullable|string',
-            '6' => 'nullable|string|max:50',
+            '5' => 'nullable',
+            '6' => 'nullable|max:50',
+            '7' => 'nullable|max:255',
+            '8' => 'nullable|max:255',
         ];
     }
 
@@ -52,6 +56,8 @@ class UserImport implements ToModel, WithStartRow, WithValidation
             '4' => 'Role',
             '5' => 'No Induk',
             '6' => 'No Telp',
+            '7' => 'Jabatan',
+            '8' => 'Unit Kerja',
         ];
     }
 }
