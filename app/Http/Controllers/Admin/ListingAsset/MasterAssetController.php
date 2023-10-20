@@ -679,10 +679,10 @@ class MasterAssetController extends Controller
         return view('pages.admin.listing-asset.print-all-qr', compact('assets'));
     }
 
-    public function getMaxValueNoUrutAssetByKelompokId($id)
+    public function getMaxValueNoUrutAssetByKelompokId(string $id, string $id_asset = null)
     {
         try {
-            $data = $this->assetDataQueryServices->getMaxValueNoUrutAssetByKelompokId($id);
+            $data = $this->assetDataQueryServices->getMaxValueNoUrutAssetByKelompokId($id, $id_asset);
             //code...
             return response()->json([
                 'success' => true,

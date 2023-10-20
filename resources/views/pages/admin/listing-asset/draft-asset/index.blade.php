@@ -389,10 +389,13 @@
                         form.find('select[name="id_group_asset"]').append(
                             `<option value="${data.asset.kategori_asset.group_kategori_asset.id}" selected>${data.asset.kategori_asset.group_kategori_asset.nama_group}</option>`
                         );
+                        form.find('select[name="id_kategori_asset"]').removeAttr('data-id_asset');
                         if (data.asset.kategori_asset != null && data.asset.kategori_asset != '') {
                             form.find('select[name="id_kategori_asset"]').append(
-                                `<option value="${data.asset.kategori_asset.id}" selected>${data.asset.kategori_asset.nama_kategori}</option>`
+                                `<option value="${data.asset.kategori_asset.id}" selected>${data.asset.kategori_asset.nama_kategori} (${data.asset.kategori_asset.kode_kategori})</option>`
                             );
+                            form.find('select[name="id_kategori_asset"]').attr('data-id_asset', data.asset
+                                .id);
                         }
                         if (data.asset.lokasi != null && data.asset.lokasi != '') {
                             form.find('select[name="id_lokasi"]').append(
@@ -573,9 +576,16 @@
         });
 
         const getNoUrutByKelompok = (select) => {
-            var route = "{{ route('admin.listing-asset.get-no-urut-by-kelompok-id', ':id') }}";
-            route = route.replace(':id', $(select).val());
-
+            var route;
+            let id_asset = $(select).data('id_asset');
+            if (id_asset != undefined) {
+                route = "{{ route('admin.listing-asset.get-no-urut-by-kelompok-id', [':id', ':id_asset']) }}"
+                route = route.replace(':id', $(select).val());
+                route = route.replace(':id_asset', id_asset);
+            } else {
+                route = "{{ route('admin.listing-asset.get-no-urut-by-kelompok-id', [':id']) }}"
+                route = route.replace(':id', $(select).val());
+            }
             $.ajax({
                 url: route,
                 type: 'GET',
@@ -607,13 +617,22 @@
         const generateKodeAsset = (element) => {
             const form = $(element).closest('form');
             const no_urut = form.find('input[name="no_urut"]').val();
-            const kategori_asset = form.find('select[name="id_kategori_asset"]').select2('data')[0].dataKodeKategori;
-            console.log(no_urut);
-            if (kategori_asset) {
-                const kode_asset = `${kategori_asset}${no_urut !== "" ? no_urut : generateRandomString(5)}`;
+            const selectedOption = form.find('select[name="id_kategori_asset"]').select2('data')[0];
+
+            if (selectedOption && selectedOption.text) {
+                const kategori_asset = selectedOption.text;
+                const matches = kategori_asset.match(/\(([^)]+)\)/);
+                let valueInsideParentheses;
+                if (matches) {
+                    valueInsideParentheses = matches[1];
+                }
+
+                // Lanjutkan pemrosesan sesuai kebutuhan Anda
+                const kode_asset = `${valueInsideParentheses}${no_urut !== "" ? no_urut : generateRandomString(5)}`;
                 form.find('input[name="kode_asset"]').val(kode_asset);
             }
         }
+
 
         const generateRandomString = (num) => {
             var text = "";

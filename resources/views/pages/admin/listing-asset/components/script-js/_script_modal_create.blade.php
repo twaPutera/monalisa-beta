@@ -42,14 +42,19 @@
                 },
                 processResults: function(data, params) {
                     params.page = params.page || 1;
+                    const results = data.data.map(item => ({
+                        id: item.id,
+                        text: item.text + ' (' + item.dataKodeKategori + ')',
+                    }));
                     return {
-                        results: data.data,
+                        results: results,
                     };
                 },
                 cache: true
             },
         });
     }
+
 
     const generateMemorandumAndinSelect2 = (id = true) => {
         $('.memorandumAndin').select2({
