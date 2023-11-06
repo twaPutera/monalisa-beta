@@ -39,7 +39,11 @@ class DepresiasionAllAssetJob implements ShouldQueue
             logger('Depresiasi Asset: ' . $asset->id, [$asset]);
             try {
                 DB::beginTransaction();
-                $data = DepresiasiHelpers::depresiasiAsset($asset, date('Y-m-d'));
+                if(isset($asset->tgl_pelunasan)){ //kondisi ini ditambahkan oleh wahyu
+                    $data = DepresiasiHelpers::depresiasiAsset($asset, date('Y-m-d'));
+                }else{
+                    continue; //ditambahkan oleh wahyu
+                }
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollBack();

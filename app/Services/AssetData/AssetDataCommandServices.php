@@ -179,6 +179,14 @@ class AssetDataCommandServices
             $asset->nilai_perolehan = $request->nilai_perolehan;
         }
 
+        //block kode ini ditambahkan oleh wahyu
+        if(isset($request->tanggal_pelunasan)){
+            $nilai_buku = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi, $request->nilai_perolehan);
+            $asset->nilai_buku_asset = $nilai_buku;
+            $asset->nilai_buku_asset = $nilai_buku;
+            $asset->nilai_perolehan = $request->nilai_perolehan;
+        }
+
         $asset->save();
 
         if ($request->hasFile('gambar_asset')) {
@@ -420,7 +428,13 @@ class AssetDataCommandServices
             $asset = AssetData::find($id);
             if (isset($asset)) {
                 $asset->is_draft = '0';
-                $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
+                if(isset($asset->tgl_pelunasan)){ // kondisi ini ditambahkan oleh wahyu
+                    //original
+                    $asset->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($asset, $asset->tanggal_awal_depresiasi);
+                }else{
+                    $asset->nilai_buku_asset = $asset->nilai_perolehan; // ditambahkan oleh wahyu
+                }
+                
                 $asset->save();
             }
         }
@@ -457,7 +471,13 @@ class AssetDataCommandServices
         $query = AssetData::where('is_pemutihan', '0')->where('is_draft', '1')->get();
         foreach ($query as $data) {
             $data->is_draft = '0';
-            $data->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($data, $data->tanggal_awal_depresiasi);
+            if(isset($data->tgl_pelunasan)){ //kondisi ini ditambahkan oleh wahyu
+                //original
+                $data->nilai_buku_asset = DepresiasiHelpers::storePastDepresiasiAsset($data, $data->tanggal_awal_depresiasi);
+            }else{
+                $data->nilai_buku_asset = $data->nilai_perolehan; // ditambahkan oleh wahyu
+            }
+            
             $data->save();
         }
         return $query;

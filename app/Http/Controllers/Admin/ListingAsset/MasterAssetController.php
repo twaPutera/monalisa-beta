@@ -79,6 +79,7 @@ class MasterAssetController extends Controller
 
     public function store(AssetStoreRequest $request)
     {
+        //dd($request);
         DB::beginTransaction();
         try {
             $data = $this->assetDataCommandServices->store($request);

@@ -18,18 +18,18 @@ class SsoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd(\Session::get('access_token'));
-        // dd(\Session::get('user'));
-        $sso_login = config('app.sso_login');
-        if (! $sso_login) {
-            return $next($request);
-        }
+        // // dd(\Session::get('access_token'));
+        // // dd(\Session::get('user'));
+        // $sso_login = config('app.sso_login');
+        // if (! $sso_login) {
+        //     return $next($request);
+        // }
 
-        $token = SsoHelpers::checkTokenIsValid($request);
+        // $token = SsoHelpers::checkTokenIsValid($request);
 
-        if ($token) {
-            return $next($request);
-        }
-        return redirect()->route('sso.redirect');
+        // if ($token) {
+        //     return $next($request);
+        // }
+        // return redirect()->route('sso.redirect');
     }
 }

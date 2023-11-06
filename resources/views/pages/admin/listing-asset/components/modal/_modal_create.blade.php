@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-group col-md-4 col-6">
                                 <label for="">Tanggal Pelunasan</label>
-                                <input type="text" class="form-control datepickerCreate" readonly
+                                <input type="text" class="form-control datepickerCreate"
                                     name="tanggal_pelunasan">
                             </div>
                             <div class="form-group col-md-4 col-6">
@@ -242,7 +242,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Tambahh</button>
                 </div>
             </form>
         </div>

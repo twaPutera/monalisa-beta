@@ -22,7 +22,10 @@ class LoginController extends Controller
 
     public function loginStore(LoginStoreRequest $request)
     {
+
+        
         if ($this->authCommandServices->login($request)) {
+            
             return redirect()->route('login.redirect');
         }
 
@@ -31,6 +34,7 @@ class LoginController extends Controller
 
     public function redirect()
     {
+        //dd('request');
         $user = auth()->user();
 
         if ($user->role == 'user') {

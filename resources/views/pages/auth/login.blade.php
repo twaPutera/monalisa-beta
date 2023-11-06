@@ -36,7 +36,7 @@
             @enderror
         </div>
         <div class="mt-2 d-flex justify-content-between align-items-center">
-            <button type="submit" class="btn btn-primary"><strong>Log In</strong></button>
+            <button type="submit" class="btn btn-primary"><strong>Log Inn</strong></button>
         </div>
     </form>
 </div>

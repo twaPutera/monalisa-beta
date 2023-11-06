@@ -71,6 +71,7 @@ class DepresiasiHelpers
                 'nilai_buku_asset',
                 'nilai_depresiasi',
                 'nilai_perolehan',
+                'tgl_pelunasan',  //ini ditambahkan oleh wahyu
             ])
             ->where('is_pemutihan', '0')
             // ->where('is_draft', '0')

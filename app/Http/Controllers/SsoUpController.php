@@ -13,10 +13,13 @@ class SsoUpController extends Controller
 {
     public function handleToken(Request $request)
     {
+        
+       
         if (! config('sso-up.enabled')) {
+           
             return redirect()->route('login');
         }
-
+        
         logger('SsoUpController_handleToken:', [
             'headers' => getallheaders(),
             '_POST' => $_POST,
@@ -28,8 +31,9 @@ class SsoUpController extends Controller
         ]);
 
         // CHECK NEW TOKEN
-
+       
         try {
+            //dd($request->all());
             validator($request->all(), [
                 'token' => 'required|string:min:10',
                 'username' => 'required|string|min:1',
@@ -37,7 +41,7 @@ class SsoUpController extends Controller
 
             $token = $request->query('token');
             $username = $request->query('username');
-
+           
             $helper = new SsoUpHelper(config('sso-up'));
             if ($helper->isLoggedIn($token, $username)) {
                 session()->put('sso-up-data', [
@@ -53,15 +57,16 @@ class SsoUpController extends Controller
         } catch (\Throwable $th) {
             // throw $th;
         }
-
+        
         // CHECK OLD SESSION
-
+        
         try {
+            
             $old = session()->get('sso-up-data');
 
             $token = $old['token'];
             $username = $old['username'];
-
+           
             $helper = new SsoUpHelper(config('sso-up'));
             if ($helper->isLoggedIn($token, $username)) {
                 return response()->redirectToRoute('login.redirect');
@@ -71,9 +76,10 @@ class SsoUpController extends Controller
         } catch (\Throwable $th) {
             // throw $th;
         }
+       // dd("testing");
 
-        // GO TO SSO LOGIN PAGE
-
+        //GO TO SSO LOGIN PAGE
+        //dd(config('app.url'));
         $helper = new SsoUpHelper(config('sso-up'));
         $sso_login_url = $helper->getLoginUrl(config('app.url'));
 
