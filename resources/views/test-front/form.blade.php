@@ -18,7 +18,7 @@
             }
         });
         $('body').on('_EventAjaxErrors', function(event, formElement, errors) {
-            //if validation not pass
+            //if validation not pass 
             for (let key in errors) {
                 let element = formElement.find(`[name=${key}]`);
                 clearValidation(element);
